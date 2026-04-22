@@ -1,0 +1,757 @@
+{
+  "updatedAt": "2026-03-13T01:40:33.805Z",
+  "createdAt": "2026-03-09T23:19:04.929Z",
+  "id": "DQszH9ezV3HBB28Q6FV68",
+  "name": "N8n_ProcesaWhatsapp",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT now() AT TIME ZONE 'America/Santiago' AS santiago_datetime;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -240,
+        -112
+      ],
+      "id": "0654dfb1-81d6-4559-9e91-0cd1734c04e5",
+      "name": "GetFecha",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "Select \n* from \"ReservaBandejaWhatsapp\" where \"FechaProgramacionEnviar\"<='{{ $json.santiago_datetime }}' and \"EstadoCodigo\"='Generada' limit 10\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -16,
+        -112
+      ],
+      "id": "d7bcdbab-8ad5-4ab5-a6b0-dd3322ccf2b4",
+      "name": "GetMensajes",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b68f7381-9836-455a-bf69-be9c41da04b7",
+              "name": "numero_origen_twilio",
+              "value": "+15559078472",
+              "type": "string"
+            },
+            {
+              "id": "93b26cd7-f90b-4c72-9d2b-ab778d44a49f",
+              "name": "numero_destino_personal",
+              "value": "+56954862320",
+              "type": "string"
+            },
+            {
+              "id": "e2451a41-3e28-4272-a981-36dd058850f6",
+              "name": "url_responder",
+              "value": "https://wa.me/56964972508",
+              "type": "string"
+            },
+            {
+              "id": "b4e9fddd-b27d-4b7a-bb74-7ea5e9f520fb",
+              "name": "url_formulario_aseo",
+              "value": "https://tally.so/r/vGeKkd",
+              "type": "string"
+            },
+            {
+              "id": "ef35343f-0174-4f62-99f0-fb938439239b",
+              "name": "Twilio_SID",
+              "value": "REDACTED_TWILIO_SID",
+              "type": "string"
+            },
+            {
+              "id": "7bdbee76-50df-44ad-805a-d38aa6fcf80e",
+              "name": "ContentSid",
+              "value": "HXbf30a2b5ab53dedc7be9b4fa327857b2",
+              "type": "string"
+            },
+            {
+              "id": "99d929fd-dbd5-42bf-9a41-1cb01a0f4fdd",
+              "name": "numero_aseo",
+              "value": "+56982737381",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -416,
+        -112
+      ],
+      "id": "1a09f166-7b26-4c1d-a099-d34fd19d6b7f",
+      "name": "Variables"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.twilio.com/2010-04-01/Accounts/{{ $('Variables').item.json.Twilio_SID }}/Messages.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "From",
+              "value": "={{ 'whatsapp:' + $('Variables').item.json.numero_origen_twilio }}"
+            },
+            {
+              "name": "To",
+              "value": "={{ 'whatsapp:' + $('Variables').item.json.numero_destino_personal }}"
+            },
+            {
+              "name": "ContentSid",
+              "value": "={{ $('Variables').item.json.ContentSid }}"
+            },
+            {
+              "name": "ContentVariables",
+              "value": "={{ JSON.stringify({\n  \"1\": $json.Meta.AlojamientoStaysInternalName,\n  \"2\": DateTime.fromISO($json.Meta.Reserva_checkOutDate).toUTC().toFormat(\"yyyy-MM-dd\"),\n  \"3\": DateTime.fromISO($json.Meta.Reserva_checkOutDate).toUTC().setLocale(\"es\").toFormat(\"cccc, d 'de' LLLL 'de' yyyy\"),\n  \"4\": $json.Meta.Reserva_checkOutTime,\n  \"5\": String($json.AseoReservaCheckOutId)\n}) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        224,
+        -240
+      ],
+      "id": "6389908f-91f0-46e5-bb91-a036f91daf8b",
+      "name": "EnviarMensajeRespaldo",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "SyrgR4ro8bubV2vQ",
+          "name": "Twilio credenciales"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.twilio.com/2010-04-01/Accounts/{{ $('Variables').item.json.Twilio_SID }}/Messages.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "From",
+              "value": "={{ 'whatsapp:' + $('Variables').item.json.numero_origen_twilio }}"
+            },
+            {
+              "name": "To",
+              "value": "={{ 'whatsapp:' + $('Variables').item.json.numero_aseo }}"
+            },
+            {
+              "name": "ContentSid",
+              "value": "={{ $('Variables').item.json.ContentSid }}"
+            },
+            {
+              "name": "ContentVariables",
+              "value": "={{ JSON.stringify({\n  \"1\": $json.Meta.AlojamientoStaysInternalName,\n  \"2\": DateTime.fromISO($json.Meta.Reserva_checkOutDate).toUTC().toFormat(\"yyyy-MM-dd\"),\n  \"3\": DateTime.fromISO($json.Meta.Reserva_checkOutDate).toUTC().setLocale(\"es\").toFormat(\"cccc, d 'de' LLLL 'de' yyyy\"),\n  \"4\": $json.Meta.Reserva_checkOutTime,\n  \"5\": String($json.AseoReservaCheckOutId)\n}) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        224,
+        -32
+      ],
+      "id": "f917f483-2025-4da0-a835-240ff54dc174",
+      "name": "EnviarMensajeAseo",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "SyrgR4ro8bubV2vQ",
+          "name": "Twilio credenciales"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        464,
+        -112
+      ],
+      "id": "f9573e42-e9e9-46ed-83d7-68199099c0c1",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "  update \"ReservaBandejaWhatsapp\" set \"EstadoCodigo\"='Enviada'\n  WHERE \"ReservaBandejaWhatsappId\" = {{ $('GetMensajes').item.json.ReservaBandejaWhatsappId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        672,
+        -112
+      ],
+      "id": "318cffd1-53c1-4635-ba57-5ed46e1aadf0",
+      "name": "Update",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -624,
+        -112
+      ],
+      "id": "eb8ef915-1908-4b8c-868b-a76efb7b3153",
+      "name": "Schedule Trigger"
+    }
+  ],
+  "connections": {
+    "GetFecha": {
+      "main": [
+        [
+          {
+            "node": "GetMensajes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetMensajes": {
+      "main": [
+        [
+          {
+            "node": "EnviarMensajeAseo",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "EnviarMensajeRespaldo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variables": {
+      "main": [
+        [
+          {
+            "node": "GetFecha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EnviarMensajeAseo": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "EnviarMensajeRespaldo": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Update",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "86752acd-16c6-4f54-b53e-f9d75def0f48",
+  "activeVersionId": "86752acd-16c6-4f54-b53e-f9d75def0f48",
+  "versionCounter": 157,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-03-09T23:19:04.929Z",
+      "createdAt": "2026-03-09T23:19:04.929Z",
+      "role": "workflow:owner",
+      "workflowId": "DQszH9ezV3HBB28Q6FV68",
+      "projectId": "fkrYXx8bUkVIFmGN",
+      "project": {
+        "updatedAt": "2025-11-05T16:16:44.185Z",
+        "createdAt": "2025-11-05T15:24:32.634Z",
+        "id": "fkrYXx8bUkVIFmGN",
+        "name": "Jairo Pinilla <contacto@teknoconecta.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-11-05T15:24:32.634Z",
+            "createdAt": "2025-11-05T15:24:32.634Z",
+            "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+            "projectId": "fkrYXx8bUkVIFmGN",
+            "user": {
+              "updatedAt": "2026-04-22T16:56:08.229Z",
+              "createdAt": "2025-11-05T15:23:52.554Z",
+              "id": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+              "email": "contacto@teknoconecta.com",
+              "firstName": "Jairo",
+              "lastName": "Pinilla",
+              "personalizationAnswers": {
+                "version": "v4",
+                "personalization_survey_submitted_at": "2025-11-05T16:17:10.332Z",
+                "personalization_survey_n8n_version": "1.117.3",
+                "companySize": "<20",
+                "companyType": "saas",
+                "role": "data-science",
+                "reportedSource": "google"
+              },
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "QBxPsad3MwjzkTU2",
+                "userActivatedAt": 1764029627118,
+                "npsSurvey": {
+                  "responded": true,
+                  "lastShownAt": 1768053262866
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-04-22",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-03-11T17:57:03.338Z",
+    "createdAt": "2026-03-11T17:56:53.428Z",
+    "versionId": "86752acd-16c6-4f54-b53e-f9d75def0f48",
+    "workflowId": "DQszH9ezV3HBB28Q6FV68",
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT now() AT TIME ZONE 'America/Santiago' AS santiago_datetime;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -240,
+          -112
+        ],
+        "id": "0654dfb1-81d6-4559-9e91-0cd1734c04e5",
+        "name": "GetFecha",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "Select \n* from \"ReservaBandejaWhatsapp\" where \"FechaProgramacionEnviar\"<='{{ $json.santiago_datetime }}' and \"EstadoCodigo\"='Generada' limit 10\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -16,
+          -112
+        ],
+        "id": "d7bcdbab-8ad5-4ab5-a6b0-dd3322ccf2b4",
+        "name": "GetMensajes",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "b68f7381-9836-455a-bf69-be9c41da04b7",
+                "name": "numero_origen_twilio",
+                "value": "+15559078472",
+                "type": "string"
+              },
+              {
+                "id": "93b26cd7-f90b-4c72-9d2b-ab778d44a49f",
+                "name": "numero_destino_personal",
+                "value": "+56954862320",
+                "type": "string"
+              },
+              {
+                "id": "e2451a41-3e28-4272-a981-36dd058850f6",
+                "name": "url_responder",
+                "value": "https://wa.me/56964972508",
+                "type": "string"
+              },
+              {
+                "id": "b4e9fddd-b27d-4b7a-bb74-7ea5e9f520fb",
+                "name": "url_formulario_aseo",
+                "value": "https://tally.so/r/vGeKkd",
+                "type": "string"
+              },
+              {
+                "id": "ef35343f-0174-4f62-99f0-fb938439239b",
+                "name": "Twilio_SID",
+                "value": "REDACTED_TWILIO_SID",
+                "type": "string"
+              },
+              {
+                "id": "7bdbee76-50df-44ad-805a-d38aa6fcf80e",
+                "name": "ContentSid",
+                "value": "HXbf30a2b5ab53dedc7be9b4fa327857b2",
+                "type": "string"
+              },
+              {
+                "id": "99d929fd-dbd5-42bf-9a41-1cb01a0f4fdd",
+                "name": "numero_aseo",
+                "value": "+56982737381",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -416,
+          -112
+        ],
+        "id": "1a09f166-7b26-4c1d-a099-d34fd19d6b7f",
+        "name": "Variables"
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://api.twilio.com/2010-04-01/Accounts/{{ $('Variables').item.json.Twilio_SID }}/Messages.json",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "sendBody": true,
+          "contentType": "form-urlencoded",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "From",
+                "value": "={{ 'whatsapp:' + $('Variables').item.json.numero_origen_twilio }}"
+              },
+              {
+                "name": "To",
+                "value": "={{ 'whatsapp:' + $('Variables').item.json.numero_destino_personal }}"
+              },
+              {
+                "name": "ContentSid",
+                "value": "={{ $('Variables').item.json.ContentSid }}"
+              },
+              {
+                "name": "ContentVariables",
+                "value": "={{ JSON.stringify({\n  \"1\": $json.Meta.AlojamientoStaysInternalName,\n  \"2\": DateTime.fromISO($json.Meta.Reserva_checkOutDate).toUTC().toFormat(\"yyyy-MM-dd\"),\n  \"3\": DateTime.fromISO($json.Meta.Reserva_checkOutDate).toUTC().setLocale(\"es\").toFormat(\"cccc, d 'de' LLLL 'de' yyyy\"),\n  \"4\": $json.Meta.Reserva_checkOutTime,\n  \"5\": String($json.AseoReservaCheckOutId)\n}) }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          224,
+          -240
+        ],
+        "id": "6389908f-91f0-46e5-bb91-a036f91daf8b",
+        "name": "EnviarMensajeRespaldo",
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "SyrgR4ro8bubV2vQ",
+            "name": "Twilio credenciales"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "method": "POST",
+          "url": "=https://api.twilio.com/2010-04-01/Accounts/{{ $('Variables').item.json.Twilio_SID }}/Messages.json",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpBasicAuth",
+          "sendBody": true,
+          "contentType": "form-urlencoded",
+          "bodyParameters": {
+            "parameters": [
+              {
+                "name": "From",
+                "value": "={{ 'whatsapp:' + $('Variables').item.json.numero_origen_twilio }}"
+              },
+              {
+                "name": "To",
+                "value": "={{ 'whatsapp:' + $('Variables').item.json.numero_aseo }}"
+              },
+              {
+                "name": "ContentSid",
+                "value": "={{ $('Variables').item.json.ContentSid }}"
+              },
+              {
+                "name": "ContentVariables",
+                "value": "={{ JSON.stringify({\n  \"1\": $json.Meta.AlojamientoStaysInternalName,\n  \"2\": DateTime.fromISO($json.Meta.Reserva_checkOutDate).toUTC().toFormat(\"yyyy-MM-dd\"),\n  \"3\": DateTime.fromISO($json.Meta.Reserva_checkOutDate).toUTC().setLocale(\"es\").toFormat(\"cccc, d 'de' LLLL 'de' yyyy\"),\n  \"4\": $json.Meta.Reserva_checkOutTime,\n  \"5\": String($json.AseoReservaCheckOutId)\n}) }}"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          224,
+          -32
+        ],
+        "id": "f917f483-2025-4da0-a835-240ff54dc174",
+        "name": "EnviarMensajeAseo",
+        "credentials": {
+          "httpBasicAuth": {
+            "id": "SyrgR4ro8bubV2vQ",
+            "name": "Twilio credenciales"
+          }
+        }
+      },
+      {
+        "parameters": {},
+        "type": "n8n-nodes-base.merge",
+        "typeVersion": 3.2,
+        "position": [
+          464,
+          -112
+        ],
+        "id": "f9573e42-e9e9-46ed-83d7-68199099c0c1",
+        "name": "Merge"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "  update \"ReservaBandejaWhatsapp\" set \"EstadoCodigo\"='Enviada'\n  WHERE \"ReservaBandejaWhatsappId\" = {{ $('GetMensajes').item.json.ReservaBandejaWhatsappId }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          672,
+          -112
+        ],
+        "id": "318cffd1-53c1-4635-ba57-5ed46e1aadf0",
+        "name": "Update",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "hours"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -624,
+          -112
+        ],
+        "id": "eb8ef915-1908-4b8c-868b-a76efb7b3153",
+        "name": "Schedule Trigger"
+      }
+    ],
+    "connections": {
+      "GetFecha": {
+        "main": [
+          [
+            {
+              "node": "GetMensajes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GetMensajes": {
+        "main": [
+          [
+            {
+              "node": "EnviarMensajeAseo",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "EnviarMensajeRespaldo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Variables": {
+        "main": [
+          [
+            {
+              "node": "GetFecha",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "EnviarMensajeAseo": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 1
+            }
+          ]
+        ]
+      },
+      "EnviarMensajeRespaldo": {
+        "main": [
+          [
+            {
+              "node": "Merge",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Merge": {
+        "main": [
+          [
+            {
+              "node": "Update",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "Variables",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Jairo Pinilla",
+    "name": "Version 86752acd",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-03-11T17:57:03.202Z",
+        "id": 32,
+        "workflowId": "DQszH9ezV3HBB28Q6FV68",
+        "versionId": "86752acd-16c6-4f54-b53e-f9d75def0f48",
+        "event": "activated",
+        "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719"
+      }
+    ]
+  }
+}

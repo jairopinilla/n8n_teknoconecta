@@ -1,0 +1,1269 @@
+{
+  "updatedAt": "2026-02-05T20:54:45.521Z",
+  "createdAt": "2026-02-03T21:44:57.250Z",
+  "id": "HxHFOPv3tzBqa4gytgb3g",
+  "name": "N8n_interpreta_email_conserjeria",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 10
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -528,
+        0
+      ],
+      "id": "0e4763bd-9caa-4f93-b714-5087b746f9b3",
+      "name": "Cada 5 minutos"
+    },
+    {
+      "parameters": {
+        "operation": "select",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "BandejaConserjeriaInput",
+          "mode": "list",
+          "cachedResultName": "BandejaConserjeriaInput"
+        },
+        "returnAll": true,
+        "where": {
+          "values": [
+            {
+              "column": "BandejaConserjeriaInputEstado",
+              "value": "PENDIENTE"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -320,
+        0
+      ],
+      "id": "45423ed3-2093-4242-97ef-e87b24b6eb61",
+      "name": "ObtieneMensajesNoProcesador",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -112,
+        0
+      ],
+      "id": "ac49df5d-27d4-4265-a975-52a7490f1870",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-5.2",
+          "mode": "list",
+          "cachedResultName": "GPT-5.2"
+        },
+        "responses": {
+          "values": [
+            {
+              "role": "system",
+              "content": "Eres un asistente de automatización de conserjería experto en procesamiento de datos.\n\nTu ÚNICA tarea es analizar el correo electrónico entrante (Asunto y Cuerpo) proporcionado al final de este prompt y extraer información de check-in para poblar una planilla. Debes devolver el resultado EXCLUSIVAMENTE en formato JSON crudo. No añadas ningún texto, explicación o markdown antes o después del JSON.\n\nSigue estas reglas de procesamiento ESTRICTAMENTE:\n\n1.  **Detección de Correo de Prueba:**\n    Analiza el asunto y el cuerpo. Si detectas palabras claras como \"Test\", \"Prueba\", \"Simulacro\" o indicativos similares de que no es una solicitud real, marca el campo booleano `\"es_prueba\": Si`. De lo contrario, será `No`.\n\n2.  **Extracción de Datos Obligatorios:**\n    Debes intentar extraer los siguientes tres datos fundamentales:\n    * `nombre_huesped`: Nombre completo de la persona principal que se hospeda.\n    * `fecha_checkin`: La fecha de llegada. DEBE ser estandarizada al formato YYYY-MM-DD (Ej: 2024-02-23). Debes estandarizarla tu, si dice por ejemplo \"1 de marzo\" debes interpretar que es el 1 de marzo de este año.\n    * `departamento`: El número o identificador del departamento/unidad.\n\n\n3.  **Extracción de Datos Opcionales:**\n    Intenta extraer estos datos adicionales si están disponibles:\n    * `fecha_checkout`: La fecha de salida (formato YYYY-MM-DD).\n    * `cantidad_huespedes`: Número de personas.\n  * `pais`: pais huesped.\n\n4.  **Lógica de Validación y Estado (CRÍTICO):**\n\n    * **ESCENARIO A (Faltan Obligatorios):** Si ALGUNO de los tres datos obligatorios (`nombre_huesped`, `fecha_checkin`, `departamento`) NO se encuentra o no se puede interpretar con certeza:\n        * Establece `\"estado\": \"incompleto\"`.\n        * Establece `\"valido\": No`.\n        * Genera un mensaje en `\"mensaje_respuesta\"` indicando claramente qué datos obligatorios faltan y solicitándolos.\n\n    * **ESCENARIO B (Obligatorios OK, pero faltan Opcionales):** Si los tres datos obligatorios están presentes, pero falta alguno de los opcionales (`fecha_checkout` o `cantidad_huespedes`):\n        * Establece `\"estado\": \"completo\"`.\n        * Establece `\"valido\": Si`.\n        * Establece `\"advertencia_datos_faltantes\": true`.\n        * Genera un mensaje Cortés en `\"mensaje_respuesta\"` confirmando el registro, pero recordando amablemente que para futuras ocasiones intenten incluir la fecha de salida y cantidad de huéspedes para un mejor servicio.\n\n    * **ESCENARIO C (Todos los datos presentes):** Si absolutamente todos los datos (obligatorios y opcionales) están presentes:\n        * Establece `\"estado\": \"completo\"`.\n        * Establece `\"valido\": true`.\n        * Establece `\"advertencia_datos_faltantes\": false`.\n        * Genera un mensaje simple en `\"mensaje_respuesta\"` confirmando que el registro se ha realizado con éxito.\n\n5.  **Formato de Salida JSON Esperado:**\n    Debes devolver un objeto JSON con la siguiente estructura exacta. Si un dato no se encuentra, usa `null` (no dejes el campo fuera ni uses strings vacíos \"\").\n\nEstima boolean como Si o No\n\n```json\n{\n  \"es_prueba\": boolean,\n  \"estado\": \"completo\" | \"incompleto\",\n  \"valido\": boolean,\n  \"advertencia_datos_faltantes\": boolean,\n  \"datos_extraidos\": {\n    \"nombre_huesped\": string | null,\n     \"pais_huesped\": string | null,\n    \"fecha_checkin\": \"YYYY-MM-DD\" | null,\n    \"departamento\": string | number | null,\n    \"fecha_checkout\": \"YYYY-MM-DD\" | null,\n    \"cantidad_huespedes\": number | null\n  },\n  \"mensaje_respuesta\": \"String con el mensaje a enviar de vuelta al usuario según la lógica de validación.\"\n}"
+            },
+            {
+              "content": "=Aquí está el correo a procesar:\n--- INICIO DEL CORREO ---\nRemitente: {{ $json.BandejaConserjeriaInputPayload_crudo.email_remitente }}\nAsunto: {{ $json.BandejaConserjeriaInputPayload_crudo.asunto }}\nCuerpo: {{ $json.BandejaConserjeriaInputPayload_crudo.cuerpo_texto }}\n--- FIN DEL CORREO "
+            }
+          ]
+        },
+        "builtInTools": {
+          "codeInterpreter": true
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        128,
+        64
+      ],
+      "id": "1adcebd0-caee-418d-a93f-76cc452424a8",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "vz36nXux76vq1txG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "return items.map(item => {\n  try {\n    // 1. OBTENER EL TEXTO (Búsqueda Profunda)\n    let textoSucio = \"\";\n    const output = item.json.output;\n\n    // CASO A: Tu estructura actual (Arrays anidados)\n    // output es una lista -> content es una lista -> text\n    if (Array.isArray(output) && output[0]?.content && Array.isArray(output[0].content)) {\n      textoSucio = output[0].content[0].text;\n    } \n    // CASO B: Estructura simple (por si cambia en el futuro)\n    else if (output?.content?.text) {\n      textoSucio = output.content.text;\n    }\n    // CASO C: Output objeto, Content lista\n    else if (output?.content && Array.isArray(output.content)) {\n      textoSucio = output.content[0].text;\n    }\n    \n    // Si no encontramos nada, lanzamos error manual\n    if (!textoSucio) throw new Error(\"No se encontró la ruta del texto JSON\");\n\n    // 2. LIMPIEZA DE SEGURIDAD\n    if (typeof textoSucio === 'string') {\n      textoSucio = textoSucio\n        .replace(/```json/gi, \"\") // Quita etiqueta markdown json\n        .replace(/```/g, \"\")      // Quita comillas de cierre\n        .trim();                  // Quita espacios\n    }\n\n    // 3. PARSEO\n    const datosLimpios = JSON.parse(textoSucio);\n\n    // 4. RETORNO EXITOSO\n    return {\n      json: datosLimpios\n    };\n\n  } catch (error) {\n    return {\n      json: {\n        error: true,\n        mensaje_error: error.message || \"Error al parsear JSON\",\n        // Devolvemos esto para que puedas inspeccionar qué llegó mal\n        debug_output: item.json.output \n      }\n    };\n  }\n});"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        464,
+        64
+      ],
+      "id": "f9b4f832-fe20-44b8-81a6-ea9ae416d375",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "56523b4f-49e7-478d-b493-b829a5a40007",
+              "leftValue": "={{ $json.estado }}",
+              "rightValue": "completo",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        656,
+        64
+      ],
+      "id": "2096a8fe-f730-48ea-bfc3-1227fb531591",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1yElUQQM4fU4jGOwiThr4JjiIkl1gUJaYgXDgL7-rU5E",
+          "mode": "list",
+          "cachedResultName": "Administracion",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1yElUQQM4fU4jGOwiThr4JjiIkl1gUJaYgXDgL7-rU5E/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "CheckIn",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1yElUQQM4fU4jGOwiThr4JjiIkl1gUJaYgXDgL7-rU5E/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email Administrador": "={{ $('ObtieneMensajesNoProcesador').item.json.BandejaConserjeriaInput_EmailOrigen }}",
+            "Nombre Huesped Principal": "={{ $('Code in JavaScript').item.json.datos_extraidos.nombre_huesped }}",
+            "Cantidad Huespedes": "={{ $('Code in JavaScript').item.json.datos_extraidos.cantidad_huespedes }}",
+            "CheckIn Fecha": "={{ $('Code in JavaScript').item.json.datos_extraidos.fecha_checkin }}",
+            "CheckOut Fecha": "={{ $('Code in JavaScript').item.json.datos_extraidos.fecha_checkout }}",
+            "Departamento": "={{ $('Code in JavaScript').item.json.datos_extraidos.departamento }}",
+            "Estado": "Reservado",
+            "Valido": "={{ $json.valido }}",
+            "EsPrueba": "={{ $json.es_prueba }}",
+            "Comentarios": "={{ $json.mensaje_respuesta }}",
+            "Pais": "={{ $json.datos_extraidos.pais_huesped }}"
+          },
+          "matchingColumns": [
+            "Email Administrador"
+          ],
+          "schema": [
+            {
+              "id": "Email Administrador",
+              "displayName": "Email Administrador",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Nombre Huesped Principal",
+              "displayName": "Nombre Huesped Principal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Pais",
+              "displayName": "Pais",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Cantidad Huespedes",
+              "displayName": "Cantidad Huespedes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CheckIn Fecha",
+              "displayName": "CheckIn Fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CheckOut Fecha",
+              "displayName": "CheckOut Fecha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Departamento",
+              "displayName": "Departamento",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Estado",
+              "displayName": "Estado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Comentarios",
+              "displayName": "Comentarios",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Valido",
+              "displayName": "Valido",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EsPrueba",
+              "displayName": "EsPrueba",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        944,
+        48
+      ],
+      "id": "edc2b596-1aca-472b-8a2c-3bc2bddb3201",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "VjhbTHz3u9AecNhR",
+          "name": "Google Sheets Conserjeria Key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "BandejaConserjeriaInput",
+          "mode": "list",
+          "cachedResultName": "BandejaConserjeriaInput"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "BandejaConserjeriaInputId": "={{ $('ObtieneMensajesNoProcesador').item.json.BandejaConserjeriaInputId }}",
+            "BandejaConserjeriaInputEstado": "PROCESADO",
+            "BandejaConserjeriaInputFecha_actualizacion": "={{ $now.toISO() }}"
+          },
+          "matchingColumns": [
+            "BandejaConserjeriaInputId"
+          ],
+          "schema": [
+            {
+              "id": "BandejaConserjeriaInputId",
+              "displayName": "BandejaConserjeriaInputId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "BandejaConserjeriaInputFecha_ingesta",
+              "displayName": "BandejaConserjeriaInputFecha_ingesta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInputFecha_recepcion_gmail",
+              "displayName": "BandejaConserjeriaInputFecha_recepcion_gmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInputFuente_origen",
+              "displayName": "BandejaConserjeriaInputFuente_origen",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInputPayload_crudo",
+              "displayName": "BandejaConserjeriaInputPayload_crudo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInputTextoInformacion",
+              "displayName": "BandejaConserjeriaInputTextoInformacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInputEstado",
+              "displayName": "BandejaConserjeriaInputEstado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaConserjeriaInputFecha_actualizacion",
+              "displayName": "BandejaConserjeriaInputFecha_actualizacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaConserjeriaInputLog_proceso",
+              "displayName": "BandejaConserjeriaInputLog_proceso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInputIntentos",
+              "displayName": "BandejaConserjeriaInputIntentos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInputIdMensajeGmail",
+              "displayName": "BandejaConserjeriaInputIdMensajeGmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInputEmail_destinatario",
+              "displayName": "BandejaConserjeriaInputEmail_destinatario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInput_EmailOrigen",
+              "displayName": "BandejaConserjeriaInput_EmailOrigen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1152,
+        48
+      ],
+      "id": "b7759136-b664-4c6f-83bd-fb117bf48d65",
+      "name": "Marcar Procesado",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Cada 5 minutos": {
+      "main": [
+        [
+          {
+            "node": "ObtieneMensajesNoProcesador",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ObtieneMensajesNoProcesador": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Marcar Procesado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Marcar Procesado": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "81310745-ec07-4611-bc84-19f290d7e8f7",
+  "activeVersionId": "81310745-ec07-4611-bc84-19f290d7e8f7",
+  "versionCounter": 112,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-02-03T21:44:57.250Z",
+      "createdAt": "2026-02-03T21:44:57.250Z",
+      "role": "workflow:owner",
+      "workflowId": "HxHFOPv3tzBqa4gytgb3g",
+      "projectId": "fkrYXx8bUkVIFmGN",
+      "project": {
+        "updatedAt": "2025-11-05T16:16:44.185Z",
+        "createdAt": "2025-11-05T15:24:32.634Z",
+        "id": "fkrYXx8bUkVIFmGN",
+        "name": "Jairo Pinilla <contacto@teknoconecta.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-11-05T15:24:32.634Z",
+            "createdAt": "2025-11-05T15:24:32.634Z",
+            "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+            "projectId": "fkrYXx8bUkVIFmGN",
+            "user": {
+              "updatedAt": "2026-04-22T16:56:08.229Z",
+              "createdAt": "2025-11-05T15:23:52.554Z",
+              "id": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+              "email": "contacto@teknoconecta.com",
+              "firstName": "Jairo",
+              "lastName": "Pinilla",
+              "personalizationAnswers": {
+                "version": "v4",
+                "personalization_survey_submitted_at": "2025-11-05T16:17:10.332Z",
+                "personalization_survey_n8n_version": "1.117.3",
+                "companySize": "<20",
+                "companyType": "saas",
+                "role": "data-science",
+                "reportedSource": "google"
+              },
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "QBxPsad3MwjzkTU2",
+                "userActivatedAt": 1764029627118,
+                "npsSurvey": {
+                  "responded": true,
+                  "lastShownAt": 1768053262866
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-04-22",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-02-05T20:57:34.796Z",
+    "createdAt": "2026-02-05T20:54:45.620Z",
+    "versionId": "81310745-ec07-4611-bc84-19f290d7e8f7",
+    "workflowId": "HxHFOPv3tzBqa4gytgb3g",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 10
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -528,
+          0
+        ],
+        "id": "0e4763bd-9caa-4f93-b714-5087b746f9b3",
+        "name": "Cada 5 minutos"
+      },
+      {
+        "parameters": {
+          "operation": "select",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "BandejaConserjeriaInput",
+            "mode": "list",
+            "cachedResultName": "BandejaConserjeriaInput"
+          },
+          "returnAll": true,
+          "where": {
+            "values": [
+              {
+                "column": "BandejaConserjeriaInputEstado",
+                "value": "PENDIENTE"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -320,
+          0
+        ],
+        "id": "45423ed3-2093-4242-97ef-e87b24b6eb61",
+        "name": "ObtieneMensajesNoProcesador",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitInBatches",
+        "typeVersion": 3,
+        "position": [
+          -112,
+          0
+        ],
+        "id": "ac49df5d-27d4-4265-a975-52a7490f1870",
+        "name": "Loop Over Items"
+      },
+      {
+        "parameters": {
+          "modelId": {
+            "__rl": true,
+            "value": "gpt-5.2",
+            "mode": "list",
+            "cachedResultName": "GPT-5.2"
+          },
+          "responses": {
+            "values": [
+              {
+                "role": "system",
+                "content": "Eres un asistente de automatización de conserjería experto en procesamiento de datos.\n\nTu ÚNICA tarea es analizar el correo electrónico entrante (Asunto y Cuerpo) proporcionado al final de este prompt y extraer información de check-in para poblar una planilla. Debes devolver el resultado EXCLUSIVAMENTE en formato JSON crudo. No añadas ningún texto, explicación o markdown antes o después del JSON.\n\nSigue estas reglas de procesamiento ESTRICTAMENTE:\n\n1.  **Detección de Correo de Prueba:**\n    Analiza el asunto y el cuerpo. Si detectas palabras claras como \"Test\", \"Prueba\", \"Simulacro\" o indicativos similares de que no es una solicitud real, marca el campo booleano `\"es_prueba\": Si`. De lo contrario, será `No`.\n\n2.  **Extracción de Datos Obligatorios:**\n    Debes intentar extraer los siguientes tres datos fundamentales:\n    * `nombre_huesped`: Nombre completo de la persona principal que se hospeda.\n    * `fecha_checkin`: La fecha de llegada. DEBE ser estandarizada al formato YYYY-MM-DD (Ej: 2024-02-23). Debes estandarizarla tu, si dice por ejemplo \"1 de marzo\" debes interpretar que es el 1 de marzo de este año.\n    * `departamento`: El número o identificador del departamento/unidad.\n\n\n3.  **Extracción de Datos Opcionales:**\n    Intenta extraer estos datos adicionales si están disponibles:\n    * `fecha_checkout`: La fecha de salida (formato YYYY-MM-DD).\n    * `cantidad_huespedes`: Número de personas.\n  * `pais`: pais huesped.\n\n4.  **Lógica de Validación y Estado (CRÍTICO):**\n\n    * **ESCENARIO A (Faltan Obligatorios):** Si ALGUNO de los tres datos obligatorios (`nombre_huesped`, `fecha_checkin`, `departamento`) NO se encuentra o no se puede interpretar con certeza:\n        * Establece `\"estado\": \"incompleto\"`.\n        * Establece `\"valido\": No`.\n        * Genera un mensaje en `\"mensaje_respuesta\"` indicando claramente qué datos obligatorios faltan y solicitándolos.\n\n    * **ESCENARIO B (Obligatorios OK, pero faltan Opcionales):** Si los tres datos obligatorios están presentes, pero falta alguno de los opcionales (`fecha_checkout` o `cantidad_huespedes`):\n        * Establece `\"estado\": \"completo\"`.\n        * Establece `\"valido\": Si`.\n        * Establece `\"advertencia_datos_faltantes\": true`.\n        * Genera un mensaje Cortés en `\"mensaje_respuesta\"` confirmando el registro, pero recordando amablemente que para futuras ocasiones intenten incluir la fecha de salida y cantidad de huéspedes para un mejor servicio.\n\n    * **ESCENARIO C (Todos los datos presentes):** Si absolutamente todos los datos (obligatorios y opcionales) están presentes:\n        * Establece `\"estado\": \"completo\"`.\n        * Establece `\"valido\": true`.\n        * Establece `\"advertencia_datos_faltantes\": false`.\n        * Genera un mensaje simple en `\"mensaje_respuesta\"` confirmando que el registro se ha realizado con éxito.\n\n5.  **Formato de Salida JSON Esperado:**\n    Debes devolver un objeto JSON con la siguiente estructura exacta. Si un dato no se encuentra, usa `null` (no dejes el campo fuera ni uses strings vacíos \"\").\n\nEstima boolean como Si o No\n\n```json\n{\n  \"es_prueba\": boolean,\n  \"estado\": \"completo\" | \"incompleto\",\n  \"valido\": boolean,\n  \"advertencia_datos_faltantes\": boolean,\n  \"datos_extraidos\": {\n    \"nombre_huesped\": string | null,\n     \"pais_huesped\": string | null,\n    \"fecha_checkin\": \"YYYY-MM-DD\" | null,\n    \"departamento\": string | number | null,\n    \"fecha_checkout\": \"YYYY-MM-DD\" | null,\n    \"cantidad_huespedes\": number | null\n  },\n  \"mensaje_respuesta\": \"String con el mensaje a enviar de vuelta al usuario según la lógica de validación.\"\n}"
+              },
+              {
+                "content": "=Aquí está el correo a procesar:\n--- INICIO DEL CORREO ---\nRemitente: {{ $json.BandejaConserjeriaInputPayload_crudo.email_remitente }}\nAsunto: {{ $json.BandejaConserjeriaInputPayload_crudo.asunto }}\nCuerpo: {{ $json.BandejaConserjeriaInputPayload_crudo.cuerpo_texto }}\n--- FIN DEL CORREO "
+              }
+            ]
+          },
+          "builtInTools": {
+            "codeInterpreter": true
+          },
+          "options": {}
+        },
+        "type": "@n8n/n8n-nodes-langchain.openAi",
+        "typeVersion": 2.1,
+        "position": [
+          128,
+          64
+        ],
+        "id": "1adcebd0-caee-418d-a93f-76cc452424a8",
+        "name": "Message a model",
+        "credentials": {
+          "openAiApi": {
+            "id": "vz36nXux76vq1txG",
+            "name": "OpenAi account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "return items.map(item => {\n  try {\n    // 1. OBTENER EL TEXTO (Búsqueda Profunda)\n    let textoSucio = \"\";\n    const output = item.json.output;\n\n    // CASO A: Tu estructura actual (Arrays anidados)\n    // output es una lista -> content es una lista -> text\n    if (Array.isArray(output) && output[0]?.content && Array.isArray(output[0].content)) {\n      textoSucio = output[0].content[0].text;\n    } \n    // CASO B: Estructura simple (por si cambia en el futuro)\n    else if (output?.content?.text) {\n      textoSucio = output.content.text;\n    }\n    // CASO C: Output objeto, Content lista\n    else if (output?.content && Array.isArray(output.content)) {\n      textoSucio = output.content[0].text;\n    }\n    \n    // Si no encontramos nada, lanzamos error manual\n    if (!textoSucio) throw new Error(\"No se encontró la ruta del texto JSON\");\n\n    // 2. LIMPIEZA DE SEGURIDAD\n    if (typeof textoSucio === 'string') {\n      textoSucio = textoSucio\n        .replace(/```json/gi, \"\") // Quita etiqueta markdown json\n        .replace(/```/g, \"\")      // Quita comillas de cierre\n        .trim();                  // Quita espacios\n    }\n\n    // 3. PARSEO\n    const datosLimpios = JSON.parse(textoSucio);\n\n    // 4. RETORNO EXITOSO\n    return {\n      json: datosLimpios\n    };\n\n  } catch (error) {\n    return {\n      json: {\n        error: true,\n        mensaje_error: error.message || \"Error al parsear JSON\",\n        // Devolvemos esto para que puedas inspeccionar qué llegó mal\n        debug_output: item.json.output \n      }\n    };\n  }\n});"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          464,
+          64
+        ],
+        "id": "f9b4f832-fe20-44b8-81a6-ea9ae416d375",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "56523b4f-49e7-478d-b493-b829a5a40007",
+                "leftValue": "={{ $json.estado }}",
+                "rightValue": "completo",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          656,
+          64
+        ],
+        "id": "2096a8fe-f730-48ea-bfc3-1227fb531591",
+        "name": "If"
+      },
+      {
+        "parameters": {
+          "operation": "append",
+          "documentId": {
+            "__rl": true,
+            "value": "1yElUQQM4fU4jGOwiThr4JjiIkl1gUJaYgXDgL7-rU5E",
+            "mode": "list",
+            "cachedResultName": "Administracion",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1yElUQQM4fU4jGOwiThr4JjiIkl1gUJaYgXDgL7-rU5E/edit?usp=drivesdk"
+          },
+          "sheetName": {
+            "__rl": true,
+            "value": "gid=0",
+            "mode": "list",
+            "cachedResultName": "CheckIn",
+            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1yElUQQM4fU4jGOwiThr4JjiIkl1gUJaYgXDgL7-rU5E/edit#gid=0"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "Email Administrador": "={{ $('ObtieneMensajesNoProcesador').item.json.BandejaConserjeriaInput_EmailOrigen }}",
+              "Nombre Huesped Principal": "={{ $('Code in JavaScript').item.json.datos_extraidos.nombre_huesped }}",
+              "Cantidad Huespedes": "={{ $('Code in JavaScript').item.json.datos_extraidos.cantidad_huespedes }}",
+              "CheckIn Fecha": "={{ $('Code in JavaScript').item.json.datos_extraidos.fecha_checkin }}",
+              "CheckOut Fecha": "={{ $('Code in JavaScript').item.json.datos_extraidos.fecha_checkout }}",
+              "Departamento": "={{ $('Code in JavaScript').item.json.datos_extraidos.departamento }}",
+              "Estado": "Reservado",
+              "Valido": "={{ $json.valido }}",
+              "EsPrueba": "={{ $json.es_prueba }}",
+              "Comentarios": "={{ $json.mensaje_respuesta }}",
+              "Pais": "={{ $json.datos_extraidos.pais_huesped }}"
+            },
+            "matchingColumns": [
+              "Email Administrador"
+            ],
+            "schema": [
+              {
+                "id": "Email Administrador",
+                "displayName": "Email Administrador",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Nombre Huesped Principal",
+                "displayName": "Nombre Huesped Principal",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Pais",
+                "displayName": "Pais",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Cantidad Huespedes",
+                "displayName": "Cantidad Huespedes",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CheckIn Fecha",
+                "displayName": "CheckIn Fecha",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CheckOut Fecha",
+                "displayName": "CheckOut Fecha",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Departamento",
+                "displayName": "Departamento",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Estado",
+                "displayName": "Estado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Comentarios",
+                "displayName": "Comentarios",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Valido",
+                "displayName": "Valido",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "EsPrueba",
+                "displayName": "EsPrueba",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.googleSheets",
+        "typeVersion": 4.7,
+        "position": [
+          944,
+          48
+        ],
+        "id": "edc2b596-1aca-472b-8a2c-3bc2bddb3201",
+        "name": "Append row in sheet",
+        "credentials": {
+          "googleSheetsOAuth2Api": {
+            "id": "VjhbTHz3u9AecNhR",
+            "name": "Google Sheets Conserjeria Key"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "update",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "BandejaConserjeriaInput",
+            "mode": "list",
+            "cachedResultName": "BandejaConserjeriaInput"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "BandejaConserjeriaInputId": "={{ $('ObtieneMensajesNoProcesador').item.json.BandejaConserjeriaInputId }}",
+              "BandejaConserjeriaInputEstado": "PROCESADO",
+              "BandejaConserjeriaInputFecha_actualizacion": "={{ $now.toISO() }}"
+            },
+            "matchingColumns": [
+              "BandejaConserjeriaInputId"
+            ],
+            "schema": [
+              {
+                "id": "BandejaConserjeriaInputId",
+                "displayName": "BandejaConserjeriaInputId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "BandejaConserjeriaInputFecha_ingesta",
+                "displayName": "BandejaConserjeriaInputFecha_ingesta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInputFecha_recepcion_gmail",
+                "displayName": "BandejaConserjeriaInputFecha_recepcion_gmail",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInputFuente_origen",
+                "displayName": "BandejaConserjeriaInputFuente_origen",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInputPayload_crudo",
+                "displayName": "BandejaConserjeriaInputPayload_crudo",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInputTextoInformacion",
+                "displayName": "BandejaConserjeriaInputTextoInformacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInputEstado",
+                "displayName": "BandejaConserjeriaInputEstado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaConserjeriaInputFecha_actualizacion",
+                "displayName": "BandejaConserjeriaInputFecha_actualizacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaConserjeriaInputLog_proceso",
+                "displayName": "BandejaConserjeriaInputLog_proceso",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInputIntentos",
+                "displayName": "BandejaConserjeriaInputIntentos",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInputIdMensajeGmail",
+                "displayName": "BandejaConserjeriaInputIdMensajeGmail",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInputEmail_destinatario",
+                "displayName": "BandejaConserjeriaInputEmail_destinatario",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInput_EmailOrigen",
+                "displayName": "BandejaConserjeriaInput_EmailOrigen",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1152,
+          48
+        ],
+        "id": "b7759136-b664-4c6f-83bd-fb117bf48d65",
+        "name": "Marcar Procesado",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Cada 5 minutos": {
+        "main": [
+          [
+            {
+              "node": "ObtieneMensajesNoProcesador",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ObtieneMensajesNoProcesador": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Loop Over Items": {
+        "main": [
+          [],
+          [
+            {
+              "node": "Message a model",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Message a model": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "If",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If": {
+        "main": [
+          [
+            {
+              "node": "Append row in sheet",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Append row in sheet": {
+        "main": [
+          [
+            {
+              "node": "Marcar Procesado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Marcar Procesado": {
+        "main": [
+          [
+            {
+              "node": "Loop Over Items",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Jairo Pinilla",
+    "name": "Version 81310745",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-02-05T20:57:34.661Z",
+        "id": 12,
+        "workflowId": "HxHFOPv3tzBqa4gytgb3g",
+        "versionId": "81310745-ec07-4611-bc84-19f290d7e8f7",
+        "event": "activated",
+        "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719"
+      }
+    ]
+  }
+}

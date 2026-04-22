@@ -1,0 +1,411 @@
+{
+  "updatedAt": "2026-03-11T00:53:56.190Z",
+  "createdAt": "2026-03-09T17:39:48.143Z",
+  "id": "BWPnJxgKwbBi2UeXhIXmJ",
+  "name": "N8n_EnviarCorreosReserva",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "Select \n* from \n  \"ReservaBandejaCorreo\" \n  where \"FechaProgramacionEnviar\"<='{{ $json.santiago_datetime }}' \n  and \"EstadoCodigo\"='Generada' limit 3",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        64,
+        -48
+      ],
+      "id": "beecbd8f-e586-4bae-8869-b9cbfc736f80",
+      "name": "GetReservasCorreoNoti",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT now() AT TIME ZONE 'America/Santiago' AS santiago_datetime;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -192,
+        -48
+      ],
+      "id": "6ffa8324-5202-479b-9b19-e06981d01903",
+      "name": "GetFecha",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.Destinatarios.join(', ') }}",
+        "subject": "={{ $json.Asunto }}",
+        "emailType": "text",
+        "message": "={{ $json.Cuerpo }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        288,
+        -48
+      ],
+      "id": "a0f3b294-1234-47e2-8478-a51eb21da55b",
+      "name": "SendEmail",
+      "webhookId": "f6d8e344-8982-48ba-8754-8fc3419d7de4",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "KqjbbkIXMfSWYqPV",
+          "name": "Gmail account Teknoconecta"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "update \"ReservaBandejaCorreo\" \n  set \"EstadoCodigo\"='Enviada',\n  \"FechaEnviado\" = now() AT TIME ZONE 'America/Santiago'\n  where \"ReservaBandejaCorreoId\"={{ $('GetReservasCorreoNoti').item.json.ReservaBandejaCorreoId }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        496,
+        -48
+      ],
+      "id": "bcc234b7-84fc-44b2-9f87-6cc7f4f0ddea",
+      "name": "ActualizaEnviado",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "minutes",
+              "minutesInterval": 30
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -416,
+        -48
+      ],
+      "id": "abf12c2f-b09a-4756-9aea-d18e859ccbb5",
+      "name": "Ejecucion cada una hora"
+    }
+  ],
+  "connections": {
+    "GetFecha": {
+      "main": [
+        [
+          {
+            "node": "GetReservasCorreoNoti",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetReservasCorreoNoti": {
+      "main": [
+        [
+          {
+            "node": "SendEmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SendEmail": {
+      "main": [
+        [
+          {
+            "node": "ActualizaEnviado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ejecucion cada una hora": {
+      "main": [
+        [
+          {
+            "node": "GetFecha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "c2a6f4a0-96d5-4d37-8e5d-ae75d2526006",
+  "activeVersionId": "c2a6f4a0-96d5-4d37-8e5d-ae75d2526006",
+  "versionCounter": 76,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-03-11T00:53:55.389Z",
+      "createdAt": "2026-03-11T00:53:55.389Z",
+      "role": "workflow:owner",
+      "workflowId": "BWPnJxgKwbBi2UeXhIXmJ",
+      "projectId": "fkrYXx8bUkVIFmGN",
+      "project": {
+        "updatedAt": "2025-11-05T16:16:44.185Z",
+        "createdAt": "2025-11-05T15:24:32.634Z",
+        "id": "fkrYXx8bUkVIFmGN",
+        "name": "Jairo Pinilla <contacto@teknoconecta.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-11-05T15:24:32.634Z",
+            "createdAt": "2025-11-05T15:24:32.634Z",
+            "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+            "projectId": "fkrYXx8bUkVIFmGN",
+            "user": {
+              "updatedAt": "2026-04-22T16:56:08.229Z",
+              "createdAt": "2025-11-05T15:23:52.554Z",
+              "id": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+              "email": "contacto@teknoconecta.com",
+              "firstName": "Jairo",
+              "lastName": "Pinilla",
+              "personalizationAnswers": {
+                "version": "v4",
+                "personalization_survey_submitted_at": "2025-11-05T16:17:10.332Z",
+                "personalization_survey_n8n_version": "1.117.3",
+                "companySize": "<20",
+                "companyType": "saas",
+                "role": "data-science",
+                "reportedSource": "google"
+              },
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "QBxPsad3MwjzkTU2",
+                "userActivatedAt": 1764029627118,
+                "npsSurvey": {
+                  "responded": true,
+                  "lastShownAt": 1768053262866
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-04-22",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-03-11T00:23:02.706Z",
+    "createdAt": "2026-03-11T00:22:55.021Z",
+    "versionId": "c2a6f4a0-96d5-4d37-8e5d-ae75d2526006",
+    "workflowId": "BWPnJxgKwbBi2UeXhIXmJ",
+    "nodes": [
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "Select \n* from \n  \"ReservaBandejaCorreo\" \n  where \"FechaProgramacionEnviar\"<='{{ $json.santiago_datetime }}' \n  and \"EstadoCodigo\"='Generada' limit 3",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          64,
+          -48
+        ],
+        "id": "beecbd8f-e586-4bae-8869-b9cbfc736f80",
+        "name": "GetReservasCorreoNoti",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT now() AT TIME ZONE 'America/Santiago' AS santiago_datetime;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -192,
+          -48
+        ],
+        "id": "6ffa8324-5202-479b-9b19-e06981d01903",
+        "name": "GetFecha",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "sendTo": "={{ $json.Destinatarios.join(', ') }}",
+          "subject": "={{ $json.Asunto }}",
+          "emailType": "text",
+          "message": "={{ $json.Cuerpo }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.gmail",
+        "typeVersion": 2.2,
+        "position": [
+          288,
+          -48
+        ],
+        "id": "a0f3b294-1234-47e2-8478-a51eb21da55b",
+        "name": "SendEmail",
+        "webhookId": "f6d8e344-8982-48ba-8754-8fc3419d7de4",
+        "credentials": {
+          "gmailOAuth2": {
+            "id": "KqjbbkIXMfSWYqPV",
+            "name": "Gmail account Teknoconecta"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "update \"ReservaBandejaCorreo\" \n  set \"EstadoCodigo\"='Enviada',\n  \"FechaEnviado\" = now() AT TIME ZONE 'America/Santiago'\n  where \"ReservaBandejaCorreoId\"={{ $('GetReservasCorreoNoti').item.json.ReservaBandejaCorreoId }}",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          496,
+          -48
+        ],
+        "id": "bcc234b7-84fc-44b2-9f87-6cc7f4f0ddea",
+        "name": "ActualizaEnviado",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "minutes",
+                "minutesInterval": 30
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -416,
+          -48
+        ],
+        "id": "abf12c2f-b09a-4756-9aea-d18e859ccbb5",
+        "name": "Ejecucion cada una hora"
+      }
+    ],
+    "connections": {
+      "GetFecha": {
+        "main": [
+          [
+            {
+              "node": "GetReservasCorreoNoti",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GetReservasCorreoNoti": {
+        "main": [
+          [
+            {
+              "node": "SendEmail",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SendEmail": {
+        "main": [
+          [
+            {
+              "node": "ActualizaEnviado",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Ejecucion cada una hora": {
+        "main": [
+          [
+            {
+              "node": "GetFecha",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Jairo Pinilla",
+    "name": "Version c2a6f4a0",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-03-11T00:23:02.564Z",
+        "id": 26,
+        "workflowId": "BWPnJxgKwbBi2UeXhIXmJ",
+        "versionId": "c2a6f4a0-96d5-4d37-8e5d-ae75d2526006",
+        "event": "activated",
+        "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719"
+      }
+    ]
+  }
+}

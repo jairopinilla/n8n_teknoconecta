@@ -1,0 +1,5594 @@
+{
+  "updatedAt": "2026-04-22T17:50:27.759Z",
+  "createdAt": "2026-02-25T16:39:11.420Z",
+  "id": "smvtOsTSxsbMUgnfBgCix",
+  "name": "N8n_Update_Reservas",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "url": "https://jairop.stays.net/external/v1/booking/reservations",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "from",
+              "value": "={{ $('ObtieneFechas').item.json.from }}"
+            },
+            {
+              "name": "to",
+              "value": "={{ $('ObtieneFechas').item.json.to }}"
+            },
+            {
+              "name": "dateType",
+              "value": "arrival"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        -880,
+        -96
+      ],
+      "id": "1a4fe923-9c6f-4ee1-bc3f-66f2b2e1d35a",
+      "name": "Get Reservation",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "I4YWvpXuZv5reReY",
+          "name": "Stays Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "Reserva__id",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        272,
+        -416
+      ],
+      "id": "505a1c50-8744-419b-9362-d6fa618d5cc8",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "url": "=https://jairop.stays.net/external/v1/booking/reservations/{{ $json.Reserva__id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        416,
+        -256
+      ],
+      "id": "20358f41-c7b8-4265-9b28-3eb34558eaa8",
+      "name": "Get Reserva",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "I4YWvpXuZv5reReY",
+          "name": "Stays Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "_idclient",
+        "include": "selectedOtherFields",
+        "fieldsToInclude": "guestsDetails, _idlisting",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        592,
+        -256
+      ],
+      "id": "c590a70d-5f72-4a7a-b11c-de9a95db531d",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "operation": "upsert",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "Huesped",
+          "mode": "list",
+          "cachedResultName": "Huesped"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "StaysClientId": "={{ $json._idclient }}",
+            "StaysContactId": "={{ $json.guestsDetails.list[0]._idcontact }}",
+            "NombreCompleto": "={{ $json.guestsDetails.list[0].name }}",
+            "Telefono": "={{ $json.guestsDetails.list[0].phones[0].iso }}",
+            "Raw": "={{ $json }}"
+          },
+          "matchingColumns": [
+            "StaysClientId"
+          ],
+          "schema": [
+            {
+              "id": "HuespedId",
+              "displayName": "HuespedId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "StaysClientId",
+              "displayName": "StaysClientId",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "StaysContactId",
+              "displayName": "StaysContactId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "NombreCompleto",
+              "displayName": "NombreCompleto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "Telefono",
+              "displayName": "Telefono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "Pais",
+              "displayName": "Pais",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "PartnerName",
+              "displayName": "PartnerName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "PartnerCode",
+              "displayName": "PartnerCode",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "Raw",
+              "displayName": "Raw",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "CreatedAt",
+              "displayName": "CreatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            },
+            {
+              "id": "UpdatedAt",
+              "displayName": "UpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        752,
+        -256
+      ],
+      "id": "46c49d12-c1b7-4f3a-9f3f-e5aba4bf3bac",
+      "name": "Update Huesped",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "update public.\"Reserva\" r\nset\n  \"AlojamientoId\" = a.\"AlojamientoId\",\n  \"UpdatedAt\" = now()\nfrom public.\"Alojamiento\" a\nwhere\n  r.\"AlojamientoId\" is null\n  and r.\"Reserva__idlisting\" is not null\n  and r.\"Reserva__idlisting\" = a.\"AlojamientoStayslistingIdLargo\";",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        944,
+        -256
+      ],
+      "id": "c7544285-750a-4b20-b129-5dc9f7efce2a",
+      "name": "Update Reservas Alojamiento",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "update public.\"Reserva\" r\nset\n  \"HuespedId\" = h.\"HuespedId\",\n  \"UpdatedAt\" = now()\nfrom public.\"Huesped\" h\nwhere\n  r.\"HuespedId\" is null\n  and r.\"Reserva__idclient\" is not null\n  and r.\"Reserva__idclient\" = h.\"StaysClientId\";",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1152,
+        -96
+      ],
+      "id": "705896be-4d92-4952-a6b3-d8238b4542f2",
+      "name": "Update Huesped en Reserva",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1712,
+        -96
+      ],
+      "id": "74730b82-7159-4d82-9220-b461cbc932c3",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": " WITH pais_norm AS (\n  SELECT\n    p.\"PaisId\",\n    ('+' || regexp_replace(p.\"PaisCodigoTelefono\", '[^0-9]', '', 'g')) AS dial_plus,\n    regexp_replace(p.\"PaisCodigoTelefono\", '[^0-9]', '', 'g')          AS dial_digits\n  FROM public.\"Pais\" p\n  WHERE p.\"PaisCodigoTelefono\" IS NOT NULL\n    AND p.\"PaisCodigoTelefono\" <> ''\n    AND regexp_replace(p.\"PaisCodigoTelefono\", '[^0-9]', '', 'g') <> ''\n),\nhuesped_norm AS (\n  SELECT\n    h.\"HuespedId\",\n    regexp_replace(h.\"Telefono\", '[^0-9]', '', 'g') AS phone_digits,\n    CASE\n      WHEN h.\"Telefono\" ~ '^\\s*\\+' THEN\n        '+' || regexp_replace(h.\"Telefono\", '[^0-9]', '', 'g')\n      WHEN regexp_replace(h.\"Telefono\", '[^0-9]', '', 'g') ~ '^00' THEN\n        '+' || substr(regexp_replace(h.\"Telefono\", '[^0-9]', '', 'g'), 3)\n      ELSE\n        '+' || regexp_replace(h.\"Telefono\", '[^0-9]', '', 'g')\n    END AS phone_plus\n  FROM public.\"Huesped\" h\n  WHERE h.\"IdPais\" IS NULL\n    AND h.\"Telefono\" IS NOT NULL\n    AND h.\"Telefono\" <> ''\n),\nbest_match AS (\n  SELECT\n    h.\"HuespedId\",\n    p.\"PaisId\",\n    row_number() OVER (\n      PARTITION BY h.\"HuespedId\"\n      ORDER BY length(p.dial_digits) DESC, p.\"PaisId\"\n    ) AS rn\n  FROM huesped_norm h\n  JOIN pais_norm p\n    ON (\n      h.phone_plus   LIKE p.dial_plus   || '%'\n      OR\n      h.phone_digits LIKE p.dial_digits || '%'\n    )\n)\nUPDATE public.\"Huesped\" h\nSET \"IdPais\" = m.\"PaisId\"\nFROM best_match m\nWHERE h.\"HuespedId\" = m.\"HuespedId\"\n  AND m.rn = 1\n  AND h.\"IdPais\" IS NULL;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1360,
+        32
+      ],
+      "id": "563a203a-ce15-4064-9862-6380e233c1c5",
+      "name": "SetHuespedPais",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "27c374bf-b57a-4cb4-b0f7-e65fad17e94f",
+              "name": "CorreoTeknoconecta",
+              "value": "contacto@teknoconecta.com",
+              "type": "string"
+            },
+            {
+              "id": "40e5200d-07e7-42cc-a8c7-aaeb56630d14",
+              "name": "CorreoConserjeria",
+              "value": "conserjeria@edificiotarapaca1140.com",
+              "type": "string"
+            },
+            {
+              "id": "8aeb73c3-810a-4b2d-9b80-55498c464ecc",
+              "name": "NumeroSanDiegoApart",
+              "value": "+56964972508",
+              "type": "string"
+            },
+            {
+              "id": "b6fde7b9-933c-43ce-b3ac-6553669c91b6",
+              "name": "NumeroConserjeria",
+              "value": "+56983073892",
+              "type": "string"
+            },
+            {
+              "id": "2253053a-39a9-4ea0-8f30-0f9397d75744",
+              "name": "NumeroProveedorAseo",
+              "value": "+56982737381",
+              "type": "string"
+            },
+            {
+              "id": "12ea2acb-f0f4-4f97-bc04-ae86dc222451",
+              "name": "CorreoProveedorAseo",
+              "value": "edifex.multiservicios@gmail.com",
+              "type": "string"
+            },
+            {
+              "id": "1847b268-5234-43e2-aada-411d1feeb16a",
+              "name": "Destinatarios_test",
+              "value": "={{ [\"jairo.pinilla.lopez@gmail.com\",\"isaias1984@gmail.com\"] }}",
+              "type": "array"
+            },
+            {
+              "id": "0341fdbd-026b-4474-9581-ede45f4af497",
+              "name": "NumeroTestDestinatarioWhats",
+              "value": "={{ [\"+56954862320\"] }}",
+              "type": "array"
+            },
+            {
+              "id": "dd4f4e5f-30c4-4021-95ce-34d7afad0203",
+              "name": "url_formulario_aseo",
+              "value": "https://tally.so/r/vGeKkd",
+              "type": "string"
+            },
+            {
+              "id": "bf7585a0-5f31-4284-a736-0ef8ce2ec00a",
+              "name": "Destinatarios_conserjeria",
+              "value": "={{ [\"conserjeria@edificiotarapaca1140.com\", \"isaias1984@gmail.com\"]}}",
+              "type": "array"
+            },
+            {
+              "id": "082b97de-3ffb-4cad-bbcb-5e321e617a0b",
+              "name": "Destinatarios_aseo",
+              "value": "={{ [\"edifex.multiservicios@gmail.com\", \"isaias1984@gmail.com\"]}}",
+              "type": "array"
+            },
+            {
+              "id": "c945579b-2252-454b-94c4-3c900b6282ba",
+              "name": "=DestinatarioWhatsAseo",
+              "value": "={{ [\"+56982737381\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1088,
+        -80
+      ],
+      "id": "fb17d41c-c331-4377-8e07-5f442fdd30e4",
+      "name": "CorreoYNumeros"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "delete from \"ReservaStage\"",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1264,
+        -96
+      ],
+      "id": "23454e9b-577b-47e8-b3bf-b350f5c8cf96",
+      "name": "BorrarStageReserva",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "ReservaStage",
+          "mode": "list",
+          "cachedResultName": "ReservaStage"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "guests": "={{ $json.guests }}",
+            "_id": "={{ $json._id }}",
+            "id": "={{ $json.id }}",
+            "creationDate": "={{ $json.creationDate }}",
+            "creationTime": "={{ $json.creationTime }}",
+            "creationDateTime": "={{ $json.creationDateTime }}",
+            "checkInDate": "={{ $json.checkInDate }}",
+            "checkInTime": "={{ $json.checkInTime }}",
+            "checkOutDate": "={{ $json.checkOutDate }}",
+            "checkOutTime": "={{ $json.checkOutTime }}",
+            "_idlisting": "={{ $json._idlisting }}",
+            "_idclient": "={{ $json._idclient }}",
+            "type": "={{ $json.type }}",
+            "agent": "={{ $json.agent }}",
+            "price": "={{ $json.price }}",
+            "stats": "={{ $json.stats }}",
+            "guestsDetails": "={{ $json.guestsDetails }}",
+            "reservationUrl": "={{ $json.reservationUrl }}",
+            "payload": "={{ $json }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "ReservaStageId",
+              "displayName": "ReservaStageId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "_id",
+              "displayName": "_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "creationDate",
+              "displayName": "creationDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "creationTime",
+              "displayName": "creationTime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "creationDateTime",
+              "displayName": "creationDateTime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "checkInDate",
+              "displayName": "checkInDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "checkInTime",
+              "displayName": "checkInTime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "checkOutDate",
+              "displayName": "checkOutDate",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "checkOutTime",
+              "displayName": "checkOutTime",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "_idlisting",
+              "displayName": "_idlisting",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "_idclient",
+              "displayName": "_idclient",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "agent",
+              "displayName": "agent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "price",
+              "displayName": "price",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "stats",
+              "displayName": "stats",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "guestsDetails",
+              "displayName": "guestsDetails",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "guests",
+              "displayName": "guests",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "reservationUrl",
+              "displayName": "reservationUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "payload",
+              "displayName": "payload",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "updatedAt",
+              "displayName": "updatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -720,
+        -96
+      ],
+      "id": "16e7d744-d082-4c27-a22b-c453bbaf1a78",
+      "name": "InsertaStage",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO public.\"Reserva\" (\n  \"Reserva__id\",\n  \"Reserva_id\",\n  \"Reserva_creationDate\",\n  \"Reserva_creationTime\",\n  \"Reserva_creationDateTime\",\n  \"Reserva_checkInDate\",\n  \"Reserva_checkInTime\",\n  \"Reserva_checkOutDate\",\n  \"Reserva_checkOutTime\",\n  \"Reserva__idlisting\",\n  \"Reserva__idclient\",\n  \"Reserva_type\",\n  \"Reserva_agent\",\n  \"Reserva_price\",\n  \"Reserva_stats\",\n  \"Reserva_guests\",\n  \"Reserva_guestsDetails\",\n  \"Reserva_reservationUrl\",\n  \"Reserva_payload\",\n  \"HuespedId\",\n  \"AlojamientoId\"\n)\nSELECT\n  s.\"_id\",\n  s.\"id\",\n  s.\"creationDate\"::date,\n  s.\"creationTime\"::time,\n  s.\"creationDateTime\"::timestamptz,\n  s.\"checkInDate\"::date,\n  s.\"checkInTime\"::time,\n  s.\"checkOutDate\"::date,\n  s.\"checkOutTime\"::time,\n  s.\"_idlisting\",\n  s.\"_idclient\",\n  s.\"type\",\n  s.\"agent\",\n  s.\"price\",\n  s.\"stats\",\n  s.\"guests\",\n  s.\"guestsDetails\",\n  s.\"reservationUrl\",\n  s.\"payload\",\n  NULL, -- HuespedId (lo podrás resolver después)\n  NULL  -- AlojamientoId (lo podrás resolver después)\nFROM public.\"ReservaStage\" s\nWHERE s.\"_id\" IS NOT NULL\n  AND NOT EXISTS (\n    SELECT 1\n    FROM public.\"Reserva\" r\n    WHERE r.\"Reserva__id\" = s.\"_id\"\n  );",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -528,
+        -96
+      ],
+      "id": "2ed66d39-f462-4908-8990-1eb187023014",
+      "name": "InsertarReservaNoExistente",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "\nSELECT\n  (COUNT(*) > 0) AS \"hasData\",\n  COUNT(*)       AS \"cnt\"\nFROM public.\"Reserva\"\nWHERE \"HuespedId\" IS NULL OR \"AlojamientoId\" IS NULL;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -336,
+        -96
+      ],
+      "id": "e2d1239a-df69-49e3-988c-b55df6fbfa86",
+      "name": "ObtenerReservaSinAloHues",
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d4e5fcd6-710f-43bb-9188-e996022cbb18",
+              "leftValue": "={{ $json.hasData }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -128,
+        -96
+      ],
+      "id": "f233f658-0a13-4f04-8d81-b0c46857dafb",
+      "name": "If datos por actualizar"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n\"Reserva__id\"\nFROM public.\"Reserva\"\nWHERE \"HuespedId\" IS NULL OR \"AlojamientoId\" IS NULL;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        64,
+        -256
+      ],
+      "id": "f3c0947e-dfec-46b6-847f-34670c11886c",
+      "name": "Execute a SQL query",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select \n  r.\"ReservaId\",\n  \"Reserva__id\",\n  al.\"AlojamientoId\",\n  h.\"HuespedId\",\n  \"Reserva_id\",\n  \"Reserva_creationDate\",\n  \"Reserva_checkInDate\",\n  \"Reserva_checkOutDate\",\n  \"Reserva_checkInTime\",\n  \"Reserva_checkOutTime\",\n  \"Reserva__idlisting\",\n  \"Reserva__idclient\",\n  \"Reserva_type\",\n  \"Reserva_guests\",\n  \"StaysClientId\",\n  \"StaysContactId\",\n  \"NombreCompleto\",\n  \"Email\",\n  \"Telefono\",\n  \"IdPais\",\n  \"AlojamientoNumero\",\n  \"AlojamientoNombre\",\n  \"AlojamientoStaysInternalName\",\n  \"PaisNombreEspanol\",\n  \"AseoReservaCheckOutId\"\nFROM public.\"Reserva\" r\nLEFT JOIN public.\"Huesped\" h\n  ON h.\"HuespedId\" = r.\"HuespedId\"\nLEFT JOIN public.\"Alojamiento\" al\n  ON al.\"AlojamientoId\" = r.\"AlojamientoId\"\nleft join \"Pais\" p \non h.\"IdPais\" = p.\"PaisId\"\nleft join \"AseoReservaCheckOut\" aseo \non r.\"ReservaId\" = aseo.\"ReservaId\"\nwhere r.\"ReservaId\" not in (select \"ReservaId\" from \"ReservaBandejaCorreo\" where \"TipoNotificacionCodigo\" = 'NotificaAseoCheckOut')\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2560,
+        -560
+      ],
+      "id": "cf92495d-d603-4d08-aa97-cc0641f42f02",
+      "name": "GetReservasSinNotificacionAseoCorreo",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select \n  \"ReservaId\",\n  \"Reserva__id\",\n  al.\"AlojamientoId\",\n  h.\"HuespedId\",\n  \"Reserva_id\",\n  \"Reserva_creationDate\",\n  \"Reserva_checkInDate\",\n  \"Reserva_checkOutDate\",\n  \"Reserva_checkInTime\",\n  \"Reserva_checkOutTime\",\n  \"Reserva__idlisting\",\n  \"Reserva__idclient\",\n  \"Reserva_type\",\n  \"Reserva_guests\",\n  \"StaysClientId\",\n  \"StaysContactId\",\n  \"NombreCompleto\",\n  \"Email\",\n  \"Telefono\",\n  \"IdPais\",\n  \"AlojamientoNumero\",\n  \"AlojamientoNombre\",\n  \"AlojamientoStaysInternalName\",\n  \"PaisNombreEspanol\"\nFROM public.\"Reserva\" r\nLEFT JOIN public.\"Huesped\" h\n  ON h.\"HuespedId\" = r.\"HuespedId\"\nLEFT JOIN public.\"Alojamiento\" al\n  ON al.\"AlojamientoId\" = r.\"AlojamientoId\"\nleft join \"Pais\" p \non h.\"IdPais\" = p.\"PaisId\"\nwhere r.\"ReservaId\" not in (select \"ReservaId\" from \"ReservaBandejaCorreo\" where \"TipoNotificacionCodigo\" = 'NotificaNuevoHuesped')",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1792,
+        32
+      ],
+      "id": "9a89623e-21a0-4c83-984d-722b475333ab",
+      "name": "GetReservasSinNotificacionConserjeriaCorreo",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select \n  \"ReservaId\",\n  \"Reserva__id\",\n  al.\"AlojamientoId\",\n  h.\"HuespedId\",\n  \"Reserva_id\",\n  \"Reserva_creationDate\",\n  \"Reserva_checkInDate\",\n  \"Reserva_checkOutDate\",\n  \"Reserva_checkInTime\",\n  \"Reserva_checkOutTime\",\n  \"Reserva__idlisting\",\n  \"Reserva__idclient\",\n  \"Reserva_type\",\n  \"Reserva_guests\",\n  \"StaysClientId\",\n  \"StaysContactId\",\n  \"NombreCompleto\",\n  \"Email\",\n  \"Telefono\",\n  \"IdPais\",\n  \"AlojamientoNumero\",\n  \"AlojamientoNombre\",\n  \"AlojamientoStaysInternalName\",\n  \"PaisNombreEspanol\"\nFROM public.\"Reserva\" r\nLEFT JOIN public.\"Huesped\" h\n  ON h.\"HuespedId\" = r.\"HuespedId\"\nLEFT JOIN public.\"Alojamiento\" al\n  ON al.\"AlojamientoId\" = r.\"AlojamientoId\"\nleft join \"Pais\" p \non h.\"IdPais\" = p.\"PaisId\"\nwhere r.\"ReservaId\" not in (select \"ReservaId\" from \"ReservaBandejaWhatsapp\" where \"TipoNotificacionCodigo\" = 'NotificaNuevoHuesped')\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1696,
+        272
+      ],
+      "id": "778fb973-6c96-40c5-b985-df23f44969d1",
+      "name": "GetReservasSinNotificacionConserjeriaWhats",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select \n  r.\"ReservaId\",\n  \"Reserva__id\",\n  al.\"AlojamientoId\",\n  h.\"HuespedId\",\n  \"Reserva_id\",\n  \"Reserva_creationDate\",\n  \"Reserva_checkInDate\",\n  \"Reserva_checkOutDate\",\n  \"Reserva_checkInTime\",\n  \"Reserva_checkOutTime\",\n  \"Reserva__idlisting\",\n  \"Reserva__idclient\",\n  \"Reserva_type\",\n  \"Reserva_guests\",\n  \"StaysClientId\",\n  \"StaysContactId\",\n  \"NombreCompleto\",\n  \"Email\",\n  \"Telefono\",\n  \"IdPais\",\n  \"AlojamientoNumero\",\n  \"AlojamientoNombre\",\n  \"AlojamientoStaysInternalName\",\n  \"PaisNombreEspanol\",\n  \"AseoReservaCheckOutId\",\n  \n-- Hora local Chile (timestamp sin tz) para ver y mostrar\n((r.\"Reserva_checkOutDate\"::date - 1)::timestamp + time '21:00') AS \"ProgDiaAntes21Chile_CL\",\n\n-- Instante absoluto (timestamptz) para comparar con now()\n(((r.\"Reserva_checkOutDate\"::date - 1)::timestamp + time '21:00')\n  AT TIME ZONE 'America/Santiago') AS \"ProgDiaAntes21Chile_TZ\"\n  \nFROM public.\"Reserva\" r\nLEFT JOIN public.\"Huesped\" h\n  ON h.\"HuespedId\" = r.\"HuespedId\"\nLEFT JOIN public.\"Alojamiento\" al\n  ON al.\"AlojamientoId\" = r.\"AlojamientoId\"\nleft join \"Pais\" p \non h.\"IdPais\" = p.\"PaisId\"\nleft join \"AseoReservaCheckOut\" aseo \non r.\"ReservaId\" = aseo.\"ReservaId\"\nwhere r.\"ReservaId\" not in (select \"ReservaId\" from \"ReservaBandejaWhatsapp\" where \"TipoNotificacionCodigo\" = 'NotificaAseoCheckOutDiaAntes')\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2560,
+        0
+      ],
+      "id": "39eda323-849e-467d-b6bc-3b84c99bf977",
+      "name": "GetReservasSinNotificacionAseoDiaAntesWhats",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select \n  r.\"ReservaId\",\n  \"Reserva__id\",\n  al.\"AlojamientoId\",\n  h.\"HuespedId\",\n  \"Reserva_id\",\n  \"Reserva_creationDate\",\n  \"Reserva_checkInDate\",\n  \"Reserva_checkOutDate\",\n  \"Reserva_checkInTime\",\n  \"Reserva_checkOutTime\",\n  \"Reserva__idlisting\",\n  \"Reserva__idclient\",\n  \"Reserva_type\",\n  \"Reserva_guests\",\n  \"StaysClientId\",\n  \"StaysContactId\",\n  \"NombreCompleto\",\n  \"Email\",\n  \"Telefono\",\n  \"IdPais\",\n  \"AlojamientoNumero\",\n  \"AlojamientoNombre\",\n  \"AlojamientoStaysInternalName\",\n  \"PaisNombreEspanol\",\n  \"AseoReservaCheckOutId\"\nFROM public.\"Reserva\" r\nLEFT JOIN public.\"Huesped\" h\n  ON h.\"HuespedId\" = r.\"HuespedId\"\nLEFT JOIN public.\"Alojamiento\" al\n  ON al.\"AlojamientoId\" = r.\"AlojamientoId\"\nleft join \"Pais\" p \non h.\"IdPais\" = p.\"PaisId\"\nleft join \"AseoReservaCheckOut\" aseo \non r.\"ReservaId\" = aseo.\"ReservaId\"\nwhere r.\"ReservaId\" not in (select \"ReservaId\" from \"ReservaBandejaWhatsapp\" where \"TipoNotificacionCodigo\" = 'NotificaAseoCheckOut')",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2560,
+        -288
+      ],
+      "id": "89a603ee-89b8-4897-953b-7611b2988710",
+      "name": "GetReservasSinNotificacionAseoWhats",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "select \n  \"ReservaId\",\n  \"Reserva__id\",\n  al.\"AlojamientoId\",\n  h.\"HuespedId\",\n  \"Reserva_id\",\n  \"Reserva_creationDate\",\n  \"Reserva_checkInDate\",\n  \"Reserva_checkOutDate\",\n  \"Reserva_checkInTime\",\n  \"Reserva_checkOutTime\",\n  \"Reserva__idlisting\",\n  \"Reserva__idclient\",\n  \"Reserva_type\",\n  \"Reserva_guests\",\n  \"StaysClientId\",\n  \"StaysContactId\",\n  \"NombreCompleto\",\n  \"Email\",\n  \"Telefono\",\n  \"IdPais\",\n  \"AlojamientoNumero\",\n  \"AlojamientoNombre\",\n  \"AlojamientoStaysInternalName\",\n  \"PaisNombreEspanol\"\nFROM public.\"Reserva\" r\nLEFT JOIN public.\"Huesped\" h\n  ON h.\"HuespedId\" = r.\"HuespedId\"\nLEFT JOIN public.\"Alojamiento\" al\n  ON al.\"AlojamientoId\" = r.\"AlojamientoId\"\nleft join \"Pais\" p \non h.\"IdPais\" = p.\"PaisId\"\n\nwhere r.\"ReservaId\" not in (select \"ReservaId\" from \"AseoReservaCheckOut\" where \"AseoTipoCodigo\" = 'AseoCheckOut')\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1824,
+        -528
+      ],
+      "id": "f8936ae1-4c60-4175-bdb3-0116f1230ab1",
+      "name": "GetReservaSinAseo",
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "AseoReservaCheckOut",
+          "mode": "list",
+          "cachedResultName": "AseoReservaCheckOut"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ReservaId": "={{ $json.ReservaId }}",
+            "AseoTipoCodigo": "AseoCheckOut",
+            "AseoEstadoCodigo": "Solicitado",
+            "FechaServicio": "={{ $json.Reserva_checkOutDate }}",
+            "HoraInicio": "={{ $json.Reserva_checkOutTime }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "AseoReservaCheckOutId",
+              "displayName": "AseoReservaCheckOutId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ReservaId",
+              "displayName": "ReservaId",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AseoTipoCodigo",
+              "displayName": "AseoTipoCodigo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AseoEstadoCodigo",
+              "displayName": "AseoEstadoCodigo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FechaServicio",
+              "displayName": "FechaServicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "HoraInicio",
+              "displayName": "HoraInicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "time",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TallyIdEvent",
+              "displayName": "TallyIdEvent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Meta",
+              "displayName": "Meta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CreatedAt",
+              "displayName": "CreatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "UpdatedAt",
+              "displayName": "UpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2048,
+        -528
+      ],
+      "id": "b74eef7c-7e47-45f6-a410-450333387240",
+      "name": "CrearAseosCheckOut",
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "\nSELECT\n  (COUNT(*) > 0) AS \"hasData\",\n  COUNT(*)       AS \"cnt\"\nFROM public.\"Reserva\"\nWHERE \"ReservaId\" not in (select \"ReservaId\" from \"AseoReservaCheckOut\")",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1392,
+        -352
+      ],
+      "id": "6fe14c6c-9ada-4c6b-82ab-eeffcf3b1047",
+      "name": "ObtenerReservaSinAseo",
+      "alwaysOutputData": false,
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "d4e5fcd6-710f-43bb-9188-e996022cbb18",
+              "leftValue": "={{ $json.hasData }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1600,
+        -352
+      ],
+      "id": "329012b8-f20d-4ce0-8cc8-7cc39855c612",
+      "name": "If datos aseo"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT timezone('America/Santiago', now()) AS chile_timestamptz;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2176,
+        -336
+      ],
+      "id": "451c1f60-0fb6-4f42-9c4c-b3ca15bae289",
+      "name": "GetFecha",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "ReservaBandejaCorreo",
+          "mode": "list",
+          "cachedResultName": "ReservaBandejaCorreo"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "EsHtml": false,
+            "ReservaId": "={{ $json.ReservaId }}",
+            "Intentos": 0,
+            "TipoNotificacionCodigo": "NotificaNuevoHuesped",
+            "EstadoCodigo": "Generada",
+            "CorreoOrigen": "={{ $('CorreoYNumeros').item.json.CorreoTeknoconecta }}",
+            "Asunto": "=Notificación nuevo huésped departamento: {{ $json.AlojamientoStaysInternalName }}",
+            "Cuerpo": "=Notificación nuevo huesped:\n\nDepartamento: {{ $json.AlojamientoStaysInternalName }}\nDía CheckIn: {{ new Date($json.Reserva_checkInDate).toISOString().slice(0, 10) }} : {{ new Date($json.Reserva_checkInDate).toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) }}\nDía CheckOut: {{ new Date($json.Reserva_checkOutDate).toISOString().slice(0, 10) }} : {{ new Date($json.Reserva_checkOutDate).toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) }}\nNombre huésped: {{ $json.NombreCompleto }}\nCantidad huespedes: {{ $json.Reserva_guests }}\nPaís huésped: {{ $json.PaisNombreEspanol }}\n\nRecuerde que el ingreso en la planilla es automático.",
+            "FechaProgramacionEnviar": "={{ $('GetFecha_v2').item.json.chile_timestamptz }}",
+            "Destinatarios": "={{ $('CorreoYNumeros').item.json.Destinatarios_conserjeria }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ReservaBandejaCorreoId",
+              "displayName": "ReservaBandejaCorreoId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ReservaId",
+              "displayName": "ReservaId",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TipoNotificacionCodigo",
+              "displayName": "TipoNotificacionCodigo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EstadoCodigo",
+              "displayName": "EstadoCodigo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CorreoOrigen",
+              "displayName": "CorreoOrigen",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Destinatarios",
+              "displayName": "Destinatarios",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "array",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Asunto",
+              "displayName": "Asunto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Cuerpo",
+              "displayName": "Cuerpo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EsHtml",
+              "displayName": "EsHtml",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FechaProgramacionEnviar",
+              "displayName": "FechaProgramacionEnviar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Intentos",
+              "displayName": "Intentos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FechaEnviado",
+              "displayName": "FechaEnviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FechaError",
+              "displayName": "FechaError",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "UltimoError",
+              "displayName": "UltimoError",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Meta",
+              "displayName": "Meta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CreatedAt",
+              "displayName": "CreatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "UpdatedAt",
+              "displayName": "UpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AseoReservaCheckOutId",
+              "displayName": "AseoReservaCheckOutId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2032,
+        32
+      ],
+      "id": "bd25c0a2-0405-4858-a6c3-4278e55203b0",
+      "name": "InsertarNotificacionCorreoConserjeria",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "ReservaBandejaWhatsapp",
+          "mode": "list",
+          "cachedResultName": "ReservaBandejaWhatsapp"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ReservaId": "={{ $json.ReservaId }}",
+            "Intentos": 0,
+            "EstadoCodigo": "Generada",
+            "TipoNotificacionCodigo": "NotificaNuevoHuesped",
+            "WhatsappOrigen": "={{ $('CorreoYNumeros').item.json.NumeroSanDiegoApart }}",
+            "Destinatarios": "={{ $('CorreoYNumeros').item.json.NumeroTestDestinatarioWhats }}",
+            "Titulo": "Nuevo Huesped",
+            "Mensaje": "=Nuevo huésped llega hoy:\n\nDepartamento: {{ $json.AlojamientoStaysInternalName }}\nDía CheckIn: {{ new Date($json.Reserva_checkInDate).toISOString().slice(0, 10) }} : {{ new Date($json.Reserva_checkInDate).toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) }}\nDía CheckOut: {{ new Date($json.Reserva_checkOutDate).toISOString().slice(0, 10) }} : {{ new Date($json.Reserva_checkOutDate).toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) }}\nNombre huésped: {{ $json.NombreCompleto }}\nCantidad huespedes: {{ $json.Reserva_guests }}\nPaís huésped: {{ $json.PaisNombreEspanol }}\n\nRecuerde que el ingreso en la planilla es automático.",
+            "FechaProgramacionEnviar": "={{ DateTime.fromISO($json.Reserva_checkInDate).toUTC().startOf('day').set({ hour: 12 }).setZone('America/Santiago').set({ hour: 9, minute: 0, second: 0, millisecond: 0 }).toISO() }}",
+            "Meta": "={{ $json }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ReservaBandejaWhatsappId",
+              "displayName": "ReservaBandejaWhatsappId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ReservaId",
+              "displayName": "ReservaId",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TipoNotificacionCodigo",
+              "displayName": "TipoNotificacionCodigo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EstadoCodigo",
+              "displayName": "EstadoCodigo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "WhatsappOrigen",
+              "displayName": "WhatsappOrigen",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Destinatarios",
+              "displayName": "Destinatarios",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "array",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Titulo",
+              "displayName": "Titulo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mensaje",
+              "displayName": "Mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TemplateCodigo",
+              "displayName": "TemplateCodigo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "TemplateVars",
+              "displayName": "TemplateVars",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "MediaUrls",
+              "displayName": "MediaUrls",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "array",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "FechaProgramacionEnviar",
+              "displayName": "FechaProgramacionEnviar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Intentos",
+              "displayName": "Intentos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Proveedor",
+              "displayName": "Proveedor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ProveedorMessageId",
+              "displayName": "ProveedorMessageId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FechaEnviado",
+              "displayName": "FechaEnviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FechaError",
+              "displayName": "FechaError",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "UltimoError",
+              "displayName": "UltimoError",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Meta",
+              "displayName": "Meta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CreatedAt",
+              "displayName": "CreatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "UpdatedAt",
+              "displayName": "UpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AseoReservaCheckOutId",
+              "displayName": "AseoReservaCheckOutId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1904,
+        272
+      ],
+      "id": "db868fbf-3902-4bbb-b912-7bc3cca07728",
+      "name": "InsertaNotificacionConserjeriaWhats",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "ReservaBandejaCorreo",
+          "mode": "list",
+          "cachedResultName": "ReservaBandejaCorreo"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "EsHtml": false,
+            "ReservaId": "={{ $json.ReservaId }}",
+            "Intentos": 0,
+            "AseoReservaCheckOutId": "={{ $json.AseoReservaCheckOutId }}",
+            "TipoNotificacionCodigo": "NotificaAseoCheckOut",
+            "EstadoCodigo": "Generada",
+            "CorreoOrigen": "={{ $('CorreoYNumeros').item.json.CorreoTeknoconecta }}",
+            "Destinatarios": "={{ $('CorreoYNumeros').item.json.Destinatarios_aseo }}",
+            "Asunto": "Notificación Aseo Solicitado",
+            "Cuerpo": "=Notificación Solictud Aseo:\n\nDepartamento: {{ $json.AlojamientoStaysInternalName }}\nFecha Aseo: {{ new Date($json.Reserva_checkOutDate).toISOString().slice(0, 10) }} : {{ new Date($json.Reserva_checkOutDate).toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) }}\nHora Aseo: {{ $json.Reserva_checkOutTime }}\nIdAseo: {{ $json.AseoReservaCheckOutId }}\n\nRecuerde que la url del formulario es: {{ $('CorreoYNumeros').item.json.url_formulario_aseo }}",
+            "FechaProgramacionEnviar": "={{ $('GetFecha').item.json.chile_timestamptz }}",
+            "Meta": "={{ $json }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ReservaBandejaCorreoId",
+              "displayName": "ReservaBandejaCorreoId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ReservaId",
+              "displayName": "ReservaId",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TipoNotificacionCodigo",
+              "displayName": "TipoNotificacionCodigo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EstadoCodigo",
+              "displayName": "EstadoCodigo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CorreoOrigen",
+              "displayName": "CorreoOrigen",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Destinatarios",
+              "displayName": "Destinatarios",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "array",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Asunto",
+              "displayName": "Asunto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Cuerpo",
+              "displayName": "Cuerpo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EsHtml",
+              "displayName": "EsHtml",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FechaProgramacionEnviar",
+              "displayName": "FechaProgramacionEnviar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Intentos",
+              "displayName": "Intentos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FechaEnviado",
+              "displayName": "FechaEnviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FechaError",
+              "displayName": "FechaError",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "UltimoError",
+              "displayName": "UltimoError",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Meta",
+              "displayName": "Meta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CreatedAt",
+              "displayName": "CreatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "UpdatedAt",
+              "displayName": "UpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AseoReservaCheckOutId",
+              "displayName": "AseoReservaCheckOutId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2768,
+        -560
+      ],
+      "id": "8161e55c-ceb6-4531-9e33-3c8fdc595b56",
+      "name": "NotificacionAseoCorreoInsertar",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "ReservaBandejaWhatsapp",
+          "mode": "list",
+          "cachedResultName": "ReservaBandejaWhatsapp"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ReservaId": "={{ $json.ReservaId }}",
+            "Intentos": 0,
+            "EstadoCodigo": "Generada",
+            "TipoNotificacionCodigo": "NotificaAseoCheckOut",
+            "WhatsappOrigen": "={{ $('CorreoYNumeros').item.json.NumeroSanDiegoApart }}",
+            "Destinatarios": "={{ $('CorreoYNumeros').item.json.DestinatarioWhatsAseo }}",
+            "Titulo": "Nuevo Huesped",
+            "Mensaje": "=Se ingresa una nueva solicitud de aseo:\n\nDepartamento: {{ $json.AlojamientoStaysInternalName }}\nFecha Aseo: {{ new Date($json.Reserva_checkOutDate).toISOString().slice(0, 10) }} : {{ new Date($json.Reserva_checkOutDate).toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) }}\nHora Aseo: {{ $json.Reserva_checkOutTime }}\nIdAseo: {{ $json.AseoReservaCheckOutId }}\n",
+            "FechaProgramacionEnviar": "={{ $('GetFecha').item.json.chile_timestamptz }}",
+            "Meta": "={{ $json }}",
+            "AseoReservaCheckOutId": "={{ $json.AseoReservaCheckOutId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ReservaBandejaWhatsappId",
+              "displayName": "ReservaBandejaWhatsappId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ReservaId",
+              "displayName": "ReservaId",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TipoNotificacionCodigo",
+              "displayName": "TipoNotificacionCodigo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EstadoCodigo",
+              "displayName": "EstadoCodigo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "WhatsappOrigen",
+              "displayName": "WhatsappOrigen",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Destinatarios",
+              "displayName": "Destinatarios",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "array",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Titulo",
+              "displayName": "Titulo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mensaje",
+              "displayName": "Mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TemplateCodigo",
+              "displayName": "TemplateCodigo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "TemplateVars",
+              "displayName": "TemplateVars",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "MediaUrls",
+              "displayName": "MediaUrls",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "array",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "FechaProgramacionEnviar",
+              "displayName": "FechaProgramacionEnviar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Intentos",
+              "displayName": "Intentos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Proveedor",
+              "displayName": "Proveedor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ProveedorMessageId",
+              "displayName": "ProveedorMessageId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FechaEnviado",
+              "displayName": "FechaEnviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FechaError",
+              "displayName": "FechaError",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "UltimoError",
+              "displayName": "UltimoError",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Meta",
+              "displayName": "Meta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CreatedAt",
+              "displayName": "CreatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "UpdatedAt",
+              "displayName": "UpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AseoReservaCheckOutId",
+              "displayName": "AseoReservaCheckOutId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2784,
+        -288
+      ],
+      "id": "1c8cd183-e4f8-4431-ba40-4796545c18ff",
+      "name": "InsertaNotificacionAseoWhat",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "ReservaBandejaWhatsapp",
+          "mode": "list",
+          "cachedResultName": "ReservaBandejaWhatsapp"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ReservaId": "={{ $json.ReservaId }}",
+            "Intentos": 0,
+            "EstadoCodigo": "Generada",
+            "TipoNotificacionCodigo": "NotificaAseoCheckOutDiaAntes",
+            "WhatsappOrigen": "={{ $('CorreoYNumeros').item.json.NumeroSanDiegoApart }}",
+            "Destinatarios": "={{ $('CorreoYNumeros').item.json.DestinatarioWhatsAseo }}",
+            "Titulo": "Nuevo Huesped",
+            "Mensaje": "=Se ingresa una nueva solicitud de aseo:\n\nDepartamento: {{ $json.AlojamientoStaysInternalName }}\nFecha Aseo: {{ new Date($json.Reserva_checkOutDate).toISOString().slice(0, 10) }} : {{ new Date($json.Reserva_checkOutDate).toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) }}\nHora Aseo: {{ $json.Reserva_checkOutTime }}\nIdAseo: {{ $json.AseoReservaCheckOutId }}\nUrl Formulario: {{ $('CorreoYNumeros').item.json.url_formulario_aseo }}\n\nRecuerda ingresar el IdAseo al formulario\n",
+            "FechaProgramacionEnviar": "={{ $json.ProgDiaAntes21Chile_CL }}",
+            "Meta": "={{ $json }}",
+            "AseoReservaCheckOutId": "={{ $json.AseoReservaCheckOutId }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ReservaBandejaWhatsappId",
+              "displayName": "ReservaBandejaWhatsappId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "ReservaId",
+              "displayName": "ReservaId",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TipoNotificacionCodigo",
+              "displayName": "TipoNotificacionCodigo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "EstadoCodigo",
+              "displayName": "EstadoCodigo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "WhatsappOrigen",
+              "displayName": "WhatsappOrigen",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Destinatarios",
+              "displayName": "Destinatarios",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "array",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Titulo",
+              "displayName": "Titulo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Mensaje",
+              "displayName": "Mensaje",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "TemplateCodigo",
+              "displayName": "TemplateCodigo",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "TemplateVars",
+              "displayName": "TemplateVars",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "MediaUrls",
+              "displayName": "MediaUrls",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "array",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "FechaProgramacionEnviar",
+              "displayName": "FechaProgramacionEnviar",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Intentos",
+              "displayName": "Intentos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Proveedor",
+              "displayName": "Proveedor",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ProveedorMessageId",
+              "displayName": "ProveedorMessageId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FechaEnviado",
+              "displayName": "FechaEnviado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FechaError",
+              "displayName": "FechaError",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "UltimoError",
+              "displayName": "UltimoError",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Meta",
+              "displayName": "Meta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "CreatedAt",
+              "displayName": "CreatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "UpdatedAt",
+              "displayName": "UpdatedAt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "AseoReservaCheckOutId",
+              "displayName": "AseoReservaCheckOutId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        2784,
+        16
+      ],
+      "id": "a57afb20-54eb-4cdc-8dc4-d97ce41350cf",
+      "name": "InsertaNotificacionAseoDiaAntes",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT timezone('America/Santiago', now()) AS chile_timestamptz;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1584,
+        32
+      ],
+      "id": "61056241-4b67-4bb6-b004-cf063736e76c",
+      "name": "GetFecha_v2",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT\n  TO_CHAR(CURRENT_DATE - INTERVAL '10 days', 'YYYY-MM-DD') AS \"from\",\n  TO_CHAR((CURRENT_DATE + INTERVAL '3 months')::date, 'YYYY-MM-DD') AS \"to\",\n  'arrival' AS \"dateType\";",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        -1504,
+        -96
+      ],
+      "id": "b26b095d-17bc-4ff1-a58d-0200207ea4a7",
+      "name": "ObtieneFechas",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Get Reservation": {
+      "main": [
+        [
+          {
+            "node": "InsertaStage",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Get Reserva",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Reserva": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Update Huesped",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Huesped": {
+      "main": [
+        [
+          {
+            "node": "Update Reservas Alojamiento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Reservas Alojamiento": {
+      "main": [
+        [
+          {
+            "node": "Update Huesped en Reserva",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "ObtieneFechas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Huesped en Reserva": {
+      "main": [
+        [
+          {
+            "node": "SetHuespedPais",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "ObtenerReservaSinAseo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SetHuespedPais": {
+      "main": [
+        [
+          {
+            "node": "GetFecha_v2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CorreoYNumeros": {
+      "main": [
+        [
+          {
+            "node": "Get Reservation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BorrarStageReserva": {
+      "main": [
+        [
+          {
+            "node": "CorreoYNumeros",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "InsertaStage": {
+      "main": [
+        [
+          {
+            "node": "InsertarReservaNoExistente",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "InsertarReservaNoExistente": {
+      "main": [
+        [
+          {
+            "node": "ObtenerReservaSinAloHues",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ObtenerReservaSinAloHues": {
+      "main": [
+        [
+          {
+            "node": "If datos por actualizar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If datos por actualizar": {
+      "main": [
+        [
+          {
+            "node": "Execute a SQL query",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update Huesped en Reserva",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute a SQL query": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetReservasSinNotificacionAseoCorreo": {
+      "main": [
+        [
+          {
+            "node": "NotificacionAseoCorreoInsertar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetReservasSinNotificacionAseoDiaAntesWhats": {
+      "main": [
+        [
+          {
+            "node": "InsertaNotificacionAseoDiaAntes",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetReservaSinAseo": {
+      "main": [
+        [
+          {
+            "node": "CrearAseosCheckOut",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CrearAseosCheckOut": {
+      "main": [
+        [
+          {
+            "node": "GetFecha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ObtenerReservaSinAseo": {
+      "main": [
+        [
+          {
+            "node": "If datos aseo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If datos aseo": {
+      "main": [
+        [
+          {
+            "node": "GetReservaSinAseo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "GetFecha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetReservasSinNotificacionConserjeriaCorreo": {
+      "main": [
+        [
+          {
+            "node": "InsertarNotificacionCorreoConserjeria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetFecha": {
+      "main": [
+        [
+          {
+            "node": "GetReservasSinNotificacionAseoCorreo",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GetReservasSinNotificacionAseoWhats",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "GetReservasSinNotificacionAseoDiaAntesWhats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetReservasSinNotificacionConserjeriaWhats": {
+      "main": [
+        [
+          {
+            "node": "InsertaNotificacionConserjeriaWhats",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetReservasSinNotificacionAseoWhats": {
+      "main": [
+        [
+          {
+            "node": "InsertaNotificacionAseoWhat",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetFecha_v2": {
+      "main": [
+        [
+          {
+            "node": "GetReservasSinNotificacionConserjeriaCorreo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ObtieneFechas": {
+      "main": [
+        [
+          {
+            "node": "BorrarStageReserva",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": true,
+    "timeSavedMode": "fixed",
+    "timezone": "America/Santiago",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "0588aa52-7958-4c51-86b2-9dfcc99c5b16",
+  "activeVersionId": "0588aa52-7958-4c51-86b2-9dfcc99c5b16",
+  "versionCounter": 935,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-03-01T18:22:18.482Z",
+      "createdAt": "2026-03-01T18:22:18.482Z",
+      "role": "workflow:owner",
+      "workflowId": "smvtOsTSxsbMUgnfBgCix",
+      "projectId": "fkrYXx8bUkVIFmGN",
+      "project": {
+        "updatedAt": "2025-11-05T16:16:44.185Z",
+        "createdAt": "2025-11-05T15:24:32.634Z",
+        "id": "fkrYXx8bUkVIFmGN",
+        "name": "Jairo Pinilla <contacto@teknoconecta.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-11-05T15:24:32.634Z",
+            "createdAt": "2025-11-05T15:24:32.634Z",
+            "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+            "projectId": "fkrYXx8bUkVIFmGN",
+            "user": {
+              "updatedAt": "2026-04-22T16:56:08.229Z",
+              "createdAt": "2025-11-05T15:23:52.554Z",
+              "id": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+              "email": "contacto@teknoconecta.com",
+              "firstName": "Jairo",
+              "lastName": "Pinilla",
+              "personalizationAnswers": {
+                "version": "v4",
+                "personalization_survey_submitted_at": "2025-11-05T16:17:10.332Z",
+                "personalization_survey_n8n_version": "1.117.3",
+                "companySize": "<20",
+                "companyType": "saas",
+                "role": "data-science",
+                "reportedSource": "google"
+              },
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "QBxPsad3MwjzkTU2",
+                "userActivatedAt": 1764029627118,
+                "npsSurvey": {
+                  "responded": true,
+                  "lastShownAt": 1768053262866
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-04-22",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-04-22T17:10:01.314Z",
+    "createdAt": "2026-04-22T17:09:40.711Z",
+    "versionId": "0588aa52-7958-4c51-86b2-9dfcc99c5b16",
+    "workflowId": "smvtOsTSxsbMUgnfBgCix",
+    "nodes": [
+      {
+        "parameters": {
+          "url": "https://jairop.stays.net/external/v1/booking/reservations",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "sendQuery": true,
+          "queryParameters": {
+            "parameters": [
+              {
+                "name": "from",
+                "value": "={{ $('ObtieneFechas').item.json.from }}"
+              },
+              {
+                "name": "to",
+                "value": "={{ $('ObtieneFechas').item.json.to }}"
+              },
+              {
+                "name": "dateType",
+                "value": "arrival"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          -880,
+          -96
+        ],
+        "id": "1a4fe923-9c6f-4ee1-bc3f-66f2b2e1d35a",
+        "name": "Get Reservation",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "I4YWvpXuZv5reReY",
+            "name": "Stays Auth account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "Reserva__id",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          272,
+          -416
+        ],
+        "id": "505a1c50-8744-419b-9362-d6fa618d5cc8",
+        "name": "Split Out"
+      },
+      {
+        "parameters": {
+          "url": "=https://jairop.stays.net/external/v1/booking/reservations/{{ $json.Reserva__id }}",
+          "authentication": "genericCredentialType",
+          "genericAuthType": "httpHeaderAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.3,
+        "position": [
+          416,
+          -256
+        ],
+        "id": "20358f41-c7b8-4265-9b28-3eb34558eaa8",
+        "name": "Get Reserva",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "I4YWvpXuZv5reReY",
+            "name": "Stays Auth account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "fieldToSplitOut": "_idclient",
+          "include": "selectedOtherFields",
+          "fieldsToInclude": "guestsDetails, _idlisting",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.splitOut",
+        "typeVersion": 1,
+        "position": [
+          592,
+          -256
+        ],
+        "id": "c590a70d-5f72-4a7a-b11c-de9a95db531d",
+        "name": "Split Out1"
+      },
+      {
+        "parameters": {
+          "operation": "upsert",
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "Huesped",
+            "mode": "list",
+            "cachedResultName": "Huesped"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "StaysClientId": "={{ $json._idclient }}",
+              "StaysContactId": "={{ $json.guestsDetails.list[0]._idcontact }}",
+              "NombreCompleto": "={{ $json.guestsDetails.list[0].name }}",
+              "Telefono": "={{ $json.guestsDetails.list[0].phones[0].iso }}",
+              "Raw": "={{ $json }}"
+            },
+            "matchingColumns": [
+              "StaysClientId"
+            ],
+            "schema": [
+              {
+                "id": "HuespedId",
+                "displayName": "HuespedId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "StaysClientId",
+                "displayName": "StaysClientId",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "StaysContactId",
+                "displayName": "StaysContactId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "NombreCompleto",
+                "displayName": "NombreCompleto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "Email",
+                "displayName": "Email",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "Telefono",
+                "displayName": "Telefono",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "Pais",
+                "displayName": "Pais",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "PartnerName",
+                "displayName": "PartnerName",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "PartnerCode",
+                "displayName": "PartnerCode",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "Raw",
+                "displayName": "Raw",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "CreatedAt",
+                "displayName": "CreatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": false
+              },
+              {
+                "id": "UpdatedAt",
+                "displayName": "UpdatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          752,
+          -256
+        ],
+        "id": "46c49d12-c1b7-4f3a-9f3f-e5aba4bf3bac",
+        "name": "Update Huesped",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "update public.\"Reserva\" r\nset\n  \"AlojamientoId\" = a.\"AlojamientoId\",\n  \"UpdatedAt\" = now()\nfrom public.\"Alojamiento\" a\nwhere\n  r.\"AlojamientoId\" is null\n  and r.\"Reserva__idlisting\" is not null\n  and r.\"Reserva__idlisting\" = a.\"AlojamientoStayslistingIdLargo\";",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          944,
+          -256
+        ],
+        "id": "c7544285-750a-4b20-b129-5dc9f7efce2a",
+        "name": "Update Reservas Alojamiento",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "update public.\"Reserva\" r\nset\n  \"HuespedId\" = h.\"HuespedId\",\n  \"UpdatedAt\" = now()\nfrom public.\"Huesped\" h\nwhere\n  r.\"HuespedId\" is null\n  and r.\"Reserva__idclient\" is not null\n  and r.\"Reserva__idclient\" = h.\"StaysClientId\";",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1152,
+          -96
+        ],
+        "id": "705896be-4d92-4952-a6b3-d8238b4542f2",
+        "name": "Update Huesped en Reserva",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "hours"
+              }
+            ]
+          }
+        },
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.3,
+        "position": [
+          -1712,
+          -96
+        ],
+        "id": "74730b82-7159-4d82-9220-b461cbc932c3",
+        "name": "Schedule Trigger"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": " WITH pais_norm AS (\n  SELECT\n    p.\"PaisId\",\n    ('+' || regexp_replace(p.\"PaisCodigoTelefono\", '[^0-9]', '', 'g')) AS dial_plus,\n    regexp_replace(p.\"PaisCodigoTelefono\", '[^0-9]', '', 'g')          AS dial_digits\n  FROM public.\"Pais\" p\n  WHERE p.\"PaisCodigoTelefono\" IS NOT NULL\n    AND p.\"PaisCodigoTelefono\" <> ''\n    AND regexp_replace(p.\"PaisCodigoTelefono\", '[^0-9]', '', 'g') <> ''\n),\nhuesped_norm AS (\n  SELECT\n    h.\"HuespedId\",\n    regexp_replace(h.\"Telefono\", '[^0-9]', '', 'g') AS phone_digits,\n    CASE\n      WHEN h.\"Telefono\" ~ '^\\s*\\+' THEN\n        '+' || regexp_replace(h.\"Telefono\", '[^0-9]', '', 'g')\n      WHEN regexp_replace(h.\"Telefono\", '[^0-9]', '', 'g') ~ '^00' THEN\n        '+' || substr(regexp_replace(h.\"Telefono\", '[^0-9]', '', 'g'), 3)\n      ELSE\n        '+' || regexp_replace(h.\"Telefono\", '[^0-9]', '', 'g')\n    END AS phone_plus\n  FROM public.\"Huesped\" h\n  WHERE h.\"IdPais\" IS NULL\n    AND h.\"Telefono\" IS NOT NULL\n    AND h.\"Telefono\" <> ''\n),\nbest_match AS (\n  SELECT\n    h.\"HuespedId\",\n    p.\"PaisId\",\n    row_number() OVER (\n      PARTITION BY h.\"HuespedId\"\n      ORDER BY length(p.dial_digits) DESC, p.\"PaisId\"\n    ) AS rn\n  FROM huesped_norm h\n  JOIN pais_norm p\n    ON (\n      h.phone_plus   LIKE p.dial_plus   || '%'\n      OR\n      h.phone_digits LIKE p.dial_digits || '%'\n    )\n)\nUPDATE public.\"Huesped\" h\nSET \"IdPais\" = m.\"PaisId\"\nFROM best_match m\nWHERE h.\"HuespedId\" = m.\"HuespedId\"\n  AND m.rn = 1\n  AND h.\"IdPais\" IS NULL;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1360,
+          32
+        ],
+        "id": "563a203a-ce15-4064-9862-6380e233c1c5",
+        "name": "SetHuespedPais",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "assignments": {
+            "assignments": [
+              {
+                "id": "27c374bf-b57a-4cb4-b0f7-e65fad17e94f",
+                "name": "CorreoTeknoconecta",
+                "value": "contacto@teknoconecta.com",
+                "type": "string"
+              },
+              {
+                "id": "40e5200d-07e7-42cc-a8c7-aaeb56630d14",
+                "name": "CorreoConserjeria",
+                "value": "conserjeria@edificiotarapaca1140.com",
+                "type": "string"
+              },
+              {
+                "id": "8aeb73c3-810a-4b2d-9b80-55498c464ecc",
+                "name": "NumeroSanDiegoApart",
+                "value": "+56964972508",
+                "type": "string"
+              },
+              {
+                "id": "b6fde7b9-933c-43ce-b3ac-6553669c91b6",
+                "name": "NumeroConserjeria",
+                "value": "+56983073892",
+                "type": "string"
+              },
+              {
+                "id": "2253053a-39a9-4ea0-8f30-0f9397d75744",
+                "name": "NumeroProveedorAseo",
+                "value": "+56982737381",
+                "type": "string"
+              },
+              {
+                "id": "12ea2acb-f0f4-4f97-bc04-ae86dc222451",
+                "name": "CorreoProveedorAseo",
+                "value": "edifex.multiservicios@gmail.com",
+                "type": "string"
+              },
+              {
+                "id": "1847b268-5234-43e2-aada-411d1feeb16a",
+                "name": "Destinatarios_test",
+                "value": "={{ [\"jairo.pinilla.lopez@gmail.com\",\"isaias1984@gmail.com\"] }}",
+                "type": "array"
+              },
+              {
+                "id": "0341fdbd-026b-4474-9581-ede45f4af497",
+                "name": "NumeroTestDestinatarioWhats",
+                "value": "={{ [\"+56954862320\"] }}",
+                "type": "array"
+              },
+              {
+                "id": "dd4f4e5f-30c4-4021-95ce-34d7afad0203",
+                "name": "url_formulario_aseo",
+                "value": "https://tally.so/r/vGeKkd",
+                "type": "string"
+              },
+              {
+                "id": "bf7585a0-5f31-4284-a736-0ef8ce2ec00a",
+                "name": "Destinatarios_conserjeria",
+                "value": "={{ [\"conserjeria@edificiotarapaca1140.com\", \"isaias1984@gmail.com\"]}}",
+                "type": "array"
+              },
+              {
+                "id": "082b97de-3ffb-4cad-bbcb-5e321e617a0b",
+                "name": "Destinatarios_aseo",
+                "value": "={{ [\"edifex.multiservicios@gmail.com\", \"isaias1984@gmail.com\"]}}",
+                "type": "array"
+              },
+              {
+                "id": "c945579b-2252-454b-94c4-3c900b6282ba",
+                "name": "=DestinatarioWhatsAseo",
+                "value": "={{ [\"+56982737381\"] }}",
+                "type": "string"
+              }
+            ]
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.set",
+        "typeVersion": 3.4,
+        "position": [
+          -1088,
+          -80
+        ],
+        "id": "fb17d41c-c331-4377-8e07-5f442fdd30e4",
+        "name": "CorreoYNumeros"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "delete from \"ReservaStage\"",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -1264,
+          -96
+        ],
+        "id": "23454e9b-577b-47e8-b3bf-b350f5c8cf96",
+        "name": "BorrarStageReserva",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "ReservaStage",
+            "mode": "list",
+            "cachedResultName": "ReservaStage"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "guests": "={{ $json.guests }}",
+              "_id": "={{ $json._id }}",
+              "id": "={{ $json.id }}",
+              "creationDate": "={{ $json.creationDate }}",
+              "creationTime": "={{ $json.creationTime }}",
+              "creationDateTime": "={{ $json.creationDateTime }}",
+              "checkInDate": "={{ $json.checkInDate }}",
+              "checkInTime": "={{ $json.checkInTime }}",
+              "checkOutDate": "={{ $json.checkOutDate }}",
+              "checkOutTime": "={{ $json.checkOutTime }}",
+              "_idlisting": "={{ $json._idlisting }}",
+              "_idclient": "={{ $json._idclient }}",
+              "type": "={{ $json.type }}",
+              "agent": "={{ $json.agent }}",
+              "price": "={{ $json.price }}",
+              "stats": "={{ $json.stats }}",
+              "guestsDetails": "={{ $json.guestsDetails }}",
+              "reservationUrl": "={{ $json.reservationUrl }}",
+              "payload": "={{ $json }}"
+            },
+            "matchingColumns": [
+              "id"
+            ],
+            "schema": [
+              {
+                "id": "ReservaStageId",
+                "displayName": "ReservaStageId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "_id",
+                "displayName": "_id",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "id",
+                "displayName": "id",
+                "required": false,
+                "defaultMatch": true,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "creationDate",
+                "displayName": "creationDate",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "creationTime",
+                "displayName": "creationTime",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "creationDateTime",
+                "displayName": "creationDateTime",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "checkInDate",
+                "displayName": "checkInDate",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "checkInTime",
+                "displayName": "checkInTime",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "checkOutDate",
+                "displayName": "checkOutDate",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "checkOutTime",
+                "displayName": "checkOutTime",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "_idlisting",
+                "displayName": "_idlisting",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "_idclient",
+                "displayName": "_idclient",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "type",
+                "displayName": "type",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "agent",
+                "displayName": "agent",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "price",
+                "displayName": "price",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "stats",
+                "displayName": "stats",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "guestsDetails",
+                "displayName": "guestsDetails",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "guests",
+                "displayName": "guests",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "reservationUrl",
+                "displayName": "reservationUrl",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "payload",
+                "displayName": "payload",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "createdAt",
+                "displayName": "createdAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "updatedAt",
+                "displayName": "updatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -720,
+          -96
+        ],
+        "id": "16e7d744-d082-4c27-a22b-c453bbaf1a78",
+        "name": "InsertaStage",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "INSERT INTO public.\"Reserva\" (\n  \"Reserva__id\",\n  \"Reserva_id\",\n  \"Reserva_creationDate\",\n  \"Reserva_creationTime\",\n  \"Reserva_creationDateTime\",\n  \"Reserva_checkInDate\",\n  \"Reserva_checkInTime\",\n  \"Reserva_checkOutDate\",\n  \"Reserva_checkOutTime\",\n  \"Reserva__idlisting\",\n  \"Reserva__idclient\",\n  \"Reserva_type\",\n  \"Reserva_agent\",\n  \"Reserva_price\",\n  \"Reserva_stats\",\n  \"Reserva_guests\",\n  \"Reserva_guestsDetails\",\n  \"Reserva_reservationUrl\",\n  \"Reserva_payload\",\n  \"HuespedId\",\n  \"AlojamientoId\"\n)\nSELECT\n  s.\"_id\",\n  s.\"id\",\n  s.\"creationDate\"::date,\n  s.\"creationTime\"::time,\n  s.\"creationDateTime\"::timestamptz,\n  s.\"checkInDate\"::date,\n  s.\"checkInTime\"::time,\n  s.\"checkOutDate\"::date,\n  s.\"checkOutTime\"::time,\n  s.\"_idlisting\",\n  s.\"_idclient\",\n  s.\"type\",\n  s.\"agent\",\n  s.\"price\",\n  s.\"stats\",\n  s.\"guests\",\n  s.\"guestsDetails\",\n  s.\"reservationUrl\",\n  s.\"payload\",\n  NULL, -- HuespedId (lo podrás resolver después)\n  NULL  -- AlojamientoId (lo podrás resolver después)\nFROM public.\"ReservaStage\" s\nWHERE s.\"_id\" IS NOT NULL\n  AND NOT EXISTS (\n    SELECT 1\n    FROM public.\"Reserva\" r\n    WHERE r.\"Reserva__id\" = s.\"_id\"\n  );",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -528,
+          -96
+        ],
+        "id": "2ed66d39-f462-4908-8990-1eb187023014",
+        "name": "InsertarReservaNoExistente",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "\nSELECT\n  (COUNT(*) > 0) AS \"hasData\",\n  COUNT(*)       AS \"cnt\"\nFROM public.\"Reserva\"\nWHERE \"HuespedId\" IS NULL OR \"AlojamientoId\" IS NULL;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -336,
+          -96
+        ],
+        "id": "e2d1239a-df69-49e3-988c-b55df6fbfa86",
+        "name": "ObtenerReservaSinAloHues",
+        "alwaysOutputData": false,
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "d4e5fcd6-710f-43bb-9188-e996022cbb18",
+                "leftValue": "={{ $json.hasData }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          -128,
+          -96
+        ],
+        "id": "f233f658-0a13-4f04-8d81-b0c46857dafb",
+        "name": "If datos por actualizar"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT\n\"Reserva__id\"\nFROM public.\"Reserva\"\nWHERE \"HuespedId\" IS NULL OR \"AlojamientoId\" IS NULL;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          64,
+          -256
+        ],
+        "id": "f3c0947e-dfec-46b6-847f-34670c11886c",
+        "name": "Execute a SQL query",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "select \n  r.\"ReservaId\",\n  \"Reserva__id\",\n  al.\"AlojamientoId\",\n  h.\"HuespedId\",\n  \"Reserva_id\",\n  \"Reserva_creationDate\",\n  \"Reserva_checkInDate\",\n  \"Reserva_checkOutDate\",\n  \"Reserva_checkInTime\",\n  \"Reserva_checkOutTime\",\n  \"Reserva__idlisting\",\n  \"Reserva__idclient\",\n  \"Reserva_type\",\n  \"Reserva_guests\",\n  \"StaysClientId\",\n  \"StaysContactId\",\n  \"NombreCompleto\",\n  \"Email\",\n  \"Telefono\",\n  \"IdPais\",\n  \"AlojamientoNumero\",\n  \"AlojamientoNombre\",\n  \"AlojamientoStaysInternalName\",\n  \"PaisNombreEspanol\",\n  \"AseoReservaCheckOutId\"\nFROM public.\"Reserva\" r\nLEFT JOIN public.\"Huesped\" h\n  ON h.\"HuespedId\" = r.\"HuespedId\"\nLEFT JOIN public.\"Alojamiento\" al\n  ON al.\"AlojamientoId\" = r.\"AlojamientoId\"\nleft join \"Pais\" p \non h.\"IdPais\" = p.\"PaisId\"\nleft join \"AseoReservaCheckOut\" aseo \non r.\"ReservaId\" = aseo.\"ReservaId\"\nwhere r.\"ReservaId\" not in (select \"ReservaId\" from \"ReservaBandejaCorreo\" where \"TipoNotificacionCodigo\" = 'NotificaAseoCheckOut')\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2560,
+          -560
+        ],
+        "id": "cf92495d-d603-4d08-aa97-cc0641f42f02",
+        "name": "GetReservasSinNotificacionAseoCorreo",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "select \n  \"ReservaId\",\n  \"Reserva__id\",\n  al.\"AlojamientoId\",\n  h.\"HuespedId\",\n  \"Reserva_id\",\n  \"Reserva_creationDate\",\n  \"Reserva_checkInDate\",\n  \"Reserva_checkOutDate\",\n  \"Reserva_checkInTime\",\n  \"Reserva_checkOutTime\",\n  \"Reserva__idlisting\",\n  \"Reserva__idclient\",\n  \"Reserva_type\",\n  \"Reserva_guests\",\n  \"StaysClientId\",\n  \"StaysContactId\",\n  \"NombreCompleto\",\n  \"Email\",\n  \"Telefono\",\n  \"IdPais\",\n  \"AlojamientoNumero\",\n  \"AlojamientoNombre\",\n  \"AlojamientoStaysInternalName\",\n  \"PaisNombreEspanol\"\nFROM public.\"Reserva\" r\nLEFT JOIN public.\"Huesped\" h\n  ON h.\"HuespedId\" = r.\"HuespedId\"\nLEFT JOIN public.\"Alojamiento\" al\n  ON al.\"AlojamientoId\" = r.\"AlojamientoId\"\nleft join \"Pais\" p \non h.\"IdPais\" = p.\"PaisId\"\nwhere r.\"ReservaId\" not in (select \"ReservaId\" from \"ReservaBandejaCorreo\" where \"TipoNotificacionCodigo\" = 'NotificaNuevoHuesped')",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1792,
+          32
+        ],
+        "id": "9a89623e-21a0-4c83-984d-722b475333ab",
+        "name": "GetReservasSinNotificacionConserjeriaCorreo",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "select \n  \"ReservaId\",\n  \"Reserva__id\",\n  al.\"AlojamientoId\",\n  h.\"HuespedId\",\n  \"Reserva_id\",\n  \"Reserva_creationDate\",\n  \"Reserva_checkInDate\",\n  \"Reserva_checkOutDate\",\n  \"Reserva_checkInTime\",\n  \"Reserva_checkOutTime\",\n  \"Reserva__idlisting\",\n  \"Reserva__idclient\",\n  \"Reserva_type\",\n  \"Reserva_guests\",\n  \"StaysClientId\",\n  \"StaysContactId\",\n  \"NombreCompleto\",\n  \"Email\",\n  \"Telefono\",\n  \"IdPais\",\n  \"AlojamientoNumero\",\n  \"AlojamientoNombre\",\n  \"AlojamientoStaysInternalName\",\n  \"PaisNombreEspanol\"\nFROM public.\"Reserva\" r\nLEFT JOIN public.\"Huesped\" h\n  ON h.\"HuespedId\" = r.\"HuespedId\"\nLEFT JOIN public.\"Alojamiento\" al\n  ON al.\"AlojamientoId\" = r.\"AlojamientoId\"\nleft join \"Pais\" p \non h.\"IdPais\" = p.\"PaisId\"\nwhere r.\"ReservaId\" not in (select \"ReservaId\" from \"ReservaBandejaWhatsapp\" where \"TipoNotificacionCodigo\" = 'NotificaNuevoHuesped')\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1696,
+          272
+        ],
+        "id": "778fb973-6c96-40c5-b985-df23f44969d1",
+        "name": "GetReservasSinNotificacionConserjeriaWhats",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        },
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "select \n  r.\"ReservaId\",\n  \"Reserva__id\",\n  al.\"AlojamientoId\",\n  h.\"HuespedId\",\n  \"Reserva_id\",\n  \"Reserva_creationDate\",\n  \"Reserva_checkInDate\",\n  \"Reserva_checkOutDate\",\n  \"Reserva_checkInTime\",\n  \"Reserva_checkOutTime\",\n  \"Reserva__idlisting\",\n  \"Reserva__idclient\",\n  \"Reserva_type\",\n  \"Reserva_guests\",\n  \"StaysClientId\",\n  \"StaysContactId\",\n  \"NombreCompleto\",\n  \"Email\",\n  \"Telefono\",\n  \"IdPais\",\n  \"AlojamientoNumero\",\n  \"AlojamientoNombre\",\n  \"AlojamientoStaysInternalName\",\n  \"PaisNombreEspanol\",\n  \"AseoReservaCheckOutId\",\n  \n-- Hora local Chile (timestamp sin tz) para ver y mostrar\n((r.\"Reserva_checkOutDate\"::date - 1)::timestamp + time '21:00') AS \"ProgDiaAntes21Chile_CL\",\n\n-- Instante absoluto (timestamptz) para comparar con now()\n(((r.\"Reserva_checkOutDate\"::date - 1)::timestamp + time '21:00')\n  AT TIME ZONE 'America/Santiago') AS \"ProgDiaAntes21Chile_TZ\"\n  \nFROM public.\"Reserva\" r\nLEFT JOIN public.\"Huesped\" h\n  ON h.\"HuespedId\" = r.\"HuespedId\"\nLEFT JOIN public.\"Alojamiento\" al\n  ON al.\"AlojamientoId\" = r.\"AlojamientoId\"\nleft join \"Pais\" p \non h.\"IdPais\" = p.\"PaisId\"\nleft join \"AseoReservaCheckOut\" aseo \non r.\"ReservaId\" = aseo.\"ReservaId\"\nwhere r.\"ReservaId\" not in (select \"ReservaId\" from \"ReservaBandejaWhatsapp\" where \"TipoNotificacionCodigo\" = 'NotificaAseoCheckOutDiaAntes')\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2560,
+          0
+        ],
+        "id": "39eda323-849e-467d-b6bc-3b84c99bf977",
+        "name": "GetReservasSinNotificacionAseoDiaAntesWhats",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "select \n  r.\"ReservaId\",\n  \"Reserva__id\",\n  al.\"AlojamientoId\",\n  h.\"HuespedId\",\n  \"Reserva_id\",\n  \"Reserva_creationDate\",\n  \"Reserva_checkInDate\",\n  \"Reserva_checkOutDate\",\n  \"Reserva_checkInTime\",\n  \"Reserva_checkOutTime\",\n  \"Reserva__idlisting\",\n  \"Reserva__idclient\",\n  \"Reserva_type\",\n  \"Reserva_guests\",\n  \"StaysClientId\",\n  \"StaysContactId\",\n  \"NombreCompleto\",\n  \"Email\",\n  \"Telefono\",\n  \"IdPais\",\n  \"AlojamientoNumero\",\n  \"AlojamientoNombre\",\n  \"AlojamientoStaysInternalName\",\n  \"PaisNombreEspanol\",\n  \"AseoReservaCheckOutId\"\nFROM public.\"Reserva\" r\nLEFT JOIN public.\"Huesped\" h\n  ON h.\"HuespedId\" = r.\"HuespedId\"\nLEFT JOIN public.\"Alojamiento\" al\n  ON al.\"AlojamientoId\" = r.\"AlojamientoId\"\nleft join \"Pais\" p \non h.\"IdPais\" = p.\"PaisId\"\nleft join \"AseoReservaCheckOut\" aseo \non r.\"ReservaId\" = aseo.\"ReservaId\"\nwhere r.\"ReservaId\" not in (select \"ReservaId\" from \"ReservaBandejaWhatsapp\" where \"TipoNotificacionCodigo\" = 'NotificaAseoCheckOut')",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2560,
+          -288
+        ],
+        "id": "89a603ee-89b8-4897-953b-7611b2988710",
+        "name": "GetReservasSinNotificacionAseoWhats",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        },
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "select \n  \"ReservaId\",\n  \"Reserva__id\",\n  al.\"AlojamientoId\",\n  h.\"HuespedId\",\n  \"Reserva_id\",\n  \"Reserva_creationDate\",\n  \"Reserva_checkInDate\",\n  \"Reserva_checkOutDate\",\n  \"Reserva_checkInTime\",\n  \"Reserva_checkOutTime\",\n  \"Reserva__idlisting\",\n  \"Reserva__idclient\",\n  \"Reserva_type\",\n  \"Reserva_guests\",\n  \"StaysClientId\",\n  \"StaysContactId\",\n  \"NombreCompleto\",\n  \"Email\",\n  \"Telefono\",\n  \"IdPais\",\n  \"AlojamientoNumero\",\n  \"AlojamientoNombre\",\n  \"AlojamientoStaysInternalName\",\n  \"PaisNombreEspanol\"\nFROM public.\"Reserva\" r\nLEFT JOIN public.\"Huesped\" h\n  ON h.\"HuespedId\" = r.\"HuespedId\"\nLEFT JOIN public.\"Alojamiento\" al\n  ON al.\"AlojamientoId\" = r.\"AlojamientoId\"\nleft join \"Pais\" p \non h.\"IdPais\" = p.\"PaisId\"\n\nwhere r.\"ReservaId\" not in (select \"ReservaId\" from \"AseoReservaCheckOut\" where \"AseoTipoCodigo\" = 'AseoCheckOut')\n",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1824,
+          -528
+        ],
+        "id": "f8936ae1-4c60-4175-bdb3-0116f1230ab1",
+        "name": "GetReservaSinAseo",
+        "alwaysOutputData": false,
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "AseoReservaCheckOut",
+            "mode": "list",
+            "cachedResultName": "AseoReservaCheckOut"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "ReservaId": "={{ $json.ReservaId }}",
+              "AseoTipoCodigo": "AseoCheckOut",
+              "AseoEstadoCodigo": "Solicitado",
+              "FechaServicio": "={{ $json.Reserva_checkOutDate }}",
+              "HoraInicio": "={{ $json.Reserva_checkOutTime }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "AseoReservaCheckOutId",
+                "displayName": "AseoReservaCheckOutId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ReservaId",
+                "displayName": "ReservaId",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "AseoTipoCodigo",
+                "displayName": "AseoTipoCodigo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "AseoEstadoCodigo",
+                "displayName": "AseoEstadoCodigo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "FechaServicio",
+                "displayName": "FechaServicio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "HoraInicio",
+                "displayName": "HoraInicio",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "time",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "TallyIdEvent",
+                "displayName": "TallyIdEvent",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Meta",
+                "displayName": "Meta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CreatedAt",
+                "displayName": "CreatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "UpdatedAt",
+                "displayName": "UpdatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2048,
+          -528
+        ],
+        "id": "b74eef7c-7e47-45f6-a410-450333387240",
+        "name": "CrearAseosCheckOut",
+        "alwaysOutputData": false,
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "\nSELECT\n  (COUNT(*) > 0) AS \"hasData\",\n  COUNT(*)       AS \"cnt\"\nFROM public.\"Reserva\"\nWHERE \"ReservaId\" not in (select \"ReservaId\" from \"AseoReservaCheckOut\")",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1392,
+          -352
+        ],
+        "id": "6fe14c6c-9ada-4c6b-82ab-eeffcf3b1047",
+        "name": "ObtenerReservaSinAseo",
+        "alwaysOutputData": false,
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 3
+            },
+            "conditions": [
+              {
+                "id": "d4e5fcd6-710f-43bb-9188-e996022cbb18",
+                "leftValue": "={{ $json.hasData }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "true",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2.3,
+        "position": [
+          1600,
+          -352
+        ],
+        "id": "329012b8-f20d-4ce0-8cc8-7cc39855c612",
+        "name": "If datos aseo"
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT timezone('America/Santiago', now()) AS chile_timestamptz;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2176,
+          -336
+        ],
+        "id": "451c1f60-0fb6-4f42-9c4c-b3ca15bae289",
+        "name": "GetFecha",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "ReservaBandejaCorreo",
+            "mode": "list",
+            "cachedResultName": "ReservaBandejaCorreo"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "EsHtml": false,
+              "ReservaId": "={{ $json.ReservaId }}",
+              "Intentos": 0,
+              "TipoNotificacionCodigo": "NotificaNuevoHuesped",
+              "EstadoCodigo": "Generada",
+              "CorreoOrigen": "={{ $('CorreoYNumeros').item.json.CorreoTeknoconecta }}",
+              "Asunto": "=Notificación nuevo huésped departamento: {{ $json.AlojamientoStaysInternalName }}",
+              "Cuerpo": "=Notificación nuevo huesped:\n\nDepartamento: {{ $json.AlojamientoStaysInternalName }}\nDía CheckIn: {{ new Date($json.Reserva_checkInDate).toISOString().slice(0, 10) }} : {{ new Date($json.Reserva_checkInDate).toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) }}\nDía CheckOut: {{ new Date($json.Reserva_checkOutDate).toISOString().slice(0, 10) }} : {{ new Date($json.Reserva_checkOutDate).toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) }}\nNombre huésped: {{ $json.NombreCompleto }}\nCantidad huespedes: {{ $json.Reserva_guests }}\nPaís huésped: {{ $json.PaisNombreEspanol }}\n\nRecuerde que el ingreso en la planilla es automático.",
+              "FechaProgramacionEnviar": "={{ $('GetFecha_v2').item.json.chile_timestamptz }}",
+              "Destinatarios": "={{ $('CorreoYNumeros').item.json.Destinatarios_conserjeria }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "ReservaBandejaCorreoId",
+                "displayName": "ReservaBandejaCorreoId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ReservaId",
+                "displayName": "ReservaId",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "TipoNotificacionCodigo",
+                "displayName": "TipoNotificacionCodigo",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "EstadoCodigo",
+                "displayName": "EstadoCodigo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CorreoOrigen",
+                "displayName": "CorreoOrigen",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Destinatarios",
+                "displayName": "Destinatarios",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "array",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "Asunto",
+                "displayName": "Asunto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Cuerpo",
+                "displayName": "Cuerpo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "EsHtml",
+                "displayName": "EsHtml",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "FechaProgramacionEnviar",
+                "displayName": "FechaProgramacionEnviar",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Intentos",
+                "displayName": "Intentos",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "FechaEnviado",
+                "displayName": "FechaEnviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "FechaError",
+                "displayName": "FechaError",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "UltimoError",
+                "displayName": "UltimoError",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Meta",
+                "displayName": "Meta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CreatedAt",
+                "displayName": "CreatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "UpdatedAt",
+                "displayName": "UpdatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "AseoReservaCheckOutId",
+                "displayName": "AseoReservaCheckOutId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2032,
+          32
+        ],
+        "id": "bd25c0a2-0405-4858-a6c3-4278e55203b0",
+        "name": "InsertarNotificacionCorreoConserjeria",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "ReservaBandejaWhatsapp",
+            "mode": "list",
+            "cachedResultName": "ReservaBandejaWhatsapp"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "ReservaId": "={{ $json.ReservaId }}",
+              "Intentos": 0,
+              "EstadoCodigo": "Generada",
+              "TipoNotificacionCodigo": "NotificaNuevoHuesped",
+              "WhatsappOrigen": "={{ $('CorreoYNumeros').item.json.NumeroSanDiegoApart }}",
+              "Destinatarios": "={{ $('CorreoYNumeros').item.json.NumeroTestDestinatarioWhats }}",
+              "Titulo": "Nuevo Huesped",
+              "Mensaje": "=Nuevo huésped llega hoy:\n\nDepartamento: {{ $json.AlojamientoStaysInternalName }}\nDía CheckIn: {{ new Date($json.Reserva_checkInDate).toISOString().slice(0, 10) }} : {{ new Date($json.Reserva_checkInDate).toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) }}\nDía CheckOut: {{ new Date($json.Reserva_checkOutDate).toISOString().slice(0, 10) }} : {{ new Date($json.Reserva_checkOutDate).toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) }}\nNombre huésped: {{ $json.NombreCompleto }}\nCantidad huespedes: {{ $json.Reserva_guests }}\nPaís huésped: {{ $json.PaisNombreEspanol }}\n\nRecuerde que el ingreso en la planilla es automático.",
+              "FechaProgramacionEnviar": "={{ DateTime.fromISO($json.Reserva_checkInDate).toUTC().startOf('day').set({ hour: 12 }).setZone('America/Santiago').set({ hour: 9, minute: 0, second: 0, millisecond: 0 }).toISO() }}",
+              "Meta": "={{ $json }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "ReservaBandejaWhatsappId",
+                "displayName": "ReservaBandejaWhatsappId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ReservaId",
+                "displayName": "ReservaId",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "TipoNotificacionCodigo",
+                "displayName": "TipoNotificacionCodigo",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "EstadoCodigo",
+                "displayName": "EstadoCodigo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "WhatsappOrigen",
+                "displayName": "WhatsappOrigen",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Destinatarios",
+                "displayName": "Destinatarios",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "array",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Titulo",
+                "displayName": "Titulo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Mensaje",
+                "displayName": "Mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "TemplateCodigo",
+                "displayName": "TemplateCodigo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "TemplateVars",
+                "displayName": "TemplateVars",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "MediaUrls",
+                "displayName": "MediaUrls",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "array",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "FechaProgramacionEnviar",
+                "displayName": "FechaProgramacionEnviar",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Intentos",
+                "displayName": "Intentos",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Proveedor",
+                "displayName": "Proveedor",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ProveedorMessageId",
+                "displayName": "ProveedorMessageId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "FechaEnviado",
+                "displayName": "FechaEnviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "FechaError",
+                "displayName": "FechaError",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "UltimoError",
+                "displayName": "UltimoError",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Meta",
+                "displayName": "Meta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CreatedAt",
+                "displayName": "CreatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "UpdatedAt",
+                "displayName": "UpdatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "AseoReservaCheckOutId",
+                "displayName": "AseoReservaCheckOutId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1904,
+          272
+        ],
+        "id": "db868fbf-3902-4bbb-b912-7bc3cca07728",
+        "name": "InsertaNotificacionConserjeriaWhats",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        },
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "ReservaBandejaCorreo",
+            "mode": "list",
+            "cachedResultName": "ReservaBandejaCorreo"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "EsHtml": false,
+              "ReservaId": "={{ $json.ReservaId }}",
+              "Intentos": 0,
+              "AseoReservaCheckOutId": "={{ $json.AseoReservaCheckOutId }}",
+              "TipoNotificacionCodigo": "NotificaAseoCheckOut",
+              "EstadoCodigo": "Generada",
+              "CorreoOrigen": "={{ $('CorreoYNumeros').item.json.CorreoTeknoconecta }}",
+              "Destinatarios": "={{ $('CorreoYNumeros').item.json.Destinatarios_aseo }}",
+              "Asunto": "Notificación Aseo Solicitado",
+              "Cuerpo": "=Notificación Solictud Aseo:\n\nDepartamento: {{ $json.AlojamientoStaysInternalName }}\nFecha Aseo: {{ new Date($json.Reserva_checkOutDate).toISOString().slice(0, 10) }} : {{ new Date($json.Reserva_checkOutDate).toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) }}\nHora Aseo: {{ $json.Reserva_checkOutTime }}\nIdAseo: {{ $json.AseoReservaCheckOutId }}\n\nRecuerde que la url del formulario es: {{ $('CorreoYNumeros').item.json.url_formulario_aseo }}",
+              "FechaProgramacionEnviar": "={{ $('GetFecha').item.json.chile_timestamptz }}",
+              "Meta": "={{ $json }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "ReservaBandejaCorreoId",
+                "displayName": "ReservaBandejaCorreoId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ReservaId",
+                "displayName": "ReservaId",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "TipoNotificacionCodigo",
+                "displayName": "TipoNotificacionCodigo",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "EstadoCodigo",
+                "displayName": "EstadoCodigo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CorreoOrigen",
+                "displayName": "CorreoOrigen",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Destinatarios",
+                "displayName": "Destinatarios",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "array",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Asunto",
+                "displayName": "Asunto",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Cuerpo",
+                "displayName": "Cuerpo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "EsHtml",
+                "displayName": "EsHtml",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "boolean",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "FechaProgramacionEnviar",
+                "displayName": "FechaProgramacionEnviar",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Intentos",
+                "displayName": "Intentos",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "FechaEnviado",
+                "displayName": "FechaEnviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "FechaError",
+                "displayName": "FechaError",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "UltimoError",
+                "displayName": "UltimoError",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Meta",
+                "displayName": "Meta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CreatedAt",
+                "displayName": "CreatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "UpdatedAt",
+                "displayName": "UpdatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "AseoReservaCheckOutId",
+                "displayName": "AseoReservaCheckOutId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2768,
+          -560
+        ],
+        "id": "8161e55c-ceb6-4531-9e33-3c8fdc595b56",
+        "name": "NotificacionAseoCorreoInsertar",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "ReservaBandejaWhatsapp",
+            "mode": "list",
+            "cachedResultName": "ReservaBandejaWhatsapp"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "ReservaId": "={{ $json.ReservaId }}",
+              "Intentos": 0,
+              "EstadoCodigo": "Generada",
+              "TipoNotificacionCodigo": "NotificaAseoCheckOut",
+              "WhatsappOrigen": "={{ $('CorreoYNumeros').item.json.NumeroSanDiegoApart }}",
+              "Destinatarios": "={{ $('CorreoYNumeros').item.json.DestinatarioWhatsAseo }}",
+              "Titulo": "Nuevo Huesped",
+              "Mensaje": "=Se ingresa una nueva solicitud de aseo:\n\nDepartamento: {{ $json.AlojamientoStaysInternalName }}\nFecha Aseo: {{ new Date($json.Reserva_checkOutDate).toISOString().slice(0, 10) }} : {{ new Date($json.Reserva_checkOutDate).toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) }}\nHora Aseo: {{ $json.Reserva_checkOutTime }}\nIdAseo: {{ $json.AseoReservaCheckOutId }}\n",
+              "FechaProgramacionEnviar": "={{ $('GetFecha').item.json.chile_timestamptz }}",
+              "Meta": "={{ $json }}",
+              "AseoReservaCheckOutId": "={{ $json.AseoReservaCheckOutId }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "ReservaBandejaWhatsappId",
+                "displayName": "ReservaBandejaWhatsappId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ReservaId",
+                "displayName": "ReservaId",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "TipoNotificacionCodigo",
+                "displayName": "TipoNotificacionCodigo",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "EstadoCodigo",
+                "displayName": "EstadoCodigo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "WhatsappOrigen",
+                "displayName": "WhatsappOrigen",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Destinatarios",
+                "displayName": "Destinatarios",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "array",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Titulo",
+                "displayName": "Titulo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Mensaje",
+                "displayName": "Mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "TemplateCodigo",
+                "displayName": "TemplateCodigo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "TemplateVars",
+                "displayName": "TemplateVars",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "MediaUrls",
+                "displayName": "MediaUrls",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "array",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "FechaProgramacionEnviar",
+                "displayName": "FechaProgramacionEnviar",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Intentos",
+                "displayName": "Intentos",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Proveedor",
+                "displayName": "Proveedor",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ProveedorMessageId",
+                "displayName": "ProveedorMessageId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "FechaEnviado",
+                "displayName": "FechaEnviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "FechaError",
+                "displayName": "FechaError",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "UltimoError",
+                "displayName": "UltimoError",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Meta",
+                "displayName": "Meta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CreatedAt",
+                "displayName": "CreatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "UpdatedAt",
+                "displayName": "UpdatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "AseoReservaCheckOutId",
+                "displayName": "AseoReservaCheckOutId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2784,
+          -288
+        ],
+        "id": "1c8cd183-e4f8-4431-ba40-4796545c18ff",
+        "name": "InsertaNotificacionAseoWhat",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        },
+        "disabled": true
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "ReservaBandejaWhatsapp",
+            "mode": "list",
+            "cachedResultName": "ReservaBandejaWhatsapp"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "ReservaId": "={{ $json.ReservaId }}",
+              "Intentos": 0,
+              "EstadoCodigo": "Generada",
+              "TipoNotificacionCodigo": "NotificaAseoCheckOutDiaAntes",
+              "WhatsappOrigen": "={{ $('CorreoYNumeros').item.json.NumeroSanDiegoApart }}",
+              "Destinatarios": "={{ $('CorreoYNumeros').item.json.DestinatarioWhatsAseo }}",
+              "Titulo": "Nuevo Huesped",
+              "Mensaje": "=Se ingresa una nueva solicitud de aseo:\n\nDepartamento: {{ $json.AlojamientoStaysInternalName }}\nFecha Aseo: {{ new Date($json.Reserva_checkOutDate).toISOString().slice(0, 10) }} : {{ new Date($json.Reserva_checkOutDate).toLocaleDateString('es-ES', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' }) }}\nHora Aseo: {{ $json.Reserva_checkOutTime }}\nIdAseo: {{ $json.AseoReservaCheckOutId }}\nUrl Formulario: {{ $('CorreoYNumeros').item.json.url_formulario_aseo }}\n\nRecuerda ingresar el IdAseo al formulario\n",
+              "FechaProgramacionEnviar": "={{ $json.ProgDiaAntes21Chile_CL }}",
+              "Meta": "={{ $json }}",
+              "AseoReservaCheckOutId": "={{ $json.AseoReservaCheckOutId }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "ReservaBandejaWhatsappId",
+                "displayName": "ReservaBandejaWhatsappId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "ReservaId",
+                "displayName": "ReservaId",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "TipoNotificacionCodigo",
+                "displayName": "TipoNotificacionCodigo",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "EstadoCodigo",
+                "displayName": "EstadoCodigo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "WhatsappOrigen",
+                "displayName": "WhatsappOrigen",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Destinatarios",
+                "displayName": "Destinatarios",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "array",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Titulo",
+                "displayName": "Titulo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Mensaje",
+                "displayName": "Mensaje",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "TemplateCodigo",
+                "displayName": "TemplateCodigo",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "TemplateVars",
+                "displayName": "TemplateVars",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "MediaUrls",
+                "displayName": "MediaUrls",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "array",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "FechaProgramacionEnviar",
+                "displayName": "FechaProgramacionEnviar",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Intentos",
+                "displayName": "Intentos",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Proveedor",
+                "displayName": "Proveedor",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "ProveedorMessageId",
+                "displayName": "ProveedorMessageId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "FechaEnviado",
+                "displayName": "FechaEnviado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "FechaError",
+                "displayName": "FechaError",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "UltimoError",
+                "displayName": "UltimoError",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "Meta",
+                "displayName": "Meta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "CreatedAt",
+                "displayName": "CreatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "UpdatedAt",
+                "displayName": "UpdatedAt",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "AseoReservaCheckOutId",
+                "displayName": "AseoReservaCheckOutId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          2784,
+          16
+        ],
+        "id": "a57afb20-54eb-4cdc-8dc4-d97ce41350cf",
+        "name": "InsertaNotificacionAseoDiaAntes",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT timezone('America/Santiago', now()) AS chile_timestamptz;",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          1584,
+          32
+        ],
+        "id": "61056241-4b67-4bb6-b004-cf063736e76c",
+        "name": "GetFecha_v2",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "operation": "executeQuery",
+          "query": "SELECT\n  TO_CHAR(CURRENT_DATE - INTERVAL '10 days', 'YYYY-MM-DD') AS \"from\",\n  TO_CHAR((CURRENT_DATE + INTERVAL '3 months')::date, 'YYYY-MM-DD') AS \"to\",\n  'arrival' AS \"dateType\";",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          -1504,
+          -96
+        ],
+        "id": "b26b095d-17bc-4ff1-a58d-0200207ea4a7",
+        "name": "ObtieneFechas",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Get Reservation": {
+        "main": [
+          [
+            {
+              "node": "InsertaStage",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out": {
+        "main": [
+          [
+            {
+              "node": "Get Reserva",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Get Reserva": {
+        "main": [
+          [
+            {
+              "node": "Split Out1",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Split Out1": {
+        "main": [
+          [
+            {
+              "node": "Update Huesped",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update Huesped": {
+        "main": [
+          [
+            {
+              "node": "Update Reservas Alojamiento",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update Reservas Alojamiento": {
+        "main": [
+          [
+            {
+              "node": "Update Huesped en Reserva",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Schedule Trigger": {
+        "main": [
+          [
+            {
+              "node": "ObtieneFechas",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Update Huesped en Reserva": {
+        "main": [
+          [
+            {
+              "node": "SetHuespedPais",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "ObtenerReservaSinAseo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "SetHuespedPais": {
+        "main": [
+          [
+            {
+              "node": "GetFecha_v2",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CorreoYNumeros": {
+        "main": [
+          [
+            {
+              "node": "Get Reservation",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "BorrarStageReserva": {
+        "main": [
+          [
+            {
+              "node": "CorreoYNumeros",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "InsertaStage": {
+        "main": [
+          [
+            {
+              "node": "InsertarReservaNoExistente",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "InsertarReservaNoExistente": {
+        "main": [
+          [
+            {
+              "node": "ObtenerReservaSinAloHues",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ObtenerReservaSinAloHues": {
+        "main": [
+          [
+            {
+              "node": "If datos por actualizar",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If datos por actualizar": {
+        "main": [
+          [
+            {
+              "node": "Execute a SQL query",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Update Huesped en Reserva",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Execute a SQL query": {
+        "main": [
+          [
+            {
+              "node": "Split Out",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GetReservasSinNotificacionAseoCorreo": {
+        "main": [
+          [
+            {
+              "node": "NotificacionAseoCorreoInsertar",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GetReservasSinNotificacionAseoDiaAntesWhats": {
+        "main": [
+          [
+            {
+              "node": "InsertaNotificacionAseoDiaAntes",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GetReservaSinAseo": {
+        "main": [
+          [
+            {
+              "node": "CrearAseosCheckOut",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "CrearAseosCheckOut": {
+        "main": [
+          [
+            {
+              "node": "GetFecha",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ObtenerReservaSinAseo": {
+        "main": [
+          [
+            {
+              "node": "If datos aseo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "If datos aseo": {
+        "main": [
+          [
+            {
+              "node": "GetReservaSinAseo",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "GetFecha",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GetReservasSinNotificacionConserjeriaCorreo": {
+        "main": [
+          [
+            {
+              "node": "InsertarNotificacionCorreoConserjeria",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GetFecha": {
+        "main": [
+          [
+            {
+              "node": "GetReservasSinNotificacionAseoCorreo",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "GetReservasSinNotificacionAseoWhats",
+              "type": "main",
+              "index": 0
+            },
+            {
+              "node": "GetReservasSinNotificacionAseoDiaAntesWhats",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GetReservasSinNotificacionConserjeriaWhats": {
+        "main": [
+          [
+            {
+              "node": "InsertaNotificacionConserjeriaWhats",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GetReservasSinNotificacionAseoWhats": {
+        "main": [
+          [
+            {
+              "node": "InsertaNotificacionAseoWhat",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "GetFecha_v2": {
+        "main": [
+          [
+            {
+              "node": "GetReservasSinNotificacionConserjeriaCorreo",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "ObtieneFechas": {
+        "main": [
+          [
+            {
+              "node": "BorrarStageReserva",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Jairo Pinilla",
+    "name": "Version 0588aa52",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-04-22T17:10:01.178Z",
+        "id": 37,
+        "workflowId": "smvtOsTSxsbMUgnfBgCix",
+        "versionId": "0588aa52-7958-4c51-86b2-9dfcc99c5b16",
+        "event": "activated",
+        "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719"
+      },
+      {
+        "createdAt": "2026-04-22T17:50:29.891Z",
+        "id": 39,
+        "workflowId": "smvtOsTSxsbMUgnfBgCix",
+        "versionId": "0588aa52-7958-4c51-86b2-9dfcc99c5b16",
+        "event": "activated",
+        "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719"
+      }
+    ]
+  }
+}

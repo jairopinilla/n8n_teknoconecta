@@ -1,0 +1,569 @@
+{
+  "updatedAt": "2026-01-07T19:31:44.174Z",
+  "createdAt": "2026-01-06T00:58:20.900Z",
+  "id": "DbgpVm0l8d0Wp8ut",
+  "name": "N8n_procesar_email_isaias",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ingesta-correo-isaias",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -416,
+        -32
+      ],
+      "id": "c17404bb-f0d7-482e-a693-6c6e68884668",
+      "name": "Webhook",
+      "webhookId": "e0b6f777-bf0c-4a7e-9ffb-e0cb6edc9322",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "z0M54nC5Fx9VCrLL",
+          "name": "Key Interna n8n Webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Iteramos sobre los items entrantes\nfor (const item of $input.all()) {\n  const body = item.json.body;\n\n  // -------------------------------------------------------\n  // 1. LIMPIEZA DEL REMITENTE\n  // -------------------------------------------------------\n  // Priorizamos 'email_remitente', si no existe, usamos 'remitente'\n  const rawRemitente = body.email_remitente || body.remitente || \"\";\n  const remitenteMatch = rawRemitente.match(/<([^>]+)>/);\n  // Si encuentra <email>, usa lo de adentro. Si no, usa el original.\n  const remitenteLimpio = remitenteMatch ? remitenteMatch[1] : rawRemitente;\n\n  // -------------------------------------------------------\n  // 2. LIMPIEZA DEL DESTINATARIO (NUEVO)\n  // -------------------------------------------------------\n  const rawDestinatario = body.email_destinatario || \"\";\n  const destMatch = rawDestinatario.match(/<([^>]+)>/);\n  // Misma lógica: extraer lo que está entre corchetes\n  const destinatarioLimpio = destMatch ? destMatch[1] : rawDestinatario;\n\n  // -------------------------------------------------------\n  // 3. LIMPIEZA DEL CUERPO (Estrategia Anti-Ruido)\n  // -------------------------------------------------------\n  let texto = body.cuerpo_texto || body.cuerpo_html || \"\";\n\n  // A. Eliminar URLs largas\n  texto = texto.replace(/https?:\\/\\/[^\\s]+/g, \" \");\n\n  // B. Eliminar marcadores de imágenes de Gmail\n  texto = texto.replace(/\\[image:[^\\]]+\\]/g, \"\");\n\n  // C. Limpieza cosmética final\n  texto = texto\n    .replace(/\\r\\n/g, \"\\n\")      // Normalizar saltos de línea\n    .replace(/\\n\\s*\\n/g, \"\\n\")   // Eliminar líneas vacías repetidas\n    .replace(/[ \\t]+/g, \" \")     // Eliminar espacios repetidos\n    .trim();\n\n  // -------------------------------------------------------\n  // 4. RETORNO DE DATOS LIMPIOS\n  // -------------------------------------------------------\n  \n  // Guardamos los emails limpios y sin espacios laterales (.trim())\n  item.json.email_remitente_limpio = remitenteLimpio.trim();\n  item.json.email_destinatario_limpio = destinatarioLimpio.trim();\n  \n  // El mensaje depurado\n  item.json.mensaje_depurado = texto;\n  \n  // Pasamos el ID original de Gmail para la base de datos\n  item.json.id_mensaje_gmail = body.id_mensaje_gmail;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -176,
+        -32
+      ],
+      "id": "9ca63438-71bc-48f2-a789-ab88bec677fe",
+      "name": "Code in JavaScript"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "BandejaInput",
+          "mode": "list",
+          "cachedResultName": "BandejaInput"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "BandejaInputFuente_origen": "={{ $json.webhookUrl }}",
+            "BandejaInputPayload_crudo": "={{ $json.body }}",
+            "BandejaInputTextoInformacion": "={{ $json.mensaje_depurado }}",
+            "BandejaInputIdMensajeGmail": "={{ $('Webhook').item.json.body.id_mensaje_gmail }}",
+            "BandejaInputEmail_destinatario": "={{ $json.email_destinatario_limpio }}",
+            "BandejaInputFecha_recepcion_gmail": "={{ $('Webhook').item.json.body.fecha_recepcion }}",
+            "BandejaInput_EmailOrigen": "={{ $json.email_remitente_limpio }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "BandejaInputId",
+              "displayName": "BandejaInputId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaInputFecha_ingesta",
+              "displayName": "BandejaInputFecha_ingesta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaInputFuente_origen",
+              "displayName": "BandejaInputFuente_origen",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaInputPayload_crudo",
+              "displayName": "BandejaInputPayload_crudo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaInputTextoInformacion",
+              "displayName": "BandejaInputTextoInformacion",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaInputEstado",
+              "displayName": "BandejaInputEstado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaInputFecha_actualizacion",
+              "displayName": "BandejaInputFecha_actualizacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaInputLog_proceso",
+              "displayName": "BandejaInputLog_proceso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaInputIntentos",
+              "displayName": "BandejaInputIntentos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaInputIdMensajeGmail",
+              "displayName": "BandejaInputIdMensajeGmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaInputEmail_destinatario",
+              "displayName": "BandejaInputEmail_destinatario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaInputFecha_recepcion_gmail",
+              "displayName": "BandejaInputFecha_recepcion_gmail",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "BandejaInput_EmailOrigen",
+              "displayName": "BandejaInput_EmailOrigen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        32,
+        -32
+      ],
+      "id": "b82339c9-22ac-417f-8e41-baf0b4c4c110",
+      "name": "Insertar en Bandeja",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Insertar en Bandeja",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "e17c2f04-6023-481e-9a7a-f780495af72c",
+  "activeVersionId": "e17c2f04-6023-481e-9a7a-f780495af72c",
+  "versionCounter": 24,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-01-06T00:58:20.900Z",
+      "createdAt": "2026-01-06T00:58:20.900Z",
+      "role": "workflow:owner",
+      "workflowId": "DbgpVm0l8d0Wp8ut",
+      "projectId": "fkrYXx8bUkVIFmGN",
+      "project": {
+        "updatedAt": "2025-11-05T16:16:44.185Z",
+        "createdAt": "2025-11-05T15:24:32.634Z",
+        "id": "fkrYXx8bUkVIFmGN",
+        "name": "Jairo Pinilla <contacto@teknoconecta.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-11-05T15:24:32.634Z",
+            "createdAt": "2025-11-05T15:24:32.634Z",
+            "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+            "projectId": "fkrYXx8bUkVIFmGN",
+            "user": {
+              "updatedAt": "2026-04-22T16:56:08.229Z",
+              "createdAt": "2025-11-05T15:23:52.554Z",
+              "id": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+              "email": "contacto@teknoconecta.com",
+              "firstName": "Jairo",
+              "lastName": "Pinilla",
+              "personalizationAnswers": {
+                "version": "v4",
+                "personalization_survey_submitted_at": "2025-11-05T16:17:10.332Z",
+                "personalization_survey_n8n_version": "1.117.3",
+                "companySize": "<20",
+                "companyType": "saas",
+                "role": "data-science",
+                "reportedSource": "google"
+              },
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "QBxPsad3MwjzkTU2",
+                "userActivatedAt": 1764029627118,
+                "npsSurvey": {
+                  "responded": true,
+                  "lastShownAt": 1768053262866
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-04-22",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-01-07T19:32:54.783Z",
+    "createdAt": "2026-01-07T19:31:44.293Z",
+    "versionId": "e17c2f04-6023-481e-9a7a-f780495af72c",
+    "workflowId": "DbgpVm0l8d0Wp8ut",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "ingesta-correo-isaias",
+          "authentication": "headerAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -416,
+          -32
+        ],
+        "id": "c17404bb-f0d7-482e-a693-6c6e68884668",
+        "name": "Webhook",
+        "webhookId": "e0b6f777-bf0c-4a7e-9ffb-e0cb6edc9322",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "z0M54nC5Fx9VCrLL",
+            "name": "Key Interna n8n Webhook"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Iteramos sobre los items entrantes\nfor (const item of $input.all()) {\n  const body = item.json.body;\n\n  // -------------------------------------------------------\n  // 1. LIMPIEZA DEL REMITENTE\n  // -------------------------------------------------------\n  // Priorizamos 'email_remitente', si no existe, usamos 'remitente'\n  const rawRemitente = body.email_remitente || body.remitente || \"\";\n  const remitenteMatch = rawRemitente.match(/<([^>]+)>/);\n  // Si encuentra <email>, usa lo de adentro. Si no, usa el original.\n  const remitenteLimpio = remitenteMatch ? remitenteMatch[1] : rawRemitente;\n\n  // -------------------------------------------------------\n  // 2. LIMPIEZA DEL DESTINATARIO (NUEVO)\n  // -------------------------------------------------------\n  const rawDestinatario = body.email_destinatario || \"\";\n  const destMatch = rawDestinatario.match(/<([^>]+)>/);\n  // Misma lógica: extraer lo que está entre corchetes\n  const destinatarioLimpio = destMatch ? destMatch[1] : rawDestinatario;\n\n  // -------------------------------------------------------\n  // 3. LIMPIEZA DEL CUERPO (Estrategia Anti-Ruido)\n  // -------------------------------------------------------\n  let texto = body.cuerpo_texto || body.cuerpo_html || \"\";\n\n  // A. Eliminar URLs largas\n  texto = texto.replace(/https?:\\/\\/[^\\s]+/g, \" \");\n\n  // B. Eliminar marcadores de imágenes de Gmail\n  texto = texto.replace(/\\[image:[^\\]]+\\]/g, \"\");\n\n  // C. Limpieza cosmética final\n  texto = texto\n    .replace(/\\r\\n/g, \"\\n\")      // Normalizar saltos de línea\n    .replace(/\\n\\s*\\n/g, \"\\n\")   // Eliminar líneas vacías repetidas\n    .replace(/[ \\t]+/g, \" \")     // Eliminar espacios repetidos\n    .trim();\n\n  // -------------------------------------------------------\n  // 4. RETORNO DE DATOS LIMPIOS\n  // -------------------------------------------------------\n  \n  // Guardamos los emails limpios y sin espacios laterales (.trim())\n  item.json.email_remitente_limpio = remitenteLimpio.trim();\n  item.json.email_destinatario_limpio = destinatarioLimpio.trim();\n  \n  // El mensaje depurado\n  item.json.mensaje_depurado = texto;\n  \n  // Pasamos el ID original de Gmail para la base de datos\n  item.json.id_mensaje_gmail = body.id_mensaje_gmail;\n}\n\nreturn $input.all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -176,
+          -32
+        ],
+        "id": "9ca63438-71bc-48f2-a789-ab88bec677fe",
+        "name": "Code in JavaScript"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "BandejaInput",
+            "mode": "list",
+            "cachedResultName": "BandejaInput"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "BandejaInputFuente_origen": "={{ $json.webhookUrl }}",
+              "BandejaInputPayload_crudo": "={{ $json.body }}",
+              "BandejaInputTextoInformacion": "={{ $json.mensaje_depurado }}",
+              "BandejaInputIdMensajeGmail": "={{ $('Webhook').item.json.body.id_mensaje_gmail }}",
+              "BandejaInputEmail_destinatario": "={{ $json.email_destinatario_limpio }}",
+              "BandejaInputFecha_recepcion_gmail": "={{ $('Webhook').item.json.body.fecha_recepcion }}",
+              "BandejaInput_EmailOrigen": "={{ $json.email_remitente_limpio }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "BandejaInputId",
+                "displayName": "BandejaInputId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaInputFecha_ingesta",
+                "displayName": "BandejaInputFecha_ingesta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaInputFuente_origen",
+                "displayName": "BandejaInputFuente_origen",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaInputPayload_crudo",
+                "displayName": "BandejaInputPayload_crudo",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaInputTextoInformacion",
+                "displayName": "BandejaInputTextoInformacion",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaInputEstado",
+                "displayName": "BandejaInputEstado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaInputFecha_actualizacion",
+                "displayName": "BandejaInputFecha_actualizacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaInputLog_proceso",
+                "displayName": "BandejaInputLog_proceso",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaInputIntentos",
+                "displayName": "BandejaInputIntentos",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaInputIdMensajeGmail",
+                "displayName": "BandejaInputIdMensajeGmail",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaInputEmail_destinatario",
+                "displayName": "BandejaInputEmail_destinatario",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaInputFecha_recepcion_gmail",
+                "displayName": "BandejaInputFecha_recepcion_gmail",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": false
+              },
+              {
+                "id": "BandejaInput_EmailOrigen",
+                "displayName": "BandejaInput_EmailOrigen",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          32,
+          -32
+        ],
+        "id": "b82339c9-22ac-417f-8e41-baf0b4c4c110",
+        "name": "Insertar en Bandeja",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Code in JavaScript",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Code in JavaScript": {
+        "main": [
+          [
+            {
+              "node": "Insertar en Bandeja",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Jairo Pinilla",
+    "name": "Version e17c2f04",
+    "description": "",
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-01-07T19:32:54.625Z",
+        "id": 9,
+        "workflowId": "DbgpVm0l8d0Wp8ut",
+        "versionId": "e17c2f04-6023-481e-9a7a-f780495af72c",
+        "event": "activated",
+        "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719"
+      }
+    ]
+  }
+}

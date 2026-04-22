@@ -1,0 +1,567 @@
+{
+  "updatedAt": "2026-03-11T00:54:15.702Z",
+  "createdAt": "2026-01-29T15:39:10.870Z",
+  "id": "TgWU9cGjMToMBvR9GMRq4",
+  "name": "N8n_procesa_tarapaca_conserjeria",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "procesa-email-conserjeria",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -336,
+        -16
+      ],
+      "id": "a55f01b8-b7be-483d-82f8-fd966b100ad5",
+      "name": "Webhook",
+      "webhookId": "f35b8d8b-b1e1-42cb-b493-d0ff4a537f80",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "z0M54nC5Fx9VCrLL",
+          "name": "Key Interna n8n Webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Iteramos sobre los items entrantes\nfor (const item of $input.all()) {\n  const body = item.json.body;\n\n  // -------------------------------------------------------\n  // 1. LIMPIEZA DEL REMITENTE\n  // -------------------------------------------------------\n  // Priorizamos 'email_remitente', si no existe, usamos 'remitente'\n  const rawRemitente = body.email_remitente || body.remitente || \"\";\n  const remitenteMatch = rawRemitente.match(/<([^>]+)>/);\n  // Si encuentra <email>, usa lo de adentro. Si no, usa el original.\n  const remitenteLimpio = remitenteMatch ? remitenteMatch[1] : rawRemitente;\n\n  // -------------------------------------------------------\n  // 2. LIMPIEZA DEL DESTINATARIO (NUEVO)\n  // -------------------------------------------------------\n  const rawDestinatario = body.email_destinatario || \"\";\n  const destMatch = rawDestinatario.match(/<([^>]+)>/);\n  // Misma lógica: extraer lo que está entre corchetes\n  const destinatarioLimpio = destMatch ? destMatch[1] : rawDestinatario;\n\n  // -------------------------------------------------------\n  // 3. LIMPIEZA DEL CUERPO (Estrategia Anti-Ruido)\n  // -------------------------------------------------------\n  let texto = body.cuerpo_texto || body.cuerpo_html || \"\";\n\n  // A. Eliminar URLs largas\n  texto = texto.replace(/https?:\\/\\/[^\\s]+/g, \" \");\n\n  // B. Eliminar marcadores de imágenes de Gmail\n  texto = texto.replace(/\\[image:[^\\]]+\\]/g, \"\");\n\n  // C. Limpieza cosmética final\n  texto = texto\n    .replace(/\\r\\n/g, \"\\n\")      // Normalizar saltos de línea\n    .replace(/\\n\\s*\\n/g, \"\\n\")   // Eliminar líneas vacías repetidas\n    .replace(/[ \\t]+/g, \" \")     // Eliminar espacios repetidos\n    .trim();\n\n  // -------------------------------------------------------\n  // 4. RETORNO DE DATOS LIMPIOS\n  // -------------------------------------------------------\n  \n  // Guardamos los emails limpios y sin espacios laterales (.trim())\n  item.json.email_remitente_limpio = remitenteLimpio.trim();\n  item.json.email_destinatario_limpio = destinatarioLimpio.trim();\n  \n  // El mensaje depurado\n  item.json.mensaje_depurado = texto;\n  \n  // Pasamos el ID original de Gmail para la base de datos\n  item.json.id_mensaje_gmail = body.id_mensaje_gmail;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        -16
+      ],
+      "id": "680278a2-ab2b-40eb-8d10-6e0df52b15f1",
+      "name": "Procesa email"
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "BandejaConserjeriaInput",
+          "mode": "list",
+          "cachedResultName": "BandejaConserjeriaInput"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "BandejaConserjeriaInputFuente_origen": "={{ $json.webhookUrl }}",
+            "BandejaConserjeriaInputFecha_recepcion_gmail": "={{ $json.body.fecha_recepcion }}",
+            "BandejaConserjeriaInputPayload_crudo": "={{ $json.body }}",
+            "BandejaConserjeriaInputIdMensajeGmail": "={{ $json.id_mensaje_gmail }}",
+            "BandejaConserjeriaInputTextoInformacion": "={{ $json.mensaje_depurado }}",
+            "BandejaConserjeriaInputEmail_destinatario": "={{ $json.email_destinatario_limpio }}",
+            "BandejaConserjeriaInput_EmailOrigen": "={{ $json.email_remitente_limpio }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "BandejaConserjeriaInputId",
+              "displayName": "BandejaConserjeriaInputId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInputFecha_ingesta",
+              "displayName": "BandejaConserjeriaInputFecha_ingesta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInputFecha_recepcion_gmail",
+              "displayName": "BandejaConserjeriaInputFecha_recepcion_gmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaConserjeriaInputFuente_origen",
+              "displayName": "BandejaConserjeriaInputFuente_origen",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaConserjeriaInputPayload_crudo",
+              "displayName": "BandejaConserjeriaInputPayload_crudo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaConserjeriaInputTextoInformacion",
+              "displayName": "BandejaConserjeriaInputTextoInformacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaConserjeriaInputEstado",
+              "displayName": "BandejaConserjeriaInputEstado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInputFecha_actualizacion",
+              "displayName": "BandejaConserjeriaInputFecha_actualizacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInputLog_proceso",
+              "displayName": "BandejaConserjeriaInputLog_proceso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInputIntentos",
+              "displayName": "BandejaConserjeriaInputIntentos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaConserjeriaInputIdMensajeGmail",
+              "displayName": "BandejaConserjeriaInputIdMensajeGmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaConserjeriaInputEmail_destinatario",
+              "displayName": "BandejaConserjeriaInputEmail_destinatario",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaConserjeriaInput_EmailOrigen",
+              "displayName": "BandejaConserjeriaInput_EmailOrigen",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        128,
+        -16
+      ],
+      "id": "1351be61-36d0-4675-9df1-9d64e0ebd10b",
+      "name": "Insertar en Bandeja",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Procesa email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Procesa email": {
+      "main": [
+        [
+          {
+            "node": "Insertar en Bandeja",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "c4e3d4fc-0dd2-4456-874f-e2110c8125f5",
+  "activeVersionId": "c4e3d4fc-0dd2-4456-874f-e2110c8125f5",
+  "versionCounter": 32,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-03-11T00:54:14.851Z",
+      "createdAt": "2026-03-11T00:54:14.851Z",
+      "role": "workflow:owner",
+      "workflowId": "TgWU9cGjMToMBvR9GMRq4",
+      "projectId": "fkrYXx8bUkVIFmGN",
+      "project": {
+        "updatedAt": "2025-11-05T16:16:44.185Z",
+        "createdAt": "2025-11-05T15:24:32.634Z",
+        "id": "fkrYXx8bUkVIFmGN",
+        "name": "Jairo Pinilla <contacto@teknoconecta.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-11-05T15:24:32.634Z",
+            "createdAt": "2025-11-05T15:24:32.634Z",
+            "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+            "projectId": "fkrYXx8bUkVIFmGN",
+            "user": {
+              "updatedAt": "2026-04-22T16:56:08.229Z",
+              "createdAt": "2025-11-05T15:23:52.554Z",
+              "id": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+              "email": "contacto@teknoconecta.com",
+              "firstName": "Jairo",
+              "lastName": "Pinilla",
+              "personalizationAnswers": {
+                "version": "v4",
+                "personalization_survey_submitted_at": "2025-11-05T16:17:10.332Z",
+                "personalization_survey_n8n_version": "1.117.3",
+                "companySize": "<20",
+                "companyType": "saas",
+                "role": "data-science",
+                "reportedSource": "google"
+              },
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "QBxPsad3MwjzkTU2",
+                "userActivatedAt": 1764029627118,
+                "npsSurvey": {
+                  "responded": true,
+                  "lastShownAt": 1768053262866
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-04-22",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-01-30T02:59:42.586Z",
+    "createdAt": "2026-01-30T02:50:41.971Z",
+    "versionId": "c4e3d4fc-0dd2-4456-874f-e2110c8125f5",
+    "workflowId": "TgWU9cGjMToMBvR9GMRq4",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "procesa-email-conserjeria",
+          "authentication": "headerAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -336,
+          -16
+        ],
+        "id": "a55f01b8-b7be-483d-82f8-fd966b100ad5",
+        "name": "Webhook",
+        "webhookId": "f35b8d8b-b1e1-42cb-b493-d0ff4a537f80",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "z0M54nC5Fx9VCrLL",
+            "name": "Key Interna n8n Webhook"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "// Iteramos sobre los items entrantes\nfor (const item of $input.all()) {\n  const body = item.json.body;\n\n  // -------------------------------------------------------\n  // 1. LIMPIEZA DEL REMITENTE\n  // -------------------------------------------------------\n  // Priorizamos 'email_remitente', si no existe, usamos 'remitente'\n  const rawRemitente = body.email_remitente || body.remitente || \"\";\n  const remitenteMatch = rawRemitente.match(/<([^>]+)>/);\n  // Si encuentra <email>, usa lo de adentro. Si no, usa el original.\n  const remitenteLimpio = remitenteMatch ? remitenteMatch[1] : rawRemitente;\n\n  // -------------------------------------------------------\n  // 2. LIMPIEZA DEL DESTINATARIO (NUEVO)\n  // -------------------------------------------------------\n  const rawDestinatario = body.email_destinatario || \"\";\n  const destMatch = rawDestinatario.match(/<([^>]+)>/);\n  // Misma lógica: extraer lo que está entre corchetes\n  const destinatarioLimpio = destMatch ? destMatch[1] : rawDestinatario;\n\n  // -------------------------------------------------------\n  // 3. LIMPIEZA DEL CUERPO (Estrategia Anti-Ruido)\n  // -------------------------------------------------------\n  let texto = body.cuerpo_texto || body.cuerpo_html || \"\";\n\n  // A. Eliminar URLs largas\n  texto = texto.replace(/https?:\\/\\/[^\\s]+/g, \" \");\n\n  // B. Eliminar marcadores de imágenes de Gmail\n  texto = texto.replace(/\\[image:[^\\]]+\\]/g, \"\");\n\n  // C. Limpieza cosmética final\n  texto = texto\n    .replace(/\\r\\n/g, \"\\n\")      // Normalizar saltos de línea\n    .replace(/\\n\\s*\\n/g, \"\\n\")   // Eliminar líneas vacías repetidas\n    .replace(/[ \\t]+/g, \" \")     // Eliminar espacios repetidos\n    .trim();\n\n  // -------------------------------------------------------\n  // 4. RETORNO DE DATOS LIMPIOS\n  // -------------------------------------------------------\n  \n  // Guardamos los emails limpios y sin espacios laterales (.trim())\n  item.json.email_remitente_limpio = remitenteLimpio.trim();\n  item.json.email_destinatario_limpio = destinatarioLimpio.trim();\n  \n  // El mensaje depurado\n  item.json.mensaje_depurado = texto;\n  \n  // Pasamos el ID original de Gmail para la base de datos\n  item.json.id_mensaje_gmail = body.id_mensaje_gmail;\n}\n\nreturn $input.all();"
+        },
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          -128,
+          -16
+        ],
+        "id": "680278a2-ab2b-40eb-8d10-6e0df52b15f1",
+        "name": "Procesa email"
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "BandejaConserjeriaInput",
+            "mode": "list",
+            "cachedResultName": "BandejaConserjeriaInput"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "BandejaConserjeriaInputFuente_origen": "={{ $json.webhookUrl }}",
+              "BandejaConserjeriaInputFecha_recepcion_gmail": "={{ $json.body.fecha_recepcion }}",
+              "BandejaConserjeriaInputPayload_crudo": "={{ $json.body }}",
+              "BandejaConserjeriaInputIdMensajeGmail": "={{ $json.id_mensaje_gmail }}",
+              "BandejaConserjeriaInputTextoInformacion": "={{ $json.mensaje_depurado }}",
+              "BandejaConserjeriaInputEmail_destinatario": "={{ $json.email_destinatario_limpio }}",
+              "BandejaConserjeriaInput_EmailOrigen": "={{ $json.email_remitente_limpio }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "BandejaConserjeriaInputId",
+                "displayName": "BandejaConserjeriaInputId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInputFecha_ingesta",
+                "displayName": "BandejaConserjeriaInputFecha_ingesta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInputFecha_recepcion_gmail",
+                "displayName": "BandejaConserjeriaInputFecha_recepcion_gmail",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaConserjeriaInputFuente_origen",
+                "displayName": "BandejaConserjeriaInputFuente_origen",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaConserjeriaInputPayload_crudo",
+                "displayName": "BandejaConserjeriaInputPayload_crudo",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaConserjeriaInputTextoInformacion",
+                "displayName": "BandejaConserjeriaInputTextoInformacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaConserjeriaInputEstado",
+                "displayName": "BandejaConserjeriaInputEstado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInputFecha_actualizacion",
+                "displayName": "BandejaConserjeriaInputFecha_actualizacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInputLog_proceso",
+                "displayName": "BandejaConserjeriaInputLog_proceso",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInputIntentos",
+                "displayName": "BandejaConserjeriaInputIntentos",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaConserjeriaInputIdMensajeGmail",
+                "displayName": "BandejaConserjeriaInputIdMensajeGmail",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaConserjeriaInputEmail_destinatario",
+                "displayName": "BandejaConserjeriaInputEmail_destinatario",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaConserjeriaInput_EmailOrigen",
+                "displayName": "BandejaConserjeriaInput_EmailOrigen",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          128,
+          -16
+        ],
+        "id": "1351be61-36d0-4675-9df1-9d64e0ebd10b",
+        "name": "Insertar en Bandeja",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Procesa email",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Procesa email": {
+        "main": [
+          [
+            {
+              "node": "Insertar en Bandeja",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Jairo Pinilla",
+    "name": "Version c4e3d4fc",
+    "description": "",
+    "autosaved": true,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-01-30T02:59:42.291Z",
+        "id": 10,
+        "workflowId": "TgWU9cGjMToMBvR9GMRq4",
+        "versionId": "c4e3d4fc-0dd2-4456-874f-e2110c8125f5",
+        "event": "activated",
+        "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719"
+      }
+    ]
+  }
+}

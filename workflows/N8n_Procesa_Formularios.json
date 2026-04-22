@@ -1,0 +1,499 @@
+{
+  "updatedAt": "2026-01-07T19:22:12.031Z",
+  "createdAt": "2026-01-07T00:55:32.127Z",
+  "id": "hACggsGpgXDddj1b",
+  "name": "N8n_Procesa_Formularios",
+  "description": null,
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ingesta-formulario",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -64,
+        0
+      ],
+      "id": "646518e2-5576-4d53-b5f6-ae0c56979698",
+      "name": "Webhook",
+      "webhookId": "f5f4ba64-db78-4693-8bf1-d14ca057a1dc",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "z0M54nC5Fx9VCrLL",
+          "name": "Key Interna n8n Webhook"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "BandejaInputTally",
+          "mode": "list",
+          "cachedResultName": "BandejaInputTally"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "BandejaInputTallyEventId": "={{ $json.body.eventId }}",
+            "BandejaInputTallyCreatedAt": "={{ $json.body.createdAt }}",
+            "BandejaInputTallyFormId": "={{ $json.body.data.formId }}",
+            "BandejaInputTallyFormName": "={{ $json.body.data.formName }}",
+            "BandejaInputTallyWebHook": "={{ $json.webhookUrl }}",
+            "BandejaInputTallyPayload_crudo": "={{ $json.body }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "BandejaInputTallyId",
+              "displayName": "BandejaInputTallyId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaInputTallyFecha_ingesta",
+              "displayName": "BandejaInputTallyFecha_ingesta",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaInputTallyEventId",
+              "displayName": "BandejaInputTallyEventId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaInputTallyCreatedAt",
+              "displayName": "BandejaInputTallyCreatedAt",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaInputTallyFormId",
+              "displayName": "BandejaInputTallyFormId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaInputTallyFormName",
+              "displayName": "BandejaInputTallyFormName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaInputTallyPayload_crudo",
+              "displayName": "BandejaInputTallyPayload_crudo",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "BandejaInputTallyEstado",
+              "displayName": "BandejaInputTallyEstado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaInputTallyFecha_actualizacion",
+              "displayName": "BandejaInputTallyFecha_actualizacion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaInputTallyLog_proceso",
+              "displayName": "BandejaInputTallyLog_proceso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaInputTallyIntentos",
+              "displayName": "BandejaInputTallyIntentos",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "BandejaInputTallyWebHook",
+              "displayName": "BandejaInputTallyWebHook",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        144,
+        0
+      ],
+      "id": "2da8128f-6a54-43fd-ab6a-5247053da07f",
+      "name": "Insertar Formulario",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Insertar Formulario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "88ef37c8-ec0c-4eb3-8527-4c0e9d9e644a",
+  "activeVersionId": "88ef37c8-ec0c-4eb3-8527-4c0e9d9e644a",
+  "versionCounter": 11,
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-01-07T00:55:32.127Z",
+      "createdAt": "2026-01-07T00:55:32.127Z",
+      "role": "workflow:owner",
+      "workflowId": "hACggsGpgXDddj1b",
+      "projectId": "fkrYXx8bUkVIFmGN",
+      "project": {
+        "updatedAt": "2025-11-05T16:16:44.185Z",
+        "createdAt": "2025-11-05T15:24:32.634Z",
+        "id": "fkrYXx8bUkVIFmGN",
+        "name": "Jairo Pinilla <contacto@teknoconecta.com>",
+        "type": "personal",
+        "icon": null,
+        "description": null,
+        "creatorId": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+        "projectRelations": [
+          {
+            "updatedAt": "2025-11-05T15:24:32.634Z",
+            "createdAt": "2025-11-05T15:24:32.634Z",
+            "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+            "projectId": "fkrYXx8bUkVIFmGN",
+            "user": {
+              "updatedAt": "2026-04-22T16:56:08.229Z",
+              "createdAt": "2025-11-05T15:23:52.554Z",
+              "id": "6e4b4287-1829-4637-b2b8-8fe0c8471719",
+              "email": "contacto@teknoconecta.com",
+              "firstName": "Jairo",
+              "lastName": "Pinilla",
+              "personalizationAnswers": {
+                "version": "v4",
+                "personalization_survey_submitted_at": "2025-11-05T16:17:10.332Z",
+                "personalization_survey_n8n_version": "1.117.3",
+                "companySize": "<20",
+                "companyType": "saas",
+                "role": "data-science",
+                "reportedSource": "google"
+              },
+              "settings": {
+                "userActivated": true,
+                "easyAIWorkflowOnboarded": true,
+                "firstSuccessfulWorkflowId": "QBxPsad3MwjzkTU2",
+                "userActivatedAt": 1764029627118,
+                "npsSurvey": {
+                  "responded": true,
+                  "lastShownAt": 1768053262866
+                }
+              },
+              "disabled": false,
+              "mfaEnabled": false,
+              "lastActiveAt": "2026-04-22",
+              "isPending": false
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "tags": [],
+  "activeVersion": {
+    "updatedAt": "2026-01-07T19:26:31.481Z",
+    "createdAt": "2026-01-07T19:22:12.135Z",
+    "versionId": "88ef37c8-ec0c-4eb3-8527-4c0e9d9e644a",
+    "workflowId": "hACggsGpgXDddj1b",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "ingesta-formulario",
+          "authentication": "headerAuth",
+          "options": {}
+        },
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2.1,
+        "position": [
+          -64,
+          0
+        ],
+        "id": "646518e2-5576-4d53-b5f6-ae0c56979698",
+        "name": "Webhook",
+        "webhookId": "f5f4ba64-db78-4693-8bf1-d14ca057a1dc",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "z0M54nC5Fx9VCrLL",
+            "name": "Key Interna n8n Webhook"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "schema": {
+            "__rl": true,
+            "mode": "list",
+            "value": "public"
+          },
+          "table": {
+            "__rl": true,
+            "value": "BandejaInputTally",
+            "mode": "list",
+            "cachedResultName": "BandejaInputTally"
+          },
+          "columns": {
+            "mappingMode": "defineBelow",
+            "value": {
+              "BandejaInputTallyEventId": "={{ $json.body.eventId }}",
+              "BandejaInputTallyCreatedAt": "={{ $json.body.createdAt }}",
+              "BandejaInputTallyFormId": "={{ $json.body.data.formId }}",
+              "BandejaInputTallyFormName": "={{ $json.body.data.formName }}",
+              "BandejaInputTallyWebHook": "={{ $json.webhookUrl }}",
+              "BandejaInputTallyPayload_crudo": "={{ $json.body }}"
+            },
+            "matchingColumns": [],
+            "schema": [
+              {
+                "id": "BandejaInputTallyId",
+                "displayName": "BandejaInputTallyId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaInputTallyFecha_ingesta",
+                "displayName": "BandejaInputTallyFecha_ingesta",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaInputTallyEventId",
+                "displayName": "BandejaInputTallyEventId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaInputTallyCreatedAt",
+                "displayName": "BandejaInputTallyCreatedAt",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaInputTallyFormId",
+                "displayName": "BandejaInputTallyFormId",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaInputTallyFormName",
+                "displayName": "BandejaInputTallyFormName",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaInputTallyPayload_crudo",
+                "displayName": "BandejaInputTallyPayload_crudo",
+                "required": true,
+                "defaultMatch": false,
+                "display": true,
+                "type": "object",
+                "canBeUsedToMatch": true
+              },
+              {
+                "id": "BandejaInputTallyEstado",
+                "displayName": "BandejaInputTallyEstado",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaInputTallyFecha_actualizacion",
+                "displayName": "BandejaInputTallyFecha_actualizacion",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "dateTime",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaInputTallyLog_proceso",
+                "displayName": "BandejaInputTallyLog_proceso",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaInputTallyIntentos",
+                "displayName": "BandejaInputTallyIntentos",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "number",
+                "canBeUsedToMatch": true,
+                "removed": true
+              },
+              {
+                "id": "BandejaInputTallyWebHook",
+                "displayName": "BandejaInputTallyWebHook",
+                "required": false,
+                "defaultMatch": false,
+                "display": true,
+                "type": "string",
+                "canBeUsedToMatch": true,
+                "removed": false
+              }
+            ],
+            "attemptToConvertTypes": false,
+            "convertFieldsToString": false
+          },
+          "options": {}
+        },
+        "type": "n8n-nodes-base.postgres",
+        "typeVersion": 2.6,
+        "position": [
+          144,
+          0
+        ],
+        "id": "2da8128f-6a54-43fd-ab6a-5247053da07f",
+        "name": "Insertar Formulario",
+        "credentials": {
+          "postgres": {
+            "id": "zvx0J3DPht42SAUp",
+            "name": "Postgres account"
+          }
+        }
+      }
+    ],
+    "connections": {
+      "Webhook": {
+        "main": [
+          [
+            {
+              "node": "Insertar Formulario",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Jairo Pinilla",
+    "name": "Version 88ef37c8",
+    "description": "",
+    "autosaved": false,
+    "workflowPublishHistory": [
+      {
+        "createdAt": "2026-01-07T19:26:31.339Z",
+        "id": 7,
+        "workflowId": "hACggsGpgXDddj1b",
+        "versionId": "88ef37c8-ec0c-4eb3-8527-4c0e9d9e644a",
+        "event": "activated",
+        "userId": "6e4b4287-1829-4637-b2b8-8fe0c8471719"
+      }
+    ]
+  }
+}
