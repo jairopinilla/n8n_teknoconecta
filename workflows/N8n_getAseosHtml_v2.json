@@ -1,0 +1,158 @@
+{
+  "name": "N8n_getAseosHtml_v2",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "path": "aseos-v2",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [-320, 0],
+      "id": "d9a2c3e4-f5b6-4c7d-8e9f-a0b1c2d3e4f5",
+      "webhookId": "d9a2c3e4-f5b6-4c7d-8e9f-a0b1c2d3e4f5",
+      "name": "GetPagina"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH fechas AS (\n  SELECT\n    TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date - INTERVAL '1 day', 'YYYY-MM-DD') AS fecha_desde,\n    TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date + INTERVAL '10 days', 'YYYY-MM-DD') AS fecha_hasta\n),\nalojamientos_json AS (\n  SELECT COALESCE(\n    json_agg(\n      json_build_object(\n        'listing_id', \"AlojamientoStayslistingIdLargo\",\n        'listing_name', \"AlojamientoStaysInternalName\"\n      ) ORDER BY \"AlojamientoStaysInternalName\"\n    ) FILTER (WHERE \"AlojamientoStayslistingIdLargo\" IS NOT NULL AND \"AlojamientoStayslistingIdLargo\" <> ''),\n    '[]'::json\n  ) AS alojamientos\n  FROM public.\"Alojamiento\"\n)\nSELECT f.fecha_desde, f.fecha_hasta, a.alojamientos\nFROM fechas f, alojamientos_json a",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [-80, 0],
+      "id": "e8b3a2c1-f4d5-4e6f-7a8b-9c0d1e2f3a4b",
+      "name": "GetFechasYAlojamientos",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://jairop.stays.net/external/v1/booking/reservations",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "from",
+              "value": "={{ $json.fecha_desde }}"
+            },
+            {
+              "name": "to",
+              "value": "={{ $json.fecha_hasta }}"
+            },
+            {
+              "name": "dateType",
+              "value": "departure"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [180, 0],
+      "id": "f7c6b5a4-e3d2-4c1b-8a9b-0c1d2e3f4a5b",
+      "name": "GetReservasAPI",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "I4YWvpXuZv5reReY",
+          "name": "Stays Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForAllItems",
+        "jsCode": "// n8n Code node (Run Once for All Items)\n// Aseos v2 — datos desde API Stays.net\n// Fechas desde PostgreSQL (America/Santiago)\n\nconst allItems = $input.all().map(i => i.json);\n\n// La API puede devolver array auto-split (N items) o 1 item con array\nlet reservas;\nif (allItems.length === 0) {\n  reservas = [];\n} else if (allItems.length === 1 && Array.isArray(allItems[0])) {\n  // HTTP devolvió 1 item con el array completo como $json\n  reservas = allItems[0];\n} else {\n  // HTTP auto-split o 1 sola reserva\n  reservas = allItems;\n}\n\nconst meta = $('GetFechasYAlojamientos').first().json;\nconst fechaDesde = meta.fecha_desde || '';\nconst fechaHasta = meta.fecha_hasta || '';\nconst alojArr = Array.isArray(meta.alojamientos) ? meta.alojamientos : [];\n\n// Mapa: _idlisting → nombre de alojamiento\nconst listingMap = {};\nfor (const a of alojArr) {\n  if (a.listing_id) listingMap[a.listing_id] = a.listing_name || a.listing_id;\n}\n\n// ── Helpers ──\nconst normalizeYMD = (v) => {\n  if (v === null || v === undefined) return null;\n  const s = String(v);\n  return s.length >= 10 ? s.slice(0, 10) : s;\n};\n\nconst ddmmyyyy = (ymd) => {\n  if (!ymd) return '';\n  const parts = ymd.split('-');\n  if (parts.length !== 3) return ymd;\n  return `${parts[2]}-${parts[1]}-${parts[0]}`;\n};\n\nconst dateAtNoonUTC = (ymd) => new Date(`${ymd}T12:00:00.000Z`);\n\nconst toTitleCase = (s) =>\n  String(s || '').replace(/\\p{L}[\\p{L}\\p{Mn}]*/gu, (w) => w[0].toUpperCase() + w.slice(1));\n\nconst fmtDiaES = new Intl.DateTimeFormat('es-CL', {\n  weekday: 'long',\n  day: 'numeric',\n  month: 'long',\n  timeZone: 'America/Santiago',\n});\n\nconst diaTextoES = (ymd) => {\n  if (!ymd) return '';\n  const raw = fmtDiaES.format(dateAtNoonUTC(ymd));\n  return toTitleCase(raw.replace(',', ''));\n};\n\nconst escapeHtml = (s) =>\n  String(s ?? '')\n    .replace(/&/g, '&amp;')\n    .replace(/</g, '&lt;')\n    .replace(/>/g, '&gt;');\n\n// ── Agrupar: checkOutDate → deptoName → _id ──\nconst grouped = new Map();\n\nfor (const r of reservas) {\n  const dia = normalizeYMD(r.checkOutDate);\n  if (!dia) continue;\n  const listingId = r._idlisting || '';\n  const depto = listingMap[listingId] || listingId || 'SinDepto';\n  const rid = r._id || String(Math.random());\n\n  if (!grouped.has(dia)) grouped.set(dia, new Map());\n  const byDepto = grouped.get(dia);\n  if (!byDepto.has(depto)) byDepto.set(depto, new Map());\n  byDepto.get(depto).set(rid, r);\n}\n\nconst diasOrdenados = Array.from(grouped.keys()).sort();\n\nconst actualizado = new Intl.DateTimeFormat('es-CL', {\n  timeZone: 'America/Santiago',\n  day: '2-digit',\n  month: '2-digit',\n  year: 'numeric',\n  hour: '2-digit',\n  minute: '2-digit',\n  hour12: false,\n}).format(new Date()).replace(',', '');\n\n// ── Body HTML ──\nlet body = '';\n\nfor (const dia of diasOrdenados) {\n  const byDepto = grouped.get(dia);\n  const deptosOrdenados = Array.from(byDepto.keys()).sort((a, b) => a.localeCompare(b, 'es'));\n\n  body += `\n  <section class=\"day\">\n    <div class=\"dayHeader\">\n      <div class=\"dayTitle\">${escapeHtml(ddmmyyyy(dia))} · ${escapeHtml(diaTextoES(dia))}</div>\n      <div class=\"daySub\">Check-outs del día · Fuente: API Stays.net</div>\n    </div>`;\n\n  for (const depto of deptosOrdenados) {\n    const byReserva = byDepto.get(depto);\n    const reservasOrdenadas = Array.from(byReserva.keys()).sort();\n\n    body += `\n    <div class=\"deptoCard\">\n      <div class=\"deptoHeader\"><div class=\"deptoName\">Departamento ${escapeHtml(depto)}</div></div>\n      <div class=\"deptoItems\">`;\n\n    for (const rid of reservasOrdenadas) {\n      const r = byReserva.get(rid);\n      const guestName = r.guestsDetails?.list?.[0]?.name || '';\n      const checkIn = normalizeYMD(r.checkInDate) || '';\n      const resUrl = r.reservationUrl || '';\n      const resId = r._id || rid;\n      const tipo = r.type || '';\n      const enlace = resUrl\n        ? ' · <a class=\"link\" href=\"' + escapeHtml(resUrl) + '\" target=\"_blank\" rel=\"noopener\">Ver reserva</a>'\n        : ' · ID: ' + escapeHtml(resId);\n\n      body += `\n        <div class=\"item\">\n          <div class=\"row\">\n            <div class=\"tag tagBlue\">RESERVA</div>\n            <div class=\"text\">\n              <div class=\"main\"><span class=\"strong\">Check-out</span> <span class=\"muted\">· ${escapeHtml(ddmmyyyy(dia))}${tipo ? ' · ' + escapeHtml(tipo) : ''}</span></div>\n              <div class=\"sub\">${guestName ? escapeHtml(toTitleCase(guestName)) + ' · ' : ''}Check-in: ${escapeHtml(ddmmyyyy(checkIn))}${enlace}</div>\n            </div>\n          </div>\n          <div class=\"row\">\n            <div class=\"tag tagRed\">ASEO</div>\n            <div class=\"text\">\n              <div class=\"main\"><span class=\"strong red\">FALTA ASEO</span></div>\n              <div class=\"sub\">Sin confirmación en base de datos · verificar manualmente</div>\n            </div>\n          </div>\n        </div>`;\n    }\n\n    body += `\n      </div>\n    </div>`;\n  }\n\n  body += `\n  </section>`;\n}\n\nconst html = `<!doctype html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"utf-8\"/>\n  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"/>\n  <title>Aseos v2 · Stays API · SandiegoApart</title>\n  <style>\n    :root{\n      --bg:#0b0f19;--card:#121a2a;--card2:#0f1626;\n      --text:#e8eefc;--muted:#a9b6d6;--line:#223055;\n      --blue:#3b82f6;--green:#22c55e;--red:#ef4444;\n      --shadow:0 8px 22px rgba(0,0,0,.25);--radius:16px;\n    }\n    *{box-sizing:border-box}\n    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#070a12 0%,var(--bg) 100%);color:var(--text)}\n    .wrap{max-width:780px;margin:0 auto;padding:14px}\n    .top{position:sticky;top:0;background:rgba(11,15,25,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(34,48,85,.6);padding:12px 14px;z-index:10}\n    .title{font-size:16px;font-weight:800}\n    .subtitle{font-size:12px;color:var(--muted);margin-top:4px}\n    .day{margin-top:14px}\n    .dayHeader{margin:10px 2px 10px;padding:10px 12px;background:rgba(18,26,42,.7);border:1px solid rgba(34,48,85,.7);border-radius:var(--radius);box-shadow:var(--shadow)}\n    .dayTitle{font-weight:900;font-size:14px}\n    .daySub{color:var(--muted);font-size:12px;margin-top:4px}\n    .deptoCard{margin-top:10px;border-radius:var(--radius);overflow:hidden;border:1px solid rgba(34,48,85,.7);background:var(--card);box-shadow:var(--shadow)}\n    .deptoHeader{padding:12px;background:var(--card2);border-bottom:1px solid rgba(34,48,85,.7)}\n    .deptoName{font-weight:900}\n    .deptoItems{padding:10px}\n    .item{border:1px solid rgba(34,48,85,.7);border-radius:14px;padding:10px;margin-bottom:10px;background:rgba(255,255,255,.02)}\n    .row{display:flex;gap:10px;align-items:flex-start;margin:4px 0}\n    .tag{min-width:64px;font-size:11px;font-weight:900;text-align:center;padding:6px 8px;border-radius:999px;border:1px solid rgba(255,255,255,.12)}\n    .tagBlue{background:rgba(59,130,246,.18);color:#cfe2ff;border-color:rgba(59,130,246,.35)}\n    .tagGreen{background:rgba(34,197,94,.18);color:#d3ffe2;border-color:rgba(34,197,94,.35)}\n    .tagRed{background:rgba(239,68,68,.18);color:#ffd2d2;border-color:rgba(239,68,68,.35)}\n    .text{flex:1}\n    .main{font-size:13px}\n    .sub{font-size:12px;color:var(--muted);margin-top:2px}\n    .muted{color:var(--muted)}\n    .strong{font-weight:900}\n    .red{color:#ffb4b4}\n    .link{color:#cfe2ff;text-decoration:none;border-bottom:1px dotted rgba(207,226,255,.5)}\n    .footer{color:var(--muted);font-size:11px;text-align:center;padding:14px 0 18px}\n  </style>\n</head>\n<body>\n  <div class=\"top\">\n    <div class=\"title\">Aseos v2 · API Stays · SandiegoApart</div>\n    <div class=\"subtitle\">Ventana: ${escapeHtml(ddmmyyyy(fechaDesde))} → ${escapeHtml(ddmmyyyy(fechaHasta))} · Actualizado: ${escapeHtml(actualizado)} (America/Santiago)</div>\n  </div>\n  <div class=\"wrap\">\n    ${body || `<div class=\"dayHeader\"><div class=\"dayTitle\">Sin check-outs</div><div class=\"daySub\">No hay reservas con checkout entre ${escapeHtml(ddmmyyyy(fechaDesde))} y ${escapeHtml(ddmmyyyy(fechaHasta))}.</div></div>`}\n    <div class=\"footer\">Datos en tiempo real desde Stays.net API · Workflow n8n v2</div>\n  </div>\n</body>\n</html>`;\n\nreturn [{ json: { html } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 0],
+      "id": "a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d",
+      "name": "ConvierteAhtml"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.html }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [700, 0],
+      "id": "b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e",
+      "name": "RespondtoHtml"
+    }
+  ],
+  "connections": {
+    "GetPagina": {
+      "main": [
+        [
+          {
+            "node": "GetFechasYAlojamientos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetFechasYAlojamientos": {
+      "main": [
+        [
+          {
+            "node": "GetReservasAPI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetReservasAPI": {
+      "main": [
+        [
+          {
+            "node": "ConvierteAhtml",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ConvierteAhtml": {
+      "main": [
+        [
+          {
+            "node": "RespondtoHtml",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "meta": {},
+  "pinData": {}
+}

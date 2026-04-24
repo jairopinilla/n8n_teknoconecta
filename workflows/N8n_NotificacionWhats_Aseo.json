@@ -1,0 +1,330 @@
+{
+  "name": "N8n_NotificacionWhats_Aseo",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 21 * * *"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [-624, 0],
+      "id": "a1b2c3d4-e5f6-7890-ab01-ef1234567890",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "v1a2b3c4-d5e6-f789-0abc-def123456701",
+              "name": "numero_origen_twilio",
+              "value": "+15559078472",
+              "type": "string"
+            },
+            {
+              "id": "v2b3c4d5-e6f7-8901-bcde-f12345678902",
+              "name": "numero_destino_personal",
+              "value": "+56954862320",
+              "type": "string"
+            },
+            {
+              "id": "v3c4d5e6-f7a8-9012-cdef-123456789003",
+              "name": "Twilio_SID",
+              "value": "REDACTED_TWILIO_SID",
+              "type": "string"
+            },
+            {
+              "id": "v4d5e6f7-a8b9-0123-defa-234567890004",
+              "name": "ContentSid",
+              "value": "HXbf30a2b5ab53dedc7be9b4fa327857b2",
+              "type": "string"
+            },
+            {
+              "id": "v5e6f7a8-b9c0-1234-efab-345678900005",
+              "name": "numero_aseo",
+              "value": "+56982737381",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [-416, 0],
+      "id": "b2c3d4e5-f6a7-8901-bc02-f12345678901",
+      "name": "Variables"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date + INTERVAL '1 day', 'YYYY-MM-DD') AS fecha_manana, TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date + INTERVAL '2 days', 'YYYY-MM-DD') AS fecha_pasado_manana;",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [-208, 0],
+      "id": "c3d4e5f6-a7b8-9012-cd03-123456789012",
+      "name": "GetFechaManana",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://jairop.stays.net/external/v1/booking/reservations?from={{ $json.fecha_manana }}&to={{ $json.fecha_manana }}&dateType=departure&type=reserved",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [0, 0],
+      "id": "d4e5f6a7-b8c9-0123-de04-234567890123",
+      "name": "GetReservasManana",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "I4YWvpXuZv5reReY",
+          "name": "Stays Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normaliza la respuesta de la API de Stays.net:\n// puede venir como array auto-split (N items) o como 1 item con el array completo\nconst allItems = $input.all().map(i => i.json);\n\nlet reservas;\nif (allItems.length === 0) {\n  reservas = [];\n} else if (allItems.length === 1 && Array.isArray(allItems[0])) {\n  // La API devolvió un único item que es el array completo\n  reservas = allItems[0];\n} else {\n  // Auto-split o una sola reserva\n  reservas = allItems;\n}\n\nreturn reservas.map(r => ({ json: r }));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [208, 0],
+      "id": "e5f6a7b8-c9d0-1234-ef05-345678901234",
+      "name": "NormalizarReservas"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT \"AlojamientoStaysInternalName\" FROM public.\"Alojamiento\" WHERE \"AlojamientoStayslistingIdLargo\" = '{{ $json._idlisting }}';",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [416, 0],
+      "id": "f6a7b8c9-d0e1-2345-f006-456789012345",
+      "name": "GetAlojamiento",
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.twilio.com/2010-04-01/Accounts/{{ $('Variables').item.json.Twilio_SID }}/Messages.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "From",
+              "value": "={{ 'whatsapp:' + $('Variables').item.json.numero_origen_twilio }}"
+            },
+            {
+              "name": "To",
+              "value": "={{ 'whatsapp:' + $('Variables').item.json.numero_destino_personal }}"
+            },
+            {
+              "name": "ContentSid",
+              "value": "={{ $('Variables').item.json.ContentSid }}"
+            },
+            {
+              "name": "ContentVariables",
+              "value": "={{ JSON.stringify({\n  \"1\": $json.AlojamientoStaysInternalName,\n  \"2\": $('NormalizarReservas').item.json.checkOutDate,\n  \"3\": DateTime.fromISO($('NormalizarReservas').item.json.checkOutDate).setLocale(\"es\").toFormat(\"cccc, d 'de' LLLL 'de' yyyy\"),\n  \"4\": $('NormalizarReservas').item.json.checkOutTime,\n  \"5\": String($('NormalizarReservas').item.json._id)\n}) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [640, -160],
+      "id": "a7b8c9d0-e1f2-3456-a007-567890123456",
+      "name": "EnviarMensajePersonal",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "SyrgR4ro8bubV2vQ",
+          "name": "Twilio credenciales"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.twilio.com/2010-04-01/Accounts/{{ $('Variables').item.json.Twilio_SID }}/Messages.json",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBasicAuth",
+        "sendBody": true,
+        "contentType": "form-urlencoded",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "From",
+              "value": "={{ 'whatsapp:' + $('Variables').item.json.numero_origen_twilio }}"
+            },
+            {
+              "name": "To",
+              "value": "={{ 'whatsapp:' + $('Variables').item.json.numero_aseo }}"
+            },
+            {
+              "name": "ContentSid",
+              "value": "={{ $('Variables').item.json.ContentSid }}"
+            },
+            {
+              "name": "ContentVariables",
+              "value": "={{ JSON.stringify({\n  \"1\": $json.AlojamientoStaysInternalName,\n  \"2\": $('NormalizarReservas').item.json.checkOutDate,\n  \"3\": DateTime.fromISO($('NormalizarReservas').item.json.checkOutDate).setLocale(\"es\").toFormat(\"cccc, d 'de' LLLL 'de' yyyy\"),\n  \"4\": $('NormalizarReservas').item.json.checkOutTime,\n  \"5\": String($('NormalizarReservas').item.json._id)\n}) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [640, 160],
+      "id": "b8c9d0e1-f2a3-4567-b008-678901234567",
+      "name": "EnviarMensajeAseo",
+      "credentials": {
+        "httpBasicAuth": {
+          "id": "SyrgR4ro8bubV2vQ",
+          "name": "Twilio credenciales"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [880, 0],
+      "id": "c9d0e1f2-a3b4-5678-c009-789012345678",
+      "name": "Merge"
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Variables",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Variables": {
+      "main": [
+        [
+          {
+            "node": "GetFechaManana",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetFechaManana": {
+      "main": [
+        [
+          {
+            "node": "GetReservasManana",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetReservasManana": {
+      "main": [
+        [
+          {
+            "node": "NormalizarReservas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NormalizarReservas": {
+      "main": [
+        [
+          {
+            "node": "GetAlojamiento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetAlojamiento": {
+      "main": [
+        [
+          {
+            "node": "EnviarMensajePersonal",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "EnviarMensajeAseo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EnviarMensajePersonal": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EnviarMensajeAseo": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "America/Santiago",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "tags": []
+}
