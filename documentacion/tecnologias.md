@@ -58,7 +58,7 @@ LIMIT 3;
 ## Directus (CMS / Backend operacional)
 
 - **URL:** `https://directus.teknoconectapp.com`
-- **MCP:** Disponible en `https://directus.teknoconectapp.com/mcp` con Bearer token `7A2N_-NCe8BiR-nLZKXhf81w16csJkx1`
+- **MCP:** Disponible en `https://directus.teknoconectapp.com/mcp` mediante Bearer token almacenado solo en configuración local no versionada
 - **Funciones:** CRUD de reservas, propiedades, huéspedes y configuraciones operacionales
 - **API:** REST + GraphQL autogenerada
 
@@ -95,13 +95,15 @@ type: reserved | blocked | contract | ownerBlocked | maintenance | cleaning
 
 ---
 
-## OpenAI
+## OpenAI y otros modelos LLM
 
-- **Modelos:** `gpt-4o` (general + embeddings), `gpt-5.2` (procesamiento complejo)
-- **MCP:** Disponible vía `@mzxrai/mcp-openai@latest`
+- **OpenAI:** `gpt-4o` (general + embeddings), `gpt-5.2` (procesamiento complejo)
+- **MCP OpenAI:** Disponible vía `@mzxrai/mcp-openai@latest`
 - **Uso en workflows:**
   - `N8n_interpreta_email_conserjeria.json`: Extracción estructurada de datos de correos con GPT-5.2
-  - `N8n_SandiegoChatbot.json`: Respuestas conversacionales con RAG
+  - `N8n_SandiegoChatbot.json`: Respuestas conversacionales y rutas RAG
+- **Google Gemini:** Presente en `N8n_SandiegoChatbot.json` mediante nodos LangChain para rutas conversacionales específicas
+- **Tavily:** Presente en `N8n_SandiegoChatbot.json` como herramienta externa de búsqueda
 
 ### Prompt de sistema — Intérprete de conserjería
 
@@ -197,6 +199,8 @@ El workflow `N8n_interpreta_email_conserjeria.json` usa un prompt que:
 ## Seguridad y Credenciales
 
 - Las credenciales reales están en `secrets.json` (no commitear)
+- La configuración MCP del workspace vive en `.vscode/mcp.json` y también es local (no commitear)
 - Los IDs de credenciales en n8n se referencian por nombre en los workflows
 - Los webhooks se autentican con `"Key Interna n8n Webhook"`
 - Stays.net usa Basic Auth con Base64 del par `client_id:client_secret`
+- La documentación versionada nunca debe incluir tokens, API keys o Bearer tokens reales; solo nombres de credenciales, mecanismos de auth o ubicaciones locales
