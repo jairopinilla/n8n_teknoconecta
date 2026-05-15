@@ -6,11 +6,26 @@ Este archivo es la fuente canónica de instrucciones para cualquier asistente de
 
 Antes de proponer o aplicar cambios, leer en este orden:
 
-1. `README.md`
-2. `documentacion/guia-repositorio.md`
-3. `documentacion/seguimiento.md`
-4. `documentacion/tecnologias.md`
-5. `documentacion/APIStaysDoc.md` si el cambio toca Stays.net
+1. `AGENTS.md` (este archivo, incluyendo la sección "Lecciones aprendidas")
+2. `README.md`
+3. `memory-bank/projectbrief.md`
+4. `memory-bank/productContext.md`
+5. `memory-bank/techContext.md`
+6. `memory-bank/systemPatterns.md`
+7. `memory-bank/activeContext.md`
+8. `memory-bank/progress.md`
+9. `documentacion/guia-repositorio.md`
+10. `documentacion/seguimiento.md`
+11. `documentacion/tecnologias.md`
+12. `documentacion/APIStaysDoc.md` si el cambio toca Stays.net
+
+### Memoria persistente entre sesiones
+
+Cada sesión empieza sin contexto previo. La única memoria son estos archivos. Por eso:
+
+- Al inicio de cada sesión el asistente DEBE leer `AGENTS.md` completo, incluyendo la sección "Lecciones aprendidas".
+- Todo descubrimiento operativo (endpoints que fallan, rutas alternativas, mapeos de IDs entre sistemas, limitaciones de herramientas) debe registrarse en la sección "Lecciones aprendidas" de este mismo archivo para no repetir el proceso de descubrimiento.
+- Si el aprendizaje es sustantivo, también debe reflejarse en `documentacion/tecnologias.md` y `documentacion/seguimiento.md`.
 
 ## Contexto del proyecto
 
@@ -26,6 +41,16 @@ El repositorio contiene exportaciones de workflows de n8n y documentación opera
 - `sync_workflows.sh`: script para descargar workflows desde n8n usando `secrets.json` local.
 - `.vscode/mcp.json`: configuración local de MCP del workspace. Es local, está ignorada por git y debe preferirse sobre configuraciones globales del usuario.
 - `secrets.json`: credenciales locales para automatizaciones del repo. Está ignorado por git.
+
+## Protocolo de interacción obligatorio
+
+Ante cada solicitud del usuario, el asistente debe aplicar el protocolo **grill-me**: entrevistar sin piedad cada aspecto del plan o diseño hasta alcanzar un entendimiento compartido. Recorrer cada rama del árbol de decisión, resolviendo dependencias una por una.
+
+- Hacer las preguntas **de una en una** (nunca en lote).
+- Para cada pregunta, proporcionar una **respuesta recomendada**.
+- Si una pregunta puede responderse explorando el código base, **explorarlo** en lugar de preguntar.
+- No ejecutar ni proponer cambios hasta que el árbol de decisión esté completamente resuelto.
+- Si la solicitud es trivial o puramente informativa, aplicar criterio: el grill-me escala con la complejidad de la decisión.
 
 ## Reglas operativas no negociables
 
@@ -60,6 +85,64 @@ El repositorio contiene exportaciones de workflows de n8n y documentación opera
 - Para shell scripts: validar con `bash -n sync_workflows.sh` si el script fue tocado.
 - Para documentación sensible: buscar tokens o secretos residuales antes de commit.
 - Antes de commit: revisar `git diff --stat` y `git status --short`.
+
+## Lecciones aprendidas
+
+> ⚠️ Esta sección es memoria persistente entre sesiones. Todo descubrimiento operativo debe registrarse aquí para que el próximo asistente no repita el mismo proceso.
+
+### Stays.net API — Lo que funciona y lo que no
+
+**Endpoints que SÍ funcionan:**
+| Endpoint | Método | Notas |
+|----------|--------|-------|
+| `/external/v1/booking/reservations` | GET | Lista reservas con parámetros `from`, `to`, `dateType`, `listingId`. Límite 20 por página. |
+| `/external/v1/booking/reservations/{id}` | GET | Detalle de una reserva |
+| `/external/checkout/initiate` | POST | Iniciar checkout |
+
+**Endpoints que NO funcionan (404) en esta instancia:**
+| Endpoint | Error |
+|----------|-------|
+| `/v1/parameters/content/properties/{id}` | 404 — El endpoint de propiedades NO existe en esta instancia. Probado con Mongo ObjectId y IDs cortos (FX08J). |
+| `/parameters/v1/setting/listing/{id}/booking` | 404 — El endpoint de booking settings NO existe |
+| `/external/docs/index/` | 404 — Swagger docs no accesibles vía API ni web |
+
+**Endpoint que existe pero devuelve vacío:**
+| `/external/v1/booking/search-listings` | POST | Devuelve `[]` con parámetros básicos. Posiblemente necesite parámetros específicos. |
+
+### Mapeo de IDs entre Stays.net y Directus
+
+- Las reservas de Stays devuelven `_idlisting` (MongoDB ObjectId, ej: `698ead2e065bcaac0d2f4940`).
+- En Directus, la colección `Alojamiento` tiene:
+  - `AlojamientoStayslistingId`: ID corto de Stays (ej: `FX08J`)
+  - `AlojamientoStayslistingIdLargo`: ID largo de Stays (MongoDB ObjectId)
+  - `AlojamientoNombre`: nombre del anuncio
+  - `AlojamientoDescripcion`: descripción (frecuentemente `null` en Directus)
+  - `AlojamientoTipo`: tipo (Departamento, Casa, Habitacion)
+- Las descripciones reales (`_mdesc`, `_mtitle`) viven en Stays.net pero no son accesibles vía API. Hay que obtenerlas del sitio público.
+
+### Cómo obtener descripciones de anuncios
+
+1. Obtener IDs desde reservas (`/external/v1/booking/reservations` → campo `_idlisting`).
+2. Cruzar con Directus (`Alojamiento`) para obtener el ID corto (`AlojamientoStayslistingId`).
+3. Construir URL pública: `https://www.sandiegoapart.com/es/apartment/{shortId}/{slug}`
+4. Usar `jina_parallel_read_url` o `webfetch` para extraer el contenido de la página.
+
+### Scrapling / Web scraping
+
+- Las tools de browser de Scrapling (`fetch`, `stealthy_fetch`, `bulk_stealthy_fetch`, `screenshot`) requieren Chromium con dependencias de sistema (`libnspr4.so` y otras) que NO están instaladas en WSL.
+- Las tools HTTP de Scrapling (`get`, `bulk_get`) y `webfetch` / `jina_read_url` SÍ funcionan correctamente.
+- Para habilitar scraping completo se necesita `sudo playwright install-deps chromium`.
+
+### MCPs disponibles
+
+14 servidores MCP configurados en `.vscode/mcp.json`: airroi, clerk, neon, vercel, openai, jina, perplexity, google-maps, mercadopago, n8n-mcp, supabase, directus, stays-docs, scrapling.
+
+### Herramientas clave para consultas
+
+- **Reservas Stays:** usar `stays-docs_stays_get_reservations` (wrapper) o `stays-docs_stays_api_call`.
+- **Datos de anuncios:** usar `directus_items` sobre colección `Alojamiento`.
+- **Descripciones web:** usar `jina_parallel_read_url` sobre `https://www.sandiegoapart.com/es/apartment/{id}/...`.
+- **Búsquedas texto Stays docs:** `stays-docs_search_stays_docs`.
 
 ## Compatibilidad multi-agente
 

@@ -73,18 +73,27 @@ LIMIT 3;
 - **Credencial n8n:** `"Stays Auth account"` (id: `I4YWvpXuZv5reReY`)
 - **Tipo credencial:** `httpHeaderAuth`
 
-### Endpoints principales
+### Endpoints confirmados (funcionan)
 
 | Endpoint | Método | Uso |
 |----------|--------|-----|
-| `/external/v1/booking/reservations` | GET | Listar reservas por rango de fechas |
+| `/external/v1/booking/reservations` | GET | Listar reservas por rango de fechas. Límite 20. Parámetros: `from`, `to`, `dateType`, `listingId`. |
 | `/external/v1/booking/reservations/{id}` | GET | Detalle completo de reserva |
-| `/external/v1/booking/reservations/{id}/payments` | GET | Pagos de una reserva |
 | `/external/checkout/initiate` | POST | Iniciar checkout de reserva |
-| `/external/promocodes/create-promo-code` | POST | Crear código promocional |
-| `/external/v1/booking/search-listings` | POST | Buscar propiedades disponibles |
-| `/v1/finance/owners/{ownerId}` | GET | Datos financieros por propietario |
-| `/reservations/booking/reservations/export` | GET/POST | Exportar reservas (XLSX o JSON) |
+
+### Endpoints NO disponibles (404) en esta instancia
+
+| Endpoint | Nota |
+|----------|------|
+| `/v1/parameters/content/properties/{id}` | No existe. Probado con ObjectId y short ID. |
+| `/parameters/v1/setting/listing/{id}/booking` | No existe |
+| `/external/docs/index/` | Swagger no accesible |
+
+### Endpoints con respuesta vacía
+
+| Endpoint | Método | Nota |
+|----------|--------|------|
+| `/external/v1/booking/search-listings` | POST | Devuelve `[]` con filtros básicos |
 
 ### Parámetros de búsqueda de reservas
 
@@ -92,6 +101,26 @@ LIMIT 3;
 dateType: arrival | departure | creation | modification | include
 type: reserved | blocked | contract | ownerBlocked | maintenance | cleaning
 ```
+
+### Mapeo de IDs: Stays.net ↔ Directus
+
+- **Reservas Stays** → `_idlisting` (MongoDB ObjectId, ej: `698ead2e065bcaac0d2f4940`)
+- **Directus `Alojamiento`**:
+  - `AlojamientoStayslistingId`: ID corto de Stays (ej: `FX08J`)
+  - `AlojamientoStayslistingIdLargo`: ObjectId largo de Stays
+  - `AlojamientoNombre`: nombre comercial
+  - `AlojamientoDescripcion`: texto (frecuentemente `null` en BD)
+  - `AlojamientoTipo`: Departamento | Casa | Habitacion
+- Las descripciones reales (`_mdesc`) y títulos comerciales (`_mtitle`) viven en Stays.net y NO son accesibles vía API. Deben extraerse del sitio público.
+
+### Propiedades activas y URLs públicas
+
+| ID Corto | Nombre | URL pública |
+|----------|--------|------------|
+| FX08J | Estudio Terraza + Cama king + escritorio \| 901 | `https://www.sandiegoapart.com/es/apartment/FX08J/...` |
+| FX07J | Estudio Terraza + Cama king + escritorio \| 902 | `https://www.sandiegoapart.com/es/apartment/FX07J/...` |
+| FX09J | Estudio Terraza + Cama king + escritorio \| 702 | `https://www.sandiegoapart.com/es/apartment/FX09J/...` |
+| FX10J | Estudio Terraza + Cama king + escritorio \| 709 | `https://www.sandiegoapart.com/es/apartment/FX10J/...` |
 
 ---
 
