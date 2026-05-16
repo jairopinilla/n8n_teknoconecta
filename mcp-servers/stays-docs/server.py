@@ -152,20 +152,23 @@ def _build_headers() -> dict:
 
 @mcp.tool()
 def stays_api_call(method: str, path: str, query_params: str = "{}", body: str = "{}") -> str:
-    """Make authenticated HTTP request to Stays.net API (jairop.stays.net).
+    """Make authenticated GET request to Stays.net API (jairop.stays.net). READ-ONLY.
 
-    Authenticates automatically with Basic Auth using the configured API key.
+    Only GET requests are allowed. POST/PATCH/DELETE are blocked.
 
     Args:
-        method: HTTP method (GET, POST, PATCH, DELETE)
-        path: API path, e.g. '/external/v1/booking/reservations', '/v1/bookings/reservations/123/payments'
+        method: HTTP method (GET only)
+        path: API path, e.g. '/external/v1/booking/reservations'
         query_params: JSON string of query parameters, e.g. '{"from":"2026-01-01","to":"2026-03-30","dateType":"arrival"}'
-        body: JSON string of request body for POST/PATCH, e.g. '{"stays_id":"999-999-999","persons":2}'
+        body: Ignored (read-only mode)
 
     Returns JSON response as formatted string, or error details.
     """
     if not API_KEY:
         return "Error: STAYS_API_KEY not configured in environment"
+
+    if method.upper() != "GET":
+        return "Error: stays_api_call is read-only. Only GET requests allowed. Use stays_get_reservations for reservation queries."
 
     url = f"{BASE_URL}{path}"
     headers = _build_headers()
@@ -176,23 +179,8 @@ def stays_api_call(method: str, path: str, query_params: str = "{}", body: str =
         return f"Error: invalid JSON in query_params: {query_params}"
 
     try:
-        data = json.loads(body) if body else None
-    except json.JSONDecodeError:
-        return f"Error: invalid JSON in body: {body}"
-
-    try:
         with httpx.Client(timeout=30) as client:
-            method_upper = method.upper()
-            if method_upper == "GET":
-                resp = client.get(url, headers=headers, params=params)
-            elif method_upper == "POST":
-                resp = client.post(url, headers=headers, params=params, json=data)
-            elif method_upper == "PATCH":
-                resp = client.patch(url, headers=headers, params=params, json=data)
-            elif method_upper == "DELETE":
-                resp = client.delete(url, headers=headers, params=params, json=data)
-            else:
-                return f"Unsupported HTTP method: {method}. Use GET, POST, PATCH, or DELETE."
+            resp = client.get(url, headers=headers, params=params)
 
         if resp.status_code >= 400:
             return f"HTTP {resp.status_code}\nURL: {url}\nResponse: {resp.text[:2000]}"

@@ -187,7 +187,61 @@ Cuando haya conflicto entre documentos, usar:
 - Workaround: usar Python+Playwright directamente desde bash con `export LD_LIBRARY_PATH=...`
 
 ### MCPs disponibles
-14 servidores MCP configurados en `.vscode/mcp.json`: clerk, neon, vercel, openai, jina, perplexity, google-maps, mercadopago, n8n-mcp, supabase, directus, stays-docs, scrapling, pricelabs-docs. (airroi removido — no relevante para el negocio.)
+14 servidores MCP configurados en `opencode.jsonc`: clerk, neon, vercel, openai, jina, perplexity, google-maps, mercadopago, n8n-mcp, supabase, directus, stays-docs, scrapling, pricelabs-docs. (airroi removido — no relevante para el negocio.)
+
+**Tipos de MCP en este proyecto:**
+- **Remote**: servidores MCP hospedados por el proveedor (ej. `clerk`, `vercel`, `supabase`). Requieren URL + headers de autenticacion.
+- **Local**: servidores MCP ejecutados en la maquina local (ej. `neon`, `openai`, `scrapling`, `n8n-mcp`). Requieren `command` para lanzar el proceso MCP.
+
+### MCPs locales con APIs externas (patron stays-docs / pricelabs-docs)
+
+Algunos MCPs de este proyecto son **locales pero conectan APIs externas**. En vez de llamar directamente a la API desde el agente, se usa un servidor MCP propio que envuelve la API y expone herramientas tipadas.
+
+**Ventajas de este patron:**
+- Documentacion embebida: cada tool tiene descripcion, parametros y ejemplos en el servidor MCP
+- Validacion de entrada: el servidor MCP valida parametros antes de llamar la API
+- Read-only por diseno: los servidores de Stays y PriceLabs solo exponen GET / operaciones seguras
+- Reutilizable: cualquier agente conectado al mismo MCP obtiene las mismas herramientas
+
+**Como se define en `opencode.jsonc`:**
+
+```json
+"stays-docs": {
+  "type": "local",
+  "command": [
+    "uv",
+    "run",
+    "--directory",
+    "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta",
+    "./mcp-servers/stays-docs/server.py"
+  ],
+  "environment": {
+    "STAYS_API_BASE_URL": "https://jairop.stays.net",
+    "STAYS_API_KEY": "..."
+  }
+}
+```
+
+**Estructura del servidor MCP local:**
+- Ubicacion: `./mcp-servers/{nombre}/server.py`
+- Stack: Python + `mcp` SDK (model context protocol)
+- Cada servidor define `tools` con nombre, descripcion, parametros (JSON Schema) y handler
+- El handler hace la llamada HTTP a la API externa y retorna el resultado formateado
+
+**Ejemplos en este repo:**
+| MCP | API externa | Ubicacion servidor | Funcion |
+|-----|-------------|-------------------|---------|
+| `stays-docs` | Stays.net API | `./mcp-servers/stays-docs/server.py` | Reservas, listings, checkout |
+| `pricelabs-docs` | PriceLabs API | `./mcp-servers/pricelabs-docs/server.py` | Listings, precios, restricciones |
+
+**Reglas para crear un nuevo MCP local con API externa:**
+1. Crear carpeta `./mcp-servers/{nombre}/`
+2. Implementar `server.py` usando el SDK de MCP en Python
+3. Definir tools con descripcion clara, parametros tipados y ejemplos
+4. Usar variables de entorno para credenciales (NO hardcodear en el script)
+5. Registrar en `opencode.jsonc` con `"type": "local"` y `"command"` que ejecute `uv run`
+6. Preferir operaciones read-only a menos que el caso de uso justifique writes
+7. Documentar endpoints funcionales vs no funcionales en este archivo (AGENTS.md)
 
 ### PriceLabs Academy
 - 365 articulos del portal de ayuda PriceLabs en espanol en `documentacion/pricelabs-academy/`

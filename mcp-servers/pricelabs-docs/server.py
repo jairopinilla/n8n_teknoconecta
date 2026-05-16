@@ -128,37 +128,29 @@ def _build_headers() -> dict:
 
 @mcp.tool()
 def pricelabs_api_call(method: str, path: str, body: str = "{}") -> str:
-    """Make authenticated HTTP request to Pricelabs API.
+    """Make authenticated GET request to Pricelabs API. READ-ONLY.
 
-    Authenticates automatically with X-API-Key header.
+    Only GET requests are allowed. POST is blocked.
 
     Args:
-        method: HTTP method (GET, POST)
-        path: API path, e.g. '/v1/listings', '/v1/listings/123', '/v1/fetch_prices'
-        body: JSON string of request body for POST, e.g. '{"listing":{"id":"abc","pms":"xyz"}}'
+        method: HTTP method (GET only)
+        path: API path, e.g. '/v1/listings', '/v1/listings/123'
+        body: Ignored (read-only mode)
 
     Returns JSON response as formatted string, or error details.
     """
     if not API_KEY:
         return "Error: PRICELABS_API_KEY not configured in environment"
 
+    if method.upper() != "GET":
+        return "Error: pricelabs_api_call is read-only. Only GET requests allowed. Use pricelabs_get_listings, pricelabs_get_listing, or pricelabs_fetch_prices."
+
     url = f"{BASE_URL}{path}"
     headers = _build_headers()
 
     try:
-        data = json.loads(body) if body else None
-    except json.JSONDecodeError:
-        return f"Error: invalid JSON in body: {body}"
-
-    try:
         with httpx.Client(timeout=30) as client:
-            method_upper = method.upper()
-            if method_upper == "GET":
-                resp = client.get(url, headers=headers)
-            elif method_upper == "POST":
-                resp = client.post(url, headers=headers, json=data)
-            else:
-                return f"Unsupported HTTP method: {method}. Use GET or POST."
+            resp = client.get(url, headers=headers)
 
         if resp.status_code >= 400:
             return f"HTTP {resp.status_code}\nURL: {url}\nResponse: {resp.text[:2000]}"
@@ -223,54 +215,6 @@ def pricelabs_get_listing(listing_id: str) -> str:
             return resp.text[:4000]
     except httpx.RequestError as e:
         return f"Request failed: {type(e).__name__}: {e}"
-
-
-@mcp.tool()
-def pricelabs_update_listings(body: str) -> str:
-    """Update listing parameters in Pricelabs (base_price, min_price, max_price).
-
-    Calls POST /v1/listings.
-
-    Args:
-        body: JSON string with listings array. Example:
-            '{"listings": [{"id": "123456", "base_price": 1100, "min_price": 200, "max_price": 1600}]}'
-    """
-    if not API_KEY:
-        return "Error: PRICELABS_API_KEY not configured in environment"
-
-    return pricelabs_api_call("POST", "/v1/listings", body)
-
-
-@mcp.tool()
-def pricelabs_fetch_prices(body: str) -> str:
-    """Fetch current prices for listings from Pricelabs.
-
-    Calls POST /v1/fetch_prices.
-
-    Args:
-        body: JSON string with listing info. Example:
-            '{"listing": {"id": "abc", "pms": "xyz"}}'
-    """
-    if not API_KEY:
-        return "Error: PRICELABS_API_KEY not configured in environment"
-
-    return pricelabs_api_call("POST", "/v1/fetch_prices", body)
-
-
-@mcp.tool()
-def pricelabs_push_prices(body: str) -> str:
-    """Push prices to listings via Pricelabs.
-
-    Calls POST /v1/push_prices.
-
-    Args:
-        body: JSON string with listing info. Example:
-            '{"listing": "1234", "pms": "abc"}'
-    """
-    if not API_KEY:
-        return "Error: PRICELABS_API_KEY not configured in environment"
-
-    return pricelabs_api_call("POST", "/v1/push_prices", body)
 
 
 if __name__ == "__main__":
