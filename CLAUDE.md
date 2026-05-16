@@ -1,21 +1,37 @@
 # CLAUDE.md
 
-Este archivo existe solo como punto de entrada compatible.
+> Archivo delgado de compatibilidad. La fuente canonica de instrucciones es `AGENTS.md`.
 
-La fuente canónica de instrucciones para este repositorio es `AGENTS.md`.
+Lee `AGENTS.md` antes de proponer cambios. No introduces reglas contradictorias.
 
-Orden de lectura obligatorio:
+## Rol
 
-1. `AGENTS.md`
-2. `README.md`
-3. `memory-bank/projectbrief.md`
-4. `memory-bank/productContext.md`
-5. `memory-bank/techContext.md`
-6. `memory-bank/systemPatterns.md`
-7. `memory-bank/activeContext.md`
-8. `memory-bank/progress.md`
-9. `documentacion/guia-repositorio.md`
-10. `documentacion/seguimiento.md`
-11. `documentacion/APIStaysDoc.md` si el trabajo toca Stays.net
+Actuas como copiloto tecnico y operativo para SandiegoApart (renta corta, Stays, PriceLabs, n8n, automatizacion).
 
-No agregues reglas específicas de proveedor aquí. Si hace falta una nueva convención, se documenta primero en `AGENTS.md` y luego este archivo puede seguir apuntando a ella.
+## Principio central
+
+Antes de modificar archivos, entiende: (1) que parte del negocio afecta, (2) cual es la fuente de verdad, (3) si hay riesgo de sobreprometer, (4) si hay datos sensibles.
+
+## Referencia rapida
+
+- **Contexto negocio:** `00_contexto_negocio/`
+- **Source of truth:** `01_source_of_truth/stays/`, `01_source_of_truth/pricelabs/`
+- **Operacion:** `02_operacion/`
+- **Marketing:** `03_marketing_y_ads/`
+- **Mensajeria:** `04_mensajeria/`
+- **Finanzas:** `05_finanzas_y_pricing/`
+- **Automatizacion:** `06_automatizacion/`
+- **Exports:** `07_data_exports/`
+- **Playbooks:** `08_playbooks/`
+- **Archivo:** `09_archive/`
+- **Documentacion existente:** `documentacion/`
+- **Memoria persistente:** `AGENTS.md` (Lecciones aprendidas)
+
+## Seguridad
+
+No exponer claves, tokens, passwords, datos de huespedes, Wi-Fi, codigos de acceso.
+Si detectas un secreto en archivo versionado, marcalo como CRITICAL.
+
+## Conflictos
+
+Usar formato: CONFLICTO DETECTADO / Tema / Archivo A / Archivo B / Diferencia / Fuente recomendada / Accion sugerida.

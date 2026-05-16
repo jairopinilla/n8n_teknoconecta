@@ -1,21 +1,17 @@
 # OPENCODE.md
 
-Este archivo existe solo como punto de entrada compatible.
+> Archivo delgado de compatibilidad. La fuente canonica de instrucciones es `AGENTS.md`.
 
-La fuente canónica de instrucciones para este repositorio es `AGENTS.md`.
+Lee `AGENTS.md` antes de proponer cambios. No introduces reglas contradictorias.
 
-Orden de lectura obligatorio:
+## Referencia rapida
 
-1. `AGENTS.md`
-2. `README.md`
-3. `memory-bank/projectbrief.md`
-4. `memory-bank/productContext.md`
-5. `memory-bank/techContext.md`
-6. `memory-bank/systemPatterns.md`
-7. `memory-bank/activeContext.md`
-8. `memory-bank/progress.md`
-9. `documentacion/guia-repositorio.md`
-10. `documentacion/seguimiento.md`
-11. `documentacion/APIStaysDoc.md` si el trabajo toca Stays.net
-
-No agregues reglas específicas de proveedor aquí. Si hace falta una nueva convención, se documenta primero en `AGENTS.md` y luego este archivo puede seguir apuntando a ella.
+- `00_contexto_negocio/` — negocio, unidades, ubicacion
+- `01_source_of_truth/` — Stays, PriceLabs
+- `02_operacion/` — check-in, reglas, edificio
+- `03_marketing_y_ads/` — marca, anuncios, Instagram
+- `04_mensajeria/` — mensajes a huespedes
+- `05_finanzas_y_pricing/` — KPIs, revenue
+- `06_automatizacion/` — n8n, MCP, workflows
+- `08_playbooks/` — guias paso a paso
+- `documentacion/` — documentacion legacy

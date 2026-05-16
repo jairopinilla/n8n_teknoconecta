@@ -1,64 +1,52 @@
-# Plataforma de Automatizacion de Renta Corta
+# SandiegoApart — Base de conocimiento y accion
 
-Este repositorio almacena exportaciones de workflows de n8n y la documentación operativa de una plataforma de automatización para renta corta. Su objetivo es centralizar el comportamiento de los flujos, las integraciones externas y las convenciones de operación para que cualquier persona o asistente de código pueda entender el sistema sin depender de contexto implícito.
+Operador de renta corta en Santiago Centro, Chile.
+4 estudios en Tarapaca 1140: 901, 902, 709, 702.
+
+> Estudios modernos con terraza en Santiago Centro, pensados para trabajar y descansar.
 
 ## Leer primero
 
-- `AGENTS.md`: instrucciones canónicas para asistentes de código.
-- `documentacion/guia-repositorio.md`: guía detallada del repositorio y de su operación.
-- `documentacion/seguimiento.md`: estado actual, cambios recientes y próximos pasos.
-- `documentacion/tecnologias.md`: stack tecnológico e inventario de integraciones.
-- `documentacion/APIStaysDoc.md`: referencia completa de la API de Stays.net.
+- `AGENTS.md` — instrucciones canonicas para asistentes de IA
+- `00_contexto_negocio/` — quien somos, que operamos
+- `01_source_of_truth/` — Stays, PriceLabs
+- `documentacion/seguimiento.md` — estado actual y cambios recientes
 
-## Qué contiene el repositorio
+## Estructura del repositorio
 
-- `workflows/`: 12 exportaciones JSON de workflows de n8n.
-- `documentacion/`: documentación funcional, técnica y operativa.
-- `sync_workflows.sh`: script de sincronización con la instancia n8n.
-- `.github/copilot-instructions.md`: puente de compatibilidad para GitHub Copilot.
-- `CLAUDE.md` y `OPENCODE.md`: puentes de compatibilidad para otros asistentes.
+| Carpeta | Proposito |
+|---------|-----------|
+| `00_contexto_negocio/` | Negocio, unidades, ubicacion, glosario, politica de marca |
+| `01_source_of_truth/` | Fuentes de verdad: Stays, PriceLabs |
+| `02_operacion/` | Reglas operativas, check-in/out, edificio, seguridad |
+| `03_marketing_y_ads/` | Marca, tono, anuncios, Instagram |
+| `04_mensajeria/` | Plantillas de mensajes a huespedes (ES/EN/PT-BR) |
+| `05_finanzas_y_pricing/` | KPIs, revenue management |
+| `06_automatizacion/` | n8n, MCP, workflows |
+| `07_data_exports/` | Exportaciones de datos (raw → processed) |
+| `08_playbooks/` | Guias paso a paso para tareas operativas |
+| `09_archive/` | Contenido deprecated preservado |
+| `workflows/` | Exportaciones JSON de workflows n8n |
+| `documentacion/` | Documentacion legacy (APIStays, pricelabs-academy, etc.) |
+| `mcp-servers/` | Servidores MCP locales (stays-docs, pricelabs-docs) |
+| `secrets/` | Documentacion de seguridad (sin valores reales) |
 
-## Resumen operativo
+## Stack tecnologico
 
-- Orquestador principal: n8n self-hosted.
-- Persistencia: PostgreSQL en Neon, con pgvector para capacidades semánticas.
-- Backend operacional: Directus.
-- Reservas: Stays.net vía API HTTP documentada localmente.
-- Mensajería: WhatsApp vía Twilio y correo vía Gmail.
-- Formularios: Tally.so.
-- IA: OpenAI, Google Gemini y herramientas externas de búsqueda en flujos puntuales.
+- **Orquestador:** n8n self-hosted
+- **Persistencia:** PostgreSQL (Neon) + pgvector
+- **Backend:** Directus
+- **PMS:** Stays.net
+- **Pricing:** PriceLabs
+- **Mensajeria:** Twilio (WhatsApp) + Gmail
+- **IA:** OpenAI, Google Gemini
+- **Agentes IA:** Protocolo MCP (15 servidores)
 
-## Inventario actual de workflows
+## Seguridad
 
-Estado basado en los JSON exportados actualmente en `workflows/`.
+⚠️ **CRITICAL:** `exportadata/` contiene datos sensibles con PII de huespedes.
+Ver `secrets/README.md` para el inventario completo de secretos detectados y acciones requeridas.
 
-| Workflow | Estado | Disparador | Propósito principal |
-|----------|--------|------------|---------------------|
-| `N8n_Update_Reservas` | Activo | Scheduler | Sincronizar reservas y huéspedes desde Stays.net hacia PostgreSQL |
-| `N8n_EnviarCorreosReserva` | Activo | Scheduler | Enviar correos programados a huéspedes |
-| `N8n_ProcesaWhatsapp` | Activo | Scheduler | Enviar mensajes WhatsApp programados |
-| `N8n_NotificacionWhats_Aseo` | Inactivo | Scheduler | Flujo legado o alternativo para notificaciones de aseo por WhatsApp |
-| `N8n_Procesa_Formularios` | Activo | Webhook | Recibir formularios de Tally.so |
-| `N8n_SandiegoChatbot` | Activo | Webhook | Resolver consultas del departamento San Diego con RAG y LLM |
-| `N8n_getAseosHtml` | Activo | Webhook | Generar reporte HTML de aseos |
-| `N8n_getAseosHtml_v2` | Inactivo | Webhook | Variante v2 del reporte de aseos |
-| `N8n_interpreta_email_conserjeria` | Activo | Scheduler | Interpretar correos de conserjería con LLM |
-| `N8n_procesa_tarapaca_conserjeria` | Activo | Webhook | Procesar mensajes de conserjería para Tarapacá |
-| `N8n_procesar_email_isaias` | Activo | Webhook | Procesar correos entrantes del buzón Isaías |
-| `N8n_procesar_email_tekno` | Activo | Webhook | Procesar correos entrantes del buzón TeknoConect |
+## Estado y seguimiento
 
-## Reglas del repositorio
-
-- La fuente canónica de instrucciones es `AGENTS.md`.
-- Para Stays.net siempre se debe consultar `documentacion/APIStaysDoc.md`.
-- La zona horaria operativa es `America/Santiago` y las fechas deben salir de PostgreSQL cuando aplique.
-- Los secretos viven solo en archivos locales ignorados por git como `.vscode/mcp.json` y `secrets.json`.
-- Toda modificación sustantiva debe dejar actualizado `documentacion/seguimiento.md`.
-
-## Sincronización de workflows
-
-`sync_workflows.sh` lee `secrets.json`, consulta la API de n8n y escribe los JSON exportados en `workflows/`. La guía detallada, incluyendo limitaciones conocidas del script, está en `documentacion/guia-repositorio.md`.
-
-## Estado y rumbo
-
-El seguimiento vivo del repositorio, incluyendo qué se hizo y qué viene después, se mantiene en `documentacion/seguimiento.md`.
+`documentacion/seguimiento.md` — registro vivo de cambios, estado actual y proximos pasos.

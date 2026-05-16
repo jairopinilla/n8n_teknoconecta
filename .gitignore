@@ -3,3 +3,7 @@ secrets.json
 opencode.jsonc
 documentacion/Asesorias/
 mcp-servers/__pycache__/
+__pycache__/
+.venv/
+*.xlsx
+*.ipynb

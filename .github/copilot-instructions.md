@@ -6,9 +6,17 @@ La fuente canónica de instrucciones para este repositorio es `AGENTS.md`. Este 
 
 1. `AGENTS.md`
 2. `README.md`
-3. `documentacion/guia-repositorio.md`
-4. `documentacion/seguimiento.md`
-5. `documentacion/APIStaysDoc.md` si el trabajo toca Stays.net
+3. `00_contexto_negocio/`
+4. `01_source_of_truth/`
+5. `02_operacion/`
+6. `03_marketing_y_ads/`
+7. `04_mensajeria/`
+8. `05_finanzas_y_pricing/`
+9. `06_automatizacion/`
+10. `08_playbooks/`
+11. `documentacion/guia-repositorio.md`
+12. `documentacion/seguimiento.md`
+13. `documentacion/APIStaysDoc.md` si el trabajo toca Stays.net
 
 ## Reglas clave
 
