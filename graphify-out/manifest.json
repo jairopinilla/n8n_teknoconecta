@@ -1,0 +1,286 @@
+{
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/fix_workflow.py": {
+    "mtime": 1777510736.1599176,
+    "hash": "37a296580af42be72adee5b0918dd67d"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/pricelabs-docs/server.py": {
+    "mtime": 1778886438.327498,
+    "hash": "5c6cbf54a6253a74dbd46ea305906ee5"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/stays-docs/server.py": {
+    "mtime": 1778867954.9967093,
+    "hash": "4366c07b55fa318b40f6cd23ad69e1af"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/AGENTS.md": {
+    "mtime": 1778948563.7758732,
+    "hash": "f4484d1a3b2385130eda32aa5d1f2f93"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/CLAUDE.md": {
+    "mtime": 1778946660.845667,
+    "hash": "fd9a8f07985725e80b72be7e7650ab78"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/OPENCODE.md": {
+    "mtime": 1778946662.9770174,
+    "hash": "1dc059cb26087d8cb755f391d4e2d5ce"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/README.md": {
+    "mtime": 1778948511.60289,
+    "hash": "885c44a0dc590fd981182173f5a443b4"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/00_contexto_negocio/glosario.md": {
+    "mtime": 1778948525.0527768,
+    "hash": "669bf9407f94516def138c1642890c7d"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/00_contexto_negocio/politica_no_sobreprometer.md": {
+    "mtime": 1778946524.855341,
+    "hash": "3dd2a5b4724a617acdeaa3fae5773e5a"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/00_contexto_negocio/sandiegoapart.md": {
+    "mtime": 1778948514.6101434,
+    "hash": "f95b276102a97946e2e5a604a3c0a1b4"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/00_contexto_negocio/ubicacion.md": {
+    "mtime": 1778946514.8867488,
+    "hash": "501d3004799fc4b4f24de7ff1ba5f4ae"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/00_contexto_negocio/unidades.md": {
+    "mtime": 1778946510.8612573,
+    "hash": "3a3c51ab0a4e9594f60fb7b15a9f367b"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/01_source_of_truth/pricelabs/pricing_rules.md": {
+    "mtime": 1778946542.6277163,
+    "hash": "c37646a05001a97e3fdc0fc0edd99d96"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/01_source_of_truth/stays/api.md": {
+    "mtime": 1778946538.7037477,
+    "hash": "1a6f90ce39edad3a1d6688b6a093b725"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/01_source_of_truth/stays/calendars.md": {
+    "mtime": 1778946540.8473527,
+    "hash": "03625de2659962d56231294f4e99b1b7"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/01_source_of_truth/stays/listings.md": {
+    "mtime": 1778946535.8092787,
+    "hash": "216ba5f1553fa9869ed9c3e978a6e46b"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/02_operacion/checkin_checkout.md": {
+    "mtime": 1778946550.9485269,
+    "hash": "58cfe39f603570527397dd9defd04ec2"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/02_operacion/edificio_tarapaca_1140.md": {
+    "mtime": 1778946556.6423388,
+    "hash": "1502f534172159329b94ab40362e0330"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/02_operacion/reglas_huespedes.md": {
+    "mtime": 1778946553.3315656,
+    "hash": "25cd43519330b770a5340f0f21720700"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/02_operacion/seguridad_camaras.md": {
+    "mtime": 1778946558.7375648,
+    "hash": "a78704ec5a535ea9395d818817e47c4e"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/03_marketing_y_ads/marca.md": {
+    "mtime": 1778946567.051788,
+    "hash": "efa547bf5f47b4ce805377b2d13bf0ca"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/03_marketing_y_ads/tono_de_voz.md": {
+    "mtime": 1778946570.335687,
+    "hash": "5c9eedfdaccc0e4bcdc0257f67de63e4"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/04_mensajeria/checkin.md": {
+    "mtime": 1778946574.0643058,
+    "hash": "dd4ec47be4421816b12fdf53a2de1d21"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/04_mensajeria/durante_estadia.md": {
+    "mtime": 1778946578.22122,
+    "hash": "062fa5f61f274287de99d8ab8a0ce802"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/05_finanzas_y_pricing/kpis.md": {
+    "mtime": 1778946586.908272,
+    "hash": "cc084625e5963348a5d5e1bc37439a88"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/05_finanzas_y_pricing/revenue_management.md": {
+    "mtime": 1778946589.0903385,
+    "hash": "3c52be23945a999a1e56a027a2f9e64e"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/06_automatizacion/mcp.md": {
+    "mtime": 1778948510.8996036,
+    "hash": "b8b4b8d40d197ca316d36d5912fa04b3"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/06_automatizacion/n8n.md": {
+    "mtime": 1778946592.439037,
+    "hash": "e94b2d897b2b68ff8d3d462f552c9bd0"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/08_playbooks/actualizar_precios.md": {
+    "mtime": 1778946612.022479,
+    "hash": "8c1f63dc9a1e0df93babc44423101108"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/08_playbooks/checklist_pre_publicacion.md": {
+    "mtime": 1778946615.2285619,
+    "hash": "3ffc044d1f700c41326d3eb566cea02d"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/08_playbooks/publicar_nuevo_anuncio.md": {
+    "mtime": 1778946603.965976,
+    "hash": "eb00576ede5ed9bef4260a4e047047cf"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/08_playbooks/responder_huesped.md": {
+    "mtime": 1778946609.1532023,
+    "hash": "10531f8a47bd7dd5495e7a39bb7cb269"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/08_playbooks/revisar_coherencia_anuncio_realidad.md": {
+    "mtime": 1778946606.6404545,
+    "hash": "fcfefa006585fac01e1cafb57bd28876"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/APIStaysDoc.md": {
+    "mtime": 1777493694.1055925,
+    "hash": "1c2666747df71f7019d97751c5f012ef"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/asesorias.md": {
+    "mtime": 1778875098.5270498,
+    "hash": "cf992e3ca47c11977e582c24d75b9ad1"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/configuracion-mcp.md": {
+    "mtime": 1778703265.915445,
+    "hash": "1850346d2cdfe973bc4227073566060a"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/guia-repositorio.md": {
+    "mtime": 1777588706.968876,
+    "hash": "8ccd5d8af72ce83cf58d353d5946e4f6"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/Pricelabs_API.md": {
+    "mtime": 1778867400.1410205,
+    "hash": "8b477dc7ec785be85d846fd6b322e45c"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/seguimiento.md": {
+    "mtime": 1778948554.9881494,
+    "hash": "a2a58c432fac315b9ebf27dd73354486"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/tecnologias.md": {
+    "mtime": 1778870423.7085044,
+    "hash": "e40c72403a37669fb4291d7148b1bd5a"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/Asesorias/Asesoria_Renta_Corta.md": {
+    "mtime": 1778872114.651252,
+    "hash": "630095968e20ef9525dd2fd5315cb0d2"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/Asesorias/BONO+1+PACK+MAESTRO+AIRBNB.md": {
+    "mtime": 1778872133.147253,
+    "hash": "f6e900e500fe10641601d4aee7e07375"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/Asesorias/BONO+2+PACK+MAESTRO+AIRBNB.md": {
+    "mtime": 1778872146.7134757,
+    "hash": "d5f3298573da5245b94a4befe9482955"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/Asesorias/BONO+3+PACK+MAESTRO+AIRBNB.md": {
+    "mtime": 1778872163.496931,
+    "hash": "1ec8a9df615b0e3f6e5b3a604a3c030d"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/Asesorias/BONO+4+PACK+MAESTRO+AIRBNB.md": {
+    "mtime": 1778872185.449244,
+    "hash": "dab92efcb344ea3a359050f1afbf8dae"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/Asesorias/BONO+5+PACK+MAESTRO+AIRBNB.md": {
+    "mtime": 1778872218.1997705,
+    "hash": "ceb63885282467aeb762e5090f7c386e"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/Asesorias/BONO+6+PACK+MAESTRO+AIRBNB.md": {
+    "mtime": 1778872268.4642608,
+    "hash": "208056fe64c3ad430b0dff2c1b930cd2"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/Asesorias/EBook Experiencia Airbnb Host Summit 2025 .md": {
+    "mtime": 1778872323.8168578,
+    "hash": "b327c451c544c9a68ebcafd9cc4f5f19"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/Asesorias/screencapture-documenter-getpostman-view-507656-SVSEurQC-2026-05-15-13_20_38.md": {
+    "mtime": 1778867400.1410205,
+    "hash": "8b477dc7ec785be85d846fd6b322e45c"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/pricelabs-academy/account.md": {
+    "mtime": 1778891811.8847117,
+    "hash": "50496b82b8a415383f049ca1ddab2332"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/pricelabs-academy/dynamic-pricing.md": {
+    "mtime": 1778891811.94621,
+    "hash": "d047be84992935e2be1da2219739a558"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/pricelabs-academy/listing-optimizer.md": {
+    "mtime": 1778891811.9514084,
+    "hash": "aaa1c9c9c134f8fabc25ef4a752a3ae8"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/pricelabs-academy/market-dashboards.md": {
+    "mtime": 1778891811.9658647,
+    "hash": "6a052c256861f1860277684297c4d79c"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/pricelabs-academy/new-users.md": {
+    "mtime": 1778891811.9759376,
+    "hash": "7e8772dfb3c632d9bfe9ab8359c55e26"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/pricelabs-academy/portfolio-analytics.md": {
+    "mtime": 1778891811.9878147,
+    "hash": "4aa36be7e5b36e5b795c4e33c51a9379"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/pricelabs-academy/pricing-and-billing.md": {
+    "mtime": 1778891811.9934647,
+    "hash": "f2abc88e52800c0321ea844061053fc4"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/pricelabs-academy/README.md": {
+    "mtime": 1778891888.0409741,
+    "hash": "2605250e75b3a52c2fb2fef827d4fa21"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/stays-academy/alojamientos.md": {
+    "mtime": 1778883483.2372684,
+    "hash": "dd5e2dd839112c561bb0617580337cce"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/stays-academy/calendarios.md": {
+    "mtime": 1778883483.5927653,
+    "hash": "d71b2d7c4c7a72fb6fcec67a6e8a25e9"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/stays-academy/channel-managers.md": {
+    "mtime": 1778883493.8034155,
+    "hash": "b9f6e29fdbaecfcb9f49b04bc9ed1d0c"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/stays-academy/conciliacion.md": {
+    "mtime": 1778883483.5402842,
+    "hash": "a4d4d7fb77e798e18a1531443355516f"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/stays-academy/emails.md": {
+    "mtime": 1778883483.8660777,
+    "hash": "fea8533b3a4aa30fdec00105dbfd84a0"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/stays-academy/financiero.md": {
+    "mtime": 1778883483.742629,
+    "hash": "6e4842a8f1524ae50fc207b5e439d9ff"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/stays-academy/precios.md": {
+    "mtime": 1778883483.4583867,
+    "hash": "470df0e19e2fd646cbef34432d6c39b6"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/memory-bank/activeContext.md": {
+    "mtime": 1778871064.8853197,
+    "hash": "e7e47ad9e14d9f708fe6f0e6cd61ed54"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/memory-bank/productContext.md": {
+    "mtime": 1778871049.0502384,
+    "hash": "e50642dfdb674f975e1e4f7ae3ae68b1"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/memory-bank/progress.md": {
+    "mtime": 1778871136.0687306,
+    "hash": "e835f3d09d60c834a73932da5f15e3ae"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/memory-bank/projectbrief.md": {
+    "mtime": 1778871033.8605647,
+    "hash": "fcc914dd45670858bd3ca113a1d4f1f3"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/memory-bank/systemPatterns.md": {
+    "mtime": 1778871090.4169786,
+    "hash": "aeee4af50d8e4aaeb7f7b6686446f6e5"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/memory-bank/techContext.md": {
+    "mtime": 1778871114.907206,
+    "hash": "d77e24dca259e3175bdf1560ed52e206"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/secrets/README.md": {
+    "mtime": 1778946620.9695816,
+    "hash": "7df2b3194ed72e58b4e9b66dbf21e30a"
+  }
+}

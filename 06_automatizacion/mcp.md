@@ -6,7 +6,6 @@ Configurados en `.vscode/mcp.json` (ignorado por git).
 
 | Servidor | Tipo | URL / Comando |
 |----------|------|---------------|
-| airroi | HTTP | https://mcp.airroi.com |
 | clerk | HTTP | https://mcp.clerk.com/mcp |
 | neon | STDIO | npx @neondatabase/mcp-server-neon |
 | vercel | HTTP | https://mcp.vercel.com |

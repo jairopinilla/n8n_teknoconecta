@@ -7,3 +7,6 @@ __pycache__/
 .venv/
 *.xlsx
 *.ipynb
+graphify-out/cache/
+graphify-out/graph.html
+graphify-out/GRAPH_REPORT.md

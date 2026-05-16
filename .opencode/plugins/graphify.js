@@ -1,22 +1,18 @@
 // graphify OpenCode plugin
-// Injects a knowledge graph reminder before bash tool calls when the graph exists.
+// On-demand knowledge graph queries. Does NOT add noise to bash calls.
+// Use via /graphify query when you need cross-cutting analysis.
 import { existsSync } from "fs";
 import { join } from "path";
 
 export const GraphifyPlugin = async ({ directory }) => {
-  let reminded = false;
+  const graphPath = join(directory, "graphify-out", "graph.json");
+  const hasGraph = existsSync(graphPath);
 
   return {
+    // No automatic injection - the graph is an on-demand tool.
+    // To query: use the /graphify skill at the conversation level.
     "tool.execute.before": async (input, output) => {
-      if (reminded) return;
-      if (!existsSync(join(directory, "graphify-out", "graph.json"))) return;
-
-      if (input.tool === "bash") {
-        output.args.command =
-          'echo "[graphify] Knowledge graph available. Read graphify-out/GRAPH_REPORT.md for god nodes and architecture context before searching files." && ' +
-          output.args.command;
-        reminded = true;
-      }
+      // Silent pass-through - graphify is purely on-demand
     },
   };
 };

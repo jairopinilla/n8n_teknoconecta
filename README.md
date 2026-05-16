@@ -40,7 +40,7 @@ Operador de renta corta en Santiago Centro, Chile.
 - **Pricing:** PriceLabs
 - **Mensajeria:** Twilio (WhatsApp) + Gmail
 - **IA:** OpenAI, Google Gemini
-- **Agentes IA:** Protocolo MCP (15 servidores)
+- **Agentes IA:** Protocolo MCP (14 servidores)
 
 ## Seguridad
 

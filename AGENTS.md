@@ -212,6 +212,8 @@ Cuando haya conflicto entre documentos, usar:
 - `sandiegoapart-data-curator`: curaduria de conocimiento del repo
 - `sandiegoapart-automation-n8n`: automatizacion n8n/MCP
 - `graphify`: conocimiento grafico del repo. Mapea todo el proyecto (docs, codigo, datos) en un grafo consultable. Usar `graphify install --platform opencode` para registrar. Output: `graphify-out/graph.html`, `graphify-out/GRAPH_REPORT.md`, `graphify-out/graph.json`.
+  - **Usar para**: preguntas cross-dominio (ej: "como se conecta Stays con mensajeria?")
+  - **NO usar para**: busqueda de archivos especificos, entender una carpeta, tareas diarias
 
 ## Compatibilidad multi-agente
 
@@ -220,12 +222,22 @@ Cuando haya conflicto entre documentos, usar:
 
 ## graphify
 
-This project has a knowledge graph at graphify-out/ with god nodes, community structure, and cross-file relationships.
+This project has a knowledge graph at `graphify-out/graph.json` (104 nodes, 79 edges).
+The graph supplements the directory structure — it does NOT replace it.
 
-When the user types `/graphify`, invoke the `skill` tool with `skill: "graphify"` before doing anything else.
+**When to use the graph:**
+- Cross-module questions: "how does X in operacion connect to Y in automatizacion?"
+- Finding unexpected relationships between different domains
+- Tracing paths across communities
 
-Rules:
-- ALWAYS read graphify-out/GRAPH_REPORT.md before reading any source files, running grep/glob searches, or answering codebase questions. The graph is your primary map of the codebase.
-- IF graphify-out/wiki/index.md EXISTS, navigate it instead of reading raw files
-- For cross-module "how does X relate to Y" questions, prefer `graphify query "<question>"`, `graphify path "<A>" "<B>"`, or `graphify explain "<concept>"` over grep — these traverse the graph's EXTRACTED + INFERRED edges instead of scanning files
-- After modifying code, run `graphify update .` to keep the graph current (AST-only, no API cost).
+**When NOT to use the graph (use directory structure instead):**
+- Finding specific files (use glob/grep)
+- Understanding what a directory contains (read it directly)
+- Most day-to-day queries — the directory structure `00_` through `09_` is the primary map
+
+**How to use:**
+- `/graphify query "question"` — BFS traversal for broad context
+- `/graphify query "question" --dfs` — DFS for specific paths
+- `/graphify path "ConceptA" "ConceptB"` — shortest path between concepts
+- `/graphify update .` — after code changes (AST-only, no API cost)
+- Git hooks installed: auto-rebuilds graph on `git commit` (AST-only, free, no API cost)

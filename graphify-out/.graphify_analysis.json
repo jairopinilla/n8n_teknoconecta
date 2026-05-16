@@ -1,0 +1,367 @@
+{
+  "communities": {
+    "0": [
+      "mcp_servers_stays_docs_server_py",
+      "pricelabs_docs_server_pricelabs_get_listing",
+      "pricelabs_docs_server_rationale_177",
+      "pricelabs_docs_server_rationale_202",
+      "pricelabs_docs_server_rationale_86",
+      "pricelabs_docs_server_search_pricelabs_docs",
+      "stays_docs_server_build_headers",
+      "stays_docs_server_parse_documentation",
+      "stays_docs_server_rationale_109",
+      "stays_docs_server_rationale_155",
+      "stays_docs_server_rationale_215",
+      "stays_docs_server_search_stays_docs",
+      "stays_docs_server_stays_api_call",
+      "stays_docs_server_stays_get_reservations"
+    ],
+    "1": [
+      "01_source_of_truth_stays_apimd",
+      "01_source_of_truth_stays_listingsmd",
+      "03_marketing_y_ads_marca_md",
+      "03_marketing_y_ads_tono_de_vozmd",
+      "04_mensajeria_checkinmd",
+      "06_automatizacion_mcpmd",
+      "06_automatizacion_n8nmd",
+      "08_playbooks_publicar_nuevo_anunciomd",
+      "documentacion_apistaysdocmd",
+      "documentacion_guia_repositoriomd"
+    ],
+    "2": [
+      "01_source_of_truth_pricelabs_pricing_rulesmd",
+      "documentacion_pricelabs_api_md",
+      "pricelabs_docs_server_pricelabs_fetch_prices",
+      "pricelabs_docs_server_pricelabs_push_prices",
+      "pricelabs_docs_server_pricelabs_update_listings",
+      "pricelabs_docs_server_rationale_131",
+      "pricelabs_docs_server_rationale_230",
+      "pricelabs_docs_server_rationale_246",
+      "pricelabs_docs_server_rationale_262"
+    ],
+    "3": [
+      "memory_bank_activecontext",
+      "memory_bank_productcontext",
+      "memory_bank_progress",
+      "memory_bank_projectbrief",
+      "memory_bank_systempatterns",
+      "memory_bank_techcontext"
+    ],
+    "4": [
+      "listing_optimizer_como_calificamos_la_calidad_de_tus_listados",
+      "listing_optimizer_introduccion_a_listing_optimizer",
+      "listing_optimizer_pagina_de_resumen_del_listado",
+      "listing_optimizer_pestana_descripcion_general_de_la_competencia",
+      "listing_optimizer_pestana_resumen_de_la_clasificacion"
+    ],
+    "5": [
+      "agents_agentsmd",
+      "claude_claudemd",
+      "opencode_opencodemd",
+      "readme_readmemd"
+    ],
+    "6": [
+      "pricelabs_docs_server_rationale_56",
+      "stays_docs_server_list_endpoints",
+      "stays_docs_server_rationale_67"
+    ],
+    "7": [
+      "pricelabs_docs_server_rationale_65",
+      "stays_docs_server_get_endpoint_detail",
+      "stays_docs_server_rationale_78"
+    ],
+    "8": [
+      "dynamic_pricing_como_integrar_pricelabs_con_ezcloud",
+      "dynamic_pricing_como_integrar_pricelabs_con_supercontrol",
+      "dynamic_pricing_crear_y_usar_perfiles_de_estadia_minima"
+    ],
+    "9": [
+      "portfolio_analytics_analisis_de_ia_en_report_builder",
+      "portfolio_analytics_crear_dashboards_de_analisis_para_propietarios",
+      "portfolio_analytics_programar_correos_electronicos_de_informes_en_report_builder"
+    ],
+    "10": [
+      "04_mensajeria_durante_estadiamd",
+      "08_playbooks_responder_huespedmd"
+    ],
+    "11": [
+      "account_configuracion_avanzada",
+      "account_dale_acceso_a_tu_equipo"
+    ],
+    "12": [
+      "market_dashboards_agrega_el_widget_de_revenue_estimator_a_tu_pagina_web",
+      "market_dashboards_como_crear_una_proyeccion_de_ingresos"
+    ],
+    "13": [
+      "market_dashboards_como_crear_y_ver_comps_personalizados",
+      "market_dashboards_crear_un_market_dashboard"
+    ],
+    "14": [
+      "market_dashboards_market_dashboards_glosario_de_terminos",
+      "new_users_que_es_market_dashboard_y_como_usarlo"
+    ],
+    "15": [
+      "portfolio_analytics_como_se_completan_los_valores_de_mercado_en_report_builder",
+      "portfolio_analytics_empezar_a_usar_report_builder"
+    ],
+    "16": [
+      "fix_workflow_py"
+    ],
+    "17": [
+      "stays_academy_emails"
+    ],
+    "18": [
+      "stays_academy_financiero"
+    ],
+    "19": [
+      "stays_academy_precios"
+    ],
+    "20": [
+      "secrets_readme"
+    ],
+    "21": [
+      "00_contexto_negocio_glosariomd"
+    ],
+    "22": [
+      "00_contexto_negocio_politica_no_sobreprometermd"
+    ],
+    "23": [
+      "00_contexto_negocio_sandiegoapartmd"
+    ],
+    "24": [
+      "00_contexto_negocio_ubicacionmd"
+    ],
+    "25": [
+      "00_contexto_negocio_unidadesmd"
+    ],
+    "26": [
+      "01_source_of_truth_stays_calendarsmd"
+    ],
+    "27": [
+      "02_operacion_checkin_checkoutmd"
+    ],
+    "28": [
+      "02_operacion_edificio_tarapaca_1140md"
+    ],
+    "29": [
+      "02_operacion_reglas_huespedesmd"
+    ],
+    "30": [
+      "02_operacion_seguridad_camarasmd"
+    ],
+    "31": [
+      "05_finanzas_y_pricing_kpismd"
+    ],
+    "32": [
+      "05_finanzas_y_pricing_revenue_managementmd"
+    ],
+    "33": [
+      "08_playbooks_actualizar_preciosmd"
+    ],
+    "34": [
+      "08_playbooks_checklist_pre_publicacionmd"
+    ],
+    "35": [
+      "08_playbooks_revisar_coherencia_anuncio_realidadmd"
+    ],
+    "36": [
+      "documentacion_asesoriasmd"
+    ],
+    "37": [
+      "documentacion_configuracion_mcpmd"
+    ],
+    "38": [
+      "documentacion_seguimientomd"
+    ],
+    "39": [
+      "documentacion_tecnologiasmd"
+    ],
+    "40": [
+      "market_dashboards_market_dashboards_curvas_de_reservas"
+    ],
+    "41": [
+      "market_dashboards_market_dashboards_amenidades"
+    ],
+    "42": [
+      "new_users_que_es_los_precios_dinamicos_y_como_usarlo"
+    ],
+    "43": [
+      "pricing_and_billing_como_elegir_un_paquete_de_suscripcion"
+    ],
+    "44": [
+      "pricing_and_billing_pricelabs_market_dashboard_suscripcion_facturas_y_cancelacion"
+    ],
+    "45": [
+      "pricing_and_billing_dynamic_pricing_de_pricelabs_facturacion_suscripcion_y_facturas"
+    ],
+    "46": [
+      "pricing_and_billing_listing_optimizer_de_pricelabs_facturacion_suscripcion_cancelacion_y_facturas"
+    ],
+    "47": [
+      "pricing_and_billing_dynamic_pricing_de_pricelabs_porcentaje_de_facturacion"
+    ]
+  },
+  "cohesion": {
+    "0": 0.18,
+    "1": 0.27,
+    "2": 0.22,
+    "3": 1.0,
+    "4": 0.4,
+    "5": 0.5,
+    "6": 0.67,
+    "7": 0.67,
+    "8": 0.67,
+    "9": 0.67,
+    "10": 1.0,
+    "11": 1.0,
+    "12": 1.0,
+    "13": 1.0,
+    "14": 1.0,
+    "15": 1.0,
+    "16": 1.0,
+    "17": 1.0,
+    "18": 1.0,
+    "19": 1.0,
+    "20": 1.0,
+    "21": 1.0,
+    "22": 1.0,
+    "23": 1.0,
+    "24": 1.0,
+    "25": 1.0,
+    "26": 1.0,
+    "27": 1.0,
+    "28": 1.0,
+    "29": 1.0,
+    "30": 1.0,
+    "31": 1.0,
+    "32": 1.0,
+    "33": 1.0,
+    "34": 1.0,
+    "35": 1.0,
+    "36": 1.0,
+    "37": 1.0,
+    "38": 1.0,
+    "39": 1.0,
+    "40": 1.0,
+    "41": 1.0,
+    "42": 1.0,
+    "43": 1.0,
+    "44": 1.0,
+    "45": 1.0,
+    "46": 1.0,
+    "47": 1.0
+  },
+  "gods": [
+    {
+      "id": "documentacion_pricelabs_api_md",
+      "label": "PriceLabs API",
+      "degree": 7
+    },
+    {
+      "id": "stays_docs_server_build_headers",
+      "label": "_build_headers()",
+      "degree": 5
+    },
+    {
+      "id": "memory_bank_activecontext",
+      "label": "Active Context \u2014 TeknoConecta",
+      "degree": 5
+    },
+    {
+      "id": "memory_bank_productcontext",
+      "label": "Product Context \u2014 TeknoConecta",
+      "degree": 5
+    },
+    {
+      "id": "memory_bank_progress",
+      "label": "Progress \u2014 TeknoConecta",
+      "degree": 5
+    },
+    {
+      "id": "memory_bank_projectbrief",
+      "label": "Project Brief \u2014 TeknoConecta",
+      "degree": 5
+    },
+    {
+      "id": "memory_bank_systempatterns",
+      "label": "System Patterns \u2014 TeknoConecta",
+      "degree": 5
+    },
+    {
+      "id": "memory_bank_techcontext",
+      "label": "Tech Context \u2014 TeknoConecta",
+      "degree": 5
+    },
+    {
+      "id": "documentacion_guia_repositoriomd",
+      "label": "Guia del Repositorio",
+      "degree": 5
+    },
+    {
+      "id": "pricelabs_docs_server_pricelabs_get_listing",
+      "label": "pricelabs_get_listing()",
+      "degree": 4
+    }
+  ],
+  "surprises": [
+    {
+      "source": "Make authenticated HTTP request to Pricelabs API.      Authenticates automatical",
+      "target": "PriceLabs API",
+      "source_files": [
+        "mcp-servers/pricelabs-docs/server.py",
+        "documentacion/Pricelabs_API.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "rationale_for",
+      "why": "crosses file types (code \u2194 doc); connects across different repos/directories; peripheral node `Make authenticated HTTP request to Pricelabs API.      Authenticates automatical` unexpectedly reaches hub `PriceLabs API`"
+    },
+    {
+      "source": "PriceLabs API",
+      "target": "_build_headers()",
+      "source_files": [
+        "documentacion/Pricelabs_API.md",
+        "mcp-servers/stays-docs/server.py"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "crosses file types (code \u2194 doc); connects across different repos/directories; bridges separate communities"
+    },
+    {
+      "source": "pricelabs_update_listings()",
+      "target": "PriceLabs API",
+      "source_files": [
+        "mcp-servers/pricelabs-docs/server.py",
+        "documentacion/Pricelabs_API.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "crosses file types (code \u2194 doc); connects across different repos/directories"
+    },
+    {
+      "source": "pricelabs_fetch_prices()",
+      "target": "PriceLabs API",
+      "source_files": [
+        "mcp-servers/pricelabs-docs/server.py",
+        "documentacion/Pricelabs_API.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "crosses file types (code \u2194 doc); connects across different repos/directories"
+    },
+    {
+      "source": "pricelabs_push_prices()",
+      "target": "PriceLabs API",
+      "source_files": [
+        "mcp-servers/pricelabs-docs/server.py",
+        "documentacion/Pricelabs_API.md"
+      ],
+      "confidence": "EXTRACTED",
+      "relation": "calls",
+      "why": "crosses file types (code \u2194 doc); connects across different repos/directories"
+    }
+  ],
+  "tokens": {
+    "input": 0,
+    "output": 0
+  }
+}
