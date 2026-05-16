@@ -53,6 +53,36 @@ Gmail ──IMAP──► n8n ──► procesamiento
 | Tally.so | Formularios | Webhook → n8n |
 | MercadoPago | Pagos | MCP |
 
+## MCP Local con API Externa (Patrón stays-docs / pricelabs-docs)
+
+Algunos MCPs del proyecto son **locales pero conectan APIs externas**. En vez de llamar directamente a la API desde el agente, se usa un servidor MCP propio que envuelve la API y expone herramientas tipadas.
+
+**Ventajas:**
+- Documentación embebida: cada tool tiene descripción, parámetros y ejemplos
+- Validación de entrada: el servidor MCP valida parámetros antes de llamar la API
+- Read-only por diseño: solo exponen GET / operaciones seguras
+- Reutilizable: cualquier agente conectado obtiene las mismas herramientas
+
+**Estructura:**
+- Ubicación: `./mcp-servers/{nombre}/server.py`
+- Stack: Python + `mcp` SDK
+- Registro en `opencode.jsonc` con `"type": "local"` y `"command"` que ejecute `uv run`
+
+**Ejemplos en el repo:**
+| MCP | API externa | Ubicación | Función |
+|-----|-------------|-----------|---------|
+| `stays-docs` | Stays.net API | `./mcp-servers/stays-docs/server.py` | Reservas, listings, checkout |
+| `pricelabs-docs` | PriceLabs API | `./mcp-servers/pricelabs-docs/server.py` | Listings, precios, restricciones |
+
+**Reglas para crear nuevos MCPs locales con API externa:**
+1. Crear carpeta `./mcp-servers/{nombre}/`
+2. Implementar `server.py` usando el SDK de MCP en Python
+3. Definir tools con descripción clara, parámetros tipados y ejemplos
+4. Usar variables de entorno para credenciales (NO hardcodear en el script)
+5. Registrar en `opencode.jsonc` con `"type": "local"` y `"command"` que ejecute `uv run`
+6. Preferir operaciones read-only a menos que el caso de uso justifique writes
+7. Documentar endpoints funcionales vs no funcionales en `AGENTS.md`
+
 ## Design Decisions
 
 | Decision | Rationale | Date |
@@ -62,3 +92,4 @@ Gmail ──IMAP──► n8n ──► procesamiento
 | Polling cada 15 min a Stays | API no ofrece webhooks; 15 min es balance entre frescura y carga | 2024 |
 | LLM para correos Airbnb | Airbnb no tiene API pública | 2024 |
 | Colas con timestamps para envíos | Desacopla generación de envío; permite reprocesar | 2024 |
+| MCPs locales para APIs externas | Tipado, validación, documentación embebida, reutilizable | 2026-05-16 |
