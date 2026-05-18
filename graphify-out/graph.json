@@ -4,578 +4,1064 @@
   "graph": {},
   "nodes": [
     {
+      "label": "activeContext.md",
+      "file_type": "document",
+      "source_file": "activeContext.md",
+      "source_location": "L1",
+      "id": "activecontext_md",
+      "community": 8,
+      "norm_label": "activecontext.md"
+    },
+    {
+      "label": "Active Context \u2014 TeknoConecta",
+      "file_type": "document",
+      "source_file": "activeContext.md",
+      "source_location": "L1",
+      "id": "memory_bank_activecontext_active_context_teknoconecta",
+      "community": 8,
+      "norm_label": "active context \u2014 teknoconecta"
+    },
+    {
+      "label": "Current Focus",
+      "file_type": "document",
+      "source_file": "activeContext.md",
+      "source_location": "L3",
+      "id": "memory_bank_activecontext_current_focus",
+      "community": 8,
+      "norm_label": "current focus"
+    },
+    {
+      "label": "Recent Changes",
+      "file_type": "document",
+      "source_file": "activeContext.md",
+      "source_location": "L7",
+      "id": "memory_bank_activecontext_recent_changes",
+      "community": 8,
+      "norm_label": "recent changes"
+    },
+    {
+      "label": "Next Steps",
+      "file_type": "document",
+      "source_file": "activeContext.md",
+      "source_location": "L25",
+      "id": "memory_bank_activecontext_next_steps",
+      "community": 8,
+      "norm_label": "next steps"
+    },
+    {
+      "label": "Active Decisions",
+      "file_type": "document",
+      "source_file": "activeContext.md",
+      "source_location": "L34",
+      "id": "memory_bank_activecontext_active_decisions",
+      "community": 8,
+      "norm_label": "active decisions"
+    },
+    {
+      "label": "Blockers",
+      "file_type": "document",
+      "source_file": "activeContext.md",
+      "source_location": "L39",
+      "id": "memory_bank_activecontext_blockers",
+      "community": 8,
+      "norm_label": "blockers"
+    },
+    {
+      "label": "progress.md",
+      "file_type": "document",
+      "source_file": "progress.md",
+      "source_location": "L1",
+      "id": "progress_md",
+      "community": 9,
+      "norm_label": "progress.md"
+    },
+    {
+      "label": "Progress \u2014 TeknoConecta",
+      "file_type": "document",
+      "source_file": "progress.md",
+      "source_location": "L1",
+      "id": "memory_bank_progress_progress_teknoconecta",
+      "community": 9,
+      "norm_label": "progress \u2014 teknoconecta"
+    },
+    {
+      "label": "Completed",
+      "file_type": "document",
+      "source_file": "progress.md",
+      "source_location": "L3",
+      "id": "memory_bank_progress_completed",
+      "community": 9,
+      "norm_label": "completed"
+    },
+    {
+      "label": "In Progress",
+      "file_type": "document",
+      "source_file": "progress.md",
+      "source_location": "L23",
+      "id": "memory_bank_progress_in_progress",
+      "community": 9,
+      "norm_label": "in progress"
+    },
+    {
+      "label": "Planned",
+      "file_type": "document",
+      "source_file": "progress.md",
+      "source_location": "L27",
+      "id": "memory_bank_progress_planned",
+      "community": 9,
+      "norm_label": "planned"
+    },
+    {
+      "label": "Known Issues",
+      "file_type": "document",
+      "source_file": "progress.md",
+      "source_location": "L38",
+      "id": "memory_bank_progress_known_issues",
+      "community": 9,
+      "norm_label": "known issues"
+    },
+    {
+      "label": "Metrics",
+      "file_type": "document",
+      "source_file": "progress.md",
+      "source_location": "L52",
+      "id": "memory_bank_progress_metrics",
+      "community": 9,
+      "norm_label": "metrics"
+    },
+    {
+      "label": "systemPatterns.md",
+      "file_type": "document",
+      "source_file": "systemPatterns.md",
+      "source_location": "L1",
+      "id": "systempatterns_md",
+      "community": 5,
+      "norm_label": "systempatterns.md"
+    },
+    {
+      "label": "System Patterns \u2014 TeknoConecta",
+      "file_type": "document",
+      "source_file": "systemPatterns.md",
+      "source_location": "L1",
+      "id": "memory_bank_systempatterns_system_patterns_teknoconecta",
+      "community": 5,
+      "norm_label": "system patterns \u2014 teknoconecta"
+    },
+    {
+      "label": "Architecture",
+      "file_type": "document",
+      "source_file": "systemPatterns.md",
+      "source_location": "L3",
+      "id": "memory_bank_systempatterns_architecture",
+      "community": 5,
+      "norm_label": "architecture"
+    },
+    {
+      "label": "code:block1 (Stays.net \u2500\u2500API\u2500\u2500\u2500\u2500\u25ba n8n \u2500\u2500SQL\u2500\u2500\u25ba PostgreSQL (Neon))",
+      "file_type": "document",
+      "source_file": "systemPatterns.md",
+      "source_location": "L5",
+      "id": "memory_bank_systempatterns_codeblock_1",
+      "community": 5,
+      "norm_label": "code:block1 (stays.net \u2500\u2500api\u2500\u2500\u2500\u2500\u25ba n8n \u2500\u2500sql\u2500\u2500\u25ba postgresql (neon))"
+    },
+    {
+      "label": "Key Patterns",
+      "file_type": "document",
+      "source_file": "systemPatterns.md",
+      "source_location": "L16",
+      "id": "memory_bank_systempatterns_key_patterns",
+      "community": 5,
+      "norm_label": "key patterns"
+    },
+    {
+      "label": "Event-Driven + Schedule-Driven",
+      "file_type": "document",
+      "source_file": "systemPatterns.md",
+      "source_location": "L18",
+      "id": "memory_bank_systempatterns_event_driven_schedule_driven",
+      "community": 5,
+      "norm_label": "event-driven + schedule-driven"
+    },
+    {
+      "label": "Colas (Bandejas)",
+      "file_type": "document",
+      "source_file": "systemPatterns.md",
+      "source_location": "L24",
+      "id": "memory_bank_systempatterns_colas_bandejas",
+      "community": 5,
+      "norm_label": "colas (bandejas)"
+    },
+    {
+      "label": "Single Source of Truth",
+      "file_type": "document",
+      "source_file": "systemPatterns.md",
+      "source_location": "L30",
+      "id": "memory_bank_systempatterns_single_source_of_truth",
+      "community": 5,
+      "norm_label": "single source of truth"
+    },
+    {
+      "label": "Stays.net \u2194 Directus ID Mapping",
+      "file_type": "document",
+      "source_file": "systemPatterns.md",
+      "source_location": "L36",
+      "id": "memory_bank_systempatterns_stays_net_directus_id_mapping",
+      "community": 5,
+      "norm_label": "stays.net \u2194 directus id mapping"
+    },
+    {
+      "label": "Component Relationships",
+      "file_type": "document",
+      "source_file": "systemPatterns.md",
+      "source_location": "L42",
+      "id": "memory_bank_systempatterns_component_relationships",
+      "community": 5,
+      "norm_label": "component relationships"
+    },
+    {
+      "label": "MCP Local con API Externa (Patr\u00f3n stays-docs / pricelabs-docs)",
+      "file_type": "document",
+      "source_file": "systemPatterns.md",
+      "source_location": "L56",
+      "id": "memory_bank_systempatterns_mcp_local_con_api_externa_patr\u00f3n_stays_docs_pricelabs_docs",
+      "community": 5,
+      "norm_label": "mcp local con api externa (patron stays-docs / pricelabs-docs)"
+    },
+    {
+      "label": "Design Decisions",
+      "file_type": "document",
+      "source_file": "systemPatterns.md",
+      "source_location": "L86",
+      "id": "memory_bank_systempatterns_design_decisions",
+      "community": 5,
+      "norm_label": "design decisions"
+    },
+    {
+      "label": "anuncio_709.md",
+      "file_type": "document",
+      "source_file": "anuncio_709.md",
+      "source_location": "L1",
+      "community": 2,
+      "norm_label": "anuncio_709.md",
+      "id": "anuncio_709_md"
+    },
+    {
+      "label": "Anuncio mejorado \u2014 Unidad 709 (2 hu\u00e9spedes)",
+      "file_type": "document",
+      "source_file": "anuncio_709.md",
+      "source_location": "L1",
+      "community": 2,
+      "norm_label": "anuncio mejorado \u2014 unidad 709 (2 huespedes)",
+      "id": "anuncios_mejorados_anuncio_709_anuncio_mejorado_unidad_709_2_hu\u00e9spedes"
+    },
+    {
+      "label": "\ud83c\uddea\ud83c\uddf8 Espa\u00f1ol",
+      "file_type": "document",
+      "source_file": "anuncio_709.md",
+      "source_location": "L8",
+      "community": 2,
+      "norm_label": "\ud83c\uddea\ud83c\uddf8 espanol",
+      "id": "anuncios_mejorados_anuncio_709_espa\u00f1ol"
+    },
+    {
+      "label": "T\u00edtulo",
+      "file_type": "document",
+      "source_file": "anuncio_709.md",
+      "source_location": "L10",
+      "community": 2,
+      "norm_label": "titulo",
+      "id": "anuncios_mejorados_anuncio_709_t\u00edtulo"
+    },
+    {
+      "label": "Subt\u00edtulo",
+      "file_type": "document",
+      "source_file": "anuncio_709.md",
+      "source_location": "L13",
+      "community": 2,
+      "norm_label": "subtitulo",
+      "id": "anuncios_mejorados_anuncio_709_subt\u00edtulo"
+    },
+    {
+      "label": "Descripci\u00f3n",
+      "file_type": "document",
+      "source_file": "anuncio_709.md",
+      "source_location": "L16",
+      "community": 2,
+      "norm_label": "descripcion",
+      "id": "anuncios_mejorados_anuncio_709_descripci\u00f3n"
+    },
+    {
+      "label": "\ud83c\uddec\ud83c\udde7 English",
+      "file_type": "document",
+      "source_file": "anuncio_709.md",
+      "source_location": "L108",
+      "community": 2,
+      "norm_label": "\ud83c\uddec\ud83c\udde7 english",
+      "id": "anuncios_mejorados_anuncio_709_english"
+    },
+    {
+      "label": "Title",
+      "file_type": "document",
+      "source_file": "anuncio_709.md",
+      "source_location": "L110",
+      "community": 2,
+      "norm_label": "title",
+      "id": "anuncios_mejorados_anuncio_709_title"
+    },
+    {
+      "label": "Subtitle",
+      "file_type": "document",
+      "source_file": "anuncio_709.md",
+      "source_location": "L113",
+      "community": 2,
+      "norm_label": "subtitle",
+      "id": "anuncios_mejorados_anuncio_709_subtitle"
+    },
+    {
+      "label": "Description",
+      "file_type": "document",
+      "source_file": "anuncio_709.md",
+      "source_location": "L116",
+      "community": 2,
+      "norm_label": "description",
+      "id": "anuncios_mejorados_anuncio_709_description"
+    },
+    {
+      "label": "\ud83c\udde7\ud83c\uddf7 Portugu\u00eas (Brasil)",
+      "file_type": "document",
+      "source_file": "anuncio_709.md",
+      "source_location": "L208",
+      "community": 2,
+      "norm_label": "\ud83c\udde7\ud83c\uddf7 portugues (brasil)",
+      "id": "anuncios_mejorados_anuncio_709_portugu\u00eas_brasil"
+    },
+    {
+      "label": "T\u00edtulo",
+      "file_type": "document",
+      "source_file": "anuncio_709.md",
+      "source_location": "L210",
+      "community": 2,
+      "norm_label": "titulo",
+      "id": "anuncios_mejorados_anuncio_709_t\u00edtulo_210"
+    },
+    {
+      "label": "Subt\u00edtulo",
+      "file_type": "document",
+      "source_file": "anuncio_709.md",
+      "source_location": "L213",
+      "community": 2,
+      "norm_label": "subtitulo",
+      "id": "anuncios_mejorados_anuncio_709_subt\u00edtulo_213"
+    },
+    {
+      "label": "Descri\u00e7\u00e3o",
+      "file_type": "document",
+      "source_file": "anuncio_709.md",
+      "source_location": "L216",
+      "community": 2,
+      "norm_label": "descricao",
+      "id": "anuncios_mejorados_anuncio_709_descri\u00e7\u00e3o"
+    },
+    {
+      "label": "anuncio_901_902_702.md",
+      "file_type": "document",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L1",
+      "community": 3,
+      "norm_label": "anuncio_901_902_702.md",
+      "id": "anuncio_901_902_702_md"
+    },
+    {
+      "label": "Anuncio mejorado \u2014 Unidades 901 / 902 / 702 (3 hu\u00e9spedes)",
+      "file_type": "document",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L1",
+      "community": 3,
+      "norm_label": "anuncio mejorado \u2014 unidades 901 / 902 / 702 (3 huespedes)",
+      "id": "anuncios_mejorados_anuncio_901_902_702_anuncio_mejorado_unidades_901_902_702_3_hu\u00e9spedes"
+    },
+    {
+      "label": "\ud83c\uddea\ud83c\uddf8 Espa\u00f1ol",
+      "file_type": "document",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L8",
+      "community": 3,
+      "norm_label": "\ud83c\uddea\ud83c\uddf8 espanol",
+      "id": "anuncios_mejorados_anuncio_901_902_702_espa\u00f1ol"
+    },
+    {
+      "label": "T\u00edtulo",
+      "file_type": "document",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L10",
+      "community": 3,
+      "norm_label": "titulo",
+      "id": "anuncios_mejorados_anuncio_901_902_702_t\u00edtulo"
+    },
+    {
+      "label": "Subt\u00edtulo",
+      "file_type": "document",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L13",
+      "community": 3,
+      "norm_label": "subtitulo",
+      "id": "anuncios_mejorados_anuncio_901_902_702_subt\u00edtulo"
+    },
+    {
+      "label": "Descripci\u00f3n",
+      "file_type": "document",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L16",
+      "community": 3,
+      "norm_label": "descripcion",
+      "id": "anuncios_mejorados_anuncio_901_902_702_descripci\u00f3n"
+    },
+    {
+      "label": "\ud83c\uddec\ud83c\udde7 English",
+      "file_type": "document",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L109",
+      "community": 3,
+      "norm_label": "\ud83c\uddec\ud83c\udde7 english",
+      "id": "anuncios_mejorados_anuncio_901_902_702_english"
+    },
+    {
+      "label": "Title",
+      "file_type": "document",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L111",
+      "community": 3,
+      "norm_label": "title",
+      "id": "anuncios_mejorados_anuncio_901_902_702_title"
+    },
+    {
+      "label": "Subtitle",
+      "file_type": "document",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L114",
+      "community": 3,
+      "norm_label": "subtitle",
+      "id": "anuncios_mejorados_anuncio_901_902_702_subtitle"
+    },
+    {
+      "label": "Description",
+      "file_type": "document",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L117",
+      "community": 3,
+      "norm_label": "description",
+      "id": "anuncios_mejorados_anuncio_901_902_702_description"
+    },
+    {
+      "label": "\ud83c\udde7\ud83c\uddf7 Portugu\u00eas (Brasil)",
+      "file_type": "document",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L210",
+      "community": 3,
+      "norm_label": "\ud83c\udde7\ud83c\uddf7 portugues (brasil)",
+      "id": "anuncios_mejorados_anuncio_901_902_702_portugu\u00eas_brasil"
+    },
+    {
+      "label": "T\u00edtulo",
+      "file_type": "document",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L212",
+      "community": 3,
+      "norm_label": "titulo",
+      "id": "anuncios_mejorados_anuncio_901_902_702_t\u00edtulo_212"
+    },
+    {
+      "label": "Subt\u00edtulo",
+      "file_type": "document",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L215",
+      "community": 3,
+      "norm_label": "subtitulo",
+      "id": "anuncios_mejorados_anuncio_901_902_702_subt\u00edtulo_215"
+    },
+    {
+      "label": "Descri\u00e7\u00e3o",
+      "file_type": "document",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L218",
+      "community": 3,
+      "norm_label": "descricao",
+      "id": "anuncios_mejorados_anuncio_901_902_702_descri\u00e7\u00e3o"
+    },
+    {
       "label": "AGENTS.md",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L1",
-      "id": "agents_md",
-      "community": 0,
-      "norm_label": "agents.md"
+      "community": 1,
+      "norm_label": "agents.md",
+      "id": "agents_md"
     },
     {
       "label": "AGENTS.md \u2014 SandiegoApart",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L1",
-      "id": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "community": 0,
-      "norm_label": "agents.md \u2014 sandiegoapart"
+      "community": 1,
+      "norm_label": "agents.md \u2014 sandiegoapart",
+      "id": "n8n_teknoconecta_agents_agents_md_sandiegoapart"
     },
     {
       "label": "Proposito",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L6",
-      "id": "n8n_teknoconecta_agents_proposito",
-      "community": 0,
-      "norm_label": "proposito"
+      "community": 1,
+      "norm_label": "proposito",
+      "id": "n8n_teknoconecta_agents_proposito"
     },
     {
       "label": "Orden de lectura obligatorio",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L20",
-      "id": "n8n_teknoconecta_agents_orden_de_lectura_obligatorio",
-      "community": 0,
-      "norm_label": "orden de lectura obligatorio"
+      "community": 1,
+      "norm_label": "orden de lectura obligatorio",
+      "id": "n8n_teknoconecta_agents_orden_de_lectura_obligatorio"
     },
     {
       "label": "Datos fijos vs datos que se buscan dinamicamente",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L38",
-      "id": "n8n_teknoconecta_agents_datos_fijos_vs_datos_que_se_buscan_dinamicamente",
-      "community": 0,
-      "norm_label": "datos fijos vs datos que se buscan dinamicamente"
+      "community": 1,
+      "norm_label": "datos fijos vs datos que se buscan dinamicamente",
+      "id": "n8n_teknoconecta_agents_datos_fijos_vs_datos_que_se_buscan_dinamicamente"
     },
     {
       "label": "Fuente de verdad (jerarquia obligatoria)",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L61",
-      "id": "n8n_teknoconecta_agents_fuente_de_verdad_jerarquia_obligatoria",
-      "community": 0,
-      "norm_label": "fuente de verdad (jerarquia obligatoria)"
+      "community": 1,
+      "norm_label": "fuente de verdad (jerarquia obligatoria)",
+      "id": "n8n_teknoconecta_agents_fuente_de_verdad_jerarquia_obligatoria"
     },
     {
       "label": "Reglas criticas",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L70",
-      "id": "n8n_teknoconecta_agents_reglas_criticas",
-      "community": 0,
-      "norm_label": "reglas criticas"
+      "community": 1,
+      "norm_label": "reglas criticas",
+      "id": "n8n_teknoconecta_agents_reglas_criticas"
     },
     {
       "label": "Contexto comercial",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L85",
-      "id": "n8n_teknoconecta_agents_contexto_comercial",
-      "community": 0,
-      "norm_label": "contexto comercial"
+      "community": 1,
+      "norm_label": "contexto comercial",
+      "id": "n8n_teknoconecta_agents_contexto_comercial"
     },
     {
       "label": "Idiomas",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L112",
-      "id": "n8n_teknoconecta_agents_idiomas",
-      "community": 0,
-      "norm_label": "idiomas"
+      "community": 1,
+      "norm_label": "idiomas",
+      "id": "n8n_teknoconecta_agents_idiomas"
     },
     {
       "label": "Entregables esperados",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L132",
-      "id": "n8n_teknoconecta_agents_entregables_esperados",
-      "community": 0,
-      "norm_label": "entregables esperados"
+      "community": 1,
+      "norm_label": "entregables esperados",
+      "id": "n8n_teknoconecta_agents_entregables_esperados"
     },
     {
       "label": "Seguridad",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L142",
-      "id": "n8n_teknoconecta_agents_seguridad",
-      "community": 0,
-      "norm_label": "seguridad"
+      "community": 1,
+      "norm_label": "seguridad",
+      "id": "n8n_teknoconecta_agents_seguridad"
     },
     {
       "label": "Resolucion de conflictos",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L163",
-      "id": "n8n_teknoconecta_agents_resolucion_de_conflictos",
-      "community": 0,
-      "norm_label": "resolucion de conflictos"
+      "community": 1,
+      "norm_label": "resolucion de conflictos",
+      "id": "n8n_teknoconecta_agents_resolucion_de_conflictos"
     },
     {
       "label": "Lecciones aprendidas (memoria persistente)",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L175",
-      "id": "n8n_teknoconecta_agents_lecciones_aprendidas_memoria_persistente",
-      "community": 5,
-      "norm_label": "lecciones aprendidas (memoria persistente)"
+      "community": 7,
+      "norm_label": "lecciones aprendidas (memoria persistente)",
+      "id": "n8n_teknoconecta_agents_lecciones_aprendidas_memoria_persistente"
     },
     {
       "label": "Stays.net API",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L177",
-      "id": "n8n_teknoconecta_agents_stays_net_api",
-      "community": 5,
-      "norm_label": "stays.net api"
+      "community": 7,
+      "norm_label": "stays.net api",
+      "id": "n8n_teknoconecta_agents_stays_net_api"
     },
     {
       "label": "Scrapling / Chromium",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L183",
-      "id": "n8n_teknoconecta_agents_scrapling_chromium",
-      "community": 5,
-      "norm_label": "scrapling / chromium"
+      "community": 7,
+      "norm_label": "scrapling / chromium",
+      "id": "n8n_teknoconecta_agents_scrapling_chromium"
     },
     {
       "label": "MCPs disponibles",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L189",
-      "id": "n8n_teknoconecta_agents_mcps_disponibles",
-      "community": 5,
-      "norm_label": "mcps disponibles"
+      "community": 7,
+      "norm_label": "mcps disponibles",
+      "id": "n8n_teknoconecta_agents_mcps_disponibles"
     },
     {
       "label": "MCPs locales con APIs externas (patron stays-docs / pricelabs-docs)",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L196",
-      "id": "n8n_teknoconecta_agents_mcps_locales_con_apis_externas_patron_stays_docs_pricelabs_docs",
-      "community": 5,
-      "norm_label": "mcps locales con apis externas (patron stays-docs / pricelabs-docs)"
+      "community": 7,
+      "norm_label": "mcps locales con apis externas (patron stays-docs / pricelabs-docs)",
+      "id": "n8n_teknoconecta_agents_mcps_locales_con_apis_externas_patron_stays_docs_pricelabs_docs"
     },
     {
       "label": "code:json (\"stays-docs\": {)",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L208",
-      "id": "n8n_teknoconecta_agents_codeblock_1",
-      "community": 5,
-      "norm_label": "code:json (\"stays-docs\": {)"
+      "community": 7,
+      "norm_label": "code:json (\"stays-docs\": {)",
+      "id": "n8n_teknoconecta_agents_codeblock_1"
     },
     {
       "label": "PriceLabs Academy",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L246",
-      "id": "n8n_teknoconecta_agents_pricelabs_academy",
-      "community": 5,
-      "norm_label": "pricelabs academy"
+      "community": 7,
+      "norm_label": "pricelabs academy",
+      "id": "n8n_teknoconecta_agents_pricelabs_academy"
     },
     {
       "label": "Seguridad detectada en el repo",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L253",
-      "id": "n8n_teknoconecta_agents_seguridad_detectada_en_el_repo",
-      "community": 5,
-      "norm_label": "seguridad detectada en el repo"
+      "community": 7,
+      "norm_label": "seguridad detectada en el repo",
+      "id": "n8n_teknoconecta_agents_seguridad_detectada_en_el_repo"
     },
     {
       "label": "Skills / subagentes disponibles",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L259",
-      "id": "n8n_teknoconecta_agents_skills_subagentes_disponibles",
-      "community": 0,
-      "norm_label": "skills / subagentes disponibles"
+      "community": 1,
+      "norm_label": "skills / subagentes disponibles",
+      "id": "n8n_teknoconecta_agents_skills_subagentes_disponibles"
     },
     {
       "label": "Compatibilidad multi-agente",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L272",
-      "id": "n8n_teknoconecta_agents_compatibilidad_multi_agente",
-      "community": 0,
-      "norm_label": "compatibilidad multi-agente"
+      "community": 1,
+      "norm_label": "compatibilidad multi-agente",
+      "id": "n8n_teknoconecta_agents_compatibilidad_multi_agente"
     },
     {
       "label": "graphify",
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L277",
-      "id": "n8n_teknoconecta_agents_graphify",
-      "community": 0,
-      "norm_label": "graphify"
+      "community": 1,
+      "norm_label": "graphify",
+      "id": "n8n_teknoconecta_agents_graphify"
     },
     {
       "label": "Pricelabs_API.md",
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L1",
-      "id": "documentacion_pricelabs_api_md",
-      "community": 1,
-      "norm_label": "pricelabs_api.md"
+      "community": 4,
+      "norm_label": "pricelabs_api.md",
+      "id": "documentacion_pricelabs_api_md"
     },
     {
       "label": "code:markdown (# PriceLabs API)",
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L7",
-      "id": "documentacion_pricelabs_api_codeblock_1",
-      "community": 1,
-      "norm_label": "code:markdown (# pricelabs api)"
+      "community": 4,
+      "norm_label": "code:markdown (# pricelabs api)",
+      "id": "documentacion_pricelabs_api_codeblock_1"
     },
     {
       "label": "code:block2",
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L36",
-      "id": "documentacion_pricelabs_api_codeblock_2",
-      "community": 1,
-      "norm_label": "code:block2"
+      "community": 4,
+      "norm_label": "code:block2",
+      "id": "documentacion_pricelabs_api_codeblock_2"
     },
     {
       "label": "code:block3",
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L56",
-      "id": "documentacion_pricelabs_api_codeblock_3",
-      "community": 1,
-      "norm_label": "code:block3"
+      "community": 4,
+      "norm_label": "code:block3",
+      "id": "documentacion_pricelabs_api_codeblock_3"
     },
     {
       "label": "code:block4",
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L82",
-      "id": "documentacion_pricelabs_api_codeblock_4",
-      "community": 1,
-      "norm_label": "code:block4"
+      "community": 4,
+      "norm_label": "code:block4",
+      "id": "documentacion_pricelabs_api_codeblock_4"
     },
     {
       "label": "code:block5",
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L102",
-      "id": "documentacion_pricelabs_api_codeblock_5",
-      "community": 1,
-      "norm_label": "code:block5"
+      "community": 4,
+      "norm_label": "code:block5",
+      "id": "documentacion_pricelabs_api_codeblock_5"
     },
     {
       "label": "code:block6",
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L157",
-      "id": "documentacion_pricelabs_api_codeblock_6",
-      "community": 1,
-      "norm_label": "code:block6"
+      "community": 4,
+      "norm_label": "code:block6",
+      "id": "documentacion_pricelabs_api_codeblock_6"
     },
     {
       "label": "code:block7",
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L166",
-      "id": "documentacion_pricelabs_api_codeblock_7",
-      "community": 1,
-      "norm_label": "code:block7"
+      "community": 4,
+      "norm_label": "code:block7",
+      "id": "documentacion_pricelabs_api_codeblock_7"
     },
     {
       "label": "code:block8",
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L207",
-      "id": "documentacion_pricelabs_api_codeblock_8",
-      "community": 1,
-      "norm_label": "code:block8"
+      "community": 4,
+      "norm_label": "code:block8",
+      "id": "documentacion_pricelabs_api_codeblock_8"
     },
     {
       "label": "code:block9",
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L230",
-      "id": "documentacion_pricelabs_api_codeblock_9",
-      "community": 1,
-      "norm_label": "code:block9"
+      "community": 4,
+      "norm_label": "code:block9",
+      "id": "documentacion_pricelabs_api_codeblock_9"
     },
     {
       "label": "code:block10",
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L258",
-      "id": "documentacion_pricelabs_api_codeblock_10",
-      "community": 1,
-      "norm_label": "code:block10"
+      "community": 4,
+      "norm_label": "code:block10",
+      "id": "documentacion_pricelabs_api_codeblock_10"
     },
     {
       "label": "code:block11",
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L289",
-      "id": "documentacion_pricelabs_api_codeblock_11",
-      "community": 1,
-      "norm_label": "code:block11"
+      "community": 4,
+      "norm_label": "code:block11",
+      "id": "documentacion_pricelabs_api_codeblock_11"
     },
     {
       "label": "server.py",
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L1",
-      "id": "mcp_servers_pricelabs_docs_server_py",
-      "community": 2,
-      "norm_label": "server.py"
+      "community": 0,
+      "norm_label": "server.py",
+      "id": "mcp_servers_pricelabs_docs_server_py"
     },
     {
       "label": "parse_documentation()",
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L21",
-      "id": "pricelabs_docs_server_parse_documentation",
-      "community": 2,
-      "norm_label": "parse_documentation()"
+      "community": 0,
+      "norm_label": "parse_documentation()",
+      "id": "pricelabs_docs_server_parse_documentation"
     },
     {
       "label": "list_endpoints()",
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L55",
-      "id": "pricelabs_docs_server_list_endpoints",
-      "community": 2,
-      "norm_label": "list_endpoints()"
+      "community": 0,
+      "norm_label": "list_endpoints()",
+      "id": "pricelabs_docs_server_list_endpoints"
     },
     {
       "label": "get_endpoint_detail()",
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L64",
-      "id": "pricelabs_docs_server_get_endpoint_detail",
-      "community": 8,
-      "norm_label": "get_endpoint_detail()"
+      "community": 0,
+      "norm_label": "get_endpoint_detail()",
+      "id": "pricelabs_docs_server_get_endpoint_detail"
     },
     {
       "label": "search_pricelabs_docs()",
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L85",
-      "id": "pricelabs_docs_server_search_pricelabs_docs",
-      "community": 2,
-      "norm_label": "search_pricelabs_docs()"
+      "community": 0,
+      "norm_label": "search_pricelabs_docs()",
+      "id": "pricelabs_docs_server_search_pricelabs_docs"
     },
     {
       "label": "_build_headers()",
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L122",
-      "id": "pricelabs_docs_server_build_headers",
-      "community": 2,
-      "norm_label": "_build_headers()"
+      "community": 0,
+      "norm_label": "_build_headers()",
+      "id": "pricelabs_docs_server_build_headers"
     },
     {
       "label": "pricelabs_api_call()",
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L130",
-      "id": "pricelabs_docs_server_pricelabs_api_call",
-      "community": 2,
-      "norm_label": "pricelabs_api_call()"
+      "community": 0,
+      "norm_label": "pricelabs_api_call()",
+      "id": "pricelabs_docs_server_pricelabs_api_call"
     },
     {
       "label": "pricelabs_get_listings()",
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L168",
-      "id": "pricelabs_docs_server_pricelabs_get_listings",
-      "community": 2,
-      "norm_label": "pricelabs_get_listings()"
+      "community": 0,
+      "norm_label": "pricelabs_get_listings()",
+      "id": "pricelabs_docs_server_pricelabs_get_listings"
     },
     {
       "label": "pricelabs_get_listing()",
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L193",
-      "id": "pricelabs_docs_server_pricelabs_get_listing",
-      "community": 3,
-      "norm_label": "pricelabs_get_listing()"
+      "community": 0,
+      "norm_label": "pricelabs_get_listing()",
+      "id": "pricelabs_docs_server_pricelabs_get_listing"
     },
     {
       "label": "List all Pricelabs API endpoints documented in Pricelabs_API.md",
       "file_type": "rationale",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L56",
-      "id": "pricelabs_docs_server_rationale_56",
-      "community": 2,
-      "norm_label": "list all pricelabs api endpoints documented in pricelabs_api.md"
+      "community": 0,
+      "norm_label": "list all pricelabs api endpoints documented in pricelabs_api.md",
+      "id": "pricelabs_docs_server_rationale_56"
     },
     {
       "label": "Get full documentation for a specific Pricelabs API endpoint.      Use the exact",
       "file_type": "rationale",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L65",
-      "id": "pricelabs_docs_server_rationale_65",
-      "community": 8,
-      "norm_label": "get full documentation for a specific pricelabs api endpoint.      use the exact"
+      "community": 0,
+      "norm_label": "get full documentation for a specific pricelabs api endpoint.      use the exact",
+      "id": "pricelabs_docs_server_rationale_65"
     },
     {
       "label": "Full-text search across the entire Pricelabs API documentation.      Returns rel",
       "file_type": "rationale",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L86",
-      "id": "pricelabs_docs_server_rationale_86",
-      "community": 2,
-      "norm_label": "full-text search across the entire pricelabs api documentation.      returns rel"
+      "community": 0,
+      "norm_label": "full-text search across the entire pricelabs api documentation.      returns rel",
+      "id": "pricelabs_docs_server_rationale_86"
     },
     {
       "label": "Make authenticated GET request to Pricelabs API. READ-ONLY.      Only GET reques",
       "file_type": "rationale",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L131",
-      "id": "pricelabs_docs_server_rationale_131",
-      "community": 2,
-      "norm_label": "make authenticated get request to pricelabs api. read-only.      only get reques"
+      "community": 0,
+      "norm_label": "make authenticated get request to pricelabs api. read-only.      only get reques",
+      "id": "pricelabs_docs_server_rationale_131"
     },
     {
       "label": "Get all listings from your Pricelabs account.      Calls GET /v1/listings.",
       "file_type": "rationale",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L169",
-      "id": "pricelabs_docs_server_rationale_169",
-      "community": 2,
-      "norm_label": "get all listings from your pricelabs account.      calls get /v1/listings."
+      "community": 0,
+      "norm_label": "get all listings from your pricelabs account.      calls get /v1/listings.",
+      "id": "pricelabs_docs_server_rationale_169"
     },
     {
       "label": "Get a specific Pricelabs listing by ID.      Calls GET /v1/listings/{listing_id}",
       "file_type": "rationale",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L194",
-      "id": "pricelabs_docs_server_rationale_194",
-      "community": 3,
-      "norm_label": "get a specific pricelabs listing by id.      calls get /v1/listings/{listing_id}"
+      "community": 0,
+      "norm_label": "get a specific pricelabs listing by id.      calls get /v1/listings/{listing_id}",
+      "id": "pricelabs_docs_server_rationale_194"
     },
     {
       "label": "server.py",
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L1",
-      "id": "mcp_servers_stays_docs_server_py",
-      "community": 3,
-      "norm_label": "server.py"
+      "community": 0,
+      "norm_label": "server.py",
+      "id": "mcp_servers_stays_docs_server_py"
     },
     {
       "label": "parse_documentation()",
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L21",
-      "id": "stays_docs_server_parse_documentation",
-      "community": 3,
-      "norm_label": "parse_documentation()"
+      "community": 0,
+      "norm_label": "parse_documentation()",
+      "id": "stays_docs_server_parse_documentation"
     },
     {
       "label": "list_endpoints()",
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L66",
-      "id": "stays_docs_server_list_endpoints",
-      "community": 2,
-      "norm_label": "list_endpoints()"
+      "community": 0,
+      "norm_label": "list_endpoints()",
+      "id": "stays_docs_server_list_endpoints"
     },
     {
       "label": "get_endpoint_detail()",
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L77",
-      "id": "stays_docs_server_get_endpoint_detail",
-      "community": 8,
-      "norm_label": "get_endpoint_detail()"
+      "community": 0,
+      "norm_label": "get_endpoint_detail()",
+      "id": "stays_docs_server_get_endpoint_detail"
     },
     {
       "label": "search_stays_docs()",
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L108",
-      "id": "stays_docs_server_search_stays_docs",
-      "community": 3,
-      "norm_label": "search_stays_docs()"
+      "community": 0,
+      "norm_label": "search_stays_docs()",
+      "id": "stays_docs_server_search_stays_docs"
     },
     {
       "label": "_build_headers()",
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L146",
-      "id": "stays_docs_server_build_headers",
-      "community": 3,
-      "norm_label": "_build_headers()"
+      "community": 0,
+      "norm_label": "_build_headers()",
+      "id": "stays_docs_server_build_headers"
     },
     {
       "label": "stays_api_call()",
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L154",
-      "id": "stays_docs_server_stays_api_call",
-      "community": 3,
-      "norm_label": "stays_api_call()"
+      "community": 0,
+      "norm_label": "stays_api_call()",
+      "id": "stays_docs_server_stays_api_call"
     },
     {
       "label": "stays_get_reservations()",
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L201",
-      "id": "stays_docs_server_stays_get_reservations",
-      "community": 3,
-      "norm_label": "stays_get_reservations()"
+      "community": 0,
+      "norm_label": "stays_get_reservations()",
+      "id": "stays_docs_server_stays_get_reservations"
     },
     {
       "label": "List all Stays.net API sections and endpoints documented in APIStaysDoc.md",
       "file_type": "rationale",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L67",
-      "id": "stays_docs_server_rationale_67",
-      "community": 2,
-      "norm_label": "list all stays.net api sections and endpoints documented in apistaysdoc.md"
+      "community": 0,
+      "norm_label": "list all stays.net api sections and endpoints documented in apistaysdoc.md",
+      "id": "stays_docs_server_rationale_67"
     },
     {
       "label": "Get full documentation for a specific Stays.net API section or endpoint.      Us",
       "file_type": "rationale",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L78",
-      "id": "stays_docs_server_rationale_78",
-      "community": 8,
-      "norm_label": "get full documentation for a specific stays.net api section or endpoint.      us"
+      "community": 0,
+      "norm_label": "get full documentation for a specific stays.net api section or endpoint.      us",
+      "id": "stays_docs_server_rationale_78"
     },
     {
       "label": "Full-text search across the entire Stays.net API documentation.      Returns rel",
       "file_type": "rationale",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L109",
-      "id": "stays_docs_server_rationale_109",
-      "community": 3,
-      "norm_label": "full-text search across the entire stays.net api documentation.      returns rel"
+      "community": 0,
+      "norm_label": "full-text search across the entire stays.net api documentation.      returns rel",
+      "id": "stays_docs_server_rationale_109"
     },
     {
       "label": "Make authenticated GET request to Stays.net API (jairop.stays.net). READ-ONLY.",
       "file_type": "rationale",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L155",
-      "id": "stays_docs_server_rationale_155",
-      "community": 3,
-      "norm_label": "make authenticated get request to stays.net api (jairop.stays.net). read-only."
+      "community": 0,
+      "norm_label": "make authenticated get request to stays.net api (jairop.stays.net). read-only.",
+      "id": "stays_docs_server_rationale_155"
     },
     {
       "label": "Get reservations from Stays.net for a date range.      Convenience wrapper aroun",
       "file_type": "rationale",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L203",
-      "id": "stays_docs_server_rationale_203",
-      "community": 3,
-      "norm_label": "get reservations from stays.net for a date range.      convenience wrapper aroun"
+      "community": 0,
+      "norm_label": "get reservations from stays.net for a date range.      convenience wrapper aroun",
+      "id": "stays_docs_server_rationale_203"
     },
     {
       "label": "fix_workflow.py",
       "file_type": "code",
       "source_file": "fix_workflow.py",
       "source_location": "L1",
-      "community": 17,
+      "community": 20,
       "norm_label": "fix_workflow.py",
       "id": "fix_workflow_py"
     },
@@ -588,7 +1074,7 @@
       "captured_at": "2026-05-15",
       "author": null,
       "contributor": null,
-      "community": 18,
+      "community": 21,
       "norm_label": "stays academy \u2014 emails",
       "id": "stays_academy_emails"
     },
@@ -601,7 +1087,7 @@
       "captured_at": "2026-05-15",
       "author": null,
       "contributor": null,
-      "community": 19,
+      "community": 22,
       "norm_label": "stays academy \u2014 financiero",
       "id": "stays_academy_financiero"
     },
@@ -614,22 +1100,9 @@
       "captured_at": "2026-05-15",
       "author": null,
       "contributor": null,
-      "community": 20,
+      "community": 23,
       "norm_label": "stays academy \u2014 precios",
       "id": "stays_academy_precios"
-    },
-    {
-      "label": "Active Context \u2014 TeknoConecta",
-      "file_type": "document",
-      "source_file": "memory-bank/activeContext.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": "2026-05-15",
-      "author": null,
-      "contributor": null,
-      "community": 6,
-      "norm_label": "active context \u2014 teknoconecta",
-      "id": "memory_bank_activecontext"
     },
     {
       "label": "Product Context \u2014 TeknoConecta",
@@ -640,22 +1113,9 @@
       "captured_at": "2026-05-15",
       "author": null,
       "contributor": null,
-      "community": 6,
+      "community": 11,
       "norm_label": "product context \u2014 teknoconecta",
       "id": "memory_bank_productcontext"
-    },
-    {
-      "label": "Progress \u2014 TeknoConecta",
-      "file_type": "document",
-      "source_file": "memory-bank/progress.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": "2026-05-15",
-      "author": null,
-      "contributor": null,
-      "community": 6,
-      "norm_label": "progress \u2014 teknoconecta",
-      "id": "memory_bank_progress"
     },
     {
       "label": "Project Brief \u2014 TeknoConecta",
@@ -666,22 +1126,9 @@
       "captured_at": "2026-05-15",
       "author": null,
       "contributor": null,
-      "community": 6,
+      "community": 11,
       "norm_label": "project brief \u2014 teknoconecta",
       "id": "memory_bank_projectbrief"
-    },
-    {
-      "label": "System Patterns \u2014 TeknoConecta",
-      "file_type": "document",
-      "source_file": "memory-bank/systemPatterns.md",
-      "source_location": null,
-      "source_url": null,
-      "captured_at": "2026-05-15",
-      "author": null,
-      "contributor": null,
-      "community": 6,
-      "norm_label": "system patterns \u2014 teknoconecta",
-      "id": "memory_bank_systempatterns"
     },
     {
       "label": "Tech Context \u2014 TeknoConecta",
@@ -692,7 +1139,7 @@
       "captured_at": "2026-05-15",
       "author": null,
       "contributor": null,
-      "community": 6,
+      "community": 11,
       "norm_label": "tech context \u2014 teknoconecta",
       "id": "memory_bank_techcontext"
     },
@@ -705,7 +1152,7 @@
       "captured_at": "2026-05-15",
       "author": null,
       "contributor": null,
-      "community": 21,
+      "community": 24,
       "norm_label": "secretos",
       "id": "secrets_readme"
     },
@@ -718,7 +1165,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 22,
+      "community": 25,
       "norm_label": "claude.md",
       "id": "claude_claudemd"
     },
@@ -731,7 +1178,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 23,
+      "community": 26,
       "norm_label": "opencode.md",
       "id": "opencode_opencodemd"
     },
@@ -744,7 +1191,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 24,
+      "community": 27,
       "norm_label": "readme.md",
       "id": "readme_readmemd"
     },
@@ -757,7 +1204,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 25,
+      "community": 28,
       "norm_label": "glosario",
       "id": "00_contexto_negocio_glosariomd"
     },
@@ -770,7 +1217,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 26,
+      "community": 29,
       "norm_label": "politica: no sobreprometer",
       "id": "00_contexto_negocio_politica_no_sobreprometermd"
     },
@@ -783,7 +1230,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 27,
+      "community": 30,
       "norm_label": "sandiegoapart",
       "id": "00_contexto_negocio_sandiegoapartmd"
     },
@@ -796,7 +1243,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 28,
+      "community": 31,
       "norm_label": "ubicacion",
       "id": "00_contexto_negocio_ubicacionmd"
     },
@@ -809,7 +1256,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 32,
       "norm_label": "unidades",
       "id": "00_contexto_negocio_unidadesmd"
     },
@@ -822,7 +1269,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 1,
+      "community": 4,
       "norm_label": "pricelabs \u2014 reglas de pricing",
       "id": "01_source_of_truth_pricelabs_pricing_rulesmd"
     },
@@ -835,7 +1282,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "api stays.net",
       "id": "01_source_of_truth_stays_apimd"
     },
@@ -848,7 +1295,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 30,
+      "community": 33,
       "norm_label": "calendarios \u2014 stays.net",
       "id": "01_source_of_truth_stays_calendarsmd"
     },
@@ -861,7 +1308,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "listings \u2014 stays.net",
       "id": "01_source_of_truth_stays_listingsmd"
     },
@@ -874,7 +1321,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 31,
+      "community": 34,
       "norm_label": "check-in / check-out",
       "id": "02_operacion_checkin_checkoutmd"
     },
@@ -887,7 +1334,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 32,
+      "community": 35,
       "norm_label": "edificio tarapaca 1140",
       "id": "02_operacion_edificio_tarapaca_1140md"
     },
@@ -900,7 +1347,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 33,
+      "community": 36,
       "norm_label": "reglas para huespedes",
       "id": "02_operacion_reglas_huespedesmd"
     },
@@ -913,7 +1360,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 34,
+      "community": 37,
       "norm_label": "seguridad y camaras",
       "id": "02_operacion_seguridad_camarasmd"
     },
@@ -926,7 +1373,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "marca sandiegoapart",
       "id": "03_marketing_y_ads_marca_md"
     },
@@ -939,7 +1386,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "tono de voz",
       "id": "03_marketing_y_ads_tono_de_vozmd"
     },
@@ -952,7 +1399,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "mensaje de check-in",
       "id": "04_mensajeria_checkinmd"
     },
@@ -965,7 +1412,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 11,
+      "community": 14,
       "norm_label": "mensajes durante la estadia",
       "id": "04_mensajeria_durante_estadiamd"
     },
@@ -978,7 +1425,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 35,
+      "community": 38,
       "norm_label": "kpis",
       "id": "05_finanzas_y_pricing_kpismd"
     },
@@ -991,7 +1438,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 36,
+      "community": 39,
       "norm_label": "revenue management",
       "id": "05_finanzas_y_pricing_revenue_managementmd"
     },
@@ -1004,7 +1451,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "servidores mcp",
       "id": "06_automatizacion_mcpmd"
     },
@@ -1017,7 +1464,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "n8n \u2014 orquestador",
       "id": "06_automatizacion_n8nmd"
     },
@@ -1030,7 +1477,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 37,
+      "community": 40,
       "norm_label": "playbook: actualizar precios",
       "id": "08_playbooks_actualizar_preciosmd"
     },
@@ -1043,7 +1490,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 38,
+      "community": 41,
       "norm_label": "checklist pre-publicacion",
       "id": "08_playbooks_checklist_pre_publicacionmd"
     },
@@ -1056,7 +1503,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "playbook: publicar nuevo anuncio",
       "id": "08_playbooks_publicar_nuevo_anunciomd"
     },
@@ -1069,7 +1516,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 11,
+      "community": 14,
       "norm_label": "playbook: responder huesped",
       "id": "08_playbooks_responder_huespedmd"
     },
@@ -1082,7 +1529,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 39,
+      "community": 42,
       "norm_label": "playbook: revisar coherencia anuncio vs realidad",
       "id": "08_playbooks_revisar_coherencia_anuncio_realidadmd"
     },
@@ -1095,7 +1542,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "api staysdoc",
       "id": "documentacion_apistaysdocmd"
     },
@@ -1108,7 +1555,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 40,
+      "community": 43,
       "norm_label": "playbook para agentes de renta corta",
       "id": "documentacion_asesoriasmd"
     },
@@ -1121,7 +1568,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 41,
+      "community": 44,
       "norm_label": "configuracion de servidores mcp para opencode",
       "id": "documentacion_configuracion_mcpmd"
     },
@@ -1134,7 +1581,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 4,
+      "community": 6,
       "norm_label": "guia del repositorio",
       "id": "documentacion_guia_repositoriomd"
     },
@@ -1147,7 +1594,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 42,
+      "community": 45,
       "norm_label": "seguimiento del repositorio",
       "id": "documentacion_seguimientomd"
     },
@@ -1160,7 +1607,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 46,
       "norm_label": "tecnologias \u2014 plataforma automatizacion renta corta",
       "id": "documentacion_tecnologiasmd"
     },
@@ -1173,7 +1620,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 12,
+      "community": 15,
       "norm_label": "configuracion avanzada",
       "id": "account_configuracion_avanzada"
     },
@@ -1186,7 +1633,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 12,
+      "community": 15,
       "norm_label": "dale acceso a tu equipo a tu cuenta de pricelabs",
       "id": "account_dale_acceso_a_tu_equipo"
     },
@@ -1199,7 +1646,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 9,
+      "community": 12,
       "norm_label": "como integrar pricelabs con supercontrol",
       "id": "dynamic_pricing_como_integrar_pricelabs_con_supercontrol"
     },
@@ -1212,7 +1659,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 9,
+      "community": 12,
       "norm_label": "como integrar pricelabs con ezcloud",
       "id": "dynamic_pricing_como_integrar_pricelabs_con_ezcloud"
     },
@@ -1225,7 +1672,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 9,
+      "community": 12,
       "norm_label": "crear y usar perfiles de estadia minima",
       "id": "dynamic_pricing_crear_y_usar_perfiles_de_estadia_minima"
     },
@@ -1238,7 +1685,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 7,
+      "community": 10,
       "norm_label": "pagina de resumen del listado",
       "id": "listing_optimizer_pagina_de_resumen_del_listado"
     },
@@ -1251,7 +1698,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 7,
+      "community": 10,
       "norm_label": "como calificamos la calidad de tus listados",
       "id": "listing_optimizer_como_calificamos_la_calidad_de_tus_listados"
     },
@@ -1264,7 +1711,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 7,
+      "community": 10,
       "norm_label": "introduccion a listing optimizer",
       "id": "listing_optimizer_introduccion_a_listing_optimizer"
     },
@@ -1277,7 +1724,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 7,
+      "community": 10,
       "norm_label": "pestana descripcion general de la competencia",
       "id": "listing_optimizer_pestana_descripcion_general_de_la_competencia"
     },
@@ -1290,7 +1737,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 7,
+      "community": 10,
       "norm_label": "pestana resumen de la clasificacion",
       "id": "listing_optimizer_pestana_resumen_de_la_clasificacion"
     },
@@ -1303,7 +1750,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 13,
+      "community": 16,
       "norm_label": "como crear y ver comps personalizados",
       "id": "market_dashboards_como_crear_y_ver_comps_personalizados"
     },
@@ -1316,7 +1763,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 14,
+      "community": 17,
       "norm_label": "como crear una proyeccion de ingresos",
       "id": "market_dashboards_como_crear_una_proyeccion_de_ingresos"
     },
@@ -1329,7 +1776,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 15,
+      "community": 18,
       "norm_label": "market dashboards: glosario de terminos",
       "id": "market_dashboards_market_dashboards_glosario_de_terminos"
     },
@@ -1342,7 +1789,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 14,
+      "community": 17,
       "norm_label": "agrega el widget de revenue estimator a tu pagina web",
       "id": "market_dashboards_agrega_el_widget_de_revenue_estimator_a_tu_pagina_web"
     },
@@ -1355,7 +1802,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 47,
       "norm_label": "market dashboards: curvas de reservas",
       "id": "market_dashboards_market_dashboards_curvas_de_reservas"
     },
@@ -1368,7 +1815,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 45,
+      "community": 48,
       "norm_label": "market dashboards - amenidades",
       "id": "market_dashboards_market_dashboards_amenidades"
     },
@@ -1381,7 +1828,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 13,
+      "community": 16,
       "norm_label": "crear un market dashboard",
       "id": "market_dashboards_crear_un_market_dashboard"
     },
@@ -1394,7 +1841,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 15,
+      "community": 18,
       "norm_label": "\u00bfque es market dashboard y como usarlo?",
       "id": "new_users_que_es_market_dashboard_y_como_usarlo"
     },
@@ -1407,7 +1854,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 49,
       "norm_label": "\u00bfque es los precios dinamicos y como usarlo?",
       "id": "new_users_que_es_los_precios_dinamicos_y_como_usarlo"
     },
@@ -1420,7 +1867,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 10,
+      "community": 13,
       "norm_label": "programar correos electronicos de informes en report builder",
       "id": "portfolio_analytics_programar_correos_electronicos_de_informes_en_report_builder"
     },
@@ -1433,7 +1880,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 10,
+      "community": 13,
       "norm_label": "analisis de ia en report builder",
       "id": "portfolio_analytics_analisis_de_ia_en_report_builder"
     },
@@ -1446,7 +1893,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 10,
+      "community": 13,
       "norm_label": "crear dashboards de analisis para propietarios",
       "id": "portfolio_analytics_crear_dashboards_de_analisis_para_propietarios"
     },
@@ -1459,7 +1906,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 19,
       "norm_label": "\u00bfcomo se completan los valores de mercado en report builder?",
       "id": "portfolio_analytics_como_se_completan_los_valores_de_mercado_en_report_builder"
     },
@@ -1472,7 +1919,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 16,
+      "community": 19,
       "norm_label": "empezar a usar report builder",
       "id": "portfolio_analytics_empezar_a_usar_report_builder"
     },
@@ -1485,7 +1932,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 47,
+      "community": 50,
       "norm_label": "como elegir un paquete de suscripcion",
       "id": "pricing_and_billing_como_elegir_un_paquete_de_suscripcion"
     },
@@ -1498,7 +1945,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 51,
       "norm_label": "pricelabs market dashboard: suscripcion, facturas y cancelacion",
       "id": "pricing_and_billing_pricelabs_market_dashboard_suscripcion_facturas_y_cancelacion"
     },
@@ -1511,7 +1958,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 49,
+      "community": 52,
       "norm_label": "dynamic pricing de pricelabs: facturacion, suscripcion y facturas",
       "id": "pricing_and_billing_dynamic_pricing_de_pricelabs_facturacion_suscripcion_y_facturas"
     },
@@ -1524,7 +1971,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 50,
+      "community": 53,
       "norm_label": "listing optimizer de pricelabs: facturacion, suscripcion, cancelacion y facturas",
       "id": "pricing_and_billing_listing_optimizer_de_pricelabs_facturacion_suscripcion_cancelacion_y_facturas"
     },
@@ -1537,7 +1984,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 51,
+      "community": 54,
       "norm_label": "dynamic pricing de pricelabs: porcentaje de facturacion",
       "id": "pricing_and_billing_dynamic_pricing_de_pricelabs_porcentaje_de_facturacion"
     }
@@ -1546,12 +1993,502 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "activeContext.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "activecontext_md",
+      "target": "memory_bank_activecontext_active_context_teknoconecta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "activeContext.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "memory_bank_activecontext_active_context_teknoconecta",
+      "target": "memory_bank_activecontext_current_focus",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "activeContext.md",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "memory_bank_activecontext_active_context_teknoconecta",
+      "target": "memory_bank_activecontext_recent_changes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "activeContext.md",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "memory_bank_activecontext_active_context_teknoconecta",
+      "target": "memory_bank_activecontext_next_steps",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "activeContext.md",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "memory_bank_activecontext_active_context_teknoconecta",
+      "target": "memory_bank_activecontext_active_decisions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "activeContext.md",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "memory_bank_activecontext_active_context_teknoconecta",
+      "target": "memory_bank_activecontext_blockers",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "progress.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "progress_md",
+      "target": "memory_bank_progress_progress_teknoconecta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "progress.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "memory_bank_progress_progress_teknoconecta",
+      "target": "memory_bank_progress_completed",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "progress.md",
+      "source_location": "L23",
+      "weight": 1.0,
+      "source": "memory_bank_progress_progress_teknoconecta",
+      "target": "memory_bank_progress_in_progress",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "progress.md",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "memory_bank_progress_progress_teknoconecta",
+      "target": "memory_bank_progress_planned",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "progress.md",
+      "source_location": "L38",
+      "weight": 1.0,
+      "source": "memory_bank_progress_progress_teknoconecta",
+      "target": "memory_bank_progress_known_issues",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "progress.md",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "memory_bank_progress_progress_teknoconecta",
+      "target": "memory_bank_progress_metrics",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "systemPatterns.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "systempatterns_md",
+      "target": "memory_bank_systempatterns_system_patterns_teknoconecta",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "systemPatterns.md",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "memory_bank_systempatterns_system_patterns_teknoconecta",
+      "target": "memory_bank_systempatterns_architecture",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "systemPatterns.md",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "memory_bank_systempatterns_system_patterns_teknoconecta",
+      "target": "memory_bank_systempatterns_key_patterns",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "systemPatterns.md",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "memory_bank_systempatterns_system_patterns_teknoconecta",
+      "target": "memory_bank_systempatterns_component_relationships",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "systemPatterns.md",
+      "source_location": "L56",
+      "weight": 1.0,
+      "source": "memory_bank_systempatterns_system_patterns_teknoconecta",
+      "target": "memory_bank_systempatterns_mcp_local_con_api_externa_patr\u00f3n_stays_docs_pricelabs_docs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "systemPatterns.md",
+      "source_location": "L86",
+      "weight": 1.0,
+      "source": "memory_bank_systempatterns_system_patterns_teknoconecta",
+      "target": "memory_bank_systempatterns_design_decisions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "systemPatterns.md",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "memory_bank_systempatterns_architecture",
+      "target": "memory_bank_systempatterns_codeblock_1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "systemPatterns.md",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "memory_bank_systempatterns_key_patterns",
+      "target": "memory_bank_systempatterns_event_driven_schedule_driven",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "systemPatterns.md",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "memory_bank_systempatterns_key_patterns",
+      "target": "memory_bank_systempatterns_colas_bandejas",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "systemPatterns.md",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "memory_bank_systempatterns_key_patterns",
+      "target": "memory_bank_systempatterns_single_source_of_truth",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "systemPatterns.md",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "memory_bank_systempatterns_key_patterns",
+      "target": "memory_bank_systempatterns_stays_net_directus_id_mapping",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_709.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncio_709_md",
+      "target": "anuncios_mejorados_anuncio_709_anuncio_mejorado_unidad_709_2_hu\u00e9spedes"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_709.md",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_709_anuncio_mejorado_unidad_709_2_hu\u00e9spedes",
+      "target": "anuncios_mejorados_anuncio_709_espa\u00f1ol"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_709.md",
+      "source_location": "L108",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_709_anuncio_mejorado_unidad_709_2_hu\u00e9spedes",
+      "target": "anuncios_mejorados_anuncio_709_english"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_709.md",
+      "source_location": "L208",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_709_anuncio_mejorado_unidad_709_2_hu\u00e9spedes",
+      "target": "anuncios_mejorados_anuncio_709_portugu\u00eas_brasil"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_709.md",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_709_espa\u00f1ol",
+      "target": "anuncios_mejorados_anuncio_709_t\u00edtulo"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_709.md",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_709_espa\u00f1ol",
+      "target": "anuncios_mejorados_anuncio_709_subt\u00edtulo"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_709.md",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_709_espa\u00f1ol",
+      "target": "anuncios_mejorados_anuncio_709_descripci\u00f3n"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_709.md",
+      "source_location": "L110",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_709_english",
+      "target": "anuncios_mejorados_anuncio_709_title"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_709.md",
+      "source_location": "L113",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_709_english",
+      "target": "anuncios_mejorados_anuncio_709_subtitle"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_709.md",
+      "source_location": "L116",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_709_english",
+      "target": "anuncios_mejorados_anuncio_709_description"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_709.md",
+      "source_location": "L210",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_709_portugu\u00eas_brasil",
+      "target": "anuncios_mejorados_anuncio_709_t\u00edtulo_210"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_709.md",
+      "source_location": "L213",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_709_portugu\u00eas_brasil",
+      "target": "anuncios_mejorados_anuncio_709_subt\u00edtulo_213"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_709.md",
+      "source_location": "L216",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_709_portugu\u00eas_brasil",
+      "target": "anuncios_mejorados_anuncio_709_descri\u00e7\u00e3o"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncio_901_902_702_md",
+      "target": "anuncios_mejorados_anuncio_901_902_702_anuncio_mejorado_unidades_901_902_702_3_hu\u00e9spedes"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L8",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_901_902_702_anuncio_mejorado_unidades_901_902_702_3_hu\u00e9spedes",
+      "target": "anuncios_mejorados_anuncio_901_902_702_espa\u00f1ol"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L109",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_901_902_702_anuncio_mejorado_unidades_901_902_702_3_hu\u00e9spedes",
+      "target": "anuncios_mejorados_anuncio_901_902_702_english"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L210",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_901_902_702_anuncio_mejorado_unidades_901_902_702_3_hu\u00e9spedes",
+      "target": "anuncios_mejorados_anuncio_901_902_702_portugu\u00eas_brasil"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L10",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_901_902_702_espa\u00f1ol",
+      "target": "anuncios_mejorados_anuncio_901_902_702_t\u00edtulo"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L13",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_901_902_702_espa\u00f1ol",
+      "target": "anuncios_mejorados_anuncio_901_902_702_subt\u00edtulo"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L16",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_901_902_702_espa\u00f1ol",
+      "target": "anuncios_mejorados_anuncio_901_902_702_descripci\u00f3n"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L111",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_901_902_702_english",
+      "target": "anuncios_mejorados_anuncio_901_902_702_title"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L114",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_901_902_702_english",
+      "target": "anuncios_mejorados_anuncio_901_902_702_subtitle"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L117",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_901_902_702_english",
+      "target": "anuncios_mejorados_anuncio_901_902_702_description"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L212",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_901_902_702_portugu\u00eas_brasil",
+      "target": "anuncios_mejorados_anuncio_901_902_702_t\u00edtulo_212"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L215",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_901_902_702_portugu\u00eas_brasil",
+      "target": "anuncios_mejorados_anuncio_901_902_702_subt\u00edtulo_215"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "anuncio_901_902_702.md",
+      "source_location": "L218",
+      "weight": 1.0,
+      "confidence_score": 1.0,
+      "source": "anuncios_mejorados_anuncio_901_902_702_portugu\u00eas_brasil",
+      "target": "anuncios_mejorados_anuncio_901_902_702_descri\u00e7\u00e3o"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "AGENTS.md",
       "source_location": "L1",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "agents_md",
-      "target": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_agents_md_sandiegoapart"
     },
     {
       "relation": "contains",
@@ -1559,9 +2496,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L6",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "target": "n8n_teknoconecta_agents_proposito",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_proposito"
     },
     {
       "relation": "contains",
@@ -1569,9 +2506,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L20",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "target": "n8n_teknoconecta_agents_orden_de_lectura_obligatorio",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_orden_de_lectura_obligatorio"
     },
     {
       "relation": "contains",
@@ -1579,9 +2516,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L38",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "target": "n8n_teknoconecta_agents_datos_fijos_vs_datos_que_se_buscan_dinamicamente",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_datos_fijos_vs_datos_que_se_buscan_dinamicamente"
     },
     {
       "relation": "contains",
@@ -1589,9 +2526,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L61",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "target": "n8n_teknoconecta_agents_fuente_de_verdad_jerarquia_obligatoria",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_fuente_de_verdad_jerarquia_obligatoria"
     },
     {
       "relation": "contains",
@@ -1599,9 +2536,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L70",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "target": "n8n_teknoconecta_agents_reglas_criticas",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_reglas_criticas"
     },
     {
       "relation": "contains",
@@ -1609,9 +2546,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "target": "n8n_teknoconecta_agents_contexto_comercial",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_contexto_comercial"
     },
     {
       "relation": "contains",
@@ -1619,9 +2556,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L112",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "target": "n8n_teknoconecta_agents_idiomas",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_idiomas"
     },
     {
       "relation": "contains",
@@ -1629,9 +2566,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L132",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "target": "n8n_teknoconecta_agents_entregables_esperados",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_entregables_esperados"
     },
     {
       "relation": "contains",
@@ -1639,9 +2576,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L142",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "target": "n8n_teknoconecta_agents_seguridad",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_seguridad"
     },
     {
       "relation": "contains",
@@ -1649,9 +2586,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L163",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "target": "n8n_teknoconecta_agents_resolucion_de_conflictos",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_resolucion_de_conflictos"
     },
     {
       "relation": "contains",
@@ -1659,9 +2596,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L175",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "target": "n8n_teknoconecta_agents_lecciones_aprendidas_memoria_persistente",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_lecciones_aprendidas_memoria_persistente"
     },
     {
       "relation": "contains",
@@ -1669,9 +2606,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L259",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "target": "n8n_teknoconecta_agents_skills_subagentes_disponibles",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_skills_subagentes_disponibles"
     },
     {
       "relation": "contains",
@@ -1679,9 +2616,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L272",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "target": "n8n_teknoconecta_agents_compatibilidad_multi_agente",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_compatibilidad_multi_agente"
     },
     {
       "relation": "contains",
@@ -1689,9 +2626,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L277",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_agents_md_sandiegoapart",
-      "target": "n8n_teknoconecta_agents_graphify",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_graphify"
     },
     {
       "relation": "contains",
@@ -1699,9 +2636,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L177",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_lecciones_aprendidas_memoria_persistente",
-      "target": "n8n_teknoconecta_agents_stays_net_api",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_stays_net_api"
     },
     {
       "relation": "contains",
@@ -1709,9 +2646,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L183",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_lecciones_aprendidas_memoria_persistente",
-      "target": "n8n_teknoconecta_agents_scrapling_chromium",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_scrapling_chromium"
     },
     {
       "relation": "contains",
@@ -1719,9 +2656,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L189",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_lecciones_aprendidas_memoria_persistente",
-      "target": "n8n_teknoconecta_agents_mcps_disponibles",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_mcps_disponibles"
     },
     {
       "relation": "contains",
@@ -1729,9 +2666,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L196",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_lecciones_aprendidas_memoria_persistente",
-      "target": "n8n_teknoconecta_agents_mcps_locales_con_apis_externas_patron_stays_docs_pricelabs_docs",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_mcps_locales_con_apis_externas_patron_stays_docs_pricelabs_docs"
     },
     {
       "relation": "contains",
@@ -1739,9 +2676,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L246",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_lecciones_aprendidas_memoria_persistente",
-      "target": "n8n_teknoconecta_agents_pricelabs_academy",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_pricelabs_academy"
     },
     {
       "relation": "contains",
@@ -1749,9 +2686,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L253",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_lecciones_aprendidas_memoria_persistente",
-      "target": "n8n_teknoconecta_agents_seguridad_detectada_en_el_repo",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_seguridad_detectada_en_el_repo"
     },
     {
       "relation": "contains",
@@ -1759,9 +2696,9 @@
       "source_file": "AGENTS.md",
       "source_location": "L208",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "n8n_teknoconecta_agents_mcps_locales_con_apis_externas_patron_stays_docs_pricelabs_docs",
-      "target": "n8n_teknoconecta_agents_codeblock_1",
-      "confidence_score": 1.0
+      "target": "n8n_teknoconecta_agents_codeblock_1"
     },
     {
       "relation": "contains",
@@ -1769,9 +2706,9 @@
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L7",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "documentacion_pricelabs_api_md",
-      "target": "documentacion_pricelabs_api_codeblock_1",
-      "confidence_score": 1.0
+      "target": "documentacion_pricelabs_api_codeblock_1"
     },
     {
       "relation": "contains",
@@ -1779,9 +2716,9 @@
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L36",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "documentacion_pricelabs_api_md",
-      "target": "documentacion_pricelabs_api_codeblock_2",
-      "confidence_score": 1.0
+      "target": "documentacion_pricelabs_api_codeblock_2"
     },
     {
       "relation": "contains",
@@ -1789,9 +2726,9 @@
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L56",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "documentacion_pricelabs_api_md",
-      "target": "documentacion_pricelabs_api_codeblock_3",
-      "confidence_score": 1.0
+      "target": "documentacion_pricelabs_api_codeblock_3"
     },
     {
       "relation": "contains",
@@ -1799,9 +2736,9 @@
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L82",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "documentacion_pricelabs_api_md",
-      "target": "documentacion_pricelabs_api_codeblock_4",
-      "confidence_score": 1.0
+      "target": "documentacion_pricelabs_api_codeblock_4"
     },
     {
       "relation": "contains",
@@ -1809,9 +2746,9 @@
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L102",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "documentacion_pricelabs_api_md",
-      "target": "documentacion_pricelabs_api_codeblock_5",
-      "confidence_score": 1.0
+      "target": "documentacion_pricelabs_api_codeblock_5"
     },
     {
       "relation": "contains",
@@ -1819,9 +2756,9 @@
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L157",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "documentacion_pricelabs_api_md",
-      "target": "documentacion_pricelabs_api_codeblock_6",
-      "confidence_score": 1.0
+      "target": "documentacion_pricelabs_api_codeblock_6"
     },
     {
       "relation": "contains",
@@ -1829,9 +2766,9 @@
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L166",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "documentacion_pricelabs_api_md",
-      "target": "documentacion_pricelabs_api_codeblock_7",
-      "confidence_score": 1.0
+      "target": "documentacion_pricelabs_api_codeblock_7"
     },
     {
       "relation": "contains",
@@ -1839,9 +2776,9 @@
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L207",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "documentacion_pricelabs_api_md",
-      "target": "documentacion_pricelabs_api_codeblock_8",
-      "confidence_score": 1.0
+      "target": "documentacion_pricelabs_api_codeblock_8"
     },
     {
       "relation": "contains",
@@ -1849,9 +2786,9 @@
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L230",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "documentacion_pricelabs_api_md",
-      "target": "documentacion_pricelabs_api_codeblock_9",
-      "confidence_score": 1.0
+      "target": "documentacion_pricelabs_api_codeblock_9"
     },
     {
       "relation": "contains",
@@ -1859,9 +2796,9 @@
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L258",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "documentacion_pricelabs_api_md",
-      "target": "documentacion_pricelabs_api_codeblock_10",
-      "confidence_score": 1.0
+      "target": "documentacion_pricelabs_api_codeblock_10"
     },
     {
       "relation": "contains",
@@ -1869,9 +2806,9 @@
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L289",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "documentacion_pricelabs_api_md",
-      "target": "documentacion_pricelabs_api_codeblock_11",
-      "confidence_score": 1.0
+      "target": "documentacion_pricelabs_api_codeblock_11"
     },
     {
       "relation": "rationale_for",
@@ -1920,9 +2857,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L21",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_servers_pricelabs_docs_server_py",
-      "target": "pricelabs_docs_server_parse_documentation",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_parse_documentation"
     },
     {
       "relation": "contains",
@@ -1930,9 +2867,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L55",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_servers_pricelabs_docs_server_py",
-      "target": "pricelabs_docs_server_list_endpoints",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_list_endpoints"
     },
     {
       "relation": "contains",
@@ -1940,9 +2877,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L64",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_servers_pricelabs_docs_server_py",
-      "target": "pricelabs_docs_server_get_endpoint_detail",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_get_endpoint_detail"
     },
     {
       "relation": "contains",
@@ -1950,9 +2887,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L85",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_servers_pricelabs_docs_server_py",
-      "target": "pricelabs_docs_server_search_pricelabs_docs",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_search_pricelabs_docs"
     },
     {
       "relation": "contains",
@@ -1960,9 +2897,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L122",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_servers_pricelabs_docs_server_py",
-      "target": "pricelabs_docs_server_build_headers",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_build_headers"
     },
     {
       "relation": "contains",
@@ -1970,9 +2907,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L130",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_servers_pricelabs_docs_server_py",
-      "target": "pricelabs_docs_server_pricelabs_api_call",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_pricelabs_api_call"
     },
     {
       "relation": "contains",
@@ -1980,9 +2917,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L168",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_servers_pricelabs_docs_server_py",
-      "target": "pricelabs_docs_server_pricelabs_get_listings",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_pricelabs_get_listings"
     },
     {
       "relation": "contains",
@@ -1990,9 +2927,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L193",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "mcp_servers_pricelabs_docs_server_py",
-      "target": "pricelabs_docs_server_pricelabs_get_listing",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_pricelabs_get_listing"
     },
     {
       "relation": "rationale_for",
@@ -2000,9 +2937,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L56",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "pricelabs_docs_server_rationale_56",
-      "target": "pricelabs_docs_server_list_endpoints",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_list_endpoints"
     },
     {
       "relation": "rationale_for",
@@ -2010,9 +2947,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L65",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "pricelabs_docs_server_rationale_65",
-      "target": "pricelabs_docs_server_get_endpoint_detail",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_get_endpoint_detail"
     },
     {
       "relation": "rationale_for",
@@ -2041,9 +2978,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L149",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "pricelabs_docs_server_pricelabs_api_call",
-      "target": "pricelabs_docs_server_build_headers",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_build_headers"
     },
     {
       "relation": "calls",
@@ -2052,9 +2989,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L177",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "pricelabs_docs_server_pricelabs_get_listings",
-      "target": "pricelabs_docs_server_build_headers",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_build_headers"
     },
     {
       "relation": "calls",
@@ -2063,9 +3000,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L205",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "pricelabs_docs_server_pricelabs_get_listing",
-      "target": "pricelabs_docs_server_build_headers",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_build_headers"
     },
     {
       "relation": "rationale_for",
@@ -2073,9 +3010,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L131",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "pricelabs_docs_server_rationale_131",
-      "target": "pricelabs_docs_server_pricelabs_api_call",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_pricelabs_api_call"
     },
     {
       "relation": "rationale_for",
@@ -2083,9 +3020,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L169",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "pricelabs_docs_server_rationale_169",
-      "target": "pricelabs_docs_server_pricelabs_get_listings",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_pricelabs_get_listings"
     },
     {
       "relation": "rationale_for",
@@ -2093,9 +3030,9 @@
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L194",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "pricelabs_docs_server_rationale_194",
-      "target": "pricelabs_docs_server_pricelabs_get_listing",
-      "confidence_score": 1.0
+      "target": "pricelabs_docs_server_pricelabs_get_listing"
     },
     {
       "relation": "contains",
@@ -2276,69 +3213,9 @@
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L203",
       "weight": 1.0,
+      "confidence_score": 1.0,
       "source": "stays_docs_server_rationale_203",
-      "target": "stays_docs_server_stays_get_reservations",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 1.0,
-      "source_file": "memory-bank/activeContext.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "memory_bank_activecontext",
-      "target": "memory_bank_productcontext"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 1.0,
-      "source_file": "memory-bank/activeContext.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "memory_bank_activecontext",
-      "target": "memory_bank_progress"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 1.0,
-      "source_file": "memory-bank/activeContext.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "memory_bank_activecontext",
-      "target": "memory_bank_projectbrief"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 1.0,
-      "source_file": "memory-bank/activeContext.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "memory_bank_activecontext",
-      "target": "memory_bank_systempatterns"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 1.0,
-      "source_file": "memory-bank/activeContext.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "memory_bank_activecontext",
-      "target": "memory_bank_techcontext"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 1.0,
-      "source_file": "memory-bank/productContext.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "memory_bank_productcontext",
-      "target": "memory_bank_progress"
+      "target": "stays_docs_server_stays_get_reservations"
     },
     {
       "relation": "conceptually_related_to",
@@ -2358,46 +3235,6 @@
       "source_location": null,
       "weight": 1.0,
       "source": "memory_bank_productcontext",
-      "target": "memory_bank_systempatterns"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 1.0,
-      "source_file": "memory-bank/productContext.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "memory_bank_productcontext",
-      "target": "memory_bank_techcontext"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 1.0,
-      "source_file": "memory-bank/progress.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "memory_bank_progress",
-      "target": "memory_bank_projectbrief"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 1.0,
-      "source_file": "memory-bank/progress.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "memory_bank_progress",
-      "target": "memory_bank_systempatterns"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 1.0,
-      "source_file": "memory-bank/progress.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "memory_bank_progress",
       "target": "memory_bank_techcontext"
     },
     {
@@ -2408,26 +3245,6 @@
       "source_location": null,
       "weight": 1.0,
       "source": "memory_bank_projectbrief",
-      "target": "memory_bank_systempatterns"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 1.0,
-      "source_file": "memory-bank/projectbrief.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "memory_bank_projectbrief",
-      "target": "memory_bank_techcontext"
-    },
-    {
-      "relation": "conceptually_related_to",
-      "confidence": "INFERRED",
-      "confidence_score": 1.0,
-      "source_file": "memory-bank/systemPatterns.md",
-      "source_location": null,
-      "weight": 1.0,
-      "source": "memory_bank_systempatterns",
       "target": "memory_bank_techcontext"
     },
     {
@@ -2692,5 +3509,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "33faed00549732ac5dbef3fdbaff90114007f5b1"
+  "built_at_commit": "75769208023f9b02d7cfec7047f5e2b92f55c193"
 }
