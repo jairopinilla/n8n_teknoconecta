@@ -127,30 +127,51 @@ def _build_headers() -> dict:
 
 
 @mcp.tool()
-def pricelabs_api_call(method: str, path: str, body: str = "{}") -> str:
-    """Make authenticated GET request to Pricelabs API. READ-ONLY.
+def pricelabs_api_call(method: str, path: str, body: str = "{}", confirmed: bool = False) -> str:
+    """Make authenticated request to Pricelabs API. READ-WRITE for POST/PUT/PATCH.
 
-    Only GET requests are allowed. POST is blocked.
+    GET requests execute immediately.
+    POST, PUT, PATCH require explicit user confirmation. Pass confirmed=True after user approval.
+    DELETE is permanently blocked.
 
     Args:
-        method: HTTP method (GET only)
+        method: HTTP method (GET, POST, PUT, PATCH)
         path: API path, e.g. '/v1/listings', '/v1/listings/123'
-        body: Ignored (read-only mode)
+        body: JSON body as string for POST/PUT/PATCH
+        confirmed: Must be True for non-GET operations.
 
-    Returns JSON response as formatted string, or error details.
+    Returns JSON response as formatted string, or confirmation prompt.
     """
     if not API_KEY:
         return "Error: PRICELABS_API_KEY not configured in environment"
 
-    if method.upper() != "GET":
-        return "Error: pricelabs_api_call is read-only. Only GET requests allowed. Use pricelabs_get_listings, pricelabs_get_listing, or pricelabs_fetch_prices."
+    method = method.upper()
+
+    if method == "DELETE":
+        return "Error: DELETE is permanently blocked for safety."
+
+    if method not in ("GET", "POST", "PUT", "PATCH"):
+        return f"Error: Unsupported method '{method}'. Only GET, POST, PUT, PATCH allowed."
+
+    if method != "GET" and not confirmed:
+        return (
+            f"⚠️ CONFIRMACIÓN REQUERIDA ⚠️\n"
+            f"Se detectó una operación de escritura en PriceLabs.\n\n"
+            f"Método: {method}\n"
+            f"Ruta: {path}\n"
+            f"Body: {body}\n\n"
+            f"¿Deseas aplicar este cambio? Si es así, vuelve a llamar esta herramienta con confirmed=True."
+        )
 
     url = f"{BASE_URL}{path}"
     headers = _build_headers()
 
     try:
         with httpx.Client(timeout=30) as client:
-            resp = client.get(url, headers=headers)
+            if method == "GET":
+                resp = client.get(url, headers=headers)
+            else:
+                resp = client.request(method, url, headers=headers, data=body)
 
         if resp.status_code >= 400:
             return f"HTTP {resp.status_code}\nURL: {url}\nResponse: {resp.text[:2000]}"

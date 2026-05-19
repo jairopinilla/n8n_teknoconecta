@@ -81,6 +81,7 @@ Si necesitas el contenido de un anuncio (descripcion, titulo, amenities), consul
 - Si hay conflicto entre documentos, usar formato de conflicto (abajo)
 - En respuestas a huespedes: tono claro, amable y directo
 - En contenido comercial: tono urbano, sobrio y confiable
+- **TODOS los cambios realizados DEBEN quedar documentados en el `memory-bank/`** — actualizar `activeContext.md` y `progress.md` al finalizar cada tarea
 
 ## Contexto comercial
 
