@@ -176,16 +176,51 @@ Cuando haya conflicto entre documentos, usar:
 ## Lecciones aprendidas (memoria persistente)
 
 ### Stays.net API
-- Endpoints funcionales: `/external/v1/booking/reservations` (GET), `/external/v1/booking/reservations/{id}` (GET), `/external/checkout/initiate` (POST)
-- Endpoints no funcionales (404): `/v1/parameters/content/properties/{id}`, `/parameters/v1/setting/listing/{id}/booking`, `/external/docs/index/`
-- Mapeo IDs: reservas devuelven `_idlisting` (MongoDB ObjectId). Directus tiene `AlojamientoStayslistingId` (corto) y `AlojamientoStayslistingIdLargo` (ObjectId)
-- Descripciones de anuncios no accesibles via API. Obtener del sitio publico sandiegoapart.com
+**Endpoints FUNCIONALES (2026-05-18):**
+- ✅ `GET /external/v1/booking/reservations` — lista de reservas
+- ✅ `GET /external/v1/booking/reservations/{id}` — detalle de reserva
+- ✅ `POST /external/v1/booking/search-listings` — buscar listings disponibles (requiere `rooms` como array)
+
+**Endpoints NO FUNCIONALES (404 confirmado en jairop.stays.net):**
+- ❌ `POST /external/checkout/initiate`
+- ❌ `POST /external/promocodes/create-promo-code`
+- ❌ `POST /reservations/booking/reservations/export`
+- ❌ `POST /sell-price-rules`
+- ❌ `PATCH /v1/parameters/content/properties/{id}` — modificar propiedad
+- ❌ `PATCH /parameters/v1/setting/listing/{id}/house-rules` — modificar reglas
+- ❌ `GET /v1/parameters/content/properties/{id}` — obtener propiedad
+- ❌ `GET /parameters/v1/setting/listing/{id}/house-rules` — obtener reglas
+- ❌ `GET /adminmasters/price-groups`
+- ❌ `GET /external/settings/app-listing-custom-fields`
+- ❌ `POST /external/book-request`
+- ❌ `GET /external/v1/listings`
+- ❌ `GET /external/v1/properties`
+- ❌ `GET /external/docs/index/`
+
+**Conclusión:** Nuestra instancia de Stays.net tiene una API muy limitada. Solo permite **lectura de reservas y búsqueda de listings**. Ningún endpoint de escritura funciona para modificar propiedades, precios, reglas o contenido.
+
+**Mapeo IDs:** reservas devuelven `_idlisting` (MongoDB ObjectId). Directus tiene `AlojamientoStayslistingId` (corto) y `AlojamientoStayslistingIdLargo` (ObjectId)
+
+**Descripciones de anuncios:** no accesibles via API. Obtener del sitio publico sandiegoapart.com
 
 ### Scrapling / Chromium
 - Las tools HTTP de Scrapling (get, bulk_get) funcionan sin Chromium
 - Las tools de browser requieren Chromium con deps de sistema en `~/.local/lib/chrome-deps/`
 - BUG: el proceso MCP de Scrapling NO hereda LD_LIBRARY_PATH al lanzar Playwright
 - Workaround: usar Python+Playwright directamente desde bash con `export LD_LIBRARY_PATH=...`
+
+> **🔴 DONDE SE DEFINEN LOS MCPs — IMPORTANTE**
+>
+> **TODOS los servidores MCP de este proyecto se definen en el archivo `opencode.jsonc`** (en la raíz del workspace).
+>
+> - El cliente OpenCode lee esta configuración al iniciar y lanza/conecta cada servidor.
+> - **NO hay otro archivo de configuración MCP**. Ni `mcp.json`, ni settings del sistema, ni variables de entorno globales.
+> - Si un MCP no aparece en `opencode.jsonc`, no existe para este workspace.
+> - Para modificar un MCP (cambiar su código, agregar tools, cambiar credenciales), editar:
+>   1. El archivo `server.py` dentro de `./mcp-servers/{nombre}/`
+>   2. Y/o las variables de entorno en la sección `"environment"` de `opencode.jsonc`
+>
+> Ubicación absoluta: `/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/opencode.jsonc`
 
 ### MCPs disponibles
 14 servidores MCP configurados en `opencode.jsonc`: clerk, neon, vercel, openai, jina, perplexity, google-maps, mercadopago, n8n-mcp, supabase, directus, stays-docs, scrapling, pricelabs-docs. (airroi removido — no relevante para el negocio.)
@@ -201,7 +236,7 @@ Algunos MCPs de este proyecto son **locales pero conectan APIs externas**. En ve
 **Ventajas de este patron:**
 - Documentacion embebida: cada tool tiene descripcion, parametros y ejemplos en el servidor MCP
 - Validacion de entrada: el servidor MCP valida parametros antes de llamar la API
-- Read-only por diseno: los servidores de Stays y PriceLabs solo exponen GET / operaciones seguras
+- Escritura con confirmacion: los servidores de Stays (read-only) y PriceLabs (POST con `confirmed=True`) protegen contra cambios accidentales
 - Reutilizable: cualquier agente conectado al mismo MCP obtiene las mismas herramientas
 
 **Como se define en `opencode.jsonc`:**
@@ -232,8 +267,8 @@ Algunos MCPs de este proyecto son **locales pero conectan APIs externas**. En ve
 **Ejemplos en este repo:**
 | MCP | API externa | Ubicacion servidor | Funcion |
 |-----|-------------|-------------------|---------|
-| `stays-docs` | Stays.net API | `./mcp-servers/stays-docs/server.py` | Reservas, listings, checkout |
-| `pricelabs-docs` | PriceLabs API | `./mcp-servers/pricelabs-docs/server.py` | Listings, precios, restricciones |
+| `stays-docs` | Stays.net API | `./mcp-servers/stays-docs/server.py` | Reservas, listings (lectura). Escritura habilitada con `confirmed=True` pero endpoints de Stays devuelven 404 |
+| `pricelabs-docs` | PriceLabs API | `./mcp-servers/pricelabs-docs/server.py` | Listings, precios, update/push precios (POST con confirmacion) |
 
 **Reglas para crear un nuevo MCP local con API externa:**
 1. Crear carpeta `./mcp-servers/{nombre}/`

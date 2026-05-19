@@ -15,10 +15,24 @@ Optimización completa de anuncios SandiegoApart en Stays.net + análisis de pri
 - **Campo "Lo que ofrece este lugar":** ≤500 caracteres, con ubicación, amenities y perfil del huésped.
 - **Reglas Adicionales:** Nuevo campo separado con capacidad, fumar (multa 100 USD), terraza, bicicletas, early/late check-in.
 
-### Verificación API Stays.net (2026-05-18)
-- **CONFIRMADO:** Endpoint `PATCH /v1/parameters/content/properties/{id}` devuelve **404** en nuestra instancia.
-- **CONFIRMADO:** Endpoint `PATCH /parameters/v1/setting/listing/{id}/house-rules` también devuelve **404**.
-- **Conclusión:** Las descripciones deben actualizarse **manualmente** desde el CMS de Stays. No hay API de escritura disponible.
+### Verificación API Stays.net (2026-05-18) — ACTUALIZADO
+- **Endpoints de escritura probados (todos devuelven 404):**
+  - `POST /external/checkout/initiate`
+  - `POST /external/promocodes/create-promo-code`
+  - `POST /reservations/booking/reservations/export`
+  - `POST /sell-price-rules`
+  - `PATCH /v1/parameters/content/properties/{id}`
+  - `PATCH /parameters/v1/setting/listing/{id}/house-rules`
+  - `GET /v1/parameters/content/properties/{id}`
+  - `GET /parameters/v1/setting/listing/{id}/house-rules`
+  - `GET /adminmasters/price-groups`
+  - `GET /external/settings/app-listing-custom-fields`
+  - `POST /external/book-request`
+  - `GET /external/v1/listings`
+  - `GET /external/v1/properties`
+- **Endpoints FUNCIONALES:** Solo lectura de reservas (`GET /external/v1/booking/reservations`, `GET /external/v1/booking/reservations/{id}`) y búsqueda de listings (`POST /external/v1/booking/search-listings`)
+- **Conclusión:** Nuestra instancia de Stays.net tiene una API extremadamente limitada. **Ningún endpoint de escritura funciona.** Todo debe hacerse manualmente desde el CMS de Stays.
+- **MCP stays-docs modificado:** Ahora soporta POST/PUT/PATCH con `confirmed=True` (aunque los endpoints fallen). DELETE bloqueado por seguridad.
 
 ### Análisis PriceLabs (2026-05-18)
 | Unidad | Ocup. 7d | Ocup. 30d | Ocup. 60d | Base | Estado |
@@ -31,6 +45,12 @@ Optimización completa de anuncios SandiegoApart en Stays.net + análisis de pri
 ### Modificación MCP pricelabs-docs (2026-05-18)
 - **Archivo modificado:** `mcp-servers/pricelabs-docs/server.py`
 - **Cambio:** El tool `pricelabs_api_call` ahora acepta `POST`, `PUT`, `PATCH` (además de `GET`).
+- **Bug corregido:** Se cambió `data=body` por `content=body.encode("utf-8")` en POST/PUT/PATCH para enviar JSON correctamente.
+- **Nuevos wrappers de escritura:**
+  - `pricelabs_update_listings(listings, confirmed=True)` → POST /v1/listings
+  - `pricelabs_push_prices(listing_id, pms, confirmed=True)` → POST /v1/push_prices
+  - `pricelabs_add_listings_data(listing_id, pms, confirmed=True)` → POST /v1/add_listings_data
+  - `pricelabs_fetch_prices(listing_id, pms)` → POST /v1/fetch_prices (lectura)
 - **Seguridad:** Operaciones de escritura requieren parámetro `confirmed=True`. Sin confirmación, devuelve mensaje pidiendo aprobación.
 - **`DELETE` permanente bloqueado.**
 - **Estado:** Cambio guardado en disco. **Requiere reinicio de opencode para activarse.**

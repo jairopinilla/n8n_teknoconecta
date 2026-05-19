@@ -171,7 +171,9 @@ def pricelabs_api_call(method: str, path: str, body: str = "{}", confirmed: bool
             if method == "GET":
                 resp = client.get(url, headers=headers)
             else:
-                resp = client.request(method, url, headers=headers, data=body)
+                resp = client.request(
+                    method, url, headers=headers, content=body.encode("utf-8")
+                )
 
         if resp.status_code >= 400:
             return f"HTTP {resp.status_code}\nURL: {url}\nResponse: {resp.text[:2000]}"
@@ -181,6 +183,162 @@ def pricelabs_api_call(method: str, path: str, body: str = "{}", confirmed: bool
         except (json.JSONDecodeError, ValueError):
             return resp.text[:4000] if resp.text else "(empty response)"
 
+    except httpx.RequestError as e:
+        return f"Request failed: {type(e).__name__}: {e}"
+
+
+# ── Write wrappers ─────────────────────────────────────────────────────
+
+@mcp.tool()
+def pricelabs_update_listings(listings: list, confirmed: bool = False) -> str:
+    """Update base/min/max prices for one or more PriceLabs listings.
+
+    Requires explicit confirmation (confirmed=True) to execute.
+
+    Args:
+        listings: List of dicts with keys: id (str), base_price (int/float),
+                  min_price (int/float), max_price (int/float).
+        confirmed: Must be True to apply the update.
+
+    Example:
+        [
+          {"id": "123456", "base_price": 1100, "min_price": 200, "max_price": 1600}
+        ]
+    """
+    if not API_KEY:
+        return "Error: PRICELABS_API_KEY not configured in environment"
+
+    if not confirmed:
+        return (
+            "⚠️ CONFIRMACIÓN REQUERIDA ⚠️\n"
+            "Se va a actualizar pricing en PriceLabs.\n\n"
+            f"Listings: {json.dumps(listings, indent=2, ensure_ascii=False)}\n\n"
+            "¿Deseas aplicar este cambio? Vuelve a llamar con confirmed=True."
+        )
+
+    payload = json.dumps({"listings": listings}, ensure_ascii=False)
+    url = f"{BASE_URL}/v1/listings"
+    headers = _build_headers()
+
+    try:
+        with httpx.Client(timeout=30) as client:
+            resp = client.post(url, headers=headers, content=payload.encode("utf-8"))
+        if resp.status_code >= 400:
+            return f"HTTP {resp.status_code}\nURL: {url}\nResponse: {resp.text[:2000]}"
+        try:
+            return json.dumps(resp.json(), indent=2, ensure_ascii=False)
+        except (json.JSONDecodeError, ValueError):
+            return resp.text[:4000] if resp.text else "(empty response)"
+    except httpx.RequestError as e:
+        return f"Request failed: {type(e).__name__}: {e}"
+
+
+@mcp.tool()
+def pricelabs_push_prices(listing_id: str, pms: str, confirmed: bool = False) -> str:
+    """Push updated prices from PriceLabs to the PMS for a listing.
+
+    Requires explicit confirmation (confirmed=True) to execute.
+
+    Args:
+        listing_id: The PriceLabs listing ID.
+        pms: The PMS code (e.g. 'stays', 'booking_sync').
+        confirmed: Must be True to execute the push.
+    """
+    if not API_KEY:
+        return "Error: PRICELABS_API_KEY not configured in environment"
+
+    if not confirmed:
+        return (
+            "⚠️ CONFIRMACIÓN REQUERIDA ⚠️\n"
+            f"Se van a empujar precios a PMS para listing {listing_id} ({pms}).\n\n"
+            "¿Deseas aplicar este cambio? Vuelve a llamar con confirmed=True."
+        )
+
+    payload = json.dumps({"listing": listing_id, "pms": pms}, ensure_ascii=False)
+    url = f"{BASE_URL}/v1/push_prices"
+    headers = _build_headers()
+
+    try:
+        with httpx.Client(timeout=30) as client:
+            resp = client.post(url, headers=headers, content=payload.encode("utf-8"))
+        if resp.status_code >= 400:
+            return f"HTTP {resp.status_code}\nURL: {url}\nResponse: {resp.text[:2000]}"
+        try:
+            return json.dumps(resp.json(), indent=2, ensure_ascii=False)
+        except (json.JSONDecodeError, ValueError):
+            return resp.text[:4000] if resp.text else "(empty response)"
+    except httpx.RequestError as e:
+        return f"Request failed: {type(e).__name__}: {e}"
+
+
+@mcp.tool()
+def pricelabs_add_listings_data(
+    listing_id: str, pms: str, confirmed: bool = False
+) -> str:
+    """Add/edit listings data in PriceLabs (mainly for BookingSync PMS).
+
+    Requires explicit confirmation (confirmed=True) to execute.
+
+    Args:
+        listing_id: The PriceLabs listing ID.
+        pms: The PMS code.
+        confirmed: Must be True to execute.
+    """
+    if not API_KEY:
+        return "Error: PRICELABS_API_KEY not configured in environment"
+
+    if not confirmed:
+        return (
+            "⚠️ CONFIRMACIÓN REQUERIDA ⚠️\n"
+            f"Se va a agregar/editar listing {listing_id} en PMS {pms}.\n\n"
+            "¿Deseas aplicar este cambio? Vuelve a llamar con confirmed=True."
+        )
+
+    payload = json.dumps({"listing": listing_id, "pms": pms}, ensure_ascii=False)
+    url = f"{BASE_URL}/v1/add_listings_data"
+    headers = _build_headers()
+
+    try:
+        with httpx.Client(timeout=30) as client:
+            resp = client.post(url, headers=headers, content=payload.encode("utf-8"))
+        if resp.status_code >= 400:
+            return f"HTTP {resp.status_code}\nURL: {url}\nResponse: {resp.text[:2000]}"
+        try:
+            return json.dumps(resp.json(), indent=2, ensure_ascii=False)
+        except (json.JSONDecodeError, ValueError):
+            return resp.text[:4000] if resp.text else "(empty response)"
+    except httpx.RequestError as e:
+        return f"Request failed: {type(e).__name__}: {e}"
+
+
+@mcp.tool()
+def pricelabs_fetch_prices(listing_id: str, pms: str) -> str:
+    """Fetch refreshed prices for a listing from PriceLabs.
+
+    This is a read operation (POST /v1/fetch_prices).
+
+    Args:
+        listing_id: The PriceLabs listing ID.
+        pms: The PMS code.
+    """
+    if not API_KEY:
+        return "Error: PRICELABS_API_KEY not configured in environment"
+
+    payload = json.dumps(
+        {"listing": {"id": listing_id, "pms": pms}}, ensure_ascii=False
+    )
+    url = f"{BASE_URL}/v1/fetch_prices"
+    headers = _build_headers()
+
+    try:
+        with httpx.Client(timeout=30) as client:
+            resp = client.post(url, headers=headers, content=payload.encode("utf-8"))
+        if resp.status_code >= 400:
+            return f"HTTP {resp.status_code}\nURL: {url}\nResponse: {resp.text[:2000]}"
+        try:
+            return json.dumps(resp.json(), indent=2, ensure_ascii=False)
+        except (json.JSONDecodeError, ValueError):
+            return resp.text[:4000] if resp.text else "(empty response)"
     except httpx.RequestError as e:
         return f"Request failed: {type(e).__name__}: {e}"
 

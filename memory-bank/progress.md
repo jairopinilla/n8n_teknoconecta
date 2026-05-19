@@ -21,7 +21,11 @@
 - [x] **Descripciones actualizadas en Stays.net** (unidad 702 ya refleja cambios en sitio público)
 - [x] **Análisis PriceLabs completo** (ocupación 7d/30d/60d, diagnóstico por unidad)
 - [x] **MCP pricelabs-docs modificado** para permitir escritura con confirmación previa (`confirmed=True`)
+- [x] **Wrappers específicos de escritura** en pricelabs-docs: update_listings, push_prices, add_listings_data, fetch_prices
+- [x] **Bug fix encoding JSON** en pricelabs_api_call (POST/PUT/PATCH)
 - [x] **Reglas adicionales con multa de 100 USD** por fumar dentro del estudio
+- [x] **MCP stays-docs modificado** para permitir POST/PUT/PATCH con `confirmed=True` (aunque endpoints fallen)
+- [x] **Investigación completa de API Stays.net** — 13 endpoints probados, solo 3 funcionan (todos GET/POST de lectura)
 
 ## In Progress
 
@@ -43,9 +47,9 @@
 
 | Issue | Impacto | Estado |
 |-------|---------|--------|
-| API Stays.net no expone propiedades ni descripciones | Hay que usar web scraping | Workaround: sitio público |
+| API Stays.net es extremadamente limitada (solo 3 endpoints funcionan) | No se puede modificar nada vía API. Todo manual desde CMS | Workaround: panel web de Stays |
 | Scrapling browser tools no funcionan en WSL | Sin stealth scraping | Workaround: HTTP tools + jina |
-| `search-listings` devuelve `[]` | No se pueden buscar alojamientos vía API | Workaround: usar reservas para obtener IDs |
+| `search-listings` requiere `rooms` como array | Documentación dice Integer pero API exige Array | Solución: enviar `rooms: [1]` |
 | Token Directus expuesto en historial git | Riesgo de seguridad | Pendiente rotación |
 | sync_workflows.sh cubre solo workflows activos | Repo tiene inactivos que no se actualizan | Decisión pendiente |
 | `AlojamientoDescripcion` es null en Directus | Workflows no pueden consultar descripciones locales | Pendiente sincronización |
