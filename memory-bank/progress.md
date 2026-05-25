@@ -26,6 +26,9 @@
 - [x] **Reglas adicionales con multa de 100 USD** por fumar dentro del estudio
 - [x] **MCP stays-docs modificado** para permitir POST/PUT/PATCH con `confirmed=True` (aunque endpoints fallen)
 - [x] **Investigación completa de API Stays.net** — 13 endpoints probados, solo 3 funcionan (todos GET/POST de lectura)
+- [x] **Protocolo formal de cambios de precios en PriceLabs** — 10 pasos obligatorios documentados en `AGENTS.md`
+- [x] **Bug fixes en MCP pricelabs-docs** — nombres de campo corregidos (`base_price`→`base`, `listing`→`listing_id`, auto-append `pms`)
+- [x] **Cambios de precios aplicados en 902** — base $25k, min $23k, max $50k, push a Stays ejecutado
 
 ## In Progress
 

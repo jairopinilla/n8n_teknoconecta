@@ -17,6 +17,72 @@ Los asistentes deben usar este repo para:
 - disenar automatizaciones n8n
 - mantener documentacion limpia y trazable
 
+> **🔴 PROTOCOLO OBLIGATORIO PARA CAMBIOS DE PRECIOS EN PRICE LABS**
+>
+> **NINGUN cambio de precio en PriceLabs puede ejecutarse sin seguir estos 10 pasos en orden.**
+>
+> ### Paso 1: Obtener situacion actual
+> - Revisar ocupacion proximos 7 dias, 30 dias y 60 dias por unidad
+> - Revisar precios actuales (base, min, max) por unidad
+> - Revisar ocupacion del mercado (market occupancy) para contexto
+> - Revisar fechas proximas importantes (feriados, eventos, temporada)
+>
+> ### Paso 2: Revisar know-how interno
+> - Leer `documentacion/asesorias.md` — principios de revenue management
+> - Leer `01_source_of_truth/pricelabs/pricing_rules.md` — reglas activas
+> - Leer `05_finanzas_y_pricing/revenue_management.md` — estrategia actual
+> - Revisar lecciones aprendidas en este archivo (seccion "Lecciones aprendidas")
+>
+> ### Paso 3: Verificar fechas relevantes
+> - Consultar calendario de eventos Santiago Centro
+> - Identificar feriados, ferias, conciertos, eventos deportivos
+> - Evaluar si las fechas justifican cambio de precio (ver seccion 2.1 de asesorias.md: "El mercado manda, no el evento")
+>
+> ### Paso 4: Buscar informacion complementaria
+> - Usar Jina (`jina_search_web`) para buscar eventos, temporada, demanda en Santiago Centro
+> - Buscar ocupacion hotelera Santiago, ferias, eventos confirmados
+> - Complementar analisis con datos externos cuando aplique
+>
+> ### Paso 5: Elaborar propuesta
+> - La propuesta SIEMPRE debe estar aplicada a un periodo especifico
+> - El periodo mas urgente es: **proximos 7 dias**
+> - Luego: **proximos 30 dias**
+> - La propuesta debe incluir:
+>   - Precio base actual y propuesto por unidad
+>   - Precio minimo y maximo propuesto
+>   - Justificacion basada en datos (ocupacion, mercado, competencia)
+>   - Periodo de aplicacion especifico
+>
+> ### Paso 6: Presentar propuesta con explicacion
+> - Explicar POR QUE se sugiere cada cambio
+> - Mostrar datos que respaldan la decision
+> - Indicar riesgos de NO hacer el cambio
+> - Indicar riesgos de hacer el cambio
+> - Presentar alternativas si aplica
+>
+> ### Paso 7: Esperar confirmacion del usuario
+> - NUNCA aplicar cambios sin aprobacion explicita
+> - El usuario debe confirmar con "si, aplicar" o similar
+> - Si hay dudas, aclarar antes de ejecutar
+>
+> ### Paso 8: Aplicar cambios con confirmacion
+> - Usar `pricelabs_update_listings` con `confirmed=True`
+> - Documentar que cambios se aplicaron y cuando
+> - Guardar snapshot de precios antes y despues
+>
+> ### Paso 9: Verificar cambios aplicados
+> - Consultar API de PriceLabs para confirmar que los cambios se reflejaron
+> - Revisar que no se aplicaron cambios en periodos no autorizados
+> - Verificar proximos 30-60 dias para detectar cambios indebidos
+>
+> ### Paso 10: Confirmar y documentar
+> - Informar al usuario que cambios fueron aplicados exitosamente
+> - Actualizar `memory-bank/activeContext.md` con los cambios
+> - Actualizar `memory-bank/progress.md` si corresponde
+> - Documentar fecha, unidades afectadas, precios anteriores y nuevos
+>
+> **INCUMPLIR ESTE PROTOCOLO ES UN ERROR CRITICO.**
+
 ## Orden de lectura obligatorio
 
 Antes de proponer cambios, leer en este orden:
@@ -174,6 +240,12 @@ Cuando haya conflicto entre documentos, usar:
 > Accion sugerida:
 
 ## Lecciones aprendidas (memoria persistente)
+
+### Protocolo de cambios de precios en PriceLabs
+- **Obligatorio seguir los 10 pasos** definidos en la seccion "🔴 PROTOCOLO OBLIGATORIO PARA CAMBIOS DE PRECIOS EN PRICE LABS" (arriba en este documento)
+- **Nunca aplicar cambios sin confirmacion explicita del usuario**
+- **Siempre verificar cambios aplicados** via API despues de ejecutar
+- **Documentar todo** en `memory-bank/activeContext.md` y `memory-bank/progress.md`
 
 ### Stays.net API
 **Endpoints FUNCIONALES (2026-05-18):**

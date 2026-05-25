@@ -216,7 +216,25 @@ def pricelabs_update_listings(listings: list, confirmed: bool = False) -> str:
             "¿Deseas aplicar este cambio? Vuelve a llamar con confirmed=True."
         )
 
-    payload = json.dumps({"listings": listings}, ensure_ascii=False)
+    # Remap field names: API expects base/min/max, docs say base_price/min_price/max_price
+    mapped = []
+    for item in listings:
+        mapped_item = {}
+        for k, v in item.items():
+            if k == "base_price":
+                mapped_item["base"] = v
+            elif k == "min_price":
+                mapped_item["min"] = v
+            elif k == "max_price":
+                mapped_item["max"] = v
+            else:
+                mapped_item[k] = v
+        # Auto-add pms if not present
+        if "pms" not in mapped_item:
+            mapped_item["pms"] = "stays"
+        mapped.append(mapped_item)
+
+    payload = json.dumps({"listings": mapped}, ensure_ascii=False)
     url = f"{BASE_URL}/v1/listings"
     headers = _build_headers()
 
@@ -254,7 +272,7 @@ def pricelabs_push_prices(listing_id: str, pms: str, confirmed: bool = False) ->
             "¿Deseas aplicar este cambio? Vuelve a llamar con confirmed=True."
         )
 
-    payload = json.dumps({"listing": listing_id, "pms": pms}, ensure_ascii=False)
+    payload = json.dumps({"listing_id": listing_id, "pms": pms}, ensure_ascii=False)
     url = f"{BASE_URL}/v1/push_prices"
     headers = _build_headers()
 

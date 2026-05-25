@@ -2,7 +2,30 @@
 
 ## Current Focus
 
-Optimización completa de anuncios SandiegoApart en Stays.net + análisis de pricing en PriceLabs + habilitación de escritura en MCP de PriceLabs.
+Aplicar cambios de precios en PriceLabs siguiendo el nuevo protocolo de 10 pasos + optimización continua de anuncios en Stays.net.
+
+## Recent Changes
+
+### Protocolo de cambios de precios en PriceLabs (2026-05-18)
+- **Creado protocolo formal de 10 pasos** obligatorio para cualquier cambio de precio en PriceLabs
+- **Agregado a `AGENTS.md`** en seccion prominente con advertencia de error critico si se incumple
+- **Los 10 pasos incluyen:** obtener situacion, revisar know-how, verificar fechas, buscar info complementaria, elaborar propuesta, presentar explicacion, esperar confirmacion, aplicar cambios, verificar aplicados, confirmar y documentar
+- **Primera aplicacion del protocolo:** Unidad 902 ejecutada exitosamente
+- **Bugs MCP encontrados y corregidos:**
+  - `pricelabs_update_listings`: remapeo de `base_price`/`min_price`/`max_price` → `base`/`min`/`max` (la API usa nombres sin `_price`)
+  - `pricelabs_push_prices`: corregido `listing` → `listing_id` (la API espera `listing_id`)
+  - Auto-append `pms: "stays"` si no se especifica
+
+### Aplicación de precios — Unidad 902 (2026-05-18)
+- **Precio base:** $28,000 → **$25,000** (-10.7%)
+- **Precio mínimo:** $25,000 → **$23,000** (-8%)
+- **Precio máximo:** no definido → **$50,000** (nuevo límite)
+- **Push a Stays:** ejecutado exitosamente
+- **Impacto inmediato:** ocupación 7d pasó de 0% a 14% (proyección)
+- **Origen:** Unidad en crisis con 0% ocupación próximos 7 días (vs 20% mercado)
+- **Revisión programada:** 25 mayo 2026 — evaluar si mantener o revertir
+
+### Descripciones de anuncios (2026-05-18)
 
 ## Recent Changes
 
