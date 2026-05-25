@@ -6,6 +6,19 @@ Aplicar cambios de precios en PriceLabs siguiendo el nuevo protocolo de 10 pasos
 
 ## Recent Changes
 
+### Consolidacion del playbook de renta corta (2026-05-25)
+- **Creado `documentacion/playbook_renta_corta.md`** que fusiona `asesorias.md` + `Asesoria_personal.md`
+- **Fuentes:** Pack Maestro Airbnb (Bonos 1-6 + EBook) + transcripciones de asesorias pagadas 1-on-1
+- **Nuevas secciones clave agregadas:**
+  - Glosario operativo completo (ADR, RevPAR, ventana de reserva, dias huerfanos, evento unicornio)
+  - Marco general de diagnostico (12 puntos)
+  - 13 casos de uso con diagnostico, accion, que NO hacer y senal de mejora
+  - 8 casos ejemplo abstraidos de situaciones reales (A-H)
+  - Playbook de respuesta para LLM (9 escenarios con respuestas exactas)
+  - Checklist maestro de diagnostico (22 preguntas)
+  - 15 errores frecuentes documentados
+- **AGENTS.md actualizado** para referenciar el nuevo playbook en Protocolo Paso 2 y Orden de Lectura
+
 ### Protocolo de cambios de precios en PriceLabs (2026-05-18)
 - **Creado protocolo formal de 10 pasos** obligatorio para cualquier cambio de precio en PriceLabs
 - **Agregado a `AGENTS.md`** en seccion prominente con advertencia de error critico si se incumple
@@ -24,10 +37,6 @@ Aplicar cambios de precios en PriceLabs siguiendo el nuevo protocolo de 10 pasos
 - **Impacto inmediato:** ocupación 7d pasó de 0% a 14% (proyección)
 - **Origen:** Unidad en crisis con 0% ocupación próximos 7 días (vs 20% mercado)
 - **Revisión programada:** 25 mayo 2026 — evaluar si mantener o revertir
-
-### Descripciones de anuncios (2026-05-18)
-
-## Recent Changes
 
 ### Descripciones de anuncios (2026-05-18)
 - **Decisión:** Todas las unidades (901, 902, 702, 709) comparten las mismas descripciones.

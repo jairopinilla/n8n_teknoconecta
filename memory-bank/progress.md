@@ -29,6 +29,7 @@
 - [x] **Protocolo formal de cambios de precios en PriceLabs** — 10 pasos obligatorios documentados en `AGENTS.md`
 - [x] **Bug fixes en MCP pricelabs-docs** — nombres de campo corregidos (`base_price`→`base`, `listing`→`listing_id`, auto-append `pms`)
 - [x] **Cambios de precios aplicados en 902** — base $25k, min $23k, max $50k, push a Stays ejecutado
+- [x] **Playbook de renta corta consolidado** — `documentacion/playbook_renta_corta.md` fusiona `asesorias.md` + `Asesoria_personal.md` con playbook de respuesta LLM, checklist de diagnostico, 13 casos de uso y 8 casos ejemplo
 
 ## In Progress
 

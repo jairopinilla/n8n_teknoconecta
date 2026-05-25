@@ -28,7 +28,7 @@ Los asistentes deben usar este repo para:
 > - Revisar fechas proximas importantes (feriados, eventos, temporada)
 >
 > ### Paso 2: Revisar know-how interno
-> - Leer `documentacion/asesorias.md` — principios de revenue management
+> - Leer `documentacion/playbook_renta_corta.md` — playbook consolidado (diagnostico, pricing, casos de uso, respuesta LLM, checklist)
 > - Leer `01_source_of_truth/pricelabs/pricing_rules.md` — reglas activas
 > - Leer `05_finanzas_y_pricing/revenue_management.md` — estrategia actual
 > - Revisar lecciones aprendidas en este archivo (seccion "Lecciones aprendidas")
@@ -36,7 +36,7 @@ Los asistentes deben usar este repo para:
 > ### Paso 3: Verificar fechas relevantes
 > - Consultar calendario de eventos Santiago Centro
 > - Identificar feriados, ferias, conciertos, eventos deportivos
-> - Evaluar si las fechas justifican cambio de precio (ver seccion 2.1 de asesorias.md: "El mercado manda, no el evento")
+> - Evaluar si las fechas justifican cambio de precio (ver "Principio 1: El mercado manda, no el evento" en playbook_renta_corta.md)
 >
 > ### Paso 4: Buscar informacion complementaria
 > - Usar Jina (`jina_search_web`) para buscar eventos, temporada, demanda en Santiago Centro
@@ -95,11 +95,12 @@ Antes de proponer cambios, leer en este orden:
 6. `05_finanzas_y_pricing/` — KPIs, revenue management
 7. `06_automatizacion/` — n8n, MCP, workflows
 8. `08_playbooks/` — guias paso a paso
-9. `documentacion/` — documentacion existente (legacy)
-10. `seguimiento.md` — estado actual y cambios recientes
-11. `tecnologias.md` — stack tecnologico
-12. `APIStaysDoc.md` — si el cambio toca Stays.net
-13. `pricelabs-academy/` — si el cambio toca PriceLabs
+9. `documentacion/playbook_renta_corta.md` — **LECTURA OBLIGATORIA**: playbook consolidado de renta corta (diagnostico, pricing, casos de uso, checklist, respuesta LLM)
+10. `documentacion/` — resto de documentacion existente (legacy)
+11. `seguimiento.md` — estado actual y cambios recientes
+12. `tecnologias.md` — stack tecnologico
+13. `APIStaysDoc.md` — si el cambio toca Stays.net
+14. `pricelabs-academy/` — si el cambio toca PriceLabs
 
 ## Datos fijos vs datos que se buscan dinamicamente
 
