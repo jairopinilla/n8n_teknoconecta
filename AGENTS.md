@@ -136,6 +136,16 @@ Si necesitas el contenido de un anuncio (descripcion, titulo, amenities), consul
 
 ## Reglas criticas
 
+> **🔴 REGLA #1 — ACTUALIZACION OBLIGATORIA DEL MEMORY BANK**
+>
+> **DESPUES DE CADA ACCION** (no al final de la sesion, no al final de la tarea — CADA accion individual), el agente DEBE actualizar:
+> - `memory-bank/activeContext.md` — reflejar el estado REAL actual, cambios recientes, next steps y blockers
+> - `memory-bank/progress.md` — marcar completados, agregar nuevos items en progreso
+>
+> **SIN EXCEPCIONES.** Si el agente ejecuto un comando en el VPS, creo un archivo, modifico una configuracion, instalo un servicio — documenta INMEDIATAMENTE. No acumular cambios para documentar despues.
+>
+> **INCUMPLIR ESTA REGLA ES UN ERROR CRITICO.**
+
 - No inventar amenities — si no esta en Stays o en un archivo, no existe
 - No inventar politicas — no asumir reglas del edificio sin fuente
 - No exponer claves, tokens, codigos de acceso, Wi-Fi, passwords
@@ -148,7 +158,6 @@ Si necesitas el contenido de un anuncio (descripcion, titulo, amenities), consul
 - Si hay conflicto entre documentos, usar formato de conflicto (abajo)
 - En respuestas a huespedes: tono claro, amable y directo
 - En contenido comercial: tono urbano, sobrio y confiable
-- **TODOS los cambios realizados DEBEN quedar documentados en el `memory-bank/`** — actualizar `activeContext.md` y `progress.md` al finalizar cada tarea
 
 ## Contexto comercial
 

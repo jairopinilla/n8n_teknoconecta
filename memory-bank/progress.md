@@ -41,9 +41,18 @@
 - [x] **Connection SSH a chitara (2026-05-26):** Setup de llaves SSH documentado. Agente puede conectarse via `ssh root@5.252.52.190`
 - [x] **Supabase Studio fix (2026-05-26):** Meta no podia resolver `postgres` — solucion: agregar `postgres_default` al servicio meta en docker-compose.yml. Studio carga schemas correctamente
 - [x] **Documentacion SSH VPS (2026-05-26):** Seccion 28 en `chitara.md` y seccion en `AGENTS.md` con procedimiento completo de conexion y ejecucion de comandos
+- [x] **Directus instalado en chitara (2026-05-26):** Stack `/opt/homelab/directus/`, conectado a sandiegoapart (152 tablas), Cloudflare tunnel + DNS configurados
+- [x] **Directus S3 storage (2026-05-26):** Bucket `sandiegoapart-directus` (us-east-1), upload verificado via API, driver `s3`
+- [x] **6 AWS MCPs en opencode.jsonc (2026-05-26):** awsKnowledge, awsApi, awsServerless, awsSnsSqs, awsCloudWatch, awsIam — requieren reinicio
+- [x] **Supabase CLI actualizado (2026-05-26):** CURRENT_CLI_VERSION 2.53.6 → 2.101.0
+- [x] **Auth keys Supabase Studio (2026-05-26):** JWT secret + ANON_KEY + SERVICE_KEY configurados
+- [x] **Cloudflare Access Google SSO (2026-05-26):** n8n, Directus, Supabase Studio y Shlink Web protegidos con autenticacion Google
+- [x] **Shlink instalado (2026-05-26):** URL shortener con servidor (go) + web client (links), API funcional
+- [x] **MCPs chitara creados (2026-05-26):** n8n-chitara, directus-chitara, supabase-chitara en mcp-servers/ + opencode.jsonc
 
 ## In Progress
 
+- [ ] **Migrar 155 archivos Supabase S3 → AWS S3** — archivos estan en bucket `supabase.teknoconecta` (privado), necesita service role key
 - [ ] **Reparar n8n en chitara** — requiere recrear DB limpia
 - [ ] **Corregir configuraciones manuales en Stays** (camas, mascotas, gimnasio, tiempo de descanso)
 
@@ -77,7 +86,7 @@
 
 - Workflows activos: 10
 - Workflows inactivos: 2
-- MCP servers: 14
+- MCP servers: 26
 - Propiedades activas: 4 (Tarapacá 901, 902, 702, 709) + 1 test
 - Endpoints Stays funcionales: 3
 - Endpoints Stays no funcionales: 3

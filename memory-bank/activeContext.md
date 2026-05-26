@@ -2,9 +2,58 @@
 
 ## Current Focus
 
-Servidor chitara (5.252.52.190): migracion Supabase Cloud → PostgreSQL local completada. Proxima fase: seguridad UFW + reparar n8n.
+Servidor chitara (5.252.52.190): Directus instalado con S3 storage. Pendiente migrar 155 archivos de Supabase S3 → AWS S3 y agregar nuevos MCPs AWS.
 
 ## Recent Changes
+
+### Instalacion Directus + S3 storage (2026-05-26)
+- **Directus instalado en chitara** (`/opt/homelab/directus/`), imagen `directus/directus:latest`
+- **Conectado a sandiegoapart** via red `postgres_default`, 152 tablas visibles como colecciones
+- **Storage configurado en AWS S3:**
+  - Bucket: `sandiegoapart-directus` (us-east-1)
+  - Driver: `s3` (mismo nombre que usaba Supabase → registros existentes compatibles)
+  - Upload verificado: archivo de prueba subido exitosamente via API
+- **URL:** `https://directus.chitaraagenteia.com` (Cloudflare tunnel + DNS)
+- **Login:** `contacto@teknoconecta.com` / `ChitaraAdmin2026!`
+- **Problema login inicial:** DB ya tenia tablas Directus del Supabase anterior → bootstrap no creo nuevo admin → contrasena reseteada directamente en PostgreSQL con argon2
+- **155 archivos en DB** todos con `storage=s3` — metadata existe pero archivos fisicos estan en Supabase S3 bucket `supabase.teknoconecta` (privado)
+
+### AWS MCPs agregados a opencode.jsonc (2026-05-26)
+- 6 nuevos MCPs: `awsKnowledge`, `awsApi`, `awsServerless`, `awsSnsSqs`, `awsCloudWatch`, `awsIam`
+- Region: `us-east-1`, credenciales de IAM configuradas como env vars
+- **Requiere reinicio de opencode para activarse**
+
+### Regla critica #1 — Actualizacion obligatoria del memory-bank (2026-05-26)
+- **Agregada en `AGENTS.md`** como REGLA #1 con advertencia de error critico
+- Despues de CADA accion individual (no al final de la sesion), el agente DEBE actualizar `activeContext.md` y `progress.md`
+
+### Supabase CLI actualizado (2026-05-26)
+- `CURRENT_CLI_VERSION` cambiado de `2.53.6` → `2.101.0` en docker-compose de supabase-studio
+
+### Auth keys de Supabase Studio (2026-05-26)
+- JWT secret configurado en PostgreSQL (`app.settings.jwt_secret`)
+- `SUPABASE_ANON_KEY` y `SUPABASE_SERVICE_KEY` configurados en docker-compose
+- Sin gotrue no hay login/signup por user/pass — **reemplazado por Cloudflare Access**
+
+### Cloudflare Access Google SSO (2026-05-26)
+- **n8n**, **Directus**, **Supabase Studio** y **Shlink Web** protegidos con Google SSO via Cloudflare Access
+- Verificado funcionando en n8n y Directus
+- `go.chitaraagenteia.com` es publico (sin login, solo redirects)
+
+### Shlink instalado (2026-05-26)
+- **Shlink server** (`go.chitaraagenteia.com`, puerto 8087): motor de redireccion publico
+- **Shlink web client** (`links.chitaraagenteia.com`, puerto 8089 → contenedor 8080): panel admin protegido con Google SSO
+- Base de datos: `shlink` en PostgreSQL local
+- API Key: `4-lAyPFN9VSVUmWmkSiHwfJKWoM-exENAuFMamWqyks`
+- Version: 5.0.2, short URL de prueba funcional
+- **Fix:** nginx interno escucha en 8080, mapeo corregido de `8089:80` a `8089:8080`
+
+### MCPs chitara locales (2026-05-26)
+- **n8n-chitara:** `mcp-servers/n8n-chitara/server.py` — lista workflows, ejecuciones, get workflow/ejecucion. Usa SSH → localhost:5678. API key nueva generada (vence 2027)
+- **directus-chitara:** `mcp-servers/directus-chitara/server.py` — lista colecciones, get items, files, server info. Usa SSH → localhost:8055
+- **supabase-chitara:** `mcp-servers/supabase-chitara/server.py` — lista schemas, tablas, columnas, SQL queries/exec via meta + direct psql. Usa SSH
+- Registrados en `opencode.jsonc` — requieren reinicio para activarse
+- **Verificado:** n8n-chitara funcional (25 workflows detectados)
 
 ### Fix Supabase Studio — schemas no cargaban (2026-05-26)
 - **Error:** `Failed to load schemas` + Zod validation error `formattedError: expected string, received undefined`
@@ -133,25 +182,31 @@ Estos campos **NO** vienen de las descripciones de texto sino de la configuraci�
 | Parrilla en amenities | Todas | Confirmar si está disponible en terraza |
 | Early/late check-out | Todas | Configurar como "bajo petición" |
 
-## Next Steps (pendientes al reiniciar opencode)
+## Next Steps (al reiniciar opencode)
 
-1. **🔴 CRÍTICO: Reiniciar opencode** para cargar MCP pricelabs-docs con permisos de escritura.
-2. **Aplicar cambios de precios en PriceLabs:**
-   - 902: base $25,000 (desde $28,000), min $18,000, max $65,000
-   - 709: base $30,000 (desde $33,331)
-   - 702: base $30,000 (desde $32,303)
-   - 901: base $28,500 (desde $27,520), max $85,000
-3. **Corregir configuraciones manuales en Stays:** camas, mascotas, gimnasio, tiempo de descanso.
-4. **Revisar mínimos de noches y restricciones** en Stays para mejorar visibilidad.
-5. **Activar descuentos por duración** en PriceLabs: 2 noches -15%, 3+ noches -20%, 7+ noches -25%.
-6. **Monitorear métricas semanales:** ocupación 7d/30d, ADR, nuevas reseñas.
+1. **🔴 CRITICO: Migrar 155 archivos** de Supabase S3 → AWS S3 (`sandiegoapart-directus`)
+   - Necesita service role key de Supabase (JWT `eyJ...`)
+   - Archivos en bucket `supabase.teknoconecta` bajo prefijo `directus-server/`
+   - Registros en `directus_files` ya apuntan a `storage=s3` — no requieren cambios
+2. **Usar nuevos MCPs AWS** (awsApi, awsServerless, etc.) para gestionar S3
+3. **Reparar n8n en chitara** — requiere recrear DB limpia
+4. **Corregir configuraciones manuales en Stays** (camas, mascotas, gimnasio, tiempo de descanso)
+5. **Configurar Cloudflare Access** para directus.chitaraagenteia.com
+
+## Blockers
+
+- **MCPs AWS requieren reinicio** de opencode para activarse (ya en opencode.jsonc)
+- **Supabase service role key** necesaria para descargar archivos del bucket privado
+- ~~Supabase Studio no carga schemas~~ → RESUELTO (2026-05-26)
+- Push falla por autenticacion HTTPS (commits locales pendientes)
+- API Stays no permite escritura de propiedades/descripciones
 
 ## Active Decisions
 
-- **¿Unificar todas las unidades con mismas descripciones?** ✅ Sí. Archivo único `anuncio_todas_unidades_stays.md`.
-- **¿API para actualizar Stays?** ❌ No existe en nuestra instancia. Todo manual desde CMS.
-- **¿PriceLabs base price para 902?** 🔴 Bajar agresivamente a $25,000 (está en crisis con 0% a 7 días).
-- **¿PriceLabs base price para 901?** 🟢 Subir a $28,500 (ocupación 100% a 7 días).
+- **¿Storage Directus?** ✅ AWS S3 (`sandiegoapart-directus`, us-east-1)
+- **¿Unificar todas las unidades con mismas descripciones?** ✅ Si
+- **¿API para actualizar Stays?** ❌ No existe. Todo manual desde CMS
+- **¿PriceLabs base price para 902?** 🟢 $27,000 (recuperado de crisis a 67% ocup 7d)
 
 ## Blockers
 
