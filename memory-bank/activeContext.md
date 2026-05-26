@@ -18,6 +18,13 @@ Servidor chitara (5.252.52.190): Directus instalado con S3 storage. Pendiente mi
 - **Problema login inicial:** DB ya tenia tablas Directus del Supabase anterior → bootstrap no creo nuevo admin → contrasena reseteada directamente en PostgreSQL con argon2
 - **155 archivos en DB** todos con `storage=s3` — metadata existe pero archivos fisicos estan en Supabase S3 bucket `supabase.teknoconecta` (privado)
 
+### MCPs chitara expandidos a gestion completa (2026-05-26)
+- **n8n-chitara:** 12 herramientas (list/get/create/update/delete/activate/deactivate/execute/export workflows, list/get executions, server info). Gestiona via psql directo + n8n CLI.
+- **directus-chitara:** 25 herramientas (CRUD completo: collections, items, fields, files, flows, relations + server info). Usa API via auth token.
+- **supabase-chitara:** 13 herramientas (schemas, tables, columns, query, exec_sql, migrations, extensions, functions, indexes, policies, roles, server info).
+- **n8n API key resuelto:** generado JWT firmado con `N8N_ENCRYPTION_KEY` del contenedor. Insertado en `user_api_keys` con full scopes. `N8N_API_KEY` env var set en `.env`.
+- **n8n ejecucion:** activate workflow + trigger via webhook HTTP. n8n CLI no funciona con instancia corriendo (puerto 5679 en uso).
+
 ### AWS MCPs agregados a opencode.jsonc (2026-05-26)
 - 6 nuevos MCPs: `awsKnowledge`, `awsApi`, `awsServerless`, `awsSnsSqs`, `awsCloudWatch`, `awsIam`
 - Region: `us-east-1`, credenciales de IAM configuradas como env vars

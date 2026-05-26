@@ -49,6 +49,7 @@
 - [x] **Cloudflare Access Google SSO (2026-05-26):** n8n, Directus, Supabase Studio y Shlink Web protegidos con autenticacion Google
 - [x] **Shlink instalado (2026-05-26):** URL shortener con servidor (go) + web client (links), API funcional
 - [x] **MCPs chitara creados (2026-05-26):** n8n-chitara, directus-chitara, supabase-chitara en mcp-servers/ + opencode.jsonc
+- [x] **MCPs chitara expandidos a gestion completa (2026-05-26):** n8n (12 tools), directus (25 tools), supabase (13 tools) — todas las operaciones CRUD
 
 ## In Progress
 
