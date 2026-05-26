@@ -248,6 +248,94 @@ Cuando haya conflicto entre documentos, usar:
 - **Siempre verificar cambios aplicados** via API despues de ejecutar
 - **Documentar todo** en `memory-bank/activeContext.md` y `memory-bank/progress.md`
 
+---
+
+## 🛡️ Harness Engineering — verificacion y prevencion de errores
+
+> *"Cada vez que un agente comete un error, disenas una solucion para que ese error no vuelva a ocurrir."* — Mitchell Hashimoto
+
+Este proyecto implementa principios de harness engineering. El modelo es el motor; el harness (AGENTS.md, MCPs, memoria, reglas, verificaciones) es el auto.
+
+### Hooks de verificacion obligatorios
+
+Despues de cada operacion critica, el agente DEBE ejecutar verificacion:
+
+| Operacion | Verificacion requerida | Tool a usar |
+|-----------|----------------------|-------------|
+| `pricelabs_update_listings` | Confirmar que precios se reflejan en API | `pricelabs_get_listing` |
+| `pricelabs_push_prices` | Confirmar push exitoso (status + fecha) | `pricelabs_get_listing` |
+| `stays_api_call` (POST/PUT) | Verificar resultado con GET correspondiente | `stays_get_reservations` |
+| Cambio de precio aplicado | Actualizar tabla de ocupacion en activeContext | `edit` en memory-bank |
+| Diagnostico de unidades | Validar que se consultaron AMBAS fuentes (PriceLabs + Stays) | Self-check |
+
+**Regla:** Si una operacion de escritura no se verifica, el cambio se considera NO APLICADO.
+
+### Reglas anti-error (derivadas de errores reales)
+
+Estas reglas existen porque el error YA ocurrio al menos una vez:
+
+| # | Error cometido | Regla para prevenirlo |
+|---|---|---|
+| 1 | MCP pricelabs-docs usaba `base_price` pero API espera `base` | **Siempre verificar nombres de campo contra documentacion real de la API** |
+| 2 | Push a Stays fallaba sin feedback claro | **Siempre mostrar el status del push y `last_date_pushed` despues de aplicar** |
+| 3 | Se asumian descuentos activos que no existian | **Nunca asumir configuracion. Siempre leer datos reales de la API** |
+| 4 | Diagnostico solo con PriceLabs sin cruzar con reservas reales de Stays | **Cross-check obligatorio: PriceLabs + Stays reservas antes de diagnosticar** |
+| 5 | Se recomendaban cambios sin verificar ocupacion del mercado | **Siempre comparar ocupacion propia vs mercado antes de sugerir precio** |
+| 6 | Memory-bank desactualizado despues de cambios | **Actualizar activeContext.md y progress.md INMEDIATAMENTE despues de cada cambio** |
+| 7 | AGENTS.md referenciaba archivos que ya no eran la fuente primaria | **Al crear/renombrar archivos clave, actualizar todas las referencias en AGENTS.md** |
+| 8 | Cambios en chitara no quedaban documentados | **TODO cambio en el servidor chitara DEBE registrarse en `documentacion/chitara.md` (comandos, workarounds, decisiones) y en `memory-bank/`** |
+
+### Verificacion en capas (para cambios de pricing)
+
+Los cambios de precio deben pasar por 3 capas de verificacion:
+
+1. **Pre-ejecucion (1-2 seg):** validar que `confirmed=True`, que las 4 unidades estan en el request, que los valores tienen sentido (min < base < max, no negativos)
+2. **Post-ejecucion inmediata (5-10 seg):** `pricelabs_get_listing` para confirmar que cada unidad refleja los nuevos valores
+3. **Post-push (30-60 seg):** verificar `last_date_pushed` actualizado y `push_enabled: true` para cada unidad
+
+### Conexion al VPS chitara (5.252.52.190)
+
+**Setup inicial (una sola vez por sesion de agente):**
+
+1. Generar llave SSH: `ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N "" -C "opencode@teknoconecta"`
+2. Imprimir llave publica: `cat ~/.ssh/id_ed25519.pub`
+3. Pedir al usuario que la agregue al VPS con `ssh root@5.252.52.190 "mkdir -p ~/.ssh && echo 'LLAVE' >> ~/.ssh/authorized_keys"`
+4. Probar: `ssh -o StrictHostKeyChecking=accept-new root@5.252.52.190 "echo OK"`
+
+**Ejecutar comandos en VPS:**
+
+```bash
+ssh root@5.252.52.190 "COMANDO"
+```
+
+**Editar archivos en VPS:**
+
+```bash
+ssh root@5.252.52.190 "cat > /ruta/archivo << 'EOF'
+...contenido...
+EOF"
+```
+
+**Diagnostico de redes Docker en VPS:**
+
+```bash
+ssh root@5.252.52.190 "docker ps --format '{{.Names}} → {{.Networks}}'"
+ssh root@5.252.52.190 "docker network inspect NOMBRE_RED"
+ssh root@5.252.52.190 "docker exec CONTENEDOR node -e \"fetch('http://servicio:puerto/health').then(r=>r.text()).then(console.log)\""
+```
+
+**Documentacion completa:** `documentacion/chitara.md` seccion 28.
+
+### Limpieza periodica del harness
+
+Al final de cada sesion de cambios, ejecutar este checklist:
+
+- [ ] ¿`memory-bank/activeContext.md` refleja el estado REAL actual?
+- [ ] ¿`memory-bank/progress.md` tiene los ultimos cambios marcados como completados?
+- [ ] ¿`AGENTS.md` tiene reglas para errores que ocurrieron en esta sesion?
+- [ ] ¿Hay archivos nuevos creados que deban referenciarse en `AGENTS.md`?
+- [ ] ¿Los archivos `documentacion/asesorias.md` y `Asesoria_personal.md` estan marcados como legacy y `playbook_renta_corta.md` como fuente primaria?
+
 ### Stays.net API
 **Endpoints FUNCIONALES (2026-05-18):**
 - ✅ `GET /external/v1/booking/reservations` — lista de reservas

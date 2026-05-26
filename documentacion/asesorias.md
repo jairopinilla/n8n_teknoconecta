@@ -1,3 +1,5 @@
+> ⚠️ **LEGACY — Fuente primaria: `playbook_renta_corta.md`.** Consolidado el 2026-05-25.
+
 # Playbook para Agentes de Renta Corta
 ## Optimización, operación y mejores prácticas
 

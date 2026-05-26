@@ -28,13 +28,23 @@
 - [x] **Investigación completa de API Stays.net** — 13 endpoints probados, solo 3 funcionan (todos GET/POST de lectura)
 - [x] **Protocolo formal de cambios de precios en PriceLabs** — 10 pasos obligatorios documentados en `AGENTS.md`
 - [x] **Bug fixes en MCP pricelabs-docs** — nombres de campo corregidos (`base_price`→`base`, `listing`→`listing_id`, auto-append `pms`)
-- [x] **Cambios de precios aplicados en 902** — base $25k, min $23k, max $50k, push a Stays ejecutado
-- [x] **Playbook de renta corta consolidado** — `documentacion/playbook_renta_corta.md` fusiona `asesorias.md` + `Asesoria_personal.md` con playbook de respuesta LLM, checklist de diagnostico, 13 casos de uso y 8 casos ejemplo
+- [x] **Diagnostico completo 4 unidades + ajuste precios (2026-05-25):**
+  - 902: base $25k → $27k (+8%), push ejecutado
+  - 702: base $32.3k → $28k (-13%), min $22.4k → $20k, push ejecutado
+  - 709: base $33.3k → $28k (-16%), min $25.1k → $20k, push ejecutado
+  - 901: sin cambios ($28.2k, 93% ocup a 30d)
+  - Pendiente manual: descuentos -20% 3+ noches, ultimo minuto -15% 702+709
+- [x] **Harness Engineering implementado (2026-05-25):** hooks de verificacion, reglas anti-error, verificacion en capas, limpieza periodica, archivos legacy marcados
+- [x] **Migracion Supabase → chitara (2026-05-26):** sandiegoapart recreada, 152 tablas, datos 100% identicos, pgvector/postgis instalados, workaround halfvec documentado en chitara.md
+- [x] **Servidor MCP cloudflare (2026-05-25):** 9 herramientas (DNS, Workers, D1, AI Gateway, docs search)
+- [x] **Servidor MCP interactive-terminal (2026-05-25):** SSH persistente con sesiones stateful
+- [x] **Connection SSH a chitara (2026-05-26):** Setup de llaves SSH documentado. Agente puede conectarse via `ssh root@5.252.52.190`
+- [x] **Supabase Studio fix (2026-05-26):** Meta no podia resolver `postgres` — solucion: agregar `postgres_default` al servicio meta en docker-compose.yml. Studio carga schemas correctamente
+- [x] **Documentacion SSH VPS (2026-05-26):** Seccion 28 en `chitara.md` y seccion en `AGENTS.md` con procedimiento completo de conexion y ejecucion de comandos
 
 ## In Progress
 
-- [ ] **Reinicio de opencode** para activar MCP pricelabs-docs con modo escritura
-- [ ] **Aplicar cambios de precios en PriceLabs** (propuestos, pendientes de ejecución)
+- [ ] **Reparar n8n en chitara** — requiere recrear DB limpia
 - [ ] **Corregir configuraciones manuales en Stays** (camas, mascotas, gimnasio, tiempo de descanso)
 
 ## Planned
@@ -59,8 +69,9 @@
 | `AlojamientoDescripcion` es null en Directus | Workflows no pueden consultar descripciones locales | Pendiente sincronización |
 | Push falla por falta de auth HTTPS en entorno remoto | Commits no llegan a origin/main | **Workaround: push desde terminal local** |
 | **MCP pricelabs-docs requiere reinicio** | Cambios de precios pendientes | **Pendiente: reiniciar opencode** |
-| **902 tiene 0% ocupación a 7 días** | Unidad en crisis | **Acción urgente: bajar precio base** |
-| **709 tiene 27% ocupación a 30 días** | Precio base más alto del portafolio sin justificación | **Acción: bajar base a $30k** |
+| **902 tiene 57% ocupacion a 7d (recuperado)** | Ya no esta en crisis | 🟢 Base subida a $27k |
+| **709 tiene 33% ocup a 30d con 1 sola reserva** | Unidad mas cara y mas vacia del portafolio | 🟡 Base bajada a $28k, min $20k |
+| **702 tiene 30% ocup a 30d** | Precio base era el mas alto sin justificar | 🟡 Base bajada a $28k, min $20k |
 
 ## Metrics
 

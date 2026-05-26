@@ -2,13 +2,46 @@
 
 ## Current Focus
 
-Aplicar cambios de precios en PriceLabs siguiendo el nuevo protocolo de 10 pasos + optimización continua de anuncios en Stays.net.
+Servidor chitara (5.252.52.190): migracion Supabase Cloud → PostgreSQL local completada. Proxima fase: seguridad UFW + reparar n8n.
 
 ## Recent Changes
+
+### Fix Supabase Studio — schemas no cargaban (2026-05-26)
+- **Error:** `Failed to load schemas` + Zod validation error `formattedError: expected string, received undefined`
+- **Causa raiz:** `supabase-meta` solo estaba en `supabase_net`, no en `postgres_default`. No podia resolver hostname `postgres`
+- **Solucion:** Agregar `postgres_default` como red adicional al servicio `meta` en `/opt/homelab/supabase/docker-compose.yml`
+- **Verificacion:** `docker exec supabase-meta node -e "..."` confirma 11 schemas retornados correctamente
+- **Documentado en:** `chitara.md` seccion 28.8 (leccion de redes Docker)
+
+### Conexion SSH al VPS documentada (2026-05-26)
+- **Setup de llaves SSH** documentado en `AGENTS.md` y `chitara.md` seccion 28
+- Procedimiento: generar llave local → compartir pubkey → usuario agrega al VPS → probar conexion
+- Patron obligatorio: `ssh root@5.252.52.190 "COMANDO"`
+- Comandos de diagnostico Docker documentados
+
+### Migracion Supabase Cloud → chitara (2026-05-26)
+- **Base sandiegoapart en chitara recreada** desde cero con dump fresco de Supabase Cloud
+- **Datos verificados:** 152 tablas en public, datos de negocio 100% identicos
+- **Workaround documentado en `chitara.md` seccion 12.5:** instalacion de extensiones (pgvector, postgis, ltree, pgcrypto, etc.), manejo de halfvec en schema extensions, pg_dump/pg_restore con flags correctos
+- **Extensiones instaladas en postgres:18:** vector (0.8.2), postgis, ltree, pgcrypto, unaccent, uuid-ossp, pg_stat_statements
+- **Problema resuelto:** halfvec debia estar en schema `extensions` no en `public` → `DROP EXTENSION vector CASCADE; CREATE EXTENSION vector SCHEMA extensions;`
+- **Conexion SSH:** root@5.252.52.190 establecida via paramiko
+- **Credenciales PostgreSQL chitara:** usuario=chitara, db=chitara, password en .env del servidor
+
+### Ajuste de precios — 25 mayo 2026 (diagnostico completo + aplicacion)
+- **Diagnostico completo** de las 4 unidades con datos de PriceLabs + Stays (reservas)
+- **Cambios aplicados y pushed a Stays:**
+  - **902:** base $25,000 → **$27,000** (+8%). Recuperacion confirmada: de 0% a 67% en 7 dias.
+  - **702:** base $32,303 → **$28,000** (-13%), min $22,424 → **$20,000**. 30% ocup a 30d, solo 2 reservas.
+  - **709:** base $33,331 → **$28,000** (-16%), min $25,125 → **$20,000**. Solo 1 reserva, 23 noches vacias consecutivas.
+  - **901:** sin cambios ($28,227). 93% ocup a 30d, casi lleno.
+- **Pendiente manual en dashboard PriceLabs:** descuento -20% desde 3 noches (todas), ultimo minuto -15% a 7d (702+709)
 
 ### Consolidacion del playbook de renta corta (2026-05-25)
 - **Creado `documentacion/playbook_renta_corta.md`** que fusiona `asesorias.md` + `Asesoria_personal.md`
 - **Fuentes:** Pack Maestro Airbnb (Bonos 1-6 + EBook) + transcripciones de asesorias pagadas 1-on-1
+- **Archivos legacy marcados:** `asesorias.md` y `Asesoria_personal.md` ahora tienen aviso de LEGACY
+- **AGENTS.md actualizado** con seccion de Harness Engineering: hooks de verificacion, reglas anti-error, verificacion en capas, limpieza periodica
 - **Nuevas secciones clave agregadas:**
   - Glosario operativo completo (ADR, RevPAR, ventana de reserva, dias huerfanos, evento unicornio)
   - Marco general de diagnostico (12 puntos)
@@ -66,13 +99,13 @@ Aplicar cambios de precios en PriceLabs siguiendo el nuevo protocolo de 10 pasos
 - **Conclusión:** Nuestra instancia de Stays.net tiene una API extremadamente limitada. **Ningún endpoint de escritura funciona.** Todo debe hacerse manualmente desde el CMS de Stays.
 - **MCP stays-docs modificado:** Ahora soporta POST/PUT/PATCH con `confirmed=True` (aunque los endpoints fallen). DELETE bloqueado por seguridad.
 
-### Análisis PriceLabs (2026-05-18)
-| Unidad | Ocup. 7d | Ocup. 30d | Ocup. 60d | Base | Estado |
-|--------|----------|-----------|-----------|------|--------|
-| 901 | **100%** | 77% | 70% | $27,520 | 🟢 Fuerte |
-| 902 | **0%** | 27% | 20% | $28,000 | 🔴 Crítico |
-| 702 | 43% | 37% | 18% | $32,303 | 🟡 Inestable |
-| 709 | 29% | 27% | 20% | $33,331 | 🟡 Bajo |
+### Análisis PriceLabs (2026-05-25) — ACTUALIZADO post-cambios
+| Unidad | Ocup. 7d | Ocup. 30d | Ocup. 60d | Base | Min | Estado |
+|--------|----------|-----------|-----------|------|-----|--------|
+| 901 | 86% | 93% | 67% | $28,227 | $20,480 | 🟢 Fuerte |
+| 902 | 57% | 67% | 72% | **$27,000** | $23,000 | 🟢 Recuperado |
+| 702 | 57% | 30% | 15% | **$28,000** | **$20,000** | 🟡 Bajo |
+| 709 | 86% | 33% | 17% | **$28,000** | **$20,000** | 🔴 Critico |
 
 ### Modificación MCP pricelabs-docs (2026-05-18)
 - **Archivo modificado:** `mcp-servers/pricelabs-docs/server.py`
@@ -122,9 +155,10 @@ Estos campos **NO** vienen de las descripciones de texto sino de la configuraci�
 
 ## Blockers
 
-- **MCP pricelabs-docs requiere reinicio** para activar modo escritura.
-- Push falla por autenticación HTTPS (commits locales pendientes).
-- API Stays no permite escritura de propiedades/descripciones.
+~~Supabase Studio no carga schemas~~ → RESUELTO (2026-05-26): meta ahora en postgres_default
+
+- **Push falla por autenticacion HTTPS** (commits locales pendientes).
+- **API Stays no permite escritura** de propiedades/descripciones.
 
 ## Notas
 

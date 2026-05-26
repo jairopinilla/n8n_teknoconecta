@@ -1,3 +1,5 @@
+> ⚠️ **LEGACY — Fuente primaria: `playbook_renta_corta.md`.** Consolidado el 2026-05-25.
+
 # Asesorías de renta corta - guía unificada para LLM
 
 Fuente: transcripciones ubicadas en `G:\Mi unidad\asesoria pagada\Transcripcion`.
