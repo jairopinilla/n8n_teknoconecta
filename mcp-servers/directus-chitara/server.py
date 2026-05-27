@@ -99,7 +99,7 @@ async def call_tool(name: str, arguments: dict):
     try:
         if name == "directus_chitara_list_collections":
             data = api_call("GET", "/collections?limit=-1")
-            names = [{"collection": c.get("collection"), "singleton": c.get("meta", {}).get("singleton", False)} for c in data.get("data", [])]
+            names = [{"collection": c.get("collection"), "singleton": (c.get("meta") or {}).get("singleton", False)} for c in data.get("data") or []]
             result = json.dumps({"collections": names, "total": len(names)}, indent=2)
 
         elif name == "directus_chitara_get_collection":
@@ -164,7 +164,7 @@ async def call_tool(name: str, arguments: dict):
             data = api_call("GET", f"/fields/{arguments['collection']}")
             fields = []
             for f in data.get("data", []):
-                fields.append({"field": f.get("field"), "type": f.get("type"), "required": f.get("meta", {}).get("required", False)})
+                fields.append({"field": f.get("field"), "type": f.get("type"), "required": (f.get("meta") or {}).get("required", False)})
             result = json.dumps({"fields": fields, "total": len(fields)}, indent=2)
 
         elif name == "directus_chitara_create_field":
@@ -239,8 +239,8 @@ async def call_tool(name: str, arguments: dict):
             files = api_call("GET", "/files?limit=0&meta[total_count]=*")
             result = json.dumps({
                 "server": info.get("data", {}),
-                "total_collections": collections.get("meta", {}).get("total_count", 0),
-                "total_files": files.get("meta", {}).get("total_count", 0),
+                "total_collections": (collections.get("meta") or {}).get("total_count", 0),
+                "total_files": (files.get("meta") or {}).get("total_count", 0),
             }, indent=2)
 
         else:

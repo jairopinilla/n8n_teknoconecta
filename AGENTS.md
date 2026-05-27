@@ -293,6 +293,7 @@ Estas reglas existen porque el error YA ocurrio al menos una vez:
 | 6 | Memory-bank desactualizado despues de cambios | **Actualizar activeContext.md y progress.md INMEDIATAMENTE despues de cada cambio** |
 | 7 | AGENTS.md referenciaba archivos que ya no eran la fuente primaria | **Al crear/renombrar archivos clave, actualizar todas las referencias en AGENTS.md** |
 | 8 | Cambios en chitara no quedaban documentados | **TODO cambio en el servidor chitara DEBE registrarse en `documentacion/chitara.md` (comandos, workarounds, decisiones) y en `memory-bank/`** |
+| 9 | MCPs chitara no cargaban por `.venv` corrupto (falta `bin/python3`) | **Si los MCPs chitara no aparecen como tools, verificar `.venv` y reinstalar `mcp`: `rm -rf .venv && uv venv && uv pip install mcp`** |
 
 ### Verificacion en capas (para cambios de pricing)
 
@@ -393,7 +394,7 @@ Al final de cada sesion de cambios, ejecutar este checklist:
 > Ubicación absoluta: `/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/opencode.jsonc`
 
 ### MCPs disponibles
-14 servidores MCP configurados en `opencode.jsonc`: clerk, neon, vercel, openai, jina, perplexity, google-maps, mercadopago, n8n-mcp, supabase, directus, stays-docs, scrapling, pricelabs-docs. (airroi removido — no relevante para el negocio.)
+26 servidores MCP configurados en `opencode.jsonc`: clerk, neon, vercel, openai, jina, perplexity, google-maps, mercadopago, n8n-mcp, supabase, directus, stays-docs, scrapling, pricelabs-docs, cloudflare, cloudflare-dns, interactive-terminal, awsKnowledge, awsApi, awsServerless, awsSnsSqs, awsCloudWatch, awsIam, n8n-chitara, directus-chitara, supabase-chitara.
 
 **Tipos de MCP en este proyecto:**
 - **Remote**: servidores MCP hospedados por el proveedor (ej. `clerk`, `vercel`, `supabase`). Requieren URL + headers de autenticacion.
@@ -448,6 +449,59 @@ Algunos MCPs de este proyecto son **locales pero conectan APIs externas**. En ve
 5. Registrar en `opencode.jsonc` con `"type": "local"` y `"command"` que ejecute `uv run`
 6. Preferir operaciones read-only a menos que el caso de uso justifique writes
 7. Documentar endpoints funcionales vs no funcionales en este archivo (AGENTS.md)
+
+### MCPs chitara — administracion del VPS via SSH (n8n-chitara, directus-chitara, supabase-chitara)
+
+Estos 3 MCPs son locales (Python + `mcp` SDK) que se conectan al VPS `5.252.52.190` via SSH para administrar servicios directamente.
+
+**Arquitectura:**
+```
+opencode → MCP server (local) → SSH → VPS chitara → contenedor Docker (n8n / directus / postgres)
+```
+
+**Servidores MCP chitara:**
+
+| MCP | Base de datos | Contenedor | Funcion |
+|-----|--------------|------------|---------|
+| `n8n-chitara` | PostgreSQL `n8n` | `postgres` + `n8n` | CRUD workflows, ejecuciones, activacion, server info |
+| `directus-chitara` | Interna (SQLite/API) | `directus` | CRUD colecciones, items, fields, files, flows, relations |
+| `supabase-chitara` | PostgreSQL `sandiegoapart` | `postgres` + `supabase-*` | SQL, tablas, migraciones, extensiones, funciones, RLS |
+
+**Dependencia critica:** Los 3 MCPs chitara requieren el paquete Python `mcp` instalado en el `.venv` del proyecto:
+```bash
+cd /mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta
+uv venv && uv pip install mcp
+```
+Si el `.venv` esta corrupto (falta `bin/python3`), eliminarlo primero: `rm -rf .venv`.
+
+**Verificar que los MCPs chitara cargaron en sesion:**
+- `n8n_chitara_list_workflows` debe devolver 25 workflows
+- `directus_chitara_list_collections` debe devolver ~146 colecciones
+- `supabase_chitara_list_tables` (schema=public) debe devolver ~155 tablas
+
+**Nombres de herramientas (prefijo):**
+- `n8n-chitara` → `n8n_chitara_*` (12 tools)
+- `directus-chitara` → `directus_chitara_*` (22 tools)
+- `supabase-chitara` → `supabase_chitara_*` (13 tools)
+
+> **🔴 IMPORTANTE**: Los MCPs chitara NO son lo mismo que los MCPs cloud (`n8n-mcp`, `directus`, `supabase`). Los MCPs cloud apuntan a `*.teknoconectapp.com` (solo 1 workflow en n8n cloud). Los MCPs chitara apuntan al VPS via SSH (25 workflows, 146 colecciones, 155 tablas). Para operar sobre el negocio real, usar SIEMPRE los MCPs chitara.
+
+### Verificacion de inicio de sesion (session startup checklist)
+
+Al iniciar cada sesion nueva de OpenCode, el agente DEBE ejecutar esta verificacion:
+
+```
+1. SSH: ssh -o ConnectTimeout=5 root@5.252.52.190 "echo SSH_OK"
+2. n8n-chitara: n8n_chitara_list_workflows → debe devolver ~25 workflows
+3. directus-chitara: directus_chitara_list_collections → debe devolver ~146 colecciones
+4. supabase-chitara: supabase_chitara_list_tables → debe devolver ~155 tablas
+5. MCPs cloud funcionales: n8n-mcp, directus, supabase (para operaciones cloud si aplica)
+```
+
+Si algun MCP chitara no aparece como herramienta:
+1. Verificar que el paquete `mcp` esta instalado: `uv pip list | grep mcp`
+2. Si no esta: reinstalar venv con `rm -rf .venv && uv venv && uv pip install mcp`
+3. Reiniciar OpenCode para que cargue los MCPs locales
 
 ### PriceLabs Academy
 - 365 articulos del portal de ayuda PriceLabs en espanol en `documentacion/pricelabs-academy/`
