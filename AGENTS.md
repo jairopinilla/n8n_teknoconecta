@@ -237,6 +237,18 @@ Los secretos reales deben vivir en:
 
 Si detectas un secreto en un archivo versionado, marcalo como CRITICAL y reportalo.
 
+## Credenciales encriptadas
+
+Las credenciales de todos los servicios (MCPs, APIs, bases de datos, servidores) estan encriptadas en:
+- `documentacion/credenciales.enc` — archivo encriptado con AES-256-CBC
+- `documentacion/decrypt.sh` — script para desencriptar
+
+**Protocolo de desencriptado:**
+1. Si el usuario pide credenciales, NO las busques en tu contexto ni en archivos planos
+2. Pidele al usuario la clave de desencriptado: *"¿Cuál es la clave para desencriptar las credenciales?"*
+3. Ejecuta: `echo "CLAVE" | openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -d -pass pass:CLAVE -base64 -A -in documentacion/credenciales.enc`
+4. NUNCA almacenes la clave en el contexto ni en el repo
+
 ## Resolucion de conflictos
 
 Cuando haya conflicto entre documentos, usar:
