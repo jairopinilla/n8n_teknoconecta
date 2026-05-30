@@ -3,17 +3,77 @@
     "mtime": 1777510736.1599176,
     "hash": "37a296580af42be72adee5b0918dd67d"
   },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/cloudflare/server.py": {
+    "mtime": 1779742461.9639122,
+    "hash": "962e2ab298ad61c05eee1870ec784402"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/src/index.ts": {
+    "mtime": 1780109852.3516476,
+    "hash": "8c25ef4c1ee46bd6709325ddaf8c817a"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/src/client/coolify-api.ts": {
+    "mtime": 1780109852.3441072,
+    "hash": "0e3cd2d2cacfce9effa26cc44ae8b8e6"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/src/schemas/index.ts": {
+    "mtime": 1780109852.3674126,
+    "hash": "45fb0907bfbb17bdadfac1dbf5d59b4d"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/src/templates/index.ts": {
+    "mtime": 1780109852.3832693,
+    "hash": "8811bbee601e82e2fcfaceca13f6f781"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/src/tools/applications.ts": {
+    "mtime": 1780109852.398907,
+    "hash": "bc66a69d8af5e584d45121bd4821e1b9"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/src/tools/deployments.ts": {
+    "mtime": 1780109852.4116778,
+    "hash": "e8fdde343720ef37ebc52d3fb17ea009"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/src/tools/projects.ts": {
+    "mtime": 1780109852.420254,
+    "hash": "49dbc1614a244b884132746fab036db0"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/src/tools/safety.ts": {
+    "mtime": 1780109852.4302683,
+    "hash": "ffa6740b64216fe9139d64e5c6bc65e8"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/src/tools/templates.ts": {
+    "mtime": 1780109852.442266,
+    "hash": "2d20c2d067724fbc5eb0bb27d4c9e2b4"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/src/types/index.ts": {
+    "mtime": 1780109852.4577858,
+    "hash": "4eb2ee83b08285f692b812feabe1cca4"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/src/utils/logger.ts": {
+    "mtime": 1780109852.472993,
+    "hash": "d45eb77c6504f6fbe86cf6bb724725ee"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/directus-chitara/server.py": {
+    "mtime": 1779835773.0849867,
+    "hash": "fffc46d91715b8b06bc72dcc9a4e3c44"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/n8n-chitara/server.py": {
+    "mtime": 1779828450.7649002,
+    "hash": "2594ebfcce562750597fddf3b7e96196"
+  },
   "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/pricelabs-docs/server.py": {
-    "mtime": 1778956997.5771184,
-    "hash": "692e7da1d8c1d227b39a4bcf29389d90"
+    "mtime": 1779162621.6716125,
+    "hash": "ba36eba0665f4926a1a2e89c3aa8665a"
   },
   "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/stays-docs/server.py": {
-    "mtime": 1778956938.878969,
-    "hash": "300ad395b11711153c1387d32d0b01a9"
+    "mtime": 1779160403.4251988,
+    "hash": "d74805b9efaf1b5250e1db30408017a7"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/supabase-chitara/server.py": {
+    "mtime": 1779828371.2948077,
+    "hash": "318f9dec90142e76d3cc20fe2e0f325b"
   },
   "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/AGENTS.md": {
-    "mtime": 1778959125.946983,
-    "hash": "619c467bc3df2dfa103e7c46f3d2fa00"
+    "mtime": 1780024779.2809925,
+    "hash": "c91512a6a265cbc43902bf7332310ca6"
   },
   "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/CLAUDE.md": {
     "mtime": 1778946660.845667,
@@ -87,13 +147,13 @@
     "mtime": 1778946570.335687,
     "hash": "5c9eedfdaccc0e4bcdc0257f67de63e4"
   },
-  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/03_marketing_y_ads/anuncios_mejorados/anuncio_709.md": {
-    "mtime": 1778961860.454499,
-    "hash": "d91b98292db7de8316488d5b71f0bdb3"
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/03_marketing_y_ads/anuncios_mejorados/anuncio_todas_unidades_stays.md": {
+    "mtime": 1779142307.6782067,
+    "hash": "1dc2e0548b7820e9dc52c700944b2baf"
   },
-  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/03_marketing_y_ads/anuncios_mejorados/anuncio_901_902_702.md": {
-    "mtime": 1778961823.574801,
-    "hash": "b4656cbb3b762d0dd0e4dc98f85bdbcd"
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/03_marketing_y_ads/anuncios_mejorados/descripcion_edificio_stays.md": {
+    "mtime": 1779127716.856533,
+    "hash": "c38c3438fb8d3bf5c4d284aa36c5b3d4"
   },
   "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/04_mensajeria/checkin.md": {
     "mtime": 1778946574.0643058,
@@ -144,20 +204,44 @@
     "hash": "1c2666747df71f7019d97751c5f012ef"
   },
   "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/asesorias.md": {
-    "mtime": 1778875098.5270498,
-    "hash": "cf992e3ca47c11977e582c24d75b9ad1"
+    "mtime": 1779740784.9190404,
+    "hash": "8563511fda0d360f6c43afbf41aa0a41"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/Asesoria_personal.md": {
+    "mtime": 1779740804.666416,
+    "hash": "8eb2a6d4e6e75c7543f190f3f9ced8fc"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/chitara.md": {
+    "mtime": 1779762464.7434132,
+    "hash": "f596f89d68cfbe8333002e8ba2850809"
   },
   "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/configuracion-mcp.md": {
     "mtime": 1778703265.915445,
     "hash": "1850346d2cdfe973bc4227073566060a"
   },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/credenciales_infraestructura.txt": {
+    "mtime": 1779942026.8576398,
+    "hash": "9093b71cc06f6103148434062f5e5e74"
+  },
   "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/guia-repositorio.md": {
     "mtime": 1777588706.968876,
     "hash": "8ccd5d8af72ce83cf58d353d5946e4f6"
   },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/playbook_renta_corta.md": {
+    "mtime": 1779726574.249596,
+    "hash": "b051d2b25924ef3d2366709627a983b1"
+  },
   "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/Pricelabs_API.md": {
     "mtime": 1778867400.1410205,
     "hash": "8b477dc7ec785be85d846fd6b322e45c"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/prompt_cloudflare.md": {
+    "mtime": 1779757086.415561,
+    "hash": "4bbe72cb9adbc8980b4427810a42fc04"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/prompt_playbook.md": {
+    "mtime": 1779733714.4866204,
+    "hash": "181c292f501a640c5372a86831a3b085"
   },
   "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/documentacion/seguimiento.md": {
     "mtime": 1778948554.9881494,
@@ -263,17 +347,33 @@
     "mtime": 1778883483.4583867,
     "hash": "470df0e19e2fd646cbef34432d6c39b6"
   },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/docker-compose.yml": {
+    "mtime": 1780109852.2987933,
+    "hash": "01952b739c250399c8b4ee40261cd48a"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/README.md": {
+    "mtime": 1780109852.293499,
+    "hash": "507715664a7e2fab994e917fa40f783e"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/docs/SECURITY.md": {
+    "mtime": 1780109852.3083134,
+    "hash": "f411ff31872ad7e5101a015fea6a0918"
+  },
+  "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/mcp-servers/coolify-mcp/examples/tool-calls.md": {
+    "mtime": 1780109852.318849,
+    "hash": "712dc621adcca316094d3f99a0bdd613"
+  },
   "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/memory-bank/activeContext.md": {
-    "mtime": 1778964153.4292698,
-    "hash": "16d5e2e43b2a408ce188b81f3a8033a2"
+    "mtime": 1780111149.2004027,
+    "hash": "a244e11ed551dff13cf18615ac89952b"
   },
   "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/memory-bank/productContext.md": {
     "mtime": 1778871049.0502384,
     "hash": "e50642dfdb674f975e1e4f7ae3ae68b1"
   },
   "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/memory-bank/progress.md": {
-    "mtime": 1778964175.6455472,
-    "hash": "bbbfe2a7e1c633180c96db592edf9a4e"
+    "mtime": 1780111182.9728472,
+    "hash": "978eef745249d17eb3455de8db69bd31"
   },
   "/mnt/c/Users/jairo/OneDrive/Documents/GitHub/n8n_teknoconecta/memory-bank/projectbrief.md": {
     "mtime": 1778871033.8605647,
