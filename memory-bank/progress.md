@@ -55,12 +55,28 @@
 - [x] **Coolify MCP verificado** — compilado, API conecta, lista para usar
 - [x] **Coolify proyecto existente** — "Saldito front" (id: 2)
 
+### Sesion 2026-06-02 (deploy gestion_gastos en VPS con dominio HTTPS)
+
+- [x] **Dockerfiles creados** — `backend/Dockerfile` (Node 22 Alpine + pnpm), `frontend/Dockerfile` (multi-stage Angular + nginx)
+- [x] **nginx.conf SPA** — try_files + proxy /api → backend:3001 + gzip
+- [x] **docker-compose.yml** — orquestación completa con healthchecks
+- [x] **environment.prod.ts** — API baseUrl configurado para mismo origen con proxy nginx
+- [x] **Coolify API incompatible** — endpoint `/public` crea apps pero no pueden clonear repo privado sin GitHub App
+- [x] **Deploy directo en VPS** — clonado en `/srv/saldito/` via token OAuth GitHub
+- [x] **Build y deploy Docker** — `docker compose up -d --build` exitoso (backend 4s, frontend 31s)
+- [x] **Nginx reverse proxy host** — config `/etc/nginx/sites-enabled/saldito`, proxy a 127.0.0.1:4200
+- [x] **DNS Cloudflare** — registro A `saldito.chitaraagenteia.com` → `5.252.52.190`
+- [x] **SSL Let's Encrypt** — certbot --nginx, expira 2026-08-31, auto-renovación
+- [x] **CORS abierto** — `*` para pruebas externas con token Clerk
+- [x] **Verificación completa** — HTTPS 200, health OK, API auth funcionando
+- [x] **Zona tarapaca1140.cl eliminada** — 8 registros borrados + zona completa
+- [x] **Nuevo token Cloudflare** — `cfat_e43N...` con Zone:DNS:Edit para chitaraagenteia.com
+
 ## In Progress
 
-- [ ] **Reiniciar OpenCode** para cargar Coolify MCP
-- [ ] **Deployar gestion_gastos frontend** (Angular + Ionic static site)
-- [ ] **Deployar gestion_gastos backend** (Node.js + Clerk + Neon)
-- [ ] **Configurar dominios/SSL** para apps deployadas
+- [ ] **Configurar cron jobs en Healthchecks** — migrar backups existentes
+- [ ] **Backup automático diario a S3 con Healthchecks monitoring**
+- [ ] **Dar de baja VPS viejo (5.78.152.6)**
 
 ## Planned
 
@@ -81,17 +97,20 @@
 | Push falla por falta de auth HTTPS en WSL | Commits no llegan a origin/main | Workaround: push desde terminal local |
 | **Directus app.js parcheado** | Se pierde si se actualiza imagen Docker | Documentado: re-aplicar patch |
 | **Token Directus expuesto en historial git** | Riesgo de seguridad | Pendiente rotación |
-| **Coolify MCP requiere reinicio** | No disponible hasta reiniciar OpenCode | Reinicio pendiente (2026-06-01) |
+| **Coolify API incompatible con MCP** | MCP no puede crear/deployar apps correctamente | Workaround: deploy directo en VPS |
+| **Repo gestion_gastos privado** | Coolify no clona sin GitHub App | Workaround: token OAuth + git pull manual |
+| **Traefik no corriendo en VPS** | Labels Traefik en compose son ignorados | Nginx host es el proxy real |
 | **Supabase Studio en puerto 8001** | Cambiado de 8000 por conflicto con Coolify | Estable |
 
 ## Métricas
 
 - Workflows n8n: 25
 - Credenciales n8n: 24
-- MCP servers: 27 (+ coolify-mcp)
-- Contenedores Docker: 20 corriendo
+- MCP servers: 27
+- Contenedores Docker: 22 corriendo (+ saldito-frontend, saldito-backend)
 - Archivos Directus S3: 156
-- Servicios web expuestos: 6 (n8n, directus, coolify, code, term, health)
+- Servicios web expuestos: 7 (n8n, directus, coolify, code, term, health, saldito)
+- Zonas Cloudflare: 1 (chitaraagenteia.com)
 - Zona horaria: America/Santiago
 - VPS chitara: 5.252.52.190
 - VPS viejo: 5.78.152.6 (para dar de baja)

@@ -12,20 +12,104 @@ Servidor chitara (5.252.52.190): **18/20 servicios Docker operativos**. Infraest
 - Token encriptado en `credenciales.enc` como `mcp_servers.github.token`
 - Organizaciones: SistemaMatematicas, Rukadata, teknoconecta
 
-### Proyecto gestion_gastos (deploy Coolify)
-- **Repo:** `teknoconecta/gestion_gastos` (privado, monorepo con pnpm)
-- **Frontend:** `salditoapp` — Angular 20 + Ionic 8 + Capacitor (`frontend/`)
-- **Backend:** `gestion-gastos-backend` — Node.js + Clerk + Neon (`backend/`)
-- **DB:** Neon `control_gastos` (project `old-lab-07457522`), esquema `gestiongastos`
-- **Verificado:** Coolify MCP existe, compilado, API token funciona
-- **Coolify ya tiene** un proyecto "Saldito front" (id: 2)
+### Proyecto gestion_gastos — DESPLEGADO ✅ (2026-06-02)
 
-### Próximo paso (post-reinicio OpenCode)
-1. **Coolify MCP cargará** al reiniciar (ya configurado en opencode.jsonc)
-2. **Deployar 2 apps** desde `teknoconecta/gestion_gastos`:
-   - Frontend static site (Angular build → `dist/`)
-   - Backend Node.js server (con env vars Clerk + Neon)
-3. Configurar dominios y SSL via Cloudflare
+#### Repositorio
+- **Repo:** `teknoconecta/gestion_gastos` (privado)
+- **Clonado en VPS:** `/srv/saldito/`
+- **Autenticación:** GitHub App `chitara_ai` (jairopinilla) + token OAuth para pull
+
+#### Stack
+| Capa | Tecnología | Detalle |
+|------|-----------|---------|
+| Frontend | Angular 20 + Ionic 8 + Capacitor | `salditoapp`, construido con `ng build --configuration production` |
+| Backend | Node.js (ESM, `server.mjs`) | `gestion-gastos-backend`, puerto interno 3001 |
+| Auth | Clerk (exclusivo) | `@clerk/clerk-js` frontend, `@clerk/backend` backend. Sin Google OAuth directo. |
+| DB | Neon PostgreSQL | `control_gastos` (old-lab-07457522), esquema `gestiongastos`, pooled URL |
+| Proxy | Nginx (host) | Puerto 80/443 → `127.0.0.1:4200` (frontend Docker) |
+| SSL | Let's Encrypt | Expira 2026-08-31, auto-renovación |
+
+#### URLs de producción
+| Servicio | URL | Puerto |
+|----------|-----|--------|
+| **Frontend** | `https://saldito.chitaraagenteia.com` | 443 → nginx → 127.0.0.1:4200 |
+| **Backend API** | `https://saldito.chitaraagenteia.com/api` | Proxy via nginx → frontend nginx → backend:3001 |
+| **Health** | `https://saldito.chitaraagenteia.com/health` | `{"status":"ok","database":"ok"}` |
+
+#### Docker Compose (`/srv/saldito/docker-compose.yml`)
+```yaml
+services:
+  backend:
+    build: ./backend/Dockerfile
+    container: saldito-backend
+    env: DATABASE_URL, CLERK_SECRET_KEY, CORS_ALLOWED_ORIGINS=*, ALLOW_UNSAFE_DATABASE_ROLE=true
+    network: internal (sin puerto público)
+
+  frontend:
+    build: ./frontend/Dockerfile (multi-stage: node build + nginx serve)
+    container: saldito-frontend
+    ports: 127.0.0.1:4200:80 (solo localhost)
+    nginx: SPA routing + proxy /api → backend:3001
+    network: internal
+```
+
+#### Archivos Docker creados
+| Archivo | Propósito |
+|---------|-----------|
+| `backend/Dockerfile` | Node 22 Alpine, `pnpm install --prod`, `node src/server.mjs` |
+| `frontend/Dockerfile` | Multi-stage: `ng build` + `nginx:alpine` |
+| `frontend/nginx.conf` | SPA (try_files), proxy /api → backend:3001, gzip |
+| `docker-compose.yml` | Orquestación de ambos servicios |
+
+#### Configuración Nginx host (`/etc/nginx/sites-enabled/saldito`)
+```
+server {
+    listen 80 → redirect 301 HTTPS
+    listen 443 ssl → proxy_pass http://127.0.0.1:4200
+    SSL: Let's Encrypt (certbot --nginx)
+}
+```
+
+#### Variables de entorno (Coolify → ahora en docker-compose)
+| Variable | Valor | Nota |
+|----------|-------|------|
+| `DATABASE_URL` | `postgresql://neondb_owner:npg_...@ep-empty-snow-...pooler.../neondb` | Pooled Neon, RLS bypass |
+| `CLERK_SECRET_KEY` | `sk_test_ECOkeWUNYQdWJhpObtEGO0ZAz...` | Clerk secret |
+| `CORS_ALLOWED_ORIGINS` | `*` | Abierto para pruebas externas |
+| `ALLOW_UNSAFE_DATABASE_ROLE` | `true` | Permite `neondb_owner` (rol unsafe) |
+
+#### DNS Cloudflare
+| Tipo | Nombre | Valor | Zona |
+|------|--------|-------|------|
+| A | `saldito.chitaraagenteia.com` | `5.252.52.190` | `chitaraagenteia.com` |
+
+#### Autenticación (Clerk exclusivo)
+- **Frontend:** `ClerkAuthService` (`@clerk/clerk-js` v6.11.0) con UI embebida
+- **Publishable key:** `pk_test_Y2hhcm1lZC1saW9uZmlzaC02NS5jbGVyay5hY2NvdW50cy5kZXYk`
+- **Backend:** `verifyToken()` de `@clerk/backend` v1.34.0
+- **Sin Google OAuth en código** — los providers se configuran en Clerk Dashboard
+- **API externa:** accesible con token Clerk válido (`Authorization: Bearer TOKEN`)
+
+#### Comandos de mantenimiento
+```bash
+# Ver estado
+ssh root@5.252.52.190 "docker ps --format '{{.Names}} {{.Status}}' | grep saldito"
+
+# Redeploy (tras git push)
+ssh root@5.252.52.190 "cd /srv/saldito && TOKEN=\$(gh auth token) && git pull https://oauth2:\${TOKEN}@github.com/teknoconecta/gestion_gastos.git main && docker compose up -d --build"
+
+# Logs
+ssh root@5.252.52.190 "docker logs saldito-backend --tail 20"
+ssh root@5.252.52.190 "docker logs saldito-frontend --tail 20"
+```
+
+#### Lecciones aprendidas del deploy
+1. **Coolify API incompatible** — el MCP usa endpoints de una versión distinta de Coolify. No se pudo usar para el deploy.
+2. **Repo privado** — Coolify necesita GitHub App para clonar repos privados. Sin ella, falla el clone.
+3. **Traefik no está corriendo** — el proxy real es Nginx en el host, no Traefik. Los labels de Traefik en compose son ignorados.
+4. **Nginx host es el reverse proxy** — todos los servicios se exponen via `/etc/nginx/sites-enabled/`. Patrón: proxy_pass a 127.0.0.1:PUERTO.
+5. **Certbot integrado** — SSL con Let's Encrypt via nginx plugin. Auto-renovación por systemd timer.
+6. **API token Cloudflare DNS** — el token original (`cfat_I9KF...`) solo tenía permisos de analytics. Se creó uno nuevo (`cfat_e43N...`) con permisos Zone:DNS:Edit.
 
 ## Cambios de sesion anterior (2026-05-29)
 
@@ -87,7 +171,7 @@ Servidor chitara (5.252.52.190): **18/20 servicios Docker operativos**. Infraest
 - `documentacion/decrypt.sh` — script de desencriptado
 - **AGENTS.md** actualizado con protocolo de desencriptado
 
-### Servicios Docker (18/20 online)
+### Servicios Docker (20/20 + 2 nuevos)
 
 | # | Servicio | Puerto | Estado |
 |---|----------|--------|--------|
@@ -111,11 +195,16 @@ Servidor chitara (5.252.52.190): **18/20 servicios Docker operativos**. Infraest
 | 18 | Healthchecks | 8100 | ✅ |
 | 19 | Dozzle | 8088 | ✅ |
 | 20 | Shlink Web | 8089 | ✅ |
+| **21** | **saldito-frontend** | 4200 (127.0.0.1) | ✅ |
+| **22** | **saldito-backend** | 3001 (internal) | ✅ |
 
 ### DNS
 - **teknoconectapp.com:** Google Domains (Squarespace). `n8n` → 5.252.52.190
-- **chitaraagenteia.com:** Cloudflare (zone `71a7e23d2f3406a9e755614a51cd3f3c`). Subdominios: n8n, directus, coolify, code, term, health
-- **Cloudflare Global Key:** (encriptada en `credenciales.enc`)
+- **chitaraagenteia.com:** Cloudflare (zone `71a7e23d2f3406a9e755614a51cd3f3c`). Subdominios: n8n, directus, coolify, code, term, health, saldito
+- **tarapaca1140.cl:** ELIMINADO de Cloudflare (2026-06-02)
+- **Cloudflare API tokens:**
+  - `cfat_I9KF...` — analytics/read-only (para cloudflare-dns MCP)
+  - `cfat_e43N...` — Zone:DNS:Edit para chitaraagenteia.com (creado 2026-06-02)
 
 ### Patches aplicados
 - **Directus `app.js`:** `ensureDeploymentWebhooks` saltado (tablas deployment corruptas)
@@ -131,18 +220,18 @@ Servidor chitara (5.252.52.190): **18/20 servicios Docker operativos**. Infraest
 | Directus | `https://directus.chitaraagenteia.com` | CMS / DB visual |
 | Healthchecks | `https://health.chitaraagenteia.com` | Monitoreo cron jobs |
 | n8n | `https://n8n.teknoconectapp.com` | Workflows |
+| **Saldito** | `https://saldito.chitaraagenteia.com` | Gestor de gastos |
 
 ## Next Steps
 
 1. **Configurar cron jobs en Healthchecks** — migrar backups existentes
-2. **Probar Coolify MCP** — requiere reinicio de OpenCode
-3. **Deployar apps desde Coolify** — `n8n_teknoconecta` y otros repos
-4. **Crear backup automático diario a S3**
-5. **Dar de baja VPS viejo (5.78.152.6)**
+2. **Crear backup automático diario a S3**
+3. **Dar de baja VPS viejo (5.78.152.6)**
+4. **Configurar Clerk Dashboard** — revisar providers habilitados (email, Google, etc.)
+5. **Cerrar CORS** cuando termine fase de pruebas — cambiar `*` por dominio específico
 
 ## Blockers
 
-- **OpenCode necesita reinicio** para cargar MCPs nuevos (coolify-mcp, AWS)
 - **Git push falla** por falta de auth HTTPS en WSL — workaround: push desde terminal local del usuario
 - **API Stays.net** sin endpoints de escritura
 - **Directus app.js parcheado** — se pierde si se actualiza la imagen Docker
