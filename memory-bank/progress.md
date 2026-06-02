@@ -45,11 +45,22 @@
 - [x] **Cloudflare DNS management via API** — Global Key permite crear/borrar registros
 - [x] **n8n.chitaraagenteia.com desactivado** — DNS borrado, nginx bloquea
 
+### Sesion 2026-06-01 (preparacion deploy gestion_gastos)
+
+- [x] **gh CLI instalado** v2.93.0 en `~/.local/bin/gh`
+- [x] **GitHub autenticado** — jairopinilla, token classic con todos los scopes
+- [x] **Token GitHub encriptado** en `credenciales.enc` (AES-256, clave 5486)
+- [x] **Repos mapeados** — 3 orgs (SistemaMatematicas, Rukadata, teknoconecta) + 27 repos personales
+- [x] **gestion_gastos clonado y analizado** — estructura monorepo frontend/backend confirmada
+- [x] **Coolify MCP verificado** — compilado, API conecta, lista para usar
+- [x] **Coolify proyecto existente** — "Saldito front" (id: 2)
+
 ## In Progress
 
-- [ ] **Probar Coolify MCP** — requiere reinicio de OpenCode
-- [ ] **Configurar cron jobs en Healthchecks** — migrar backups postgres + qdrant
-- [ ] **Deployar primer app desde Coolify** — probar con un repo
+- [ ] **Reiniciar OpenCode** para cargar Coolify MCP
+- [ ] **Deployar gestion_gastos frontend** (Angular + Ionic static site)
+- [ ] **Deployar gestion_gastos backend** (Node.js + Clerk + Neon)
+- [ ] **Configurar dominios/SSL** para apps deployadas
 
 ## Planned
 
@@ -70,7 +81,7 @@
 | Push falla por falta de auth HTTPS en WSL | Commits no llegan a origin/main | Workaround: push desde terminal local |
 | **Directus app.js parcheado** | Se pierde si se actualiza imagen Docker | Documentado: re-aplicar patch |
 | **Token Directus expuesto en historial git** | Riesgo de seguridad | Pendiente rotación |
-| **Coolify MCP requiere reinicio** | No disponible hasta reiniciar OpenCode | Pendiente |
+| **Coolify MCP requiere reinicio** | No disponible hasta reiniciar OpenCode | Reinicio pendiente (2026-06-01) |
 | **Supabase Studio en puerto 8001** | Cambiado de 8000 por conflicto con Coolify | Estable |
 
 ## Métricas

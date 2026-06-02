@@ -4,7 +4,30 @@
 
 Servidor chitara (5.252.52.190): **18/20 servicios Docker operativos**. Infraestructura consolidada con dominio principal `n8n.teknoconectapp.com` y servicios expuestos via Cloudflare Access + nginx + Google SSO.
 
-## Cambios de esta sesion (2026-05-29)
+## Cambios de esta sesion (2026-06-01)
+
+### GitHub CLI + autenticacion
+- **gh CLI v2.93.0** instalado en `~/.local/bin/gh`
+- Autenticado como `jairopinilla` (token classic, scopes: repo, admin:org, workflow, etc.)
+- Token encriptado en `credenciales.enc` como `mcp_servers.github.token`
+- Organizaciones: SistemaMatematicas, Rukadata, teknoconecta
+
+### Proyecto gestion_gastos (deploy Coolify)
+- **Repo:** `teknoconecta/gestion_gastos` (privado, monorepo con pnpm)
+- **Frontend:** `salditoapp` — Angular 20 + Ionic 8 + Capacitor (`frontend/`)
+- **Backend:** `gestion-gastos-backend` — Node.js + Clerk + Neon (`backend/`)
+- **DB:** Neon `control_gastos` (project `old-lab-07457522`), esquema `gestiongastos`
+- **Verificado:** Coolify MCP existe, compilado, API token funciona
+- **Coolify ya tiene** un proyecto "Saldito front" (id: 2)
+
+### Próximo paso (post-reinicio OpenCode)
+1. **Coolify MCP cargará** al reiniciar (ya configurado en opencode.jsonc)
+2. **Deployar 2 apps** desde `teknoconecta/gestion_gastos`:
+   - Frontend static site (Angular build → `dist/`)
+   - Backend Node.js server (con env vars Clerk + Neon)
+3. Configurar dominios y SSL via Cloudflare
+
+## Cambios de sesion anterior (2026-05-29)
 
 ### Migracion n8n cloud → chitara
 - **Dominio `n8n.teknoconectapp.com`** ahora apunta a chitara (DNS en Google Domains)
