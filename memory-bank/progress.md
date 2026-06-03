@@ -57,20 +57,26 @@
 
 ### Sesion 2026-06-02 (deploy gestion_gastos en VPS con dominio HTTPS)
 
-- [x] **Dockerfiles creados** — `backend/Dockerfile` (Node 22 Alpine + pnpm), `frontend/Dockerfile` (multi-stage Angular + nginx)
-- [x] **nginx.conf SPA** — try_files + proxy /api → backend:3001 + gzip
-- [x] **docker-compose.yml** — orquestación completa con healthchecks
-- [x] **environment.prod.ts** — API baseUrl configurado para mismo origen con proxy nginx
-- [x] **Coolify API incompatible** — endpoint `/public` crea apps pero no pueden clonear repo privado sin GitHub App
-- [x] **Deploy directo en VPS** — clonado en `/srv/saldito/` via token OAuth GitHub
-- [x] **Build y deploy Docker** — `docker compose up -d --build` exitoso (backend 4s, frontend 31s)
-- [x] **Nginx reverse proxy host** — config `/etc/nginx/sites-enabled/saldito`, proxy a 127.0.0.1:4200
-- [x] **DNS Cloudflare** — registro A `saldito.chitaraagenteia.com` → `5.252.52.190`
-- [x] **SSL Let's Encrypt** — certbot --nginx, expira 2026-08-31, auto-renovación
-- [x] **CORS abierto** — `*` para pruebas externas con token Clerk
-- [x] **Verificación completa** — HTTPS 200, health OK, API auth funcionando
-- [x] **Zona tarapaca1140.cl eliminada** — 8 registros borrados + zona completa
-- [x] **Nuevo token Cloudflare** — `cfat_e43N...` con Zone:DNS:Edit para chitaraagenteia.com
+- [x] **Dockerfiles creados** — backend (Node) + frontend (Angular multi-stage + nginx)
+- [x] **docker-compose.yml** — orquestacion completa con healthchecks
+- [x] **Deploy directo en VPS** — `/srv/saldito/`, docker compose up
+- [x] **Nginx reverse proxy host** — `/etc/nginx/sites-enabled/saldito`
+- [x] **DNS Cloudflare** — A record saldito.chitaraagenteia.com
+- [x] **SSL Let's Encrypt** — certbot --nginx, auto-renovacion
+- [x] **Repo transferido** — `teknoconecta/gestion_gastos` → `jairopinilla/gestion_gastos`
+- [x] **Coolify backend** — `saldito-api` deployado via GitHub App
+- [x] **Auto-provisioning** — `POST /api/usuarios/ensure` con sync por email/ClerkId
+- [x] **Deploy script** — `/srv/saldito/deploy.sh` con token OAuth GitHub
+- [x] **Zona tarapaca1140.cl eliminada** de Cloudflare
+- [x] **Nuevo token Cloudflare** — Zone:DNS:Edit para chitaraagenteia.com
+
+### Sesion 2026-06-03 (encriptacion y preparacion OpenCode Web)
+
+- [x] **opencode.jsonc encriptado** — `opencode.jsonc.enc` (AES-256-CBC, clave 5486)
+- [x] **decrypt.sh actualizado** — maneja multiples archivos, documentacion inline
+- [x] **AGENTS.md actualizado** — REGLA #0: protocolo obligatorio de encriptacion
+- [x] **Memory bank actualizado** — activeContext.md y progress.md detallados
+- [x] **.gitignore verificado** — archivos planos ignorados, .enc commiteados
 
 ## In Progress
 

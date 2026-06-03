@@ -1,7 +1,63 @@
 # AGENTS.md — SandiegoApart
 
 > Fuente canonica de instrucciones para cualquier asistente de IA que trabaje en este repositorio.
-> Version: 2026-05-15
+> Version: 2026-06-03
+
+---
+
+## 🔐 REGLA #0 — PROTOCOLO DE ENCRIPTACION / DESENCRIPTACION (MAXIMA PRIORIDAD)
+
+> **Esta seccion debe ser leida y ejecutada ANTES que cualquier otra accion del agente.**
+
+### Principio fundamental
+
+Todos los archivos que contienen tokens, API keys, passwords o secretos deben estar **encriptados con AES-256-CBC** usando la **clave maestra `5486`**. Los archivos encriptados (`.enc`) se versionan en git. Los archivos desencriptados (sin `.enc`) **estan en `.gitignore` y NUNCA deben borrarse despues de desencriptar**.
+
+### Al iniciar SIEMPRE
+
+```bash
+bash decrypt.sh
+```
+
+Esto desencripta todos los archivos `.enc`. Si los archivos ya existen (ya fueron desencriptados), los salta.
+
+### Archivos encriptados (commiteados) vs desencriptados (gitignored)
+
+| Archivo encriptado (en git) | Archivo desencriptado (gitignored) | Contenido |
+|------------------------------|-------------------------------------|-----------|
+| `opencode.jsonc.enc` | `opencode.jsonc` | Config MCPs: 26 servidores, API tokens, GitHub PAT |
+| `documentacion/credenciales.enc` | `documentacion/credenciales` | Passwords de servicios: n8n, Directus, Coolify, DB |
+
+### Modo de uso
+
+```bash
+# Desencriptar todo
+bash decrypt.sh
+
+# Desencriptar un archivo especifico
+bash decrypt.sh opencode.jsonc
+
+# Re-encriptar despues de modificar
+cat opencode.jsonc | openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -pass pass:5486 -base64 -A > opencode.jsonc.enc
+```
+
+### `opencode.jsonc` — Archivo CRITICO de MCPs
+
+**Este es EL archivo de configuracion de MCPs.** Sin el, el agente no tiene acceso a ninguna herramienta externa.
+
+Define **26 servidores MCP** que conectan con: Cloudflare, Clerk, OpenAI, Coolify, MercadoPago, Neon, Vercel, Google Maps, Jina, Perplexity, Scrapling, Supabase, Directus, Stays, PriceLabs, AWS (6 modulos), n8n-chitara, directus-chitara, supabase-chitara.
+
+**Ubicacion:** `opencode.jsonc` (raiz del workspace).  
+**NO hay otro archivo de configuracion MCP.**
+
+### Si el agente detecta un secreto en texto plano
+
+1. Marcarlo como `🔴 CRITICO`
+2. Verificar que este en `.gitignore`
+3. Encriptarlo y guardar el `.enc`
+4. Reportarlo al usuario
+
+---
 
 ## Proposito
 
