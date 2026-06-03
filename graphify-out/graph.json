@@ -8,252 +8,252 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L1",
-      "id": "activecontext_md",
       "community": 6,
-      "norm_label": "activecontext.md"
+      "norm_label": "activecontext.md",
+      "id": "activecontext_md"
     },
     {
       "label": "Active Context \u2014 TeknoConecta",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L1",
-      "id": "memory_bank_activecontext_active_context_teknoconecta",
       "community": 6,
-      "norm_label": "active context \u2014 teknoconecta"
+      "norm_label": "active context \u2014 teknoconecta",
+      "id": "memory_bank_activecontext_active_context_teknoconecta"
     },
     {
       "label": "Current Focus",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L3",
-      "id": "memory_bank_activecontext_current_focus",
       "community": 6,
-      "norm_label": "current focus"
+      "norm_label": "current focus",
+      "id": "memory_bank_activecontext_current_focus"
     },
     {
       "label": "Cambios de esta sesion (2026-05-29)",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L7",
-      "id": "memory_bank_activecontext_cambios_de_esta_sesion_2026_05_29",
       "community": 6,
-      "norm_label": "cambios de esta sesion (2026-05-29)"
+      "norm_label": "cambios de esta sesion (2026-05-29)",
+      "id": "memory_bank_activecontext_cambios_de_esta_sesion_2026_05_29"
     },
     {
       "label": "Migracion n8n cloud \u2192 chitara",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L9",
-      "id": "memory_bank_activecontext_migracion_n8n_cloud_chitara",
       "community": 6,
-      "norm_label": "migracion n8n cloud \u2192 chitara"
+      "norm_label": "migracion n8n cloud \u2192 chitara",
+      "id": "memory_bank_activecontext_migracion_n8n_cloud_chitara"
     },
     {
       "label": "Migracion archivos Directus cloud \u2192 S3 chitara",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L16",
-      "id": "memory_bank_activecontext_migracion_archivos_directus_cloud_s3_chitara",
       "community": 6,
-      "norm_label": "migracion archivos directus cloud \u2192 s3 chitara"
+      "norm_label": "migracion archivos directus cloud \u2192 s3 chitara",
+      "id": "memory_bank_activecontext_migracion_archivos_directus_cloud_s3_chitara"
     },
     {
       "label": "Limpieza DB sandiegoapart",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L21",
-      "id": "memory_bank_activecontext_limpieza_db_sandiegoapart",
       "community": 6,
-      "norm_label": "limpieza db sandiegoapart"
+      "norm_label": "limpieza db sandiegoapart",
+      "id": "memory_bank_activecontext_limpieza_db_sandiegoapart"
     },
     {
       "label": "Nuevos servicios instalados",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L26",
-      "id": "memory_bank_activecontext_nuevos_servicios_instalados",
       "community": 6,
-      "norm_label": "nuevos servicios instalados"
+      "norm_label": "nuevos servicios instalados",
+      "id": "memory_bank_activecontext_nuevos_servicios_instalados"
     },
     {
       "label": "Credenciales de servicios",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L36",
-      "id": "memory_bank_activecontext_credenciales_de_servicios",
       "community": 6,
-      "norm_label": "credenciales de servicios"
+      "norm_label": "credenciales de servicios",
+      "id": "memory_bank_activecontext_credenciales_de_servicios"
     },
     {
       "label": "Cloudflare Access (Google SSO)",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L46",
-      "id": "memory_bank_activecontext_cloudflare_access_google_sso",
       "community": 6,
-      "norm_label": "cloudflare access (google sso)"
+      "norm_label": "cloudflare access (google sso)",
+      "id": "memory_bank_activecontext_cloudflare_access_google_sso"
     },
     {
       "label": "Backup S3",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L52",
-      "id": "memory_bank_activecontext_backup_s3",
       "community": 6,
-      "norm_label": "backup s3"
+      "norm_label": "backup s3",
+      "id": "memory_bank_activecontext_backup_s3"
     },
     {
       "label": "Coolify + GitHub",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L57",
-      "id": "memory_bank_activecontext_coolify_github",
       "community": 6,
-      "norm_label": "coolify + github"
+      "norm_label": "coolify + github",
+      "id": "memory_bank_activecontext_coolify_github"
     },
     {
       "label": "Archivos encriptados",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L62",
-      "id": "memory_bank_activecontext_archivos_encriptados",
       "community": 6,
-      "norm_label": "archivos encriptados"
+      "norm_label": "archivos encriptados",
+      "id": "memory_bank_activecontext_archivos_encriptados"
     },
     {
       "label": "Servicios Docker (18/20 online)",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L67",
-      "id": "memory_bank_activecontext_servicios_docker_18_20_online",
       "community": 6,
-      "norm_label": "servicios docker (18/20 online)"
+      "norm_label": "servicios docker (18/20 online)",
+      "id": "memory_bank_activecontext_servicios_docker_18_20_online"
     },
     {
       "label": "DNS",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L92",
-      "id": "memory_bank_activecontext_dns",
       "community": 6,
-      "norm_label": "dns"
+      "norm_label": "dns",
+      "id": "memory_bank_activecontext_dns"
     },
     {
       "label": "Patches aplicados",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L97",
-      "id": "memory_bank_activecontext_patches_aplicados",
       "community": 6,
-      "norm_label": "patches aplicados"
+      "norm_label": "patches aplicados",
+      "id": "memory_bank_activecontext_patches_aplicados"
     },
     {
       "label": "Servicios accesibles desde celular",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L101",
-      "id": "memory_bank_activecontext_servicios_accesibles_desde_celular",
       "community": 6,
-      "norm_label": "servicios accesibles desde celular"
+      "norm_label": "servicios accesibles desde celular",
+      "id": "memory_bank_activecontext_servicios_accesibles_desde_celular"
     },
     {
       "label": "Next Steps",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L112",
-      "id": "memory_bank_activecontext_next_steps",
       "community": 6,
-      "norm_label": "next steps"
+      "norm_label": "next steps",
+      "id": "memory_bank_activecontext_next_steps"
     },
     {
       "label": "Blockers",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L120",
-      "id": "memory_bank_activecontext_blockers",
       "community": 6,
-      "norm_label": "blockers"
+      "norm_label": "blockers",
+      "id": "memory_bank_activecontext_blockers"
     },
     {
       "label": "Active Decisions",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L127",
-      "id": "memory_bank_activecontext_active_decisions",
       "community": 6,
-      "norm_label": "active decisions"
+      "norm_label": "active decisions",
+      "id": "memory_bank_activecontext_active_decisions"
     },
     {
       "label": "progress.md",
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L1",
-      "id": "progress_md",
       "community": 21,
-      "norm_label": "progress.md"
+      "norm_label": "progress.md",
+      "id": "progress_md"
     },
     {
       "label": "Progress \u2014 TeknoConecta",
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L1",
-      "id": "memory_bank_progress_progress_teknoconecta",
       "community": 21,
-      "norm_label": "progress \u2014 teknoconecta"
+      "norm_label": "progress \u2014 teknoconecta",
+      "id": "memory_bank_progress_progress_teknoconecta"
     },
     {
       "label": "Completed",
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L3",
-      "id": "memory_bank_progress_completed",
       "community": 21,
-      "norm_label": "completed"
+      "norm_label": "completed",
+      "id": "memory_bank_progress_completed"
     },
     {
       "label": "Sesion 2026-05-29 (infraestructura masiva)",
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L28",
-      "id": "memory_bank_progress_sesion_2026_05_29_infraestructura_masiva",
       "community": 21,
-      "norm_label": "sesion 2026-05-29 (infraestructura masiva)"
+      "norm_label": "sesion 2026-05-29 (infraestructura masiva)",
+      "id": "memory_bank_progress_sesion_2026_05_29_infraestructura_masiva"
     },
     {
       "label": "In Progress",
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L48",
-      "id": "memory_bank_progress_in_progress",
       "community": 21,
-      "norm_label": "in progress"
+      "norm_label": "in progress",
+      "id": "memory_bank_progress_in_progress"
     },
     {
       "label": "Planned",
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L54",
-      "id": "memory_bank_progress_planned",
       "community": 21,
-      "norm_label": "planned"
+      "norm_label": "planned",
+      "id": "memory_bank_progress_planned"
     },
     {
       "label": "Known Issues",
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L65",
-      "id": "memory_bank_progress_known_issues",
       "community": 21,
-      "norm_label": "known issues"
+      "norm_label": "known issues",
+      "id": "memory_bank_progress_known_issues"
     },
     {
       "label": "M\u00e9tricas",
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L76",
-      "id": "memory_bank_progress_m\u00e9tricas",
       "community": 21,
-      "norm_label": "metricas"
+      "norm_label": "metricas",
+      "id": "memory_bank_progress_m\u00e9tricas"
     },
     {
       "label": "AGENTS.md",
@@ -9592,5 +9592,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "cbc898b5b19abeb7fbc6b8f069db8c4b995ea053"
+  "built_at_commit": "0fb45a8e15e28fd0d1efe80d117e9c245c528fe9"
 }
