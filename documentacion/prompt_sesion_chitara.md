@@ -76,7 +76,7 @@ ssh -o StrictHostKeyChecking=accept-new root@5.252.52.190 "echo CONECTADO"
 ### API Access
 ```
 URL: https://coolify.chitaraagenteia.com
-Token: 1|GP1qcJjN3Hyi9HmEvyPDfXAoLp0LomhB1Bgul5DEaf517cae
+Token: <ver documentacion/credenciales.enc → clave 5486 → seccion COOLIFY_API_TOKEN>
 ```
 
 ### Credenciales web
@@ -86,13 +86,16 @@ Token: 1|GP1qcJjN3Hyi9HmEvyPDfXAoLp0LomhB1Bgul5DEaf517cae
 ### Endpoints API utiles
 
 ```bash
+# Usar el token Coolify del archivo encriptado
+COOLIFY_TOKEN="<ver documentacion/credenciales.enc>"
+API="https://coolify.chitaraagenteia.com"
+
 # Listar proyectos
-curl -s -H "Authorization: Bearer 1|GP1qcJjN3Hyi9HmEvyPDfXAoLp0LomhB1Bgul5DEaf517cae" \
-  "https://coolify.chitaraagenteia.com/api/v1/projects"
+curl -s -H "Authorization: Bearer $COOLIFY_TOKEN" "$API/api/v1/projects"
 
 # Crear app via GitHub App (repos privados)
 curl -s -X POST \
-  -H "Authorization: Bearer 1|GP1qcJjN3Hyi9HmEvyPDfXAoLp0LomhB1Bgul5DEaf517cae" \
+  -H "Authorization: Bearer $COOLIFY_TOKEN" \
   -H "Content-Type: application/json" \
   "https://coolify.chitaraagenteia.com/api/v1/applications/private-github-app" \
   -d '{
@@ -110,12 +113,12 @@ curl -s -X POST \
 
 # Iniciar/deployar app
 curl -s -X POST \
-  -H "Authorization: Bearer 1|GP1qcJjN3Hyi9HmEvyPDfXAoLp0LomhB1Bgul5DEaf517cae" \
+  -H "Authorization: Bearer $COOLIFY_TOKEN" \
   "https://coolify.chitaraagenteia.com/api/v1/applications/APP_UUID/start"
 
 # Establecer env vars
 curl -s -X POST \
-  -H "Authorization: Bearer 1|GP1qcJjN3Hyi9HmEvyPDfXAoLp0LomhB1Bgul5DEaf517cae" \
+  -H "Authorization: Bearer $COOLIFY_TOKEN" \
   -H "Content-Type: application/json" \
   "https://coolify.chitaraagenteia.com/api/v1/applications/APP_UUID/envs" \
   -d '{"key":"VAR_NAME","value":"var_value","is_buildtime":false,"is_preview":false}'
@@ -160,8 +163,8 @@ ssh root@5.252.52.190 "/srv/saldito/deploy.sh"
 
 ### Variables de entorno (backend)
 ```
-DATABASE_URL=postgresql://neondb_owner:npg_S7vb0fNnjCWq@ep-empty-snow-anuf1qci-pooler.c-6.us-east-1.aws.neon.tech/neondb?sslmode=require
-CLERK_SECRET_KEY=sk_test_ECOkeWUNYQdWJhpObtEGO0ZAz27x4IBf3wqytsBRdM
+DATABASE_URL=<ver documentacion/credenciales.enc → clave 5486 → seccion NEON>
+CLERK_SECRET_KEY=<ver documentacion/credenciales.enc → clave 5486 → seccion CLERK>
 ALLOW_UNSAFE_DATABASE_ROLE=true
 CORS_ALLOWED_ORIGINS=*
 ```
