@@ -4,11 +4,101 @@
   "graph": {},
   "nodes": [
     {
+      "label": "plan_arquitectura_gastos.md",
+      "file_type": "document",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L1",
+      "id": "plan_arquitectura_gastos_md",
+      "community": 19,
+      "norm_label": "plan_arquitectura_gastos.md"
+    },
+    {
+      "label": "Contexto actual",
+      "file_type": "document",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L6",
+      "id": "documentacion_plan_arquitectura_gastos_contexto_actual",
+      "community": 19,
+      "norm_label": "contexto actual"
+    },
+    {
+      "label": "Estructura del backend actual",
+      "file_type": "document",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L16",
+      "id": "documentacion_plan_arquitectura_gastos_estructura_del_backend_actual",
+      "community": 19,
+      "norm_label": "estructura del backend actual"
+    },
+    {
+      "label": "Puntos a evaluar",
+      "file_type": "document",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L25",
+      "id": "documentacion_plan_arquitectura_gastos_puntos_a_evaluar",
+      "community": 19,
+      "norm_label": "puntos a evaluar"
+    },
+    {
+      "label": "1. Neon PostgreSQL",
+      "file_type": "document",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L27",
+      "id": "documentacion_plan_arquitectura_gastos_1_neon_postgresql",
+      "community": 19,
+      "norm_label": "1. neon postgresql"
+    },
+    {
+      "label": "2. Python serverless en Vercel",
+      "file_type": "document",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L37",
+      "id": "documentacion_plan_arquitectura_gastos_2_python_serverless_en_vercel",
+      "community": 19,
+      "norm_label": "2. python serverless en vercel"
+    },
+    {
+      "label": "3. Migracion Node \u2192 Python (del backend)",
+      "file_type": "document",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L49",
+      "id": "documentacion_plan_arquitectura_gastos_3_migracion_node_python_del_backend",
+      "community": 19,
+      "norm_label": "3. migracion node \u2192 python (del backend)"
+    },
+    {
+      "label": "4. Trazabilidad",
+      "file_type": "document",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L55",
+      "id": "documentacion_plan_arquitectura_gastos_4_trazabilidad",
+      "community": 19,
+      "norm_label": "4. trazabilidad"
+    },
+    {
+      "label": "Decisiones sugeridas (para debate)",
+      "file_type": "document",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L62",
+      "id": "documentacion_plan_arquitectura_gastos_decisiones_sugeridas_para_debate",
+      "community": 19,
+      "norm_label": "decisiones sugeridas (para debate)"
+    },
+    {
+      "label": "Entrega esperada",
+      "file_type": "document",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L72",
+      "id": "documentacion_plan_arquitectura_gastos_entrega_esperada",
+      "community": 19,
+      "norm_label": "entrega esperada"
+    },
+    {
       "label": "activeContext.md",
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L1",
-      "community": 6,
+      "community": 5,
       "norm_label": "activecontext.md",
       "id": "activecontext_md"
     },
@@ -17,7 +107,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L1",
-      "community": 6,
+      "community": 5,
       "norm_label": "active context \u2014 teknoconecta",
       "id": "memory_bank_activecontext_active_context_teknoconecta"
     },
@@ -26,7 +116,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L3",
-      "community": 6,
+      "community": 5,
       "norm_label": "current focus",
       "id": "memory_bank_activecontext_current_focus"
     },
@@ -35,7 +125,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L7",
-      "community": 6,
+      "community": 5,
       "norm_label": "cambios de esta sesion (2026-05-29)",
       "id": "memory_bank_activecontext_cambios_de_esta_sesion_2026_05_29"
     },
@@ -44,7 +134,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L9",
-      "community": 6,
+      "community": 5,
       "norm_label": "migracion n8n cloud \u2192 chitara",
       "id": "memory_bank_activecontext_migracion_n8n_cloud_chitara"
     },
@@ -53,7 +143,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L16",
-      "community": 6,
+      "community": 5,
       "norm_label": "migracion archivos directus cloud \u2192 s3 chitara",
       "id": "memory_bank_activecontext_migracion_archivos_directus_cloud_s3_chitara"
     },
@@ -62,7 +152,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L21",
-      "community": 6,
+      "community": 5,
       "norm_label": "limpieza db sandiegoapart",
       "id": "memory_bank_activecontext_limpieza_db_sandiegoapart"
     },
@@ -71,7 +161,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L26",
-      "community": 6,
+      "community": 5,
       "norm_label": "nuevos servicios instalados",
       "id": "memory_bank_activecontext_nuevos_servicios_instalados"
     },
@@ -80,7 +170,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L36",
-      "community": 6,
+      "community": 5,
       "norm_label": "credenciales de servicios",
       "id": "memory_bank_activecontext_credenciales_de_servicios"
     },
@@ -89,7 +179,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L46",
-      "community": 6,
+      "community": 5,
       "norm_label": "cloudflare access (google sso)",
       "id": "memory_bank_activecontext_cloudflare_access_google_sso"
     },
@@ -98,7 +188,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L52",
-      "community": 6,
+      "community": 5,
       "norm_label": "backup s3",
       "id": "memory_bank_activecontext_backup_s3"
     },
@@ -107,7 +197,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L57",
-      "community": 6,
+      "community": 5,
       "norm_label": "coolify + github",
       "id": "memory_bank_activecontext_coolify_github"
     },
@@ -116,7 +206,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L62",
-      "community": 6,
+      "community": 5,
       "norm_label": "archivos encriptados",
       "id": "memory_bank_activecontext_archivos_encriptados"
     },
@@ -125,7 +215,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L67",
-      "community": 6,
+      "community": 5,
       "norm_label": "servicios docker (18/20 online)",
       "id": "memory_bank_activecontext_servicios_docker_18_20_online"
     },
@@ -134,7 +224,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L92",
-      "community": 6,
+      "community": 5,
       "norm_label": "dns",
       "id": "memory_bank_activecontext_dns"
     },
@@ -143,7 +233,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L97",
-      "community": 6,
+      "community": 5,
       "norm_label": "patches aplicados",
       "id": "memory_bank_activecontext_patches_aplicados"
     },
@@ -152,7 +242,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L101",
-      "community": 6,
+      "community": 5,
       "norm_label": "servicios accesibles desde celular",
       "id": "memory_bank_activecontext_servicios_accesibles_desde_celular"
     },
@@ -161,7 +251,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L112",
-      "community": 6,
+      "community": 5,
       "norm_label": "next steps",
       "id": "memory_bank_activecontext_next_steps"
     },
@@ -170,7 +260,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L120",
-      "community": 6,
+      "community": 5,
       "norm_label": "blockers",
       "id": "memory_bank_activecontext_blockers"
     },
@@ -179,7 +269,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L127",
-      "community": 6,
+      "community": 5,
       "norm_label": "active decisions",
       "id": "memory_bank_activecontext_active_decisions"
     },
@@ -188,7 +278,7 @@
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L1",
-      "community": 21,
+      "community": 22,
       "norm_label": "progress.md",
       "id": "progress_md"
     },
@@ -197,7 +287,7 @@
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L1",
-      "community": 21,
+      "community": 22,
       "norm_label": "progress \u2014 teknoconecta",
       "id": "memory_bank_progress_progress_teknoconecta"
     },
@@ -206,7 +296,7 @@
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L3",
-      "community": 21,
+      "community": 22,
       "norm_label": "completed",
       "id": "memory_bank_progress_completed"
     },
@@ -215,7 +305,7 @@
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L28",
-      "community": 21,
+      "community": 22,
       "norm_label": "sesion 2026-05-29 (infraestructura masiva)",
       "id": "memory_bank_progress_sesion_2026_05_29_infraestructura_masiva"
     },
@@ -224,7 +314,7 @@
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L48",
-      "community": 21,
+      "community": 22,
       "norm_label": "in progress",
       "id": "memory_bank_progress_in_progress"
     },
@@ -233,7 +323,7 @@
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L54",
-      "community": 21,
+      "community": 22,
       "norm_label": "planned",
       "id": "memory_bank_progress_planned"
     },
@@ -242,7 +332,7 @@
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L65",
-      "community": 21,
+      "community": 22,
       "norm_label": "known issues",
       "id": "memory_bank_progress_known_issues"
     },
@@ -251,7 +341,7 @@
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L76",
-      "community": 21,
+      "community": 22,
       "norm_label": "metricas",
       "id": "memory_bank_progress_m\u00e9tricas"
     },
@@ -260,7 +350,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L1",
-      "community": 2,
+      "community": 1,
       "norm_label": "agents.md",
       "id": "agents_md"
     },
@@ -269,7 +359,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L1",
-      "community": 2,
+      "community": 1,
       "norm_label": "agents.md \u2014 sandiegoapart",
       "id": "n8n_teknoconecta_agents_agents_md_sandiegoapart"
     },
@@ -278,7 +368,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L6",
-      "community": 2,
+      "community": 1,
       "norm_label": "proposito",
       "id": "n8n_teknoconecta_agents_proposito"
     },
@@ -287,7 +377,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L86",
-      "community": 2,
+      "community": 1,
       "norm_label": "orden de lectura obligatorio",
       "id": "n8n_teknoconecta_agents_orden_de_lectura_obligatorio"
     },
@@ -296,7 +386,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L105",
-      "community": 2,
+      "community": 1,
       "norm_label": "datos fijos vs datos que se buscan dinamicamente",
       "id": "n8n_teknoconecta_agents_datos_fijos_vs_datos_que_se_buscan_dinamicamente"
     },
@@ -305,7 +395,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L128",
-      "community": 2,
+      "community": 1,
       "norm_label": "fuente de verdad (jerarquia obligatoria)",
       "id": "n8n_teknoconecta_agents_fuente_de_verdad_jerarquia_obligatoria"
     },
@@ -314,7 +404,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L137",
-      "community": 2,
+      "community": 1,
       "norm_label": "reglas criticas",
       "id": "n8n_teknoconecta_agents_reglas_criticas"
     },
@@ -323,7 +413,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L162",
-      "community": 2,
+      "community": 1,
       "norm_label": "contexto comercial",
       "id": "n8n_teknoconecta_agents_contexto_comercial"
     },
@@ -332,7 +422,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L189",
-      "community": 2,
+      "community": 1,
       "norm_label": "idiomas",
       "id": "n8n_teknoconecta_agents_idiomas"
     },
@@ -341,7 +431,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L209",
-      "community": 2,
+      "community": 1,
       "norm_label": "entregables esperados",
       "id": "n8n_teknoconecta_agents_entregables_esperados"
     },
@@ -350,7 +440,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L219",
-      "community": 2,
+      "community": 1,
       "norm_label": "seguridad",
       "id": "n8n_teknoconecta_agents_seguridad"
     },
@@ -359,7 +449,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L240",
-      "community": 2,
+      "community": 1,
       "norm_label": "credenciales encriptadas",
       "id": "n8n_teknoconecta_agents_credenciales_encriptadas"
     },
@@ -368,7 +458,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L252",
-      "community": 2,
+      "community": 1,
       "norm_label": "resolucion de conflictos",
       "id": "n8n_teknoconecta_agents_resolucion_de_conflictos"
     },
@@ -377,7 +467,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L264",
-      "community": 2,
+      "community": 1,
       "norm_label": "lecciones aprendidas (memoria persistente)",
       "id": "n8n_teknoconecta_agents_lecciones_aprendidas_memoria_persistente"
     },
@@ -386,7 +476,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L266",
-      "community": 2,
+      "community": 1,
       "norm_label": "protocolo de cambios de precios en pricelabs",
       "id": "n8n_teknoconecta_agents_protocolo_de_cambios_de_precios_en_pricelabs"
     },
@@ -395,7 +485,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L274",
-      "community": 2,
+      "community": 1,
       "norm_label": "\ud83d\udee1\ufe0f harness engineering \u2014 verificacion y prevencion de errores",
       "id": "n8n_teknoconecta_agents_harness_engineering_verificacion_y_prevencion_de_errores"
     },
@@ -404,7 +494,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L280",
-      "community": 2,
+      "community": 1,
       "norm_label": "hooks de verificacion obligatorios",
       "id": "n8n_teknoconecta_agents_hooks_de_verificacion_obligatorios"
     },
@@ -413,7 +503,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L294",
-      "community": 2,
+      "community": 1,
       "norm_label": "reglas anti-error (derivadas de errores reales)",
       "id": "n8n_teknoconecta_agents_reglas_anti_error_derivadas_de_errores_reales"
     },
@@ -422,7 +512,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L310",
-      "community": 2,
+      "community": 1,
       "norm_label": "verificacion en capas (para cambios de pricing)",
       "id": "n8n_teknoconecta_agents_verificacion_en_capas_para_cambios_de_pricing"
     },
@@ -431,7 +521,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L318",
-      "community": 2,
+      "community": 1,
       "norm_label": "conexion al vps chitara (5.252.52.190)",
       "id": "n8n_teknoconecta_agents_conexion_al_vps_chitara_5_252_52_190"
     },
@@ -440,7 +530,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L329",
-      "community": 2,
+      "community": 1,
       "norm_label": "code:bash (ssh root@5.252.52.190 \"comando\")",
       "id": "n8n_teknoconecta_agents_codeblock_1"
     },
@@ -449,7 +539,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L335",
-      "community": 2,
+      "community": 1,
       "norm_label": "code:bash (ssh root@5.252.52.190 \"cat > /ruta/archivo << 'eof')",
       "id": "n8n_teknoconecta_agents_codeblock_2"
     },
@@ -458,7 +548,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L343",
-      "community": 2,
+      "community": 1,
       "norm_label": "code:bash (ssh root@5.252.52.190 \"docker ps --format '{{.names}} \u2192 {{.n)",
       "id": "n8n_teknoconecta_agents_codeblock_3"
     },
@@ -467,7 +557,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L351",
-      "community": 2,
+      "community": 1,
       "norm_label": "limpieza periodica del harness",
       "id": "n8n_teknoconecta_agents_limpieza_periodica_del_harness"
     },
@@ -476,7 +566,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L361",
-      "community": 2,
+      "community": 1,
       "norm_label": "stays.net api",
       "id": "n8n_teknoconecta_agents_stays_net_api"
     },
@@ -485,7 +575,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L389",
-      "community": 2,
+      "community": 1,
       "norm_label": "scrapling / chromium",
       "id": "n8n_teknoconecta_agents_scrapling_chromium"
     },
@@ -494,7 +584,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L408",
-      "community": 2,
+      "community": 1,
       "norm_label": "mcps disponibles",
       "id": "n8n_teknoconecta_agents_mcps_disponibles"
     },
@@ -503,7 +593,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L415",
-      "community": 2,
+      "community": 1,
       "norm_label": "mcps locales con apis externas (patron stays-docs / pricelabs-docs)",
       "id": "n8n_teknoconecta_agents_mcps_locales_con_apis_externas_patron_stays_docs_pricelabs_docs"
     },
@@ -512,7 +602,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L427",
-      "community": 2,
+      "community": 1,
       "norm_label": "code:json (\"stays-docs\": {)",
       "id": "n8n_teknoconecta_agents_codeblock_4"
     },
@@ -521,7 +611,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L465",
-      "community": 2,
+      "community": 1,
       "norm_label": "mcps chitara \u2014 administracion del vps via ssh (n8n-chitara, directus-chitara, supabase-chitara)",
       "id": "n8n_teknoconecta_agents_mcps_chitara_administracion_del_vps_via_ssh_n8n_chitara_directus_chitara_supabase_chitara"
     },
@@ -530,7 +620,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L470",
-      "community": 2,
+      "community": 1,
       "norm_label": "code:block5 (opencode \u2192 mcp server (local) \u2192 ssh \u2192 vps chitara \u2192 contened)",
       "id": "n8n_teknoconecta_agents_codeblock_5"
     },
@@ -539,7 +629,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L483",
-      "community": 2,
+      "community": 1,
       "norm_label": "code:bash (cd /mnt/c/users/jairo/onedrive/documents/github/n8n_teknocon)",
       "id": "n8n_teknoconecta_agents_codeblock_6"
     },
@@ -548,7 +638,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L501",
-      "community": 2,
+      "community": 1,
       "norm_label": "verificacion de inicio de sesion (session startup checklist)",
       "id": "n8n_teknoconecta_agents_verificacion_de_inicio_de_sesion_session_startup_checklist"
     },
@@ -557,7 +647,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L505",
-      "community": 2,
+      "community": 1,
       "norm_label": "code:block7 (1. ssh: ssh -o connecttimeout=5 root@5.252.52.190 \"echo ssh_)",
       "id": "n8n_teknoconecta_agents_codeblock_7"
     },
@@ -566,7 +656,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L518",
-      "community": 2,
+      "community": 1,
       "norm_label": "pricelabs academy",
       "id": "n8n_teknoconecta_agents_pricelabs_academy"
     },
@@ -575,7 +665,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L525",
-      "community": 2,
+      "community": 1,
       "norm_label": "seguridad detectada en el repo",
       "id": "n8n_teknoconecta_agents_seguridad_detectada_en_el_repo"
     },
@@ -584,7 +674,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L531",
-      "community": 2,
+      "community": 1,
       "norm_label": "skills / subagentes disponibles",
       "id": "n8n_teknoconecta_agents_skills_subagentes_disponibles"
     },
@@ -593,7 +683,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L544",
-      "community": 2,
+      "community": 1,
       "norm_label": "compatibilidad multi-agente",
       "id": "n8n_teknoconecta_agents_compatibilidad_multi_agente"
     },
@@ -602,7 +692,7 @@
       "file_type": "document",
       "source_file": "AGENTS.md",
       "source_location": "L549",
-      "community": 2,
+      "community": 1,
       "norm_label": "graphify",
       "id": "n8n_teknoconecta_agents_graphify"
     },
@@ -611,7 +701,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1",
-      "community": 0,
+      "community": 15,
       "norm_label": "chitara.md",
       "id": "documentacion_chitara_md"
     },
@@ -620,7 +710,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1",
-      "community": 0,
+      "community": 15,
       "norm_label": "chitara homelab / infraestructura vps \u2014 documento de traspaso para agente",
       "id": "documentacion_chitara_chitara_homelab_infraestructura_vps_documento_de_traspaso_para_agente"
     },
@@ -629,7 +719,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L3",
-      "community": 0,
+      "community": 15,
       "norm_label": "1. objetivo del proyecto",
       "id": "documentacion_chitara_1_objetivo_del_proyecto"
     },
@@ -638,7 +728,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L27",
-      "community": 0,
+      "community": 15,
       "norm_label": "2. dominio principal",
       "id": "documentacion_chitara_2_dominio_principal"
     },
@@ -647,7 +737,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L29",
-      "community": 0,
+      "community": 15,
       "norm_label": "code:text (chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_1"
     },
@@ -656,7 +746,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L35",
-      "community": 0,
+      "community": 30,
       "norm_label": "3. arquitectura general",
       "id": "documentacion_chitara_3_arquitectura_general"
     },
@@ -665,7 +755,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L37",
-      "community": 0,
+      "community": 30,
       "norm_label": "code:text (internet)",
       "id": "documentacion_chitara_codeblock_2"
     },
@@ -674,7 +764,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L48",
-      "community": 0,
+      "community": 30,
       "norm_label": "code:text (tls/https externo lo maneja cloudflare.)",
       "id": "documentacion_chitara_codeblock_3"
     },
@@ -683,7 +773,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L56",
-      "community": 0,
+      "community": 30,
       "norm_label": "code:yaml (- hostname: servicio.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_4"
     },
@@ -692,7 +782,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L63",
-      "community": 0,
+      "community": 32,
       "norm_label": "4. stack base actual",
       "id": "documentacion_chitara_4_stack_base_actual"
     },
@@ -701,7 +791,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L67",
-      "community": 0,
+      "community": 32,
       "norm_label": "code:text (/opt/homelab/)",
       "id": "documentacion_chitara_codeblock_5"
     },
@@ -710,7 +800,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L73",
-      "community": 0,
+      "community": 32,
       "norm_label": "code:text (/opt/homelab/)",
       "id": "documentacion_chitara_codeblock_6"
     },
@@ -719,7 +809,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L92",
-      "community": 0,
+      "community": 15,
       "norm_label": "5. servicios existentes y estado",
       "id": "documentacion_chitara_5_servicios_existentes_y_estado"
     },
@@ -728,7 +818,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L112",
-      "community": 0,
+      "community": 33,
       "norm_label": "6. subdominios activos actuales",
       "id": "documentacion_chitara_6_subdominios_activos_actuales"
     },
@@ -737,7 +827,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L116",
-      "community": 0,
+      "community": 33,
       "norm_label": "code:text (home.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_7"
     },
@@ -746,7 +836,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L130",
-      "community": 0,
+      "community": 33,
       "norm_label": "code:text (directus.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_8"
     },
@@ -755,7 +845,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L139",
-      "community": 0,
+      "community": 15,
       "norm_label": "7. mapa de urls, servicios y puertos",
       "id": "documentacion_chitara_7_mapa_de_urls_servicios_y_puertos"
     },
@@ -764,7 +854,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L161",
-      "community": 23,
+      "community": 24,
       "norm_label": "8. cloudflare tunnel",
       "id": "documentacion_chitara_8_cloudflare_tunnel"
     },
@@ -773,7 +863,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L165",
-      "community": 23,
+      "community": 24,
       "norm_label": "code:text (/etc/cloudflared/config.yml)",
       "id": "documentacion_chitara_codeblock_9"
     },
@@ -782,7 +872,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L171",
-      "community": 23,
+      "community": 24,
       "norm_label": "code:text (todos los servicios se exponen como:)",
       "id": "documentacion_chitara_codeblock_10"
     },
@@ -791,7 +881,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L178",
-      "community": 23,
+      "community": 24,
       "norm_label": "code:text (https://localhost:puerto)",
       "id": "documentacion_chitara_codeblock_11"
     },
@@ -800,7 +890,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L186",
-      "community": 23,
+      "community": 24,
       "norm_label": "code:yaml (ingress:)",
       "id": "documentacion_chitara_codeblock_12"
     },
@@ -809,7 +899,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L226",
-      "community": 23,
+      "community": 24,
       "norm_label": "code:bash (docker restart cloudflared)",
       "id": "documentacion_chitara_codeblock_13"
     },
@@ -818,7 +908,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L232",
-      "community": 23,
+      "community": 24,
       "norm_label": "code:bash (systemctl restart cloudflared)",
       "id": "documentacion_chitara_codeblock_14"
     },
@@ -827,7 +917,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L238",
-      "community": 0,
+      "community": 26,
       "norm_label": "9. seguridad cloudflare access",
       "id": "documentacion_chitara_9_seguridad_cloudflare_access"
     },
@@ -836,7 +926,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L247",
-      "community": 0,
+      "community": 26,
       "norm_label": "code:text (home.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_15"
     },
@@ -845,7 +935,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L263",
-      "community": 0,
+      "community": 26,
       "norm_label": "code:text (supabase.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_16"
     },
@@ -854,7 +944,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L269",
-      "community": 0,
+      "community": 26,
       "norm_label": "code:text (go.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_17"
     },
@@ -863,7 +953,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L275",
-      "community": 0,
+      "community": 26,
       "norm_label": "code:text (go.chitaraagenteia.com sera usado como dominio publico de re)",
       "id": "documentacion_chitara_codeblock_18"
     },
@@ -872,7 +962,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L282",
-      "community": 0,
+      "community": 25,
       "norm_label": "10. firewall / ufw",
       "id": "documentacion_chitara_10_firewall_ufw"
     },
@@ -881,7 +971,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L286",
-      "community": 0,
+      "community": 25,
       "norm_label": "code:text (cerrar puertos publicos del vps.)",
       "id": "documentacion_chitara_codeblock_19"
     },
@@ -890,7 +980,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L293",
-      "community": 0,
+      "community": 25,
       "norm_label": "code:text (3000)",
       "id": "documentacion_chitara_codeblock_20"
     },
@@ -899,7 +989,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L307",
-      "community": 0,
+      "community": 25,
       "norm_label": "code:bash (ufw status verbose)",
       "id": "documentacion_chitara_codeblock_21"
     },
@@ -908,7 +998,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L315",
-      "community": 0,
+      "community": 25,
       "norm_label": "code:bash (ufw default deny incoming)",
       "id": "documentacion_chitara_codeblock_22"
     },
@@ -917,7 +1007,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L325",
-      "community": 0,
+      "community": 25,
       "norm_label": "code:text (antes de cerrar puertos, confirmar que ssh esta permitido.)",
       "id": "documentacion_chitara_codeblock_23"
     },
@@ -1025,7 +1115,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L405",
-      "community": 11,
+      "community": 10,
       "norm_label": "12. supabase cloud \u2192 postgresql local",
       "id": "documentacion_chitara_12_supabase_cloud_postgresql_local"
     },
@@ -1034,7 +1124,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L407",
-      "community": 11,
+      "community": 10,
       "norm_label": "12.1 objetivo original",
       "id": "documentacion_chitara_12_1_objetivo_original"
     },
@@ -1043,7 +1133,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L411",
-      "community": 11,
+      "community": 10,
       "norm_label": "12.2 origen supabase cloud",
       "id": "documentacion_chitara_12_2_origen_supabase_cloud"
     },
@@ -1052,7 +1142,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L415",
-      "community": 11,
+      "community": 10,
       "norm_label": "code:text (redacted)",
       "id": "documentacion_chitara_codeblock_31"
     },
@@ -1061,7 +1151,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L421",
-      "community": 11,
+      "community": 10,
       "norm_label": "code:text (la connection string real fue expuesta en conversacion/conte)",
       "id": "documentacion_chitara_codeblock_32"
     },
@@ -1070,7 +1160,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L428",
-      "community": 11,
+      "community": 10,
       "norm_label": "12.3 problema inicial con pg_dump",
       "id": "documentacion_chitara_12_3_problema_inicial_con_pg_dump"
     },
@@ -1079,7 +1169,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L436",
-      "community": 11,
+      "community": 10,
       "norm_label": "code:text (pg_dump client older than server)",
       "id": "documentacion_chitara_codeblock_33"
     },
@@ -1088,7 +1178,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L442",
-      "community": 11,
+      "community": 10,
       "norm_label": "code:bash (apt install postgresql-client-17)",
       "id": "documentacion_chitara_codeblock_34"
     },
@@ -1097,7 +1187,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L448",
-      "community": 11,
+      "community": 10,
       "norm_label": "code:bash (/usr/lib/postgresql/17/bin/pg_dump)",
       "id": "documentacion_chitara_codeblock_35"
     },
@@ -1106,7 +1196,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L454",
-      "community": 11,
+      "community": 10,
       "norm_label": "code:text (/opt/backups/supabase/sandiegoapart.backup)",
       "id": "documentacion_chitara_codeblock_36"
     },
@@ -1115,7 +1205,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L458",
-      "community": 11,
+      "community": 10,
       "norm_label": "12.4 restore fallido",
       "id": "documentacion_chitara_12_4_restore_fallido"
     },
@@ -1124,7 +1214,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L462",
-      "community": 11,
+      "community": 10,
       "norm_label": "code:text (sandiegoapart)",
       "id": "documentacion_chitara_codeblock_37"
     },
@@ -1133,7 +1223,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L470",
-      "community": 11,
+      "community": 10,
       "norm_label": "code:text (extension \"wrappers\" is not available)",
       "id": "documentacion_chitara_codeblock_38"
     },
@@ -1142,7 +1232,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L488",
-      "community": 9,
+      "community": 8,
       "norm_label": "12.5 migracion exitosa (workaround \u2014 2026-05-26)",
       "id": "documentacion_chitara_12_5_migracion_exitosa_workaround_2026_05_26"
     },
@@ -1151,7 +1241,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L492",
-      "community": 9,
+      "community": 8,
       "norm_label": "paso 1: instalar extensiones necesarias en el contenedor postgresql 18",
       "id": "documentacion_chitara_paso_1_instalar_extensiones_necesarias_en_el_contenedor_postgresql_18"
     },
@@ -1160,7 +1250,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L494",
-      "community": 9,
+      "community": 8,
       "norm_label": "code:bash (docker exec postgres apt-get update)",
       "id": "documentacion_chitara_codeblock_39"
     },
@@ -1169,7 +1259,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L500",
-      "community": 9,
+      "community": 8,
       "norm_label": "paso 2: crear base de datos destino limpia",
       "id": "documentacion_chitara_paso_2_crear_base_de_datos_destino_limpia"
     },
@@ -1178,7 +1268,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L502",
-      "community": 9,
+      "community": 8,
       "norm_label": "code:bash (docker exec postgres psql -u chitara -c \"drop database if ex)",
       "id": "documentacion_chitara_codeblock_40"
     },
@@ -1187,7 +1277,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L507",
-      "community": 9,
+      "community": 8,
       "norm_label": "paso 3: instalar extensiones en la base destino (antes del restore)",
       "id": "documentacion_chitara_paso_3_instalar_extensiones_en_la_base_destino_antes_del_restore"
     },
@@ -1196,7 +1286,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L509",
-      "community": 9,
+      "community": 8,
       "norm_label": "code:sql (create extension if not exists vector;)",
       "id": "documentacion_chitara_codeblock_41"
     },
@@ -1205,7 +1295,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L519",
-      "community": 9,
+      "community": 8,
       "norm_label": "paso 4: crear schemas necesarios (antes del restore para evitar errores en single-transaction)",
       "id": "documentacion_chitara_paso_4_crear_schemas_necesarios_antes_del_restore_para_evitar_errores_en_single_transaction"
     },
@@ -1214,7 +1304,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L521",
-      "community": 9,
+      "community": 8,
       "norm_label": "code:sql (create schema if not exists auth;)",
       "id": "documentacion_chitara_codeblock_42"
     },
@@ -1223,7 +1313,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L533",
-      "community": 9,
+      "community": 8,
       "norm_label": "paso 5: pg_dump desde supabase cloud",
       "id": "documentacion_chitara_paso_5_pg_dump_desde_supabase_cloud"
     },
@@ -1232,7 +1322,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L535",
-      "community": 9,
+      "community": 8,
       "norm_label": "code:bash (pgpassword='elefantesebrios$1' pg_dump \\)",
       "id": "documentacion_chitara_codeblock_43"
     },
@@ -1241,7 +1331,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L547",
-      "community": 9,
+      "community": 8,
       "norm_label": "paso 6: pg_restore a chitara",
       "id": "documentacion_chitara_paso_6_pg_restore_a_chitara"
     },
@@ -1250,7 +1340,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L549",
-      "community": 9,
+      "community": 8,
       "norm_label": "code:bash (cat /tmp/sandiegoapart_fresh.dump | docker exec -i postgres )",
       "id": "documentacion_chitara_codeblock_44"
     },
@@ -1259,7 +1349,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L557",
-      "community": 9,
+      "community": 8,
       "norm_label": "paso 7: corregir tipo halfvec para documentochunk",
       "id": "documentacion_chitara_paso_7_corregir_tipo_halfvec_para_documentochunk"
     },
@@ -1268,7 +1358,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L561",
-      "community": 9,
+      "community": 8,
       "norm_label": "code:sql (drop extension if exists vector cascade;)",
       "id": "documentacion_chitara_codeblock_45"
     },
@@ -1277,7 +1367,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L568",
-      "community": 9,
+      "community": 8,
       "norm_label": "code:bash (# crear tabla con el schema exacto de supabase + cargar dato)",
       "id": "documentacion_chitara_codeblock_46"
     },
@@ -1286,7 +1376,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L576",
-      "community": 9,
+      "community": 8,
       "norm_label": "resultado final",
       "id": "documentacion_chitara_resultado_final"
     },
@@ -1295,7 +1385,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L586",
-      "community": 11,
+      "community": 10,
       "norm_label": "12.6 estrategia de restauracion (historico \u2014 ya ejecutado)",
       "id": "documentacion_chitara_12_6_estrategia_de_restauracion_historico_ya_ejecutado"
     },
@@ -1304,7 +1394,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L592",
-      "community": 11,
+      "community": 10,
       "norm_label": "code:text (1. identificar tablas reales de negocio.)",
       "id": "documentacion_chitara_codeblock_47"
     },
@@ -1313,7 +1403,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L604",
-      "community": 11,
+      "community": 10,
       "norm_label": "code:text (a. dump schema-only limpio excluyendo extensiones problemati)",
       "id": "documentacion_chitara_codeblock_48"
     },
@@ -1421,7 +1511,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L675",
-      "community": 4,
+      "community": 3,
       "norm_label": "14. directus",
       "id": "documentacion_chitara_14_directus"
     },
@@ -1430,7 +1520,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L677",
-      "community": 4,
+      "community": 3,
       "norm_label": "14.1 decision tomada",
       "id": "documentacion_chitara_14_1_decisi\u00f3n_tomada"
     },
@@ -1439,7 +1529,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L685",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:text (directus = backend/api admin/no-code para una base/proyecto )",
       "id": "documentacion_chitara_codeblock_57"
     },
@@ -1448,7 +1538,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L690",
-      "community": 4,
+      "community": 3,
       "norm_label": "14.2 url propuesta",
       "id": "documentacion_chitara_14_2_url_propuesta"
     },
@@ -1457,7 +1547,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L692",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:text (directus.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_58"
     },
@@ -1466,7 +1556,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L696",
-      "community": 4,
+      "community": 3,
       "norm_label": "14.3 puerto local propuesto",
       "id": "documentacion_chitara_14_3_puerto_local_propuesto"
     },
@@ -1475,7 +1565,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L698",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:text (8055)",
       "id": "documentacion_chitara_codeblock_59"
     },
@@ -1484,7 +1574,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L702",
-      "community": 4,
+      "community": 3,
       "norm_label": "14.4 base recomendada",
       "id": "documentacion_chitara_14_4_base_recomendada"
     },
@@ -1493,7 +1583,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L706",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:text (directus)",
       "id": "documentacion_chitara_codeblock_60"
     },
@@ -1502,7 +1592,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L712",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:text (sandiegoapart)",
       "id": "documentacion_chitara_codeblock_61"
     },
@@ -1511,7 +1601,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L718",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:text (crear db directus para directus.)",
       "id": "documentacion_chitara_codeblock_62"
     },
@@ -1520,7 +1610,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L723",
-      "community": 4,
+      "community": 3,
       "norm_label": "14.5 crear usuario y base",
       "id": "documentacion_chitara_14_5_crear_usuario_y_base"
     },
@@ -1529,7 +1619,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L725",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:bash (docker exec -it postgres psql -u postgres)",
       "id": "documentacion_chitara_codeblock_63"
     },
@@ -1538,7 +1628,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L729",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:sql (create user directus with password 'replace_with_secure_pass)",
       "id": "documentacion_chitara_codeblock_64"
     },
@@ -1547,7 +1637,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L736",
-      "community": 4,
+      "community": 3,
       "norm_label": "14.6 carpeta",
       "id": "documentacion_chitara_14_6_carpeta"
     },
@@ -1556,7 +1646,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L738",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:bash (mkdir -p /opt/homelab/directus)",
       "id": "documentacion_chitara_codeblock_65"
     },
@@ -1565,7 +1655,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L744",
-      "community": 4,
+      "community": 3,
       "norm_label": "14.7 `.env` sugerido",
       "id": "documentacion_chitara_14_7_env_sugerido"
     },
@@ -1574,7 +1664,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L746",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:env (directus_secret=replace_with_long_secret)",
       "id": "documentacion_chitara_codeblock_66"
     },
@@ -1583,7 +1673,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L762",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:bash (openssl rand -hex 32)",
       "id": "documentacion_chitara_codeblock_67"
     },
@@ -1592,7 +1682,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L766",
-      "community": 4,
+      "community": 3,
       "norm_label": "14.8 `docker-compose.yml` sugerido",
       "id": "documentacion_chitara_14_8_docker_compose_yml_sugerido"
     },
@@ -1601,7 +1691,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L768",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:yaml (services:)",
       "id": "documentacion_chitara_codeblock_68"
     },
@@ -1610,7 +1700,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L822",
-      "community": 4,
+      "community": 3,
       "norm_label": "14.9 levantar directus",
       "id": "documentacion_chitara_14_9_levantar_directus"
     },
@@ -1619,7 +1709,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L824",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:bash (docker network create homelab_net || true)",
       "id": "documentacion_chitara_codeblock_69"
     },
@@ -1628,7 +1718,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L836",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:bash (curl http://127.0.0.1:8055/server/ping)",
       "id": "documentacion_chitara_codeblock_70"
     },
@@ -1637,7 +1727,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L842",
-      "community": 4,
+      "community": 3,
       "norm_label": "code:text (pong)",
       "id": "documentacion_chitara_codeblock_71"
     },
@@ -1646,7 +1736,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L848",
-      "community": 8,
+      "community": 7,
       "norm_label": "15. supabase self-hosted",
       "id": "documentacion_chitara_15_supabase_self_hosted"
     },
@@ -1655,7 +1745,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L850",
-      "community": 8,
+      "community": 7,
       "norm_label": "15.1 decision tomada",
       "id": "documentacion_chitara_15_1_decisi\u00f3n_tomada"
     },
@@ -1664,7 +1754,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L858",
-      "community": 8,
+      "community": 7,
       "norm_label": "code:text (1 supabase stack = 1 proyecto supabase = 1 base postgresql p)",
       "id": "documentacion_chitara_codeblock_72"
     },
@@ -1673,7 +1763,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L862",
-      "community": 8,
+      "community": 7,
       "norm_label": "15.2 uso recomendado",
       "id": "documentacion_chitara_15_2_uso_recomendado"
     },
@@ -1682,7 +1772,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L875",
-      "community": 8,
+      "community": 7,
       "norm_label": "15.3 url propuesta",
       "id": "documentacion_chitara_15_3_url_propuesta"
     },
@@ -1691,7 +1781,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L877",
-      "community": 8,
+      "community": 7,
       "norm_label": "code:text (supabase.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_73"
     },
@@ -1700,7 +1790,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L881",
-      "community": 8,
+      "community": 7,
       "norm_label": "15.4 puerto local propuesto",
       "id": "documentacion_chitara_15_4_puerto_local_propuesto"
     },
@@ -1709,7 +1799,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L883",
-      "community": 8,
+      "community": 7,
       "norm_label": "code:text (8000)",
       "id": "documentacion_chitara_codeblock_74"
     },
@@ -1718,7 +1808,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L887",
-      "community": 8,
+      "community": 7,
       "norm_label": "15.5 carpeta",
       "id": "documentacion_chitara_15_5_carpeta"
     },
@@ -1727,7 +1817,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L889",
-      "community": 8,
+      "community": 7,
       "norm_label": "code:bash (mkdir -p /opt/homelab/supabase)",
       "id": "documentacion_chitara_codeblock_75"
     },
@@ -1736,7 +1826,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L893",
-      "community": 8,
+      "community": 7,
       "norm_label": "15.6 instalacion base propuesta",
       "id": "documentacion_chitara_15_6_instalaci\u00f3n_base_propuesta"
     },
@@ -1745,7 +1835,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L895",
-      "community": 8,
+      "community": 7,
       "norm_label": "code:bash (cd /opt/homelab)",
       "id": "documentacion_chitara_codeblock_76"
     },
@@ -1754,7 +1844,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L905",
-      "community": 8,
+      "community": 7,
       "norm_label": "code:bash (sh utils/generate-keys.sh)",
       "id": "documentacion_chitara_codeblock_77"
     },
@@ -1763,7 +1853,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L912",
-      "community": 8,
+      "community": 7,
       "norm_label": "code:bash (nano .env)",
       "id": "documentacion_chitara_codeblock_78"
     },
@@ -1772,7 +1862,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L918",
-      "community": 8,
+      "community": 7,
       "norm_label": "code:env (supabase_public_url=https://supabase.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_79"
     },
@@ -1781,7 +1871,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L929",
-      "community": 8,
+      "community": 7,
       "norm_label": "code:bash (docker compose pull)",
       "id": "documentacion_chitara_codeblock_80"
     },
@@ -1790,7 +1880,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L937",
-      "community": 8,
+      "community": 7,
       "norm_label": "code:bash (curl http://127.0.0.1:8000)",
       "id": "documentacion_chitara_codeblock_81"
     },
@@ -1799,7 +1889,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L941",
-      "community": 8,
+      "community": 7,
       "norm_label": "15.7 advertencia de recursos",
       "id": "documentacion_chitara_15_7_advertencia_de_recursos"
     },
@@ -1808,7 +1898,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L963",
-      "community": 3,
+      "community": 2,
       "norm_label": "16. shlink \u2014 redirecciones tipo short.io",
       "id": "documentacion_chitara_16_shlink_redirecciones_tipo_short_io"
     },
@@ -1817,7 +1907,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L965",
-      "community": 3,
+      "community": 2,
       "norm_label": "16.1 decision tomada",
       "id": "documentacion_chitara_16_1_decisi\u00f3n_tomada"
     },
@@ -1826,7 +1916,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L969",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:text (shlink)",
       "id": "documentacion_chitara_codeblock_82"
     },
@@ -1835,7 +1925,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L985",
-      "community": 3,
+      "community": 2,
       "norm_label": "16.2 uso",
       "id": "documentacion_chitara_16_2_uso"
     },
@@ -1844,7 +1934,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L991",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:text (https://go.chitaraagenteia.com/airbnb-702)",
       "id": "documentacion_chitara_codeblock_83"
     },
@@ -1853,7 +1943,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L996",
-      "community": 3,
+      "community": 2,
       "norm_label": "16.3 urls propuestas",
       "id": "documentacion_chitara_16_3_urls_propuestas"
     },
@@ -1862,7 +1952,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1000",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:text (go.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_84"
     },
@@ -1871,7 +1961,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1006",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:text (links.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_85"
     },
@@ -1880,7 +1970,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1010",
-      "community": 3,
+      "community": 2,
       "norm_label": "16.4 puertos propuestos",
       "id": "documentacion_chitara_16_4_puertos_propuestos"
     },
@@ -1889,7 +1979,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1012",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:text (shlink api/redirect server: 8087 \u2192 contenedor 8080)",
       "id": "documentacion_chitara_codeblock_86"
     },
@@ -1898,7 +1988,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1017",
-      "community": 3,
+      "community": 2,
       "norm_label": "16.5 seguridad",
       "id": "documentacion_chitara_16_5_seguridad"
     },
@@ -1907,7 +1997,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1019",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:text (go.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_87"
     },
@@ -1916,7 +2006,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1026",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:text (links.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_88"
     },
@@ -1925,7 +2015,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1033",
-      "community": 3,
+      "community": 2,
       "norm_label": "16.6 crear base y usuario",
       "id": "documentacion_chitara_16_6_crear_base_y_usuario"
     },
@@ -1934,7 +2024,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1035",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:bash (docker exec -it postgres psql -u postgres)",
       "id": "documentacion_chitara_codeblock_89"
     },
@@ -1943,7 +2033,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1039",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:sql (create user shlink with password 'replace_with_secure_passwo)",
       "id": "documentacion_chitara_codeblock_90"
     },
@@ -1952,7 +2042,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1046",
-      "community": 3,
+      "community": 2,
       "norm_label": "16.7 carpeta",
       "id": "documentacion_chitara_16_7_carpeta"
     },
@@ -1961,7 +2051,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1048",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:bash (mkdir -p /opt/homelab/shlink)",
       "id": "documentacion_chitara_codeblock_91"
     },
@@ -1970,7 +2060,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1053",
-      "community": 3,
+      "community": 2,
       "norm_label": "16.8 `.env`",
       "id": "documentacion_chitara_16_8_env"
     },
@@ -1979,7 +2069,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1055",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:env (default_domain=go.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_92"
     },
@@ -1988,7 +2078,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1071",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:bash (openssl rand -hex 48)",
       "id": "documentacion_chitara_codeblock_93"
     },
@@ -1997,7 +2087,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1075",
-      "community": 3,
+      "community": 2,
       "norm_label": "16.9 `docker-compose.yml`",
       "id": "documentacion_chitara_16_9_docker_compose_yml"
     },
@@ -2006,7 +2096,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1077",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:yaml (services:)",
       "id": "documentacion_chitara_codeblock_94"
     },
@@ -2015,7 +2105,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1112",
-      "community": 3,
+      "community": 2,
       "norm_label": "16.10 levantar",
       "id": "documentacion_chitara_16_10_levantar"
     },
@@ -2024,7 +2114,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1114",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:bash (docker network create homelab_net || true)",
       "id": "documentacion_chitara_codeblock_95"
     },
@@ -2033,7 +2123,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1124",
-      "community": 3,
+      "community": 2,
       "norm_label": "16.11 configurar shlink web",
       "id": "documentacion_chitara_16_11_configurar_shlink_web"
     },
@@ -2042,7 +2132,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1128",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:text (https://links.chitaraagenteia.com)",
       "id": "documentacion_chitara_codeblock_96"
     },
@@ -2051,7 +2141,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1134",
-      "community": 3,
+      "community": 2,
       "norm_label": "code:text (server url:)",
       "id": "documentacion_chitara_codeblock_97"
     },
@@ -2060,7 +2150,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1144",
-      "community": 22,
+      "community": 23,
       "norm_label": "17. mcp y ssh",
       "id": "documentacion_chitara_17_mcp_y_ssh"
     },
@@ -2069,7 +2159,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1146",
-      "community": 22,
+      "community": 23,
       "norm_label": "17.1 decision conceptual",
       "id": "documentacion_chitara_17_1_decisi\u00f3n_conceptual"
     },
@@ -2078,7 +2168,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1152",
-      "community": 22,
+      "community": 23,
       "norm_label": "code:text (1. cliente mcp local ejecuta ssh y levanta servidor mcp remo)",
       "id": "documentacion_chitara_codeblock_98"
     },
@@ -2087,7 +2177,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1158",
-      "community": 22,
+      "community": 23,
       "norm_label": "17.2 recomendacion",
       "id": "documentacion_chitara_17_2_recomendaci\u00f3n"
     },
@@ -2096,7 +2186,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1162",
-      "community": 22,
+      "community": 23,
       "norm_label": "code:text (mcp con herramientas especificas y limitadas.)",
       "id": "documentacion_chitara_codeblock_99"
     },
@@ -2105,7 +2195,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1169",
-      "community": 22,
+      "community": 23,
       "norm_label": "code:text (docker_ps)",
       "id": "documentacion_chitara_codeblock_100"
     },
@@ -2114,7 +2204,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1186",
-      "community": 22,
+      "community": 23,
       "norm_label": "code:text (run_command(command))",
       "id": "documentacion_chitara_codeblock_101"
     },
@@ -2123,7 +2213,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1192",
-      "community": 22,
+      "community": 23,
       "norm_label": "code:text (una herramienta generica de comandos equivale a entregar she)",
       "id": "documentacion_chitara_codeblock_102"
     },
@@ -2132,7 +2222,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1199",
-      "community": 0,
+      "community": 28,
       "norm_label": "18. docker network comun",
       "id": "documentacion_chitara_18_docker_network_com\u00fan"
     },
@@ -2141,7 +2231,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1203",
-      "community": 0,
+      "community": 28,
       "norm_label": "code:bash (docker network create homelab_net || true)",
       "id": "documentacion_chitara_codeblock_103"
     },
@@ -2150,7 +2240,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1209",
-      "community": 0,
+      "community": 28,
       "norm_label": "code:yaml (networks:)",
       "id": "documentacion_chitara_codeblock_104"
     },
@@ -2159,7 +2249,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1217",
-      "community": 0,
+      "community": 28,
       "norm_label": "code:yaml (networks:)",
       "id": "documentacion_chitara_codeblock_105"
     },
@@ -2168,7 +2258,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1224",
-      "community": 0,
+      "community": 28,
       "norm_label": "code:text (db_host=postgres)",
       "id": "documentacion_chitara_codeblock_106"
     },
@@ -2177,7 +2267,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1230",
-      "community": 19,
+      "community": 20,
       "norm_label": "19. backups",
       "id": "documentacion_chitara_19_backups"
     },
@@ -2186,7 +2276,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1232",
-      "community": 19,
+      "community": 20,
       "norm_label": "19.1 ruta actual conocida",
       "id": "documentacion_chitara_19_1_ruta_actual_conocida"
     },
@@ -2195,7 +2285,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1234",
-      "community": 19,
+      "community": 20,
       "norm_label": "code:text (/opt/backups/supabase/sandiegoapart.backup)",
       "id": "documentacion_chitara_codeblock_107"
     },
@@ -2204,7 +2294,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1238",
-      "community": 19,
+      "community": 20,
       "norm_label": "19.2 recomendacion de estructura",
       "id": "documentacion_chitara_19_2_recomendaci\u00f3n_de_estructura"
     },
@@ -2213,7 +2303,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1240",
-      "community": 19,
+      "community": 20,
       "norm_label": "code:text (/opt/backups/)",
       "id": "documentacion_chitara_codeblock_108"
     },
@@ -2222,7 +2312,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1253",
-      "community": 19,
+      "community": 20,
       "norm_label": "19.3 backup postgresql por base",
       "id": "documentacion_chitara_19_3_backup_postgresql_por_base"
     },
@@ -2231,7 +2321,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1257",
-      "community": 19,
+      "community": 20,
       "norm_label": "code:bash (mkdir -p /opt/backups/postgres/manual)",
       "id": "documentacion_chitara_codeblock_109"
     },
@@ -2240,7 +2330,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1263",
-      "community": 19,
+      "community": 20,
       "norm_label": "19.4 restore",
       "id": "documentacion_chitara_19_4_restore"
     },
@@ -2249,7 +2339,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1265",
-      "community": 19,
+      "community": 20,
       "norm_label": "code:bash (createdb -u postgres nombre_db)",
       "id": "documentacion_chitara_codeblock_110"
     },
@@ -2258,7 +2348,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1272",
-      "community": 19,
+      "community": 20,
       "norm_label": "code:bash (cat archivo.backup | docker exec -i postgres pg_restore -u p)",
       "id": "documentacion_chitara_codeblock_111"
     },
@@ -2267,7 +2357,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1278",
-      "community": 10,
+      "community": 9,
       "norm_label": "20. decisiones arquitectonicas tomadas",
       "id": "documentacion_chitara_20_decisiones_arquitect\u00f3nicas_tomadas"
     },
@@ -2276,7 +2366,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1280",
-      "community": 10,
+      "community": 9,
       "norm_label": "20.1 postgresql",
       "id": "documentacion_chitara_20_1_postgresql"
     },
@@ -2285,7 +2375,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1282",
-      "community": 10,
+      "community": 9,
       "norm_label": "code:text (postgresql local sera la base central de infraestructura int)",
       "id": "documentacion_chitara_codeblock_112"
     },
@@ -2294,7 +2384,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1288",
-      "community": 10,
+      "community": 9,
       "norm_label": "20.2 supabase",
       "id": "documentacion_chitara_20_2_supabase"
     },
@@ -2303,7 +2393,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1290",
-      "community": 10,
+      "community": 9,
       "norm_label": "code:text (supabase no se usara como administrador multi-base.)",
       "id": "documentacion_chitara_codeblock_113"
     },
@@ -2312,7 +2402,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1296",
-      "community": 10,
+      "community": 9,
       "norm_label": "20.3 directus",
       "id": "documentacion_chitara_20_3_directus"
     },
@@ -2321,7 +2411,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1298",
-      "community": 10,
+      "community": 9,
       "norm_label": "code:text (directus no se usara como administrador multi-base.)",
       "id": "documentacion_chitara_codeblock_114"
     },
@@ -2330,7 +2420,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1304",
-      "community": 10,
+      "community": 9,
       "norm_label": "20.4 pgadmin",
       "id": "documentacion_chitara_20_4_pgadmin"
     },
@@ -2339,7 +2429,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1306",
-      "community": 10,
+      "community": 9,
       "norm_label": "code:text (pgadmin sera la herramienta principal para administrar multi)",
       "id": "documentacion_chitara_codeblock_115"
     },
@@ -2348,7 +2438,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1310",
-      "community": 10,
+      "community": 9,
       "norm_label": "20.5 shlink",
       "id": "documentacion_chitara_20_5_shlink"
     },
@@ -2357,7 +2447,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1312",
-      "community": 10,
+      "community": 9,
       "norm_label": "code:text (shlink sera el servicio de redirecciones/acortador.)",
       "id": "documentacion_chitara_codeblock_116"
     },
@@ -2366,7 +2456,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1318",
-      "community": 10,
+      "community": 9,
       "norm_label": "20.6 cloudflare",
       "id": "documentacion_chitara_20_6_cloudflare"
     },
@@ -2375,7 +2465,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1320",
-      "community": 10,
+      "community": 9,
       "norm_label": "code:text (cloudflare tunnel expone servicios.)",
       "id": "documentacion_chitara_codeblock_117"
     },
@@ -2384,7 +2474,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1326",
-      "community": 10,
+      "community": 9,
       "norm_label": "20.7 n8n",
       "id": "documentacion_chitara_20_7_n8n"
     },
@@ -2393,7 +2483,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1328",
-      "community": 10,
+      "community": 9,
       "norm_label": "code:text (n8n se reparara recreando base limpia si no hay workflows cr)",
       "id": "documentacion_chitara_codeblock_118"
     },
@@ -2402,7 +2492,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1332",
-      "community": 10,
+      "community": 9,
       "norm_label": "20.8 complejidad evitada",
       "id": "documentacion_chitara_20_8_complejidad_evitada"
     },
@@ -2411,7 +2501,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1336",
-      "community": 10,
+      "community": 9,
       "norm_label": "code:text (langfuse + clickhouse)",
       "id": "documentacion_chitara_codeblock_119"
     },
@@ -2420,7 +2510,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1347",
-      "community": 0,
+      "community": 27,
       "norm_label": "21. variables sensibles y rotacion",
       "id": "documentacion_chitara_21_variables_sensibles_y_rotaci\u00f3n"
     },
@@ -2429,7 +2519,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1351",
-      "community": 0,
+      "community": 27,
       "norm_label": "code:text (passwords reales.)",
       "id": "documentacion_chitara_codeblock_120"
     },
@@ -2438,7 +2528,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1363",
-      "community": 0,
+      "community": 27,
       "norm_label": "code:text (rotar cualquier secreto que haya sido pegado en chats, notas)",
       "id": "documentacion_chitara_codeblock_121"
     },
@@ -2447,7 +2537,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1369",
-      "community": 0,
+      "community": 27,
       "norm_label": "code:text (password de supabase cloud usada en connection string origin)",
       "id": "documentacion_chitara_codeblock_122"
     },
@@ -2456,7 +2546,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1377",
-      "community": 0,
+      "community": 27,
       "norm_label": "code:text (replace_with_secure_password)",
       "id": "documentacion_chitara_codeblock_123"
     },
@@ -2465,7 +2555,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1386",
-      "community": 12,
+      "community": 11,
       "norm_label": "22. checklist de validacion operativa",
       "id": "documentacion_chitara_22_checklist_de_validaci\u00f3n_operativa"
     },
@@ -2474,7 +2564,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1388",
-      "community": 12,
+      "community": 11,
       "norm_label": "22.1 docker",
       "id": "documentacion_chitara_22_1_docker"
     },
@@ -2483,7 +2573,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1390",
-      "community": 12,
+      "community": 11,
       "norm_label": "code:bash (docker ps)",
       "id": "documentacion_chitara_codeblock_124"
     },
@@ -2492,7 +2582,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1397",
-      "community": 12,
+      "community": 11,
       "norm_label": "22.2 cloudflare tunnel",
       "id": "documentacion_chitara_22_2_cloudflare_tunnel"
     },
@@ -2501,7 +2591,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1399",
-      "community": 12,
+      "community": 11,
       "norm_label": "code:bash (docker logs cloudflared --tail=100)",
       "id": "documentacion_chitara_codeblock_125"
     },
@@ -2510,7 +2600,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1405",
-      "community": 12,
+      "community": 11,
       "norm_label": "code:bash (journalctl -u cloudflared -n 100 --no-pager)",
       "id": "documentacion_chitara_codeblock_126"
     },
@@ -2519,7 +2609,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1409",
-      "community": 12,
+      "community": 11,
       "norm_label": "22.3 puertos",
       "id": "documentacion_chitara_22_3_puertos"
     },
@@ -2528,7 +2618,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1411",
-      "community": 12,
+      "community": 11,
       "norm_label": "code:bash (ss -tulpn)",
       "id": "documentacion_chitara_codeblock_127"
     },
@@ -2537,7 +2627,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1415",
-      "community": 12,
+      "community": 11,
       "norm_label": "22.4 firewall",
       "id": "documentacion_chitara_22_4_firewall"
     },
@@ -2546,7 +2636,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1417",
-      "community": 12,
+      "community": 11,
       "norm_label": "code:bash (ufw status verbose)",
       "id": "documentacion_chitara_codeblock_128"
     },
@@ -2555,7 +2645,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1421",
-      "community": 12,
+      "community": 11,
       "norm_label": "22.5 postgresql",
       "id": "documentacion_chitara_22_5_postgresql"
     },
@@ -2564,7 +2654,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1423",
-      "community": 12,
+      "community": 11,
       "norm_label": "code:bash (docker exec -it postgres psql -u postgres -c \"select version)",
       "id": "documentacion_chitara_codeblock_129"
     },
@@ -2573,7 +2663,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1428",
-      "community": 12,
+      "community": 11,
       "norm_label": "22.6 logs por servicio",
       "id": "documentacion_chitara_22_6_logs_por_servicio"
     },
@@ -2582,7 +2672,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1430",
-      "community": 12,
+      "community": 11,
       "norm_label": "code:bash (docker logs nombre_contenedor --tail=100)",
       "id": "documentacion_chitara_codeblock_130"
     },
@@ -2591,7 +2681,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1436",
-      "community": 12,
+      "community": 11,
       "norm_label": "code:bash (docker logs postgres --tail=100)",
       "id": "documentacion_chitara_codeblock_131"
     },
@@ -2600,7 +2690,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1446",
-      "community": 15,
+      "community": 14,
       "norm_label": "23. orden recomendado de proximos pasos",
       "id": "documentacion_chitara_23_orden_recomendado_de_pr\u00f3ximos_pasos"
     },
@@ -2609,7 +2699,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1448",
-      "community": 15,
+      "community": 14,
       "norm_label": "fase 1 \u2014 seguridad base",
       "id": "documentacion_chitara_fase_1_seguridad_base"
     },
@@ -2618,7 +2708,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1450",
-      "community": 15,
+      "community": 14,
       "norm_label": "code:text (1. validar ssh.)",
       "id": "documentacion_chitara_codeblock_132"
     },
@@ -2627,7 +2717,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1458",
-      "community": 15,
+      "community": 14,
       "norm_label": "fase 2 \u2014 reparar n8n",
       "id": "documentacion_chitara_fase_2_reparar_n8n"
     },
@@ -2636,7 +2726,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1460",
-      "community": 15,
+      "community": 14,
       "norm_label": "code:text (1. confirmar si hay workflows que recuperar.)",
       "id": "documentacion_chitara_codeblock_133"
     },
@@ -2645,7 +2735,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1468",
-      "community": 15,
+      "community": 14,
       "norm_label": "fase 3 \u2014 instalar shlink",
       "id": "documentacion_chitara_fase_3_instalar_shlink"
     },
@@ -2654,7 +2744,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1470",
-      "community": 15,
+      "community": 14,
       "norm_label": "code:text (1. crear db shlink.)",
       "id": "documentacion_chitara_codeblock_134"
     },
@@ -2663,7 +2753,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1482",
-      "community": 15,
+      "community": 14,
       "norm_label": "fase 4 \u2014 instalar directus",
       "id": "documentacion_chitara_fase_4_instalar_directus"
     },
@@ -2672,7 +2762,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1484",
-      "community": 15,
+      "community": 14,
       "norm_label": "code:text (1. crear db directus.)",
       "id": "documentacion_chitara_codeblock_135"
     },
@@ -2681,7 +2771,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1495",
-      "community": 15,
+      "community": 14,
       "norm_label": "fase 5 \u2014 evaluar supabase self-hosted",
       "id": "documentacion_chitara_fase_5_evaluar_supabase_self_hosted"
     },
@@ -2690,7 +2780,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1497",
-      "community": 15,
+      "community": 14,
       "norm_label": "code:text (1. revisar recursos del vps.)",
       "id": "documentacion_chitara_codeblock_136"
     },
@@ -2699,7 +2789,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1508",
-      "community": 15,
+      "community": 14,
       "norm_label": "fase 6 \u2014 migracion supabase cloud \u2192 local",
       "id": "documentacion_chitara_fase_6_migraci\u00f3n_supabase_cloud_local"
     },
@@ -2708,7 +2798,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1510",
-      "community": 15,
+      "community": 14,
       "norm_label": "code:text (1. inspeccionar backup actual.)",
       "id": "documentacion_chitara_codeblock_137"
     },
@@ -2717,7 +2807,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1523",
-      "community": 5,
+      "community": 4,
       "norm_label": "24. comandos rapidos utiles",
       "id": "documentacion_chitara_24_comandos_r\u00e1pidos_\u00fatiles"
     },
@@ -2726,7 +2816,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1525",
-      "community": 5,
+      "community": 4,
       "norm_label": "entrar a postgresql",
       "id": "documentacion_chitara_entrar_a_postgresql"
     },
@@ -2735,7 +2825,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1527",
-      "community": 5,
+      "community": 4,
       "norm_label": "code:bash (docker exec -it postgres psql -u postgres)",
       "id": "documentacion_chitara_codeblock_138"
     },
@@ -2744,7 +2834,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1531",
-      "community": 5,
+      "community": 4,
       "norm_label": "ver version postgresql",
       "id": "documentacion_chitara_ver_versi\u00f3n_postgresql"
     },
@@ -2753,7 +2843,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1533",
-      "community": 5,
+      "community": 4,
       "norm_label": "code:sql (select version();)",
       "id": "documentacion_chitara_codeblock_139"
     },
@@ -2762,7 +2852,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1537",
-      "community": 5,
+      "community": 4,
       "norm_label": "listar bases",
       "id": "documentacion_chitara_listar_bases"
     },
@@ -2771,7 +2861,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1539",
-      "community": 5,
+      "community": 4,
       "norm_label": "code:sql (\\l)",
       "id": "documentacion_chitara_codeblock_140"
     },
@@ -2780,7 +2870,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1543",
-      "community": 5,
+      "community": 4,
       "norm_label": "listar schemas",
       "id": "documentacion_chitara_listar_schemas"
     },
@@ -2789,7 +2879,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1545",
-      "community": 5,
+      "community": 4,
       "norm_label": "code:sql (\\dn)",
       "id": "documentacion_chitara_codeblock_141"
     },
@@ -2798,7 +2888,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1549",
-      "community": 5,
+      "community": 4,
       "norm_label": "listar tablas",
       "id": "documentacion_chitara_listar_tablas"
     },
@@ -2807,7 +2897,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1551",
-      "community": 5,
+      "community": 4,
       "norm_label": "code:sql (\\dt *.*)",
       "id": "documentacion_chitara_codeblock_142"
     },
@@ -2816,7 +2906,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1555",
-      "community": 5,
+      "community": 4,
       "norm_label": "ver contenedores",
       "id": "documentacion_chitara_ver_contenedores"
     },
@@ -2825,7 +2915,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1557",
-      "community": 5,
+      "community": 4,
       "norm_label": "code:bash (docker ps)",
       "id": "documentacion_chitara_codeblock_143"
     },
@@ -2834,7 +2924,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1561",
-      "community": 5,
+      "community": 4,
       "norm_label": "ver logs",
       "id": "documentacion_chitara_ver_logs"
     },
@@ -2843,7 +2933,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1563",
-      "community": 5,
+      "community": 4,
       "norm_label": "code:bash (docker logs container_name --tail=100 -f)",
       "id": "documentacion_chitara_codeblock_144"
     },
@@ -2852,7 +2942,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1567",
-      "community": 5,
+      "community": 4,
       "norm_label": "reiniciar servicio",
       "id": "documentacion_chitara_reiniciar_servicio"
     },
@@ -2861,7 +2951,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1569",
-      "community": 5,
+      "community": 4,
       "norm_label": "code:bash (docker restart container_name)",
       "id": "documentacion_chitara_codeblock_145"
     },
@@ -2870,7 +2960,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1573",
-      "community": 5,
+      "community": 4,
       "norm_label": "reiniciar compose",
       "id": "documentacion_chitara_reiniciar_compose"
     },
@@ -2879,7 +2969,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1575",
-      "community": 5,
+      "community": 4,
       "norm_label": "code:bash (cd /opt/homelab/servicio)",
       "id": "documentacion_chitara_codeblock_146"
     },
@@ -2888,7 +2978,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1581",
-      "community": 5,
+      "community": 4,
       "norm_label": "ver uso de disco",
       "id": "documentacion_chitara_ver_uso_de_disco"
     },
@@ -2897,7 +2987,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1583",
-      "community": 5,
+      "community": 4,
       "norm_label": "code:bash (df -h)",
       "id": "documentacion_chitara_codeblock_147"
     },
@@ -2906,7 +2996,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1589",
-      "community": 5,
+      "community": 4,
       "norm_label": "ver memoria",
       "id": "documentacion_chitara_ver_memoria"
     },
@@ -2915,7 +3005,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1591",
-      "community": 5,
+      "community": 4,
       "norm_label": "code:bash (free -h)",
       "id": "documentacion_chitara_codeblock_148"
     },
@@ -2924,7 +3014,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1597",
-      "community": 0,
+      "community": 15,
       "norm_label": "25. estado final deseado",
       "id": "documentacion_chitara_25_estado_final_deseado"
     },
@@ -2933,7 +3023,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1599",
-      "community": 0,
+      "community": 15,
       "norm_label": "code:text (vps contabo)",
       "id": "documentacion_chitara_codeblock_149"
     },
@@ -2942,7 +3032,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1618",
-      "community": 0,
+      "community": 15,
       "norm_label": "26. principios de operacion para el agente",
       "id": "documentacion_chitara_26_principios_de_operaci\u00f3n_para_el_agente"
     },
@@ -2951,7 +3041,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1622",
-      "community": 0,
+      "community": 15,
       "norm_label": "code:text (1. no exponer servicios directamente a internet.)",
       "id": "documentacion_chitara_codeblock_150"
     },
@@ -2960,7 +3050,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1642",
-      "community": 0,
+      "community": 15,
       "norm_label": "27. resumen ejecutivo",
       "id": "documentacion_chitara_27_resumen_ejecutivo"
     },
@@ -2969,7 +3059,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1653",
-      "community": 0,
+      "community": 31,
       "norm_label": "27. copia de tablas n8n a base independiente (2026-05-26)",
       "id": "documentacion_chitara_27_copia_de_tablas_n8n_a_base_independiente_2026_05_26"
     },
@@ -2978,7 +3068,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1655",
-      "community": 0,
+      "community": 31,
       "norm_label": "procedimiento",
       "id": "documentacion_chitara_procedimiento"
     },
@@ -2987,7 +3077,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1657",
-      "community": 0,
+      "community": 31,
       "norm_label": "code:bash (# 1. crear base n8n)",
       "id": "documentacion_chitara_codeblock_151"
     },
@@ -2996,7 +3086,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1690",
-      "community": 0,
+      "community": 31,
       "norm_label": "resultado",
       "id": "documentacion_chitara_resultado"
     },
@@ -3005,7 +3095,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1699",
-      "community": 7,
+      "community": 6,
       "norm_label": "28. conexion ssh al vps para agentes",
       "id": "documentacion_chitara_28_conexion_ssh_al_vps_para_agentes"
     },
@@ -3014,7 +3104,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1701",
-      "community": 7,
+      "community": 6,
       "norm_label": "28.1 datos del servidor",
       "id": "documentacion_chitara_28_1_datos_del_servidor"
     },
@@ -3023,7 +3113,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1703",
-      "community": 7,
+      "community": 6,
       "norm_label": "code:block152 (ip:     5.252.52.190)",
       "id": "documentacion_chitara_codeblock_152"
     },
@@ -3032,7 +3122,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1710",
-      "community": 7,
+      "community": 6,
       "norm_label": "28.2 setup de llave ssh (una sola vez)",
       "id": "documentacion_chitara_28_2_setup_de_llave_ssh_una_sola_vez"
     },
@@ -3041,7 +3131,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1714",
-      "community": 7,
+      "community": 6,
       "norm_label": "code:bash (mkdir -p ~/.ssh)",
       "id": "documentacion_chitara_codeblock_153"
     },
@@ -3050,7 +3140,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1722",
-      "community": 7,
+      "community": 6,
       "norm_label": "28.3 agregar llave publica al vps",
       "id": "documentacion_chitara_28_3_agregar_llave_publica_al_vps"
     },
@@ -3059,7 +3149,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1727",
-      "community": 7,
+      "community": 6,
       "norm_label": "code:powershell (# windows powershell)",
       "id": "documentacion_chitara_codeblock_154"
     },
@@ -3068,7 +3158,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1734",
-      "community": 7,
+      "community": 6,
       "norm_label": "code:bash (ssh root@5.252.52.190 \"mkdir -p ~/.ssh && echo 'llave_public)",
       "id": "documentacion_chitara_codeblock_155"
     },
@@ -3077,7 +3167,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1741",
-      "community": 7,
+      "community": 6,
       "norm_label": "28.4 probar conexion",
       "id": "documentacion_chitara_28_4_probar_conexion"
     },
@@ -3086,7 +3176,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1743",
-      "community": 7,
+      "community": 6,
       "norm_label": "code:bash (ssh -o stricthostkeychecking=accept-new root@5.252.52.190 \"e)",
       "id": "documentacion_chitara_codeblock_156"
     },
@@ -3095,7 +3185,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1747",
-      "community": 7,
+      "community": 6,
       "norm_label": "28.5 ejecutar comandos en el vps",
       "id": "documentacion_chitara_28_5_ejecutar_comandos_en_el_vps"
     },
@@ -3104,7 +3194,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1751",
-      "community": 7,
+      "community": 6,
       "norm_label": "code:bash (ssh root@5.252.52.190 \"comando_aqui\")",
       "id": "documentacion_chitara_codeblock_157"
     },
@@ -3113,7 +3203,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1757",
-      "community": 7,
+      "community": 6,
       "norm_label": "code:bash (# ver estado de contenedores)",
       "id": "documentacion_chitara_codeblock_158"
     },
@@ -3122,7 +3212,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1784",
-      "community": 7,
+      "community": 6,
       "norm_label": "28.6 firewall / ufw",
       "id": "documentacion_chitara_28_6_firewall_ufw"
     },
@@ -3131,7 +3221,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1786",
-      "community": 7,
+      "community": 6,
       "norm_label": "code:bash (# ver estado)",
       "id": "documentacion_chitara_codeblock_159"
     },
@@ -3140,7 +3230,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1793",
-      "community": 7,
+      "community": 6,
       "norm_label": "28.7 diagnostico de conectividad entre contenedores",
       "id": "documentacion_chitara_28_7_diagnostico_de_conectividad_entre_contenedores"
     },
@@ -3149,7 +3239,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1795",
-      "community": 7,
+      "community": 6,
       "norm_label": "code:bash (# ver en que redes esta cada contenedor)",
       "id": "documentacion_chitara_codeblock_160"
     },
@@ -3158,7 +3248,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1810",
-      "community": 7,
+      "community": 6,
       "norm_label": "28.8 leccion: redes docker y resolucion de nombres",
       "id": "documentacion_chitara_28_8_leccion_redes_docker_y_resolucion_de_nombres"
     },
@@ -3167,7 +3257,7 @@
       "file_type": "document",
       "source_file": "documentacion/chitara.md",
       "source_location": "L1822",
-      "community": 7,
+      "community": 6,
       "norm_label": "28.9 actualizar chitara.md despues de cada cambio",
       "id": "documentacion_chitara_28_9_actualizar_chitara_md_despues_de_cada_cambio"
     },
@@ -3176,7 +3266,7 @@
       "file_type": "document",
       "source_file": "activeContext.md",
       "source_location": "L7",
-      "community": 6,
+      "community": 5,
       "norm_label": "recent changes",
       "id": "memory_bank_activecontext_recent_changes"
     },
@@ -3185,7 +3275,7 @@
       "file_type": "document",
       "source_file": "progress.md",
       "source_location": "L52",
-      "community": 21,
+      "community": 22,
       "norm_label": "metrics",
       "id": "memory_bank_progress_metrics"
     },
@@ -3302,7 +3392,7 @@
       "file_type": "document",
       "source_file": "anuncio_709.md",
       "source_location": "L1",
-      "community": 13,
+      "community": 12,
       "norm_label": "anuncio_709.md",
       "id": "anuncio_709_md"
     },
@@ -3311,7 +3401,7 @@
       "file_type": "document",
       "source_file": "anuncio_709.md",
       "source_location": "L1",
-      "community": 13,
+      "community": 12,
       "norm_label": "anuncio mejorado \u2014 unidad 709 (2 huespedes)",
       "id": "anuncios_mejorados_anuncio_709_anuncio_mejorado_unidad_709_2_hu\u00e9spedes"
     },
@@ -3320,7 +3410,7 @@
       "file_type": "document",
       "source_file": "anuncio_709.md",
       "source_location": "L8",
-      "community": 13,
+      "community": 12,
       "norm_label": "\ud83c\uddea\ud83c\uddf8 espanol",
       "id": "anuncios_mejorados_anuncio_709_espa\u00f1ol"
     },
@@ -3329,7 +3419,7 @@
       "file_type": "document",
       "source_file": "anuncio_709.md",
       "source_location": "L10",
-      "community": 13,
+      "community": 12,
       "norm_label": "titulo",
       "id": "anuncios_mejorados_anuncio_709_t\u00edtulo"
     },
@@ -3338,7 +3428,7 @@
       "file_type": "document",
       "source_file": "anuncio_709.md",
       "source_location": "L13",
-      "community": 13,
+      "community": 12,
       "norm_label": "subtitulo",
       "id": "anuncios_mejorados_anuncio_709_subt\u00edtulo"
     },
@@ -3347,7 +3437,7 @@
       "file_type": "document",
       "source_file": "anuncio_709.md",
       "source_location": "L16",
-      "community": 13,
+      "community": 12,
       "norm_label": "descripcion",
       "id": "anuncios_mejorados_anuncio_709_descripci\u00f3n"
     },
@@ -3356,7 +3446,7 @@
       "file_type": "document",
       "source_file": "anuncio_709.md",
       "source_location": "L108",
-      "community": 13,
+      "community": 12,
       "norm_label": "\ud83c\uddec\ud83c\udde7 english",
       "id": "anuncios_mejorados_anuncio_709_english"
     },
@@ -3365,7 +3455,7 @@
       "file_type": "document",
       "source_file": "anuncio_709.md",
       "source_location": "L110",
-      "community": 13,
+      "community": 12,
       "norm_label": "title",
       "id": "anuncios_mejorados_anuncio_709_title"
     },
@@ -3374,7 +3464,7 @@
       "file_type": "document",
       "source_file": "anuncio_709.md",
       "source_location": "L113",
-      "community": 13,
+      "community": 12,
       "norm_label": "subtitle",
       "id": "anuncios_mejorados_anuncio_709_subtitle"
     },
@@ -3383,7 +3473,7 @@
       "file_type": "document",
       "source_file": "anuncio_709.md",
       "source_location": "L116",
-      "community": 13,
+      "community": 12,
       "norm_label": "description",
       "id": "anuncios_mejorados_anuncio_709_description"
     },
@@ -3392,7 +3482,7 @@
       "file_type": "document",
       "source_file": "anuncio_709.md",
       "source_location": "L208",
-      "community": 13,
+      "community": 12,
       "norm_label": "\ud83c\udde7\ud83c\uddf7 portugues (brasil)",
       "id": "anuncios_mejorados_anuncio_709_portugu\u00eas_brasil"
     },
@@ -3401,7 +3491,7 @@
       "file_type": "document",
       "source_file": "anuncio_709.md",
       "source_location": "L210",
-      "community": 13,
+      "community": 12,
       "norm_label": "titulo",
       "id": "anuncios_mejorados_anuncio_709_t\u00edtulo_210"
     },
@@ -3410,7 +3500,7 @@
       "file_type": "document",
       "source_file": "anuncio_709.md",
       "source_location": "L213",
-      "community": 13,
+      "community": 12,
       "norm_label": "subtitulo",
       "id": "anuncios_mejorados_anuncio_709_subt\u00edtulo_213"
     },
@@ -3419,7 +3509,7 @@
       "file_type": "document",
       "source_file": "anuncio_709.md",
       "source_location": "L216",
-      "community": 13,
+      "community": 12,
       "norm_label": "descricao",
       "id": "anuncios_mejorados_anuncio_709_descri\u00e7\u00e3o"
     },
@@ -3428,7 +3518,7 @@
       "file_type": "document",
       "source_file": "anuncio_901_902_702.md",
       "source_location": "L1",
-      "community": 14,
+      "community": 13,
       "norm_label": "anuncio_901_902_702.md",
       "id": "anuncio_901_902_702_md"
     },
@@ -3437,7 +3527,7 @@
       "file_type": "document",
       "source_file": "anuncio_901_902_702.md",
       "source_location": "L1",
-      "community": 14,
+      "community": 13,
       "norm_label": "anuncio mejorado \u2014 unidades 901 / 902 / 702 (3 huespedes)",
       "id": "anuncios_mejorados_anuncio_901_902_702_anuncio_mejorado_unidades_901_902_702_3_hu\u00e9spedes"
     },
@@ -3446,7 +3536,7 @@
       "file_type": "document",
       "source_file": "anuncio_901_902_702.md",
       "source_location": "L8",
-      "community": 14,
+      "community": 13,
       "norm_label": "\ud83c\uddea\ud83c\uddf8 espanol",
       "id": "anuncios_mejorados_anuncio_901_902_702_espa\u00f1ol"
     },
@@ -3455,7 +3545,7 @@
       "file_type": "document",
       "source_file": "anuncio_901_902_702.md",
       "source_location": "L10",
-      "community": 14,
+      "community": 13,
       "norm_label": "titulo",
       "id": "anuncios_mejorados_anuncio_901_902_702_t\u00edtulo"
     },
@@ -3464,7 +3554,7 @@
       "file_type": "document",
       "source_file": "anuncio_901_902_702.md",
       "source_location": "L13",
-      "community": 14,
+      "community": 13,
       "norm_label": "subtitulo",
       "id": "anuncios_mejorados_anuncio_901_902_702_subt\u00edtulo"
     },
@@ -3473,7 +3563,7 @@
       "file_type": "document",
       "source_file": "anuncio_901_902_702.md",
       "source_location": "L16",
-      "community": 14,
+      "community": 13,
       "norm_label": "descripcion",
       "id": "anuncios_mejorados_anuncio_901_902_702_descripci\u00f3n"
     },
@@ -3482,7 +3572,7 @@
       "file_type": "document",
       "source_file": "anuncio_901_902_702.md",
       "source_location": "L109",
-      "community": 14,
+      "community": 13,
       "norm_label": "\ud83c\uddec\ud83c\udde7 english",
       "id": "anuncios_mejorados_anuncio_901_902_702_english"
     },
@@ -3491,7 +3581,7 @@
       "file_type": "document",
       "source_file": "anuncio_901_902_702.md",
       "source_location": "L111",
-      "community": 14,
+      "community": 13,
       "norm_label": "title",
       "id": "anuncios_mejorados_anuncio_901_902_702_title"
     },
@@ -3500,7 +3590,7 @@
       "file_type": "document",
       "source_file": "anuncio_901_902_702.md",
       "source_location": "L114",
-      "community": 14,
+      "community": 13,
       "norm_label": "subtitle",
       "id": "anuncios_mejorados_anuncio_901_902_702_subtitle"
     },
@@ -3509,7 +3599,7 @@
       "file_type": "document",
       "source_file": "anuncio_901_902_702.md",
       "source_location": "L117",
-      "community": 14,
+      "community": 13,
       "norm_label": "description",
       "id": "anuncios_mejorados_anuncio_901_902_702_description"
     },
@@ -3518,7 +3608,7 @@
       "file_type": "document",
       "source_file": "anuncio_901_902_702.md",
       "source_location": "L210",
-      "community": 14,
+      "community": 13,
       "norm_label": "\ud83c\udde7\ud83c\uddf7 portugues (brasil)",
       "id": "anuncios_mejorados_anuncio_901_902_702_portugu\u00eas_brasil"
     },
@@ -3527,7 +3617,7 @@
       "file_type": "document",
       "source_file": "anuncio_901_902_702.md",
       "source_location": "L212",
-      "community": 14,
+      "community": 13,
       "norm_label": "titulo",
       "id": "anuncios_mejorados_anuncio_901_902_702_t\u00edtulo_212"
     },
@@ -3536,7 +3626,7 @@
       "file_type": "document",
       "source_file": "anuncio_901_902_702.md",
       "source_location": "L215",
-      "community": 14,
+      "community": 13,
       "norm_label": "subtitulo",
       "id": "anuncios_mejorados_anuncio_901_902_702_subt\u00edtulo_215"
     },
@@ -3545,7 +3635,7 @@
       "file_type": "document",
       "source_file": "anuncio_901_902_702.md",
       "source_location": "L218",
-      "community": 14,
+      "community": 13,
       "norm_label": "descricao",
       "id": "anuncios_mejorados_anuncio_901_902_702_descri\u00e7\u00e3o"
     },
@@ -3554,7 +3644,7 @@
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L1",
-      "community": 1,
+      "community": 0,
       "norm_label": "pricelabs_api.md",
       "id": "documentacion_pricelabs_api_md"
     },
@@ -3563,7 +3653,7 @@
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L7",
-      "community": 1,
+      "community": 0,
       "norm_label": "code:markdown (# pricelabs api)",
       "id": "documentacion_pricelabs_api_codeblock_1"
     },
@@ -3572,7 +3662,7 @@
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L36",
-      "community": 1,
+      "community": 0,
       "norm_label": "code:block2",
       "id": "documentacion_pricelabs_api_codeblock_2"
     },
@@ -3581,7 +3671,7 @@
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L56",
-      "community": 1,
+      "community": 0,
       "norm_label": "code:block3",
       "id": "documentacion_pricelabs_api_codeblock_3"
     },
@@ -3590,7 +3680,7 @@
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L82",
-      "community": 1,
+      "community": 0,
       "norm_label": "code:block4",
       "id": "documentacion_pricelabs_api_codeblock_4"
     },
@@ -3599,7 +3689,7 @@
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L102",
-      "community": 1,
+      "community": 0,
       "norm_label": "code:block5",
       "id": "documentacion_pricelabs_api_codeblock_5"
     },
@@ -3608,7 +3698,7 @@
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L157",
-      "community": 1,
+      "community": 0,
       "norm_label": "code:block6",
       "id": "documentacion_pricelabs_api_codeblock_6"
     },
@@ -3617,7 +3707,7 @@
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L166",
-      "community": 1,
+      "community": 0,
       "norm_label": "code:block7",
       "id": "documentacion_pricelabs_api_codeblock_7"
     },
@@ -3626,7 +3716,7 @@
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L207",
-      "community": 1,
+      "community": 0,
       "norm_label": "code:block8",
       "id": "documentacion_pricelabs_api_codeblock_8"
     },
@@ -3635,7 +3725,7 @@
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L230",
-      "community": 1,
+      "community": 0,
       "norm_label": "code:block9",
       "id": "documentacion_pricelabs_api_codeblock_9"
     },
@@ -3644,7 +3734,7 @@
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L258",
-      "community": 1,
+      "community": 0,
       "norm_label": "code:block10",
       "id": "documentacion_pricelabs_api_codeblock_10"
     },
@@ -3653,7 +3743,7 @@
       "file_type": "document",
       "source_file": "documentacion/Pricelabs_API.md",
       "source_location": "L289",
-      "community": 1,
+      "community": 0,
       "norm_label": "code:block11",
       "id": "documentacion_pricelabs_api_codeblock_11"
     },
@@ -3662,7 +3752,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L1",
-      "community": 1,
+      "community": 0,
       "norm_label": "server.py",
       "id": "mcp_servers_pricelabs_docs_server_py"
     },
@@ -3671,7 +3761,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L21",
-      "community": 1,
+      "community": 0,
       "norm_label": "parse_documentation()",
       "id": "pricelabs_docs_server_parse_documentation"
     },
@@ -3680,7 +3770,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L55",
-      "community": 1,
+      "community": 0,
       "norm_label": "list_endpoints()",
       "id": "pricelabs_docs_server_list_endpoints"
     },
@@ -3689,7 +3779,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L64",
-      "community": 1,
+      "community": 0,
       "norm_label": "get_endpoint_detail()",
       "id": "pricelabs_docs_server_get_endpoint_detail"
     },
@@ -3698,7 +3788,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L85",
-      "community": 1,
+      "community": 0,
       "norm_label": "search_pricelabs_docs()",
       "id": "pricelabs_docs_server_search_pricelabs_docs"
     },
@@ -3707,7 +3797,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L122",
-      "community": 1,
+      "community": 0,
       "norm_label": "_build_headers()",
       "id": "pricelabs_docs_server_build_headers"
     },
@@ -3716,7 +3806,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L130",
-      "community": 1,
+      "community": 0,
       "norm_label": "pricelabs_api_call()",
       "id": "pricelabs_docs_server_pricelabs_api_call"
     },
@@ -3725,7 +3815,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L168",
-      "community": 1,
+      "community": 0,
       "norm_label": "pricelabs_get_listings()",
       "id": "pricelabs_docs_server_pricelabs_get_listings"
     },
@@ -3734,7 +3824,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L193",
-      "community": 1,
+      "community": 0,
       "norm_label": "pricelabs_get_listing()",
       "id": "pricelabs_docs_server_pricelabs_get_listing"
     },
@@ -3743,7 +3833,7 @@
       "file_type": "rationale",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L56",
-      "community": 1,
+      "community": 0,
       "norm_label": "list all pricelabs api endpoints documented in pricelabs_api.md",
       "id": "pricelabs_docs_server_rationale_56"
     },
@@ -3752,7 +3842,7 @@
       "file_type": "rationale",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L65",
-      "community": 1,
+      "community": 0,
       "norm_label": "get full documentation for a specific pricelabs api endpoint.      use the exact",
       "id": "pricelabs_docs_server_rationale_65"
     },
@@ -3761,7 +3851,7 @@
       "file_type": "rationale",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L86",
-      "community": 1,
+      "community": 0,
       "norm_label": "full-text search across the entire pricelabs api documentation.      returns rel",
       "id": "pricelabs_docs_server_rationale_86"
     },
@@ -3770,7 +3860,7 @@
       "file_type": "rationale",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L131",
-      "community": 1,
+      "community": 0,
       "norm_label": "make authenticated get request to pricelabs api. read-only.      only get reques",
       "id": "pricelabs_docs_server_rationale_131"
     },
@@ -3779,7 +3869,7 @@
       "file_type": "rationale",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L169",
-      "community": 1,
+      "community": 0,
       "norm_label": "get all listings from your pricelabs account.      calls get /v1/listings.",
       "id": "pricelabs_docs_server_rationale_169"
     },
@@ -3788,7 +3878,7 @@
       "file_type": "rationale",
       "source_file": "mcp-servers/pricelabs-docs/server.py",
       "source_location": "L194",
-      "community": 1,
+      "community": 0,
       "norm_label": "get a specific pricelabs listing by id.      calls get /v1/listings/{listing_id}",
       "id": "pricelabs_docs_server_rationale_194"
     },
@@ -3797,7 +3887,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L1",
-      "community": 1,
+      "community": 0,
       "norm_label": "server.py",
       "id": "mcp_servers_stays_docs_server_py"
     },
@@ -3806,7 +3896,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L21",
-      "community": 1,
+      "community": 0,
       "norm_label": "parse_documentation()",
       "id": "stays_docs_server_parse_documentation"
     },
@@ -3815,7 +3905,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L66",
-      "community": 1,
+      "community": 0,
       "norm_label": "list_endpoints()",
       "id": "stays_docs_server_list_endpoints"
     },
@@ -3824,7 +3914,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L77",
-      "community": 1,
+      "community": 0,
       "norm_label": "get_endpoint_detail()",
       "id": "stays_docs_server_get_endpoint_detail"
     },
@@ -3833,7 +3923,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L108",
-      "community": 1,
+      "community": 0,
       "norm_label": "search_stays_docs()",
       "id": "stays_docs_server_search_stays_docs"
     },
@@ -3842,7 +3932,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L146",
-      "community": 1,
+      "community": 0,
       "norm_label": "_build_headers()",
       "id": "stays_docs_server_build_headers"
     },
@@ -3851,7 +3941,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L154",
-      "community": 1,
+      "community": 0,
       "norm_label": "stays_api_call()",
       "id": "stays_docs_server_stays_api_call"
     },
@@ -3860,7 +3950,7 @@
       "file_type": "code",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L201",
-      "community": 1,
+      "community": 0,
       "norm_label": "stays_get_reservations()",
       "id": "stays_docs_server_stays_get_reservations"
     },
@@ -3869,7 +3959,7 @@
       "file_type": "rationale",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L67",
-      "community": 1,
+      "community": 0,
       "norm_label": "list all stays.net api sections and endpoints documented in apistaysdoc.md",
       "id": "stays_docs_server_rationale_67"
     },
@@ -3878,7 +3968,7 @@
       "file_type": "rationale",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L78",
-      "community": 1,
+      "community": 0,
       "norm_label": "get full documentation for a specific stays.net api section or endpoint.      us",
       "id": "stays_docs_server_rationale_78"
     },
@@ -3887,7 +3977,7 @@
       "file_type": "rationale",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L109",
-      "community": 1,
+      "community": 0,
       "norm_label": "full-text search across the entire stays.net api documentation.      returns rel",
       "id": "stays_docs_server_rationale_109"
     },
@@ -3896,7 +3986,7 @@
       "file_type": "rationale",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L155",
-      "community": 1,
+      "community": 0,
       "norm_label": "make authenticated get request to stays.net api (jairop.stays.net). read-only.",
       "id": "stays_docs_server_rationale_155"
     },
@@ -3905,7 +3995,7 @@
       "file_type": "rationale",
       "source_file": "mcp-servers/stays-docs/server.py",
       "source_location": "L203",
-      "community": 1,
+      "community": 0,
       "norm_label": "get reservations from stays.net for a date range.      convenience wrapper aroun",
       "id": "stays_docs_server_rationale_203"
     },
@@ -3914,7 +4004,7 @@
       "file_type": "code",
       "source_file": "fix_workflow.py",
       "source_location": "L1",
-      "community": 34,
+      "community": 43,
       "norm_label": "fix_workflow.py",
       "id": "fix_workflow_py"
     },
@@ -3927,7 +4017,7 @@
       "captured_at": "2026-05-15",
       "author": null,
       "contributor": null,
-      "community": 35,
+      "community": 44,
       "norm_label": "stays academy \u2014 emails",
       "id": "stays_academy_emails"
     },
@@ -3940,7 +4030,7 @@
       "captured_at": "2026-05-15",
       "author": null,
       "contributor": null,
-      "community": 36,
+      "community": 45,
       "norm_label": "stays academy \u2014 financiero",
       "id": "stays_academy_financiero"
     },
@@ -3953,7 +4043,7 @@
       "captured_at": "2026-05-15",
       "author": null,
       "contributor": null,
-      "community": 37,
+      "community": 46,
       "norm_label": "stays academy \u2014 precios",
       "id": "stays_academy_precios"
     },
@@ -3966,7 +4056,7 @@
       "captured_at": "2026-05-15",
       "author": null,
       "contributor": null,
-      "community": 25,
+      "community": 34,
       "norm_label": "product context \u2014 teknoconecta",
       "id": "memory_bank_productcontext"
     },
@@ -3979,7 +4069,7 @@
       "captured_at": "2026-05-15",
       "author": null,
       "contributor": null,
-      "community": 25,
+      "community": 34,
       "norm_label": "project brief \u2014 teknoconecta",
       "id": "memory_bank_projectbrief"
     },
@@ -3992,7 +4082,7 @@
       "captured_at": "2026-05-15",
       "author": null,
       "contributor": null,
-      "community": 25,
+      "community": 34,
       "norm_label": "tech context \u2014 teknoconecta",
       "id": "memory_bank_techcontext"
     },
@@ -4005,7 +4095,7 @@
       "captured_at": "2026-05-15",
       "author": null,
       "contributor": null,
-      "community": 38,
+      "community": 47,
       "norm_label": "secretos",
       "id": "secrets_readme"
     },
@@ -4018,7 +4108,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 39,
+      "community": 48,
       "norm_label": "claude.md",
       "id": "claude_claudemd"
     },
@@ -4031,7 +4121,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 40,
+      "community": 49,
       "norm_label": "opencode.md",
       "id": "opencode_opencodemd"
     },
@@ -4044,7 +4134,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 41,
+      "community": 50,
       "norm_label": "readme.md",
       "id": "readme_readmemd"
     },
@@ -4057,7 +4147,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 42,
+      "community": 51,
       "norm_label": "glosario",
       "id": "00_contexto_negocio_glosariomd"
     },
@@ -4070,7 +4160,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 43,
+      "community": 52,
       "norm_label": "politica: no sobreprometer",
       "id": "00_contexto_negocio_politica_no_sobreprometermd"
     },
@@ -4083,7 +4173,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 44,
+      "community": 53,
       "norm_label": "sandiegoapart",
       "id": "00_contexto_negocio_sandiegoapartmd"
     },
@@ -4096,7 +4186,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 45,
+      "community": 54,
       "norm_label": "ubicacion",
       "id": "00_contexto_negocio_ubicacionmd"
     },
@@ -4109,7 +4199,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 46,
+      "community": 55,
       "norm_label": "unidades",
       "id": "00_contexto_negocio_unidadesmd"
     },
@@ -4122,7 +4212,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 1,
+      "community": 0,
       "norm_label": "pricelabs \u2014 reglas de pricing",
       "id": "01_source_of_truth_pricelabs_pricing_rulesmd"
     },
@@ -4135,7 +4225,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 20,
+      "community": 21,
       "norm_label": "api stays.net",
       "id": "01_source_of_truth_stays_apimd"
     },
@@ -4148,7 +4238,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 47,
+      "community": 56,
       "norm_label": "calendarios \u2014 stays.net",
       "id": "01_source_of_truth_stays_calendarsmd"
     },
@@ -4161,7 +4251,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 20,
+      "community": 21,
       "norm_label": "listings \u2014 stays.net",
       "id": "01_source_of_truth_stays_listingsmd"
     },
@@ -4174,7 +4264,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 48,
+      "community": 57,
       "norm_label": "check-in / check-out",
       "id": "02_operacion_checkin_checkoutmd"
     },
@@ -4187,7 +4277,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 49,
+      "community": 58,
       "norm_label": "edificio tarapaca 1140",
       "id": "02_operacion_edificio_tarapaca_1140md"
     },
@@ -4200,7 +4290,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 50,
+      "community": 59,
       "norm_label": "reglas para huespedes",
       "id": "02_operacion_reglas_huespedesmd"
     },
@@ -4213,7 +4303,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 51,
+      "community": 60,
       "norm_label": "seguridad y camaras",
       "id": "02_operacion_seguridad_camarasmd"
     },
@@ -4226,7 +4316,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 20,
+      "community": 21,
       "norm_label": "marca sandiegoapart",
       "id": "03_marketing_y_ads_marca_md"
     },
@@ -4239,7 +4329,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 20,
+      "community": 21,
       "norm_label": "tono de voz",
       "id": "03_marketing_y_ads_tono_de_vozmd"
     },
@@ -4252,7 +4342,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 20,
+      "community": 21,
       "norm_label": "mensaje de check-in",
       "id": "04_mensajeria_checkinmd"
     },
@@ -4265,7 +4355,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 28,
+      "community": 37,
       "norm_label": "mensajes durante la estadia",
       "id": "04_mensajeria_durante_estadiamd"
     },
@@ -4278,7 +4368,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 52,
+      "community": 61,
       "norm_label": "kpis",
       "id": "05_finanzas_y_pricing_kpismd"
     },
@@ -4291,7 +4381,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 53,
+      "community": 62,
       "norm_label": "revenue management",
       "id": "05_finanzas_y_pricing_revenue_managementmd"
     },
@@ -4304,7 +4394,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 20,
+      "community": 21,
       "norm_label": "servidores mcp",
       "id": "06_automatizacion_mcpmd"
     },
@@ -4317,7 +4407,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 20,
+      "community": 21,
       "norm_label": "n8n \u2014 orquestador",
       "id": "06_automatizacion_n8nmd"
     },
@@ -4330,7 +4420,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 54,
+      "community": 63,
       "norm_label": "playbook: actualizar precios",
       "id": "08_playbooks_actualizar_preciosmd"
     },
@@ -4343,7 +4433,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 55,
+      "community": 64,
       "norm_label": "checklist pre-publicacion",
       "id": "08_playbooks_checklist_pre_publicacionmd"
     },
@@ -4356,7 +4446,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 20,
+      "community": 21,
       "norm_label": "playbook: publicar nuevo anuncio",
       "id": "08_playbooks_publicar_nuevo_anunciomd"
     },
@@ -4369,7 +4459,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 28,
+      "community": 37,
       "norm_label": "playbook: responder huesped",
       "id": "08_playbooks_responder_huespedmd"
     },
@@ -4382,7 +4472,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 56,
+      "community": 65,
       "norm_label": "playbook: revisar coherencia anuncio vs realidad",
       "id": "08_playbooks_revisar_coherencia_anuncio_realidadmd"
     },
@@ -4395,7 +4485,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 20,
+      "community": 21,
       "norm_label": "api staysdoc",
       "id": "documentacion_apistaysdocmd"
     },
@@ -4408,7 +4498,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 57,
+      "community": 66,
       "norm_label": "playbook para agentes de renta corta",
       "id": "documentacion_asesoriasmd"
     },
@@ -4421,7 +4511,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 58,
+      "community": 67,
       "norm_label": "configuracion de servidores mcp para opencode",
       "id": "documentacion_configuracion_mcpmd"
     },
@@ -4434,7 +4524,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 20,
+      "community": 21,
       "norm_label": "guia del repositorio",
       "id": "documentacion_guia_repositoriomd"
     },
@@ -4447,7 +4537,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 59,
+      "community": 68,
       "norm_label": "seguimiento del repositorio",
       "id": "documentacion_seguimientomd"
     },
@@ -4460,7 +4550,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 60,
+      "community": 69,
       "norm_label": "tecnologias \u2014 plataforma automatizacion renta corta",
       "id": "documentacion_tecnologiasmd"
     },
@@ -4473,7 +4563,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 38,
       "norm_label": "configuracion avanzada",
       "id": "account_configuracion_avanzada"
     },
@@ -4486,7 +4576,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 29,
+      "community": 38,
       "norm_label": "dale acceso a tu equipo a tu cuenta de pricelabs",
       "id": "account_dale_acceso_a_tu_equipo"
     },
@@ -4499,7 +4589,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 26,
+      "community": 35,
       "norm_label": "como integrar pricelabs con supercontrol",
       "id": "dynamic_pricing_como_integrar_pricelabs_con_supercontrol"
     },
@@ -4512,7 +4602,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 26,
+      "community": 35,
       "norm_label": "como integrar pricelabs con ezcloud",
       "id": "dynamic_pricing_como_integrar_pricelabs_con_ezcloud"
     },
@@ -4525,7 +4615,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 26,
+      "community": 35,
       "norm_label": "crear y usar perfiles de estadia minima",
       "id": "dynamic_pricing_crear_y_usar_perfiles_de_estadia_minima"
     },
@@ -4538,7 +4628,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 24,
+      "community": 29,
       "norm_label": "pagina de resumen del listado",
       "id": "listing_optimizer_pagina_de_resumen_del_listado"
     },
@@ -4551,7 +4641,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 24,
+      "community": 29,
       "norm_label": "como calificamos la calidad de tus listados",
       "id": "listing_optimizer_como_calificamos_la_calidad_de_tus_listados"
     },
@@ -4564,7 +4654,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 24,
+      "community": 29,
       "norm_label": "introduccion a listing optimizer",
       "id": "listing_optimizer_introduccion_a_listing_optimizer"
     },
@@ -4577,7 +4667,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 24,
+      "community": 29,
       "norm_label": "pestana descripcion general de la competencia",
       "id": "listing_optimizer_pestana_descripcion_general_de_la_competencia"
     },
@@ -4590,7 +4680,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 24,
+      "community": 29,
       "norm_label": "pestana resumen de la clasificacion",
       "id": "listing_optimizer_pestana_resumen_de_la_clasificacion"
     },
@@ -4603,7 +4693,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 31,
+      "community": 39,
       "norm_label": "como crear y ver comps personalizados",
       "id": "market_dashboards_como_crear_y_ver_comps_personalizados"
     },
@@ -4616,7 +4706,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 30,
+      "community": 40,
       "norm_label": "como crear una proyeccion de ingresos",
       "id": "market_dashboards_como_crear_una_proyeccion_de_ingresos"
     },
@@ -4629,7 +4719,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 32,
+      "community": 41,
       "norm_label": "market dashboards: glosario de terminos",
       "id": "market_dashboards_market_dashboards_glosario_de_terminos"
     },
@@ -4642,7 +4732,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 30,
+      "community": 40,
       "norm_label": "agrega el widget de revenue estimator a tu pagina web",
       "id": "market_dashboards_agrega_el_widget_de_revenue_estimator_a_tu_pagina_web"
     },
@@ -4655,7 +4745,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 61,
+      "community": 70,
       "norm_label": "market dashboards: curvas de reservas",
       "id": "market_dashboards_market_dashboards_curvas_de_reservas"
     },
@@ -4668,7 +4758,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 62,
+      "community": 71,
       "norm_label": "market dashboards - amenidades",
       "id": "market_dashboards_market_dashboards_amenidades"
     },
@@ -4681,7 +4771,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 31,
+      "community": 39,
       "norm_label": "crear un market dashboard",
       "id": "market_dashboards_crear_un_market_dashboard"
     },
@@ -4694,7 +4784,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 32,
+      "community": 41,
       "norm_label": "\u00bfque es market dashboard y como usarlo?",
       "id": "new_users_que_es_market_dashboard_y_como_usarlo"
     },
@@ -4707,7 +4797,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 63,
+      "community": 72,
       "norm_label": "\u00bfque es los precios dinamicos y como usarlo?",
       "id": "new_users_que_es_los_precios_dinamicos_y_como_usarlo"
     },
@@ -4720,7 +4810,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 27,
+      "community": 36,
       "norm_label": "programar correos electronicos de informes en report builder",
       "id": "portfolio_analytics_programar_correos_electronicos_de_informes_en_report_builder"
     },
@@ -4733,7 +4823,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 27,
+      "community": 36,
       "norm_label": "analisis de ia en report builder",
       "id": "portfolio_analytics_analisis_de_ia_en_report_builder"
     },
@@ -4746,7 +4836,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 27,
+      "community": 36,
       "norm_label": "crear dashboards de analisis para propietarios",
       "id": "portfolio_analytics_crear_dashboards_de_analisis_para_propietarios"
     },
@@ -4759,7 +4849,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 33,
+      "community": 42,
       "norm_label": "\u00bfcomo se completan los valores de mercado en report builder?",
       "id": "portfolio_analytics_como_se_completan_los_valores_de_mercado_en_report_builder"
     },
@@ -4772,7 +4862,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 33,
+      "community": 42,
       "norm_label": "empezar a usar report builder",
       "id": "portfolio_analytics_empezar_a_usar_report_builder"
     },
@@ -4785,7 +4875,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 64,
+      "community": 73,
       "norm_label": "como elegir un paquete de suscripcion",
       "id": "pricing_and_billing_como_elegir_un_paquete_de_suscripcion"
     },
@@ -4798,7 +4888,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 65,
+      "community": 74,
       "norm_label": "pricelabs market dashboard: suscripcion, facturas y cancelacion",
       "id": "pricing_and_billing_pricelabs_market_dashboard_suscripcion_facturas_y_cancelacion"
     },
@@ -4811,7 +4901,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 66,
+      "community": 75,
       "norm_label": "dynamic pricing de pricelabs: facturacion, suscripcion y facturas",
       "id": "pricing_and_billing_dynamic_pricing_de_pricelabs_facturacion_suscripcion_y_facturas"
     },
@@ -4824,7 +4914,7 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 67,
+      "community": 76,
       "norm_label": "listing optimizer de pricelabs: facturacion, suscripcion, cancelacion y facturas",
       "id": "pricing_and_billing_listing_optimizer_de_pricelabs_facturacion_suscripcion_cancelacion_y_facturas"
     },
@@ -4837,12 +4927,102 @@
       "captured_at": null,
       "author": null,
       "contributor": null,
-      "community": 68,
+      "community": 77,
       "norm_label": "dynamic pricing de pricelabs: porcentaje de facturacion",
       "id": "pricing_and_billing_dynamic_pricing_de_pricelabs_porcentaje_de_facturacion"
     }
   ],
   "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "plan_arquitectura_gastos_md",
+      "target": "documentacion_plan_arquitectura_gastos_contexto_actual",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "plan_arquitectura_gastos_md",
+      "target": "documentacion_plan_arquitectura_gastos_puntos_a_evaluar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L62",
+      "weight": 1.0,
+      "source": "plan_arquitectura_gastos_md",
+      "target": "documentacion_plan_arquitectura_gastos_decisiones_sugeridas_para_debate",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "plan_arquitectura_gastos_md",
+      "target": "documentacion_plan_arquitectura_gastos_entrega_esperada",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "documentacion_plan_arquitectura_gastos_contexto_actual",
+      "target": "documentacion_plan_arquitectura_gastos_estructura_del_backend_actual",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "documentacion_plan_arquitectura_gastos_puntos_a_evaluar",
+      "target": "documentacion_plan_arquitectura_gastos_1_neon_postgresql",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "documentacion_plan_arquitectura_gastos_puntos_a_evaluar",
+      "target": "documentacion_plan_arquitectura_gastos_2_python_serverless_en_vercel",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "documentacion_plan_arquitectura_gastos_puntos_a_evaluar",
+      "target": "documentacion_plan_arquitectura_gastos_3_migracion_node_python_del_backend",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "plan_arquitectura_gastos.md",
+      "source_location": "L55",
+      "weight": 1.0,
+      "source": "documentacion_plan_arquitectura_gastos_puntos_a_evaluar",
+      "target": "documentacion_plan_arquitectura_gastos_4_trazabilidad",
+      "confidence_score": 1.0
+    },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
@@ -9592,5 +9772,5 @@
     }
   ],
   "hyperedges": [],
-  "built_at_commit": "0fb45a8e15e28fd0d1efe80d117e9c245c528fe9"
+  "built_at_commit": "0833bed83f257826a97ff9904520577b2e452717"
 }
