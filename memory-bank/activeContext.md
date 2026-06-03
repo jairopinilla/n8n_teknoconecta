@@ -1,6 +1,9 @@
 # Active Context — TeknoConecta
 
 > Ultima actualizacion: 2026-06-03
+>
+> 🔴 **Directus cloud y Supabase cloud YA NO SE USAN.** Todo esta en chitara (VPS 5.252.52.190).
+> Para operar usar SIEMPRE los MCPs chitara (`n8n-chitara`, `directus-chitara`, `supabase-chitara`).
 
 ## Current Focus
 
@@ -36,14 +39,25 @@
 
 ### DNS Cloudflare (zone: chitaraagenteia.com)
 
-| Tipo | Nombre | Valor |
-|------|--------|-------|
-| A | saldito | 5.252.52.190 |
-| A | coolify | 5.252.52.190 |
-| A | directus | 5.252.52.190 |
-| A | code | 5.252.52.190 |
-| A | term | 5.252.52.190 |
-| A | health | 5.252.52.190 |
+| Tipo | Nombre | Valor | Servicio |
+|------|--------|-------|----------|
+| A | saldito | 5.252.52.190 | Gestor de gastos |
+| A | opencode | 5.252.52.190 | OpenCode Web |
+| CNAME | coolify | tunnel | Coolify (Google SSO) |
+| CNAME | directus | tunnel | Directus local (Google SSO) |
+| CNAME | supabase | tunnel | Supabase local (Google SSO) |
+| CNAME | code | tunnel | VS Code web (Google SSO) |
+| CNAME | term | tunnel | Terminal web (Google SSO) |
+| CNAME | health | tunnel | Healthchecks (Google SSO) |
+| CNAME | home | tunnel | Homepage dashboard |
+| CNAME | chat | tunnel | Open WebUI |
+| CNAME | llm | tunnel | Litellm |
+| CNAME | pgadmin | tunnel | pgAdmin |
+| CNAME | logs | tunnel | Dozzle |
+| CNAME | monitor | tunnel | Uptime Kuma |
+| CNAME | portainer | tunnel | Portainer |
+| CNAME | go | tunnel | Shlink |
+| CNAME | links | tunnel | Shlink Web |
 
 ### Repositorios
 

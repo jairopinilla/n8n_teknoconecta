@@ -5,6 +5,28 @@
 
 ---
 
+## 🏗️ INFRAESTRUCTURA — DONDE ESTA CADA COSA
+
+> **Directus cloud y Supabase cloud YA NO SE USAN.** Todo migro a chitara (VPS 5.252.52.190).
+
+| Servicio | Antes (cloud) | Ahora (chitara) |
+|----------|---------------|-----------------|
+| **n8n** | n8n.cloud (1 workflow) | VPS Docker, 25 workflows, `https://n8n.teknoconectapp.com` |
+| **Directus** | Directus Cloud | VPS Docker, `https://directus.chitaraagenteia.com` |
+| **Supabase** | Supabase Cloud | VPS Docker, `https://supabase.chitaraagenteia.com`, DB local `sandiegoapart` |
+| **Gestor Gastos** | — | VPS Docker + Coolify, `https://saldito.chitaraagenteia.com` |
+
+### MCPs cloud vs MCPs chitara
+
+| Tipo | Conexion | Servicios | Estado |
+|------|----------|-----------|--------|
+| **MCPs cloud** (`n8n-mcp`, `directus`, `supabase`) | `*.teknoconectapp.com` | Solo 1 workflow en n8n cloud | ⚠️ Legacy, en desuso |
+| **MCPs chitara** (`n8n-chitara`, `directus-chitara`, `supabase-chitara`) | SSH → VPS 5.252.52.190 | 25 workflows, 146 colecciones, 155 tablas | ✅ Produccion |
+
+> **🔴 REGLA**: Para operar sobre el negocio real, usar SIEMPRE los MCPs chitara. Los MCPs cloud son legacy y apuntan a servicios ya migrados.
+
+---
+
 ## 🔐 REGLA #0 — PROTOCOLO DE ENCRIPTACION / DESENCRIPTACION (MAXIMA PRIORIDAD)
 
 > **Esta seccion debe ser leida y ejecutada ANTES que cualquier otra accion del agente.**
