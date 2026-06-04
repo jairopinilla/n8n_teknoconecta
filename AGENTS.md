@@ -382,6 +382,14 @@ ssh -o ConnectTimeout=5 root@5.252.52.190 "echo OK"
 | `Unrecognized node type: @tavily/...` | Falta paquete comunitario | `docker exec n8n npm install @tavily/n8n-nodes-tavily` |
 | Container en loop "Restarting (1)" | Error de config | `docker logs n8n --tail 20` para diagnosticar |
 
+### n8n webhooks — acceso publico seguro
+
+Los webhooks de n8n son accesibles publicamente desde internet (ej: `https://n8n.chitaraagenteia.com/webhook-test/aseos-v3`). Esto es seguro porque son endpoints especificos que solo ejecutan el workflow asociado, sin exponer el panel de administracion (que requiere user/password).
+
+### Workflows versionados
+
+Todos los workflows exportados como JSON estan en `n8n/workflows/`. Son 16 workflows (25 en total en el servidor, los activos y relevantes estan versionados aca).
+
 ---
 
 ## ⚠️ Problemas conocidos
