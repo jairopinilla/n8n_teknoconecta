@@ -1,69 +1,52 @@
 # Tech Context — TeknoConecta
 
-## Stack
+## Stack tecnologico
 
-| Tecnología | Propósito | URL / Acceso |
-|-----------|----------|-------------|
-| n8n | Orquestador de workflows | `https://n8n.teknoconectapp.com` |
-| PostgreSQL (Neon) | Base de datos operativa + pgvector | Neon MCP |
-| Directus | CMS / Backend operacional | `https://directus.teknoconectapp.com` |
-| Stays.net | Gestión de reservas | `https://jairop.stays.net` |
-| OpenAI | LLM + embeddings | API key |
-| Google Gemini | LLM alternativo | API key |
-| Twilio | WhatsApp Business | `+15559078472` |
-| Gmail | Correo entrante/saliente | IMAP/SMTP |
-| Tally.so | Formularios | `https://tally.so/r/vGeKkd` |
-| MercadoPago | Procesamiento de pagos | API/MCP |
-| Jina AI | Búsqueda, lectura web, embeddings | MCP |
-| Perplexity | Búsqueda e investigación | MCP |
-| Vercel | Hosting/deploy | MCP |
-| Supabase | Backend adicional | MCP |
-| AirROI | Análisis de mercado Airbnb | MCP |
-| Clerk | Autenticación | MCP |
-| Google Maps | Geocoding y rutas | MCP |
+| Capa | Tecnologia |
+|------|-----------|
+| Frontend apps | Angular 20 + Ionic 8 (saldito), HTML/CSS (aseos) |
+| Backend API | Node.js ESM, @clerk/backend, @neondatabase/serverless |
+| Base de datos operativa | PostgreSQL 18 (VPS Docker, DB `sandiegoapart`) |
+| Base de datos gastos | Neon PostgreSQL (`old-lab-07457522`, schema `gestiongastos`) |
+| Auth | Clerk (development, `charmed-lionfish-65`) |
+| Automatizacion | n8n (25 workflows, VPS Docker) |
+| CMS | Directus (VPS Docker, `directus.chitaraagenteia.com`) |
+| Supabase | VPS Docker (Studio + GoTrue + Meta + PostgREST) |
+| Proxy inverso | Nginx host + Cloudflare Tunnel |
+| SSL | Let's Encrypt (certbot) + Cloudflare |
+| DNS | Cloudflare (zone: `chitaraagenteia.com`) |
+| Seguridad | Cloudflare Access (Google SSO, 16 apps), iptables |
+| Deploy | Docker Compose (/opt/homelab/*), Coolify (saldito) |
+| AI | OpenCode Web (DeepSeek V4 Pro via OpenRouter BYOK), Litellm, Open WebUI |
+| Monitoreo | Uptime Kuma, Healthchecks, Dozzle |
 
-## Development Setup
+## MCP Servers (27)
 
-```bash
-# Clonar repo
-git clone <repo-url>
-cd n8n_teknoconecta
+Todos definidos en `opencode.jsonc` (desencriptar con `bash decrypt.sh`).
 
-# Sincronizar workflows desde n8n
-./sync_workflows.sh  # requiere secrets.json
+**Chitara (SSH directo):** n8n-chitara, directus-chitara, supabase-chitara  
+**Cloudflare:** cloudflare, cloudflare-dns  
+**APIs externas:** clerk, neon, vercel, openai, jina, perplexity, google-maps, mercadopago, supabase, directus  
+**Locales con API externa:** stays-docs, pricelabs-docs, coolify-mcp, scrapling  
+**AWS (6):** awsKnowledge, awsApi, awsServerless, awsSnsSqs, awsCloudWatch, awsIam  
+**Otros:** interactive-terminal
 
-# Validar JSON de workflows
-jq '.' workflows/*.json
+## Credenciales
 
-# Validar shell scripts
-bash -n sync_workflows.sh
-```
+Todas las claves, tokens y passwords en `documentacion/credenciales_infraestructura.txt` (encriptado como `.enc`, clave 5486).
 
-## MCP Servers (14)
+Para desencriptar: `bash decrypt.sh`
 
-Configurados en `.vscode/mcp.json` (local, ignorado por git):
-airroi, clerk, neon, vercel, openai, jina, perplexity, google-maps, mercadopago, n8n-mcp, supabase, directus, stays-docs, scrapling.
+## Conexiones
 
-## Dependencies
+| Destino | Como |
+|---------|------|
+| VPS chitara | SSH root@5.252.52.190 |
+| Neon (gestion_gastos) | Pooled URL |
+| Stays.net API | Solo GET: reservas, listings |
+| PriceLabs API | GET/POST listings y precios |
+| Clerk API | REST v1 |
 
-- **n8n**: self-hosted, requiere node 20+
-- **PostgreSQL 16** en Neon con extensión `pgvector`
-- **Directus**: auto-hosteado, conectado a PostgreSQL
-- **Scrapling**: `uv tool install scrapling[fetchers,ai,shell]`
-- **stays-docs MCP**: Python con `uv`, corre en `./mcp-servers/stays-docs/server.py`
+## Skills instaladas
 
-## Constraints
-
-- Zona horaria: `America/Santiago`. Fechas desde `now() AT TIME ZONE 'America/Santiago'` en SQL.
-- Stays.net API limitada: solo endpoints de reservas y checkout funcionan; propiedades y settings no.
-- Airbnb sin API: solo vía correo + parsing LLM.
-- Scrapling browser tools requieren `libnspr4.so` y otras deps de Chromium (no instaladas en WSL).
-- Las descripciones de anuncios están en el sitio público `sandiegoapart.com`, no en API.
-- Sin sudo en WSL para instalar dependencias de sistema.
-
-## Environment
-
-- OS: Linux (WSL)
-- Shell: bash
-- Git: repositorio versionado
-- Editor: VS Code con MCP servers configurados en `.vscode/mcp.json`
+- Cloudflare Skills (`.agents/skills/cloudflare/`) — 8 skills para Workers, Tunnel, Access, WAF

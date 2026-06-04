@@ -1,121 +1,125 @@
 # Active Context — TeknoConecta
 
-> Ultima actualizacion: 2026-06-03
+> Ultima actualizacion: 2026-06-04
 >
-> 🔴 **Directus cloud y Supabase cloud YA NO SE USAN.** Todo esta en chitara (VPS 5.252.52.190).
+> 🔴 **Directus cloud y Supabase cloud YA NO SE USAN.** Todo en chitara (VPS 5.252.52.190).
 > Para operar usar SIEMPRE los MCPs chitara (`n8n-chitara`, `directus-chitara`, `supabase-chitara`).
-
-## Current Focus
-
-**Despliegue gestion_gastos completo** — frontend (Angular+Ionic) y backend (Node.js+Clerk+Neon) en VPS chitara (5.252.52.190) con dominio `https://saldito.chitaraagenteia.com`.
-
-**Migracion a OpenCode Web** — configurando workspace para ser usado via OpenCode Web con DeepSeek como modelo default.
 
 ## Estado del sistema
 
 | Componente | Estado | Detalle |
 |-----------|--------|---------|
-| Frontend saldito | ✅ | `https://saldito.chitaraagenteia.com` |
-| Backend API | ✅ | `/health` → `{"status":"ok","database":"ok"}` |
-| Auto-provisioning | ✅ | `POST /api/usuarios/ensure` crea Usuario |
-| Clerk auth | ⚠️ | Instancia de Emilio (0 users). Pendiente migrar. |
-| Coolify backend | ✅ | `saldito-api` en proyecto "Saldito Backend" |
-| Coolify frontend | ❌ | nixpacks no soporta Angular 20 |
-| DNS | ✅ | `saldito.chitaraagenteia.com` → A → 5.252.52.190 |
-| SSL | ✅ | Let's Encrypt (auto-renovacion) |
-| Encriptacion | ✅ | opencode.jsonc + credenciales en .enc |
+| OpenCode Web | ✅ | `https://opencode.chitaraagenteia.com`, Google SSO |
+| OpenCode Bridge | ✅ | `127.0.0.1:4097`, Bearer auth, para Telegram/n8n |
+| Saldito Frontend | ✅ | `https://saldito.chitaraagenteia.com`, Angular 20 + Ionic 8 |
+| Saldito Backend | ✅ | `/health`, auto-provisioning Clerk→DB |
+| Coolify Backend | ⏸️ | Detenido (usamos docker-compose) |
+| Coolify Frontend | ❌ | nixpacks no soporta Angular 20 |
+| Clerk | ⚠️ | Instancia compartida, 2 usuarios (Jairo + Emilio) |
+| n8n | ✅ | 25 workflows, `n8n.teknoconectapp.com` |
+| 16 servicios web | ✅ | Todos con Google SSO via Cloudflare Access |
+| Seguridad | ✅ | Solo puertos 22/80/443 expuestos, resto iptables + 127.0.0.1 |
 
 ## Infraestructura
 
-### VPS chitara (5.252.52.190)
+### VPS chitara (5.252.52.190) — 22 contenedores
 
-**22 contenedores Docker** running:
-- n8n, Directus, PostgreSQL, Coolify, Supabase (5 modulos), pgAdmin, Uptime Kuma, Code-server, Litellm, Open WebUI, Qdrant, Portainer, Homepage, Shlink, Healthchecks, Dozzle, **saldito-frontend**, **saldito-backend**
+| Servicio | Puerto | Acceso |
+|----------|--------|--------|
+| n8n | 5678 | Google SSO |
+| Directus | 8055 | Google SSO |
+| PostgreSQL | 5432 | 127.0.0.1 |
+| Coolify | 8000 | Google SSO |
+| Supabase Studio | 8001 | Google SSO |
+| Supabase GoTrue | 9999 | 127.0.0.1 |
+| Supabase Meta | 8080 | 127.0.0.1 |
+| PostgREST | 3100 | 127.0.0.1 |
+| pgAdmin | 5050 | Google SSO |
+| Uptime Kuma | 3002 | Google SSO |
+| Code-server | 8443 | Google SSO |
+| Litellm | 4000 | Google SSO |
+| Open WebUI | 3001 | Google SSO |
+| Qdrant | 6333 | 127.0.0.1 |
+| Portainer | 9000 | Google SSO |
+| Homepage | 3000 | Google SSO |
+| Shlink | 8087 | Google SSO |
+| Shlink Web | 8089 | Google SSO |
+| Healthchecks | 8100 | Google SSO |
+| Dozzle | 8088 | Google SSO |
+| Saldito Frontend | 4200 | Clerk JWT |
+| Saldito Backend | 3001 | Interno |
 
-**Nginx host** como reverse proxy (no Traefik):
-- `/etc/nginx/sites-enabled/` → config de cada dominio
-- `saldito` → proxy_pass `127.0.0.1:4200`
-- SSL via certbot con Let's Encrypt
+### Capas de seguridad
 
-### DNS Cloudflare (zone: chitaraagenteia.com)
+| Capa | Mecanismo |
+|------|-----------|
+| Cloudflare Tunnel | `*.chitaraagenteia.com` → Google SSO → localhost |
+| Cloudflare Access | 16 apps con Google identity provider |
+| iptables DOCKER-USER | Bloquea acceso externo a puertos Docker |
+| iptables INPUT | Bloquea acceso externo a puertos de host |
+| Docker compose | Servicios bind a `127.0.0.1` |
+| Nginx | Solo expone 80/443 |
 
-| Tipo | Nombre | Valor | Servicio |
-|------|--------|-------|----------|
-| A | saldito | 5.252.52.190 | Gestor de gastos |
-| A | opencode | 5.252.52.190 | OpenCode Web |
-| CNAME | coolify | tunnel | Coolify (Google SSO) |
-| CNAME | directus | tunnel | Directus local (Google SSO) |
-| CNAME | supabase | tunnel | Supabase local (Google SSO) |
-| CNAME | code | tunnel | VS Code web (Google SSO) |
-| CNAME | term | tunnel | Terminal web (Google SSO) |
-| CNAME | health | tunnel | Healthchecks (Google SSO) |
-| CNAME | home | tunnel | Homepage dashboard |
-| CNAME | chat | tunnel | Open WebUI |
-| CNAME | llm | tunnel | Litellm |
-| CNAME | pgadmin | tunnel | pgAdmin |
-| CNAME | logs | tunnel | Dozzle |
-| CNAME | monitor | tunnel | Uptime Kuma |
-| CNAME | portainer | tunnel | Portainer |
-| CNAME | go | tunnel | Shlink |
-| CNAME | links | tunnel | Shlink Web |
+### Puertos expuestos a internet
 
-### Repositorios
+| Puerto | Servicio | Motivo |
+|--------|----------|--------|
+| 22 | SSH | Acceso admin |
+| 80 | Nginx | Web |
+| 443 | Nginx | Web + SSL |
 
-| Repo | Ubicacion | Nota |
-|------|-----------|------|
-| n8n_teknoconecta | `teknoconecta/n8n_teknoconecta` (privado) | Workspace principal |
-| gestion_gastos | `jairopinilla/gestion_gastos` (privado) | Transferido desde teknoconecta org |
-| gestion_gastos (VPS) | `/srv/saldito/` | Clonado via token OAuth |
-
-## Proyecto gestion_gastos — Arquitectura de deploy
+## Proyecto gestion_gastos (saldito)
 
 ### Stack
 | Capa | Tecnologia |
 |------|-----------|
 | Frontend | Angular 20 + Ionic 8 (salditoapp) |
-| Auth (frontend) | @clerk/clerk-js v6 |
-| Backend | Node.js ESM (server.mjs) |
-| Auth (backend) | @clerk/backend v1.34 |
+| Auth | Clerk (@clerk/clerk-js + @clerk/backend) |
+| Backend | Node.js ESM (server.mjs), puerto 3001 |
 | DB | Neon PostgreSQL (old-lab-07457522) |
 | Proxy | Nginx host → 127.0.0.1:4200 → Docker nginx → backend:3001 |
 
-### Docker Compose (`/srv/saldito/docker-compose.yml`)
-```yaml
-backend:
-  build: ./backend/Dockerfile (Node 22 Alpine)
-  env: DATABASE_URL, CLERK_SECRET_KEY, ALLOW_UNSAFE_DATABASE_ROLE, CORS_ALLOWED_ORIGINS
-  network: internal
+### Deploy
+- **Repo**: `jairopinilla/gestion_gastos` (privado)
+- **VPS**: `/srv/saldito/docker-compose.yml`
+- **Deploy script**: `/srv/saldito/deploy.sh`
+- **Dominio**: `https://saldito.chitaraagenteia.com`
 
-frontend:
-  build: ./frontend/Dockerfile (multi-stage: ng build + nginx)
-  ports: "127.0.0.1:4200:80"
-  proxy /api → backend:3001
-```
+### Coolify (organizacion)
+| Proyecto | UUID | Apps |
+|----------|------|------|
+| Saldito Backend | w31bjvs7hqf1t3am8i9ufr45 | saldito-api (detenido) |
+| Saldito Frontend | r1qq6daq11mo3ly63o1l5vn7 | (vacio) |
 
-### Coolify projects
-| Proyecto | UUID |
-|----------|------|
-| Saldito Backend | w31bjvs7hqf1t3am8i9ufr45 |
-| Saldito Frontend | r1qq6daq11mo3ly63o1l5vn7 |
+## Telegram Bridge
+
+| Componente | Detalle |
+|-----------|--------|
+| Bridge | `opencode-bridge.service` :4097 |
+| Auth | Bearer `chitara-bridge-2026` |
+| Bind | `127.0.0.1` (solo local) |
+| Workflows | `n8n/workflows/N8n_ChitaraBot_Telegram.json` |
+| Notificaciones | `n8n/workflows/N8n_NotificaCheckins.json` |
+| Valentina | chat_id: 56982737381, contexto aseo (2d past / 7d future) |
 
 ## Comandos clave
 
 ```bash
-# Verificar salud
-curl https://saldito.chitaraagenteia.com/health
-
-# Desencriptar workspace
+# Desencriptar
 bash decrypt.sh
+
+# Deploy saldito
+ssh root@5.252.52.190 /srv/saldito/deploy.sh
+
+# Ver salud
+curl https://saldito.chitaraagenteia.com/health
 
 # Re-encriptar opencode.jsonc
 cat opencode.jsonc | openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -pass pass:5486 -base64 -A > opencode.jsonc.enc
-
-# Deploy gestion_gastos (via script en VPS)
-ssh root@5.252.52.190 /srv/saldito/deploy.sh
 ```
 
 ## Blockers
 
-- **Clerk instance**: la actual es de Emilio (0 usuarios). Los usuarios de BD (isaias1984@gmail.com, etc.) tienen Clerk IDs de instancia anterior.
-- **Coolify frontend**: nixpacks no compila Angular 20. Solo backend via Coolify.
-- **Google OAuth Clerk**: no configurado. El sign-in con Google falla.
+- Clerk: instancia de desarrollo, Google OAuth no configurado
+- Coolify frontend: nixpacks no compila Angular 20
+- OpenCode CLI `run`: inestable con modelo deepseek-v4-pro (funciona via web)
