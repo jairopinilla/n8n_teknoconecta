@@ -99,6 +99,7 @@ Esto desencripta todos los archivos `.enc`. Si los archivos ya existen (ya fuero
 |------------------------------|-------------------------------------|-----------|
 | `opencode.jsonc.enc` | `opencode.jsonc` | Config MCPs: 26 servidores, API tokens, GitHub PAT |
 | `documentacion/credenciales.enc` | `documentacion/credenciales` | Passwords de servicios: n8n, Directus, Coolify, DB |
+| `documentacion/credenciales_infraestructura.txt.enc` | `documentacion/credenciales_infraestructura.txt` | **TODAS** las claves, tokens, API keys ordenadas por categoria |
 
 ### Modo de uso
 

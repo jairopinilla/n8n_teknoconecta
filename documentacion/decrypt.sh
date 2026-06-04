@@ -57,9 +57,11 @@ echo ""
 
 decrypt_file "opencode.jsonc.enc" || true
 decrypt_file "documentacion/credenciales.enc" || true
+decrypt_file "documentacion/credenciales_infraestructura.txt.enc" || true
 
 echo ""
 echo "✅ Proceso completado."
 echo "⚠️  IMPORTANTE: Los archivos desencriptados NO se borran (estan en .gitignore)."
 echo "   opencode.jsonc → Config principal de MCPs"
 echo "   documentacion/credenciales → Passwords de infraestructura"
+echo "   documentacion/credenciales_infraestructura.txt → TODAS las claves y tokens"
