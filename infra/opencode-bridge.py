@@ -16,6 +16,8 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 BRIDGE_PORT = int(os.environ.get("BRIDGE_PORT", "4097"))
 OC_CWD = os.environ.get("OC_CWD", "/srv/opencode-workspace")
 TIMEOUT = int(os.environ.get("OC_TIMEOUT", "90"))
+BRIDGE_SECRET = os.environ.get("BRIDGE_SECRET", "chitara-bridge-2026")
+BIND_HOST = os.environ.get("BIND_HOST", "127.0.0.1")
 
 def clean_output(text: str) -> str:
     """Remove ANSI codes and noise from opencode output."""
@@ -87,6 +89,14 @@ class BridgeHandler(BaseHTTPRequestHandler):
             self.end_headers()
             return
 
+        # Auth check
+        auth = self.headers.get('Authorization', '')
+        if auth != f'Bearer {BRIDGE_SECRET}':
+            self.send_response(401)
+            self.end_headers()
+            self.wfile.write(b'{"error":"unauthorized"}')
+            return
+
         length = int(self.headers.get('Content-Length', 0))
         body = self.rfile.read(length)
         try:
@@ -126,8 +136,8 @@ class BridgeHandler(BaseHTTPRequestHandler):
 def main():
     print(f"[bridge] Starting on port {BRIDGE_PORT}, CWD={OC_CWD}")
     
-    server = HTTPServer(('0.0.0.0', BRIDGE_PORT), BridgeHandler)
-    print(f"[bridge] Listening on :{BRIDGE_PORT}")
+    server = HTTPServer((BIND_HOST, BRIDGE_PORT), BridgeHandler)
+    print(f"[bridge] Listening on {BIND_HOST}:{BRIDGE_PORT}")
     
     def shutdown(sig, frame):
         print("[bridge] Shutdown")

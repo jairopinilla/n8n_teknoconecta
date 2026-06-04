@@ -121,7 +121,15 @@
       "parameters": {
         "method": "POST",
         "url": "http://127.0.0.1:4097/ask",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Authorization", "value": "Bearer chitara-bridge-2026" }
+          ]
+        },
         "bodyParameters": {
           "parameters": [
             { "name": "message", "value": "={{ $json.prompt }}" },
