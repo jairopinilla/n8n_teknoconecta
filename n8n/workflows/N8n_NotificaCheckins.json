@@ -1,0 +1,146 @@
+{
+  "name": "N8n_NotificaCheckins",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{}],
+          "triggerTimes": { "hour": 21, "minute": 0 }
+        }
+      },
+      "id": "cron-notif-001",
+      "name": "Schedule 21:00 CLT",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [250, 300]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date, 'YYYY-MM-DD') AS hoy, TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date + INTERVAL '3 days', 'YYYY-MM-DD') AS hasta_3d, TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date - INTERVAL '1 day', 'YYYY-MM-DD') AS desde\n"
+      },
+      "id": "get-fechas-001",
+      "name": "Get Fechas Chile",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [500, 300],
+      "credentials": { "postgres": { "id": "zvx0J3DPht42SAUp", "name": "Postgres account" } }
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "https://jairop.stays.net/external/v1/booking/reservations",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            { "name": "from", "value": "={{ $json.desde }}" },
+            { "name": "to", "value": "={{ $json.hasta_3d }}" },
+            { "name": "dateType", "value": "arrival" }
+          ]
+        }
+      },
+      "id": "get-reservas-001",
+      "name": "Get Reservas Stays",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [750, 300],
+      "credentials": { "httpHeaderAuth": { "id": "I4YWvpXuZv5reReY", "name": "Stays Auth account" } }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Filter and format check-in/check-out notifications\nconst hoy = $('Get Fechas Chile').first().json.hoy;\nconst reservas = $input.all().flatMap(i => Array.isArray(i.json) ? i.json : [i.json]);\n\nconst checkinsHoy = [];\nconst checkinsManana = [];\nconst checkoutsHoy = [];\nconst checkoutsManana = [];\n\nconst hoyDate = new Date(hoy + 'T12:00:00-03:00');\nconst mananaDate = new Date(hoyDate);\nmananaDate.setDate(mananaDate.getDate() + 1);\nconst fmt = d => d.toISOString().split('T')[0];\nconst hoyStr = fmt(hoyDate);\nconst mananaStr = fmt(mananaDate);\n\nfor (const r of reservas) {\n  const cin = (r.checkInDate || '').slice(0, 10);\n  const cout = (r.checkOutDate || '').slice(0, 10);\n  const guest = r.guestsDetails?.list?.[0]?.name || 'Sin nombre';\n  const guests = r.guests || 1;\n  const listing = r._idlisting || '?';\n  \n  if (cin === hoyStr) {\n    checkinsHoy.push({ listing, guest, guests, cout, cin });\n  } else if (cin === mananaStr) {\n    checkinsManana.push({ listing, guest, guests, cout, cin });\n  }\n  \n  if (cout === hoyStr) {\n    checkoutsHoy.push({ listing, guest, cout });\n  } else if (cout === mananaStr) {\n    checkoutsManana.push({ listing, guest, cout });\n  }\n}\n\nconst result = { checkinsHoy, checkinsManana, checkoutsHoy, checkoutsManana, hoy: hoyStr, manana: mananaStr };\n\n// Build messages\nconst msgs = [];\n\nif (checkinsHoy.length > 0) {\n  let txt = '*🟢 Check-in hoy ' + hoyStr.split('-').reverse().join('-') + '*\\n';\n  for (const c of checkinsHoy) txt += `• ${c.listing} | ${c.guest} | ${c.guests} pers | hasta ${c.cout.split('-').reverse().join('-')}\\n`;\n  msgs.push({ text: txt, type: 'checkin_hoy' });\n}\n\nif (checkoutsHoy.length > 0) {\n  let txt = '*🔴 Check-out hoy ' + hoyStr.split('-').reverse().join('-') + ' (aseo)*\\n';\n  for (const c of checkoutsHoy) txt += `• ${c.listing} | ${c.guest} | aseo requerido\\n`;\n  msgs.push({ text: txt, type: 'aseo_hoy' });\n}\n\nif (checkinsManana.length > 0) {\n  let txt = '*🟡 Check-in mañana ' + mananaStr.split('-').reverse().join('-') + '*\\n';\n  for (const c of checkinsManana) txt += `• ${c.listing} | ${c.guest} | ${c.guests} pers\\n`;\n  msgs.push({ text: txt, type: 'checkin_manana' });\n}\n\nif (checkoutsManana.length > 0) {\n  let txt = '*🟠 Aseo mañana ' + mananaStr.split('-').reverse().join('-') + '*\\n';\n  for (const c of checkoutsManana) txt += `• ${c.listing} | ${c.guest}\\n`;\n  msgs.push({ text: txt, type: 'aseo_manana' });\n}\n\nreturn msgs.length > 0 ? msgs : [{ text: null, type: 'empty' }];\n"
+      },
+      "id": "format-notif-001",
+      "name": "Format Notifications",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1000, 300]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.type }}",
+              "operation": "notEqual",
+              "value2": "empty"
+            }
+          ]
+        }
+      },
+      "id": "filter-empty-001",
+      "name": "Filter Empty",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1250, 300]
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.text }}",
+        "additionalFields": { "reply_to_message_id": "" }
+      },
+      "id": "telegram-jairo-001",
+      "name": "Send to Jairo",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1500, 200],
+      "credentials": { "telegramApi": { "id": "TELEGRAM_CRED_ID", "name": "Telegram Chitara Bot" } }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{ $json.type }}",
+              "operation": "contains",
+              "value2": "aseo"
+            }
+          ]
+        }
+      },
+      "id": "filter-aseo-001",
+      "name": "Only Aseo for Valentina",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1500, 450]
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.text }}",
+        "chatId": "56982737381",
+        "additionalFields": {}
+      },
+      "id": "telegram-vale-001",
+      "name": "Send to Valentina",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [1750, 450],
+      "credentials": { "telegramApi": { "id": "TELEGRAM_CRED_ID", "name": "Telegram Chitara Bot" } }
+    }
+  ],
+  "connections": {
+    "Schedule 21:00 CLT": { "main": [[ { "node": "Get Fechas Chile", "type": "main", "index": 0 } ]] },
+    "Get Fechas Chile": { "main": [[ { "node": "Get Reservas Stays", "type": "main", "index": 0 } ]] },
+    "Get Reservas Stays": { "main": [[ { "node": "Format Notifications", "type": "main", "index": 0 } ]] },
+    "Format Notifications": { "main": [[ { "node": "Filter Empty", "type": "main", "index": 0 } ]] },
+    "Filter Empty": {
+      "main": [
+        [{ "node": "Send to Jairo", "type": "main", "index": 0 }],
+        []
+      ],
+      "main": [
+        [{ "node": "Only Aseo for Valentina", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "Only Aseo for Valentina": {
+      "main": [
+        [{ "node": "Send to Valentina", "type": "main", "index": 0 }],
+        []
+      ]
+    }
+  },
+  "settings": { "executionOrder": "v1" }
+}
