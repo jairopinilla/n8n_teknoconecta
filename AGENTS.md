@@ -2,6 +2,8 @@
 
 > Fuente canonica de instrucciones para cualquier asistente de IA que trabaje en este repositorio.
 > Version: 2026-06-04
+>
+> **🔴 REGLA ABSOLUTA**: El agente NUNCA debe tomar decisiones de cambios sin preguntarle al usuario primero. Cualquier modificacion — por mas pequena que sea — requiere aprobacion explicita. Si el agente detecta un problema, debe reportarlo y esperar instrucciones.
 
 ---
 
