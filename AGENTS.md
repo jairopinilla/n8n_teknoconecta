@@ -340,6 +340,50 @@ Estructura: `./mcp-servers/{nombre}/server.py` (Python + `mcp` SDK)
 
 ---
 
+## 🩺 SALUD PROACTIVA DEL SISTEMA
+
+> **Al iniciar CADA sesion, el agente DEBE verificar la salud de estos servicios criticos sin que el usuario lo pida.**
+
+### Checklist de salud (ejecutar al inicio)
+
+```bash
+# 1. n8n — el mas fragil (depende de DB + encryption key + volumen)
+curl -s -o /dev/null -w '%{http_code}' https://n8n.teknoconectapp.com/
+# Esperado: 200. Si no: revisar docker logs n8n, encryption key, DB connection
+
+# 2. Saldito
+curl -s https://saldito.chitaraagenteia.com/health
+# Esperado: {"status":"ok","database":"ok"}
+
+# 3. OpenCode Web
+curl -s -o /dev/null -w '%{http_code}' https://opencode.chitaraagenteia.com/
+# Esperado: 302 (redirect Google SSO) o 200
+
+# 4. SSH a chitara
+ssh -o ConnectTimeout=5 root@5.252.52.190 "echo OK"
+```
+
+### n8n — puntos criticos que requieren verificacion proactiva
+
+| Que verificar | Comando | Por que |
+|--------------|---------|---------|
+| **Encryption key** | `grep ENCRYPTION /opt/homelab/n8n/.env` debe coincidir con `docker run --rm -v n8n_n8n_data:/data alpine cat /data/config` | Si no coinciden, n8n no arranca |
+| **DB connection** | `docker exec postgres psql -U n8n -d n8n -c 'SELECT 1'` | Sin DB, n8n no funciona |
+| **Contenedor corriendo** | `docker ps --format '{{.Names}} {{.Status}}' | grep n8n` | Debe mostrar "Up" no "Restarting" |
+| **Credenciales** | `docker exec postgres psql -U n8n -d n8n -c 'SELECT count(*) FROM credentials_entity'` | Debe ser 24 |
+| **Workflows activos** | `n8n_chitara_list_workflows` → contar los `active: true` | Monitorear fallos de activacion |
+
+### Errores conocidos de n8n y sus soluciones
+
+| Error | Causa | Solucion |
+|-------|-------|----------|
+| `Mismatching encryption keys` | .env ≠ volume config | `docker compose down -v && docker compose up -d` (recrea volumen con key del .env) |
+| `password authentication failed for user "n8n"` | Rol no existe en DB | `docker exec postgres psql -U postgres -c "CREATE ROLE n8n WITH LOGIN PASSWORD 'ElefantesEbrios1Renca'"` |
+| `Unrecognized node type: @tavily/...` | Falta paquete comunitario | `docker exec n8n npm install @tavily/n8n-nodes-tavily` |
+| Container en loop "Restarting (1)" | Error de config | `docker logs n8n --tail 20` para diagnosticar |
+
+---
+
 ## ⚠️ Problemas conocidos
 
 | Problema | Impacto | Estado |
