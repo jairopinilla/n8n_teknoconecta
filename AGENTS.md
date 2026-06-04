@@ -27,6 +27,56 @@
 
 ---
 
+## 🛡️ REGLA #1 — SEGURIDAD DE EXPOSICION DE SERVICIOS (ARQUITECTURA ESQUELETICA)
+
+> **Esta regla es estructural. Ningun agente puede violarla.**
+
+### Principio fundamental
+
+**NINGUN servicio en chitara (5.252.52.190) puede quedar expuesto a internet sin algun mecanismo de autenticacion.** No importa si es un dashboard, una API, un panel de logs, o una app interna. Si se accede desde una IP publica, DEBE tener al menos uno de estos:
+
+1. **Cloudflare Access** (Google SSO) — para servicios web
+2. **Token / API Key** (Bearer, header) — para APIs
+3. **Password / Login** — como minimo
+4. **127.0.0.1 bind** — si no necesita acceso externo directo
+
+### Estado actual (2026-06-04)
+
+Todos los puertos estan asegurados via **iptables** + **bind 127.0.0.1** + **Cloudflare Tunnel**:
+
+| Capa | Mecanismo |
+|------|-----------|
+| **Cloudflare Tunnel** | `*.chitaraagenteia.com` → Google SSO → `localhost:PUERTO` |
+| **iptables DOCKER-USER** | Bloquea acceso externo a puertos Docker |
+| **iptables INPUT** | Bloquea acceso externo a puertos de host |
+| **Docker compose** | Servicios bindeados a `127.0.0.1` |
+| **Nginx** | Solo expone 80/443 con dominios configurados |
+
+### Puertos permitidos (solo estos)
+
+| Puerto | Servicio | Motivo |
+|--------|----------|--------|
+| 22 | SSH | Acceso administrativo |
+| 80 | Nginx | Web (redirige a 443) |
+| 443 | Nginx | Web + SSL |
+
+### Si se instala un servicio nuevo
+
+1. **SIEMPRE** bindear a `127.0.0.1` en docker-compose
+2. Si necesita acceso externo → Cloudflare Tunnel (`/etc/cloudflared/config.yml`)
+3. Si es API → agregar autenticacion (token/password)
+4. **VERIFICAR** con `curl http://5.252.52.190:PUERTO` desde fuera del VPS que no responda
+
+### Si se detecta un puerto expuesto sin auth
+
+1. Marcarlo como `🔴 CRITICO`
+2. Cerrarlo inmediatamente (iptables o recompose)
+3. Reportarlo al usuario
+
+---
+
+## 🔐 REGLA #2 — ENCRIPTACION DE CREDENCIALES EN CADA PUSH
+
 ## 🔐 REGLA #0 — PROTOCOLO DE ENCRIPTACION / DESENCRIPTACION (MAXIMA PRIORIDAD)
 
 > **Esta seccion debe ser leida y ejecutada ANTES que cualquier otra accion del agente.**
@@ -78,6 +128,16 @@ Define **26 servidores MCP** que conectan con: Cloudflare, Clerk, OpenAI, Coolif
 2. Verificar que este en `.gitignore`
 3. Encriptarlo y guardar el `.enc`
 4. Reportarlo al usuario
+
+### En cada commit/push
+
+1. Verificar que `opencode.jsonc` NO este en los archivos staged (esta en `.gitignore`)
+2. Verificar que `opencode.jsonc.enc` SI este actualizado
+3. Si se modifico `opencode.jsonc`, re-encriptar ANTES del commit:
+   ```bash
+   cat opencode.jsonc | openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -pass pass:5486 -base64 -A > opencode.jsonc.enc
+   ```
+4. **NUNCA** commitear `opencode.jsonc` u otro archivo con credenciales en texto plano
 
 ---
 
