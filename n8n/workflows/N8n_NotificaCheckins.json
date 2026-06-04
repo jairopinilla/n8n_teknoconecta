@@ -127,12 +127,17 @@
     "Format Notifications": { "main": [[ { "node": "Filter Empty", "type": "main", "index": 0 } ]] },
     "Filter Empty": {
       "main": [
-        [{ "node": "Send to Jairo", "type": "main", "index": 0 }],
+        [
+          { "node": "Send to Jairo", "type": "main", "index": 0 }
+        ],
         []
-      ],
+      ]
+    },
+    "Send to Jairo": {
       "main": [
-        [{ "node": "Only Aseo for Valentina", "type": "main", "index": 0 }],
-        []
+        [
+          { "node": "Only Aseo for Valentina", "type": "main", "index": 0 }
+        ]
       ]
     },
     "Only Aseo for Valentina": {
