@@ -1,6 +1,5 @@
 {
   "name": "N8n_getAseosHtml_v3",
-  "description": "Reporte aseo con WhatsApp links, boton conserjeria, check-ins/outs. Llama Stays detail API por reserva para obtener nombres y telefonos.",
   "nodes": [
     {
       "parameters": {
@@ -8,29 +7,29 @@
         "responseMode": "responseNode",
         "options": {}
       },
-      "id": "webhook-html-v3",
+      "id": "f3845fbe-72b4-491b-8ca9-70409a2193f2",
       "name": "GetPagina",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
       "position": [
-        -112,
-        160
+        1728,
+        -192
       ],
       "webhookId": "aseos-v3-webhook"
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "WITH fechas AS (\n  SELECT\n    TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date - INTERVAL '1 day', 'YYYY-MM-DD') AS fecha_desde,\n    TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date + INTERVAL '10 days', 'YYYY-MM-DD') AS fecha_hasta\n),\nalojamientos_json AS (\n  SELECT COALESCE(\n    json_agg(\n      json_build_object(\n        'listing_id', \"AlojamientoStayslistingIdLargo\",\n        'listing_name', \"AlojamientoStaysInternalName\"\n      ) ORDER BY \"AlojamientoStaysInternalName\"\n    ) FILTER (WHERE \"AlojamientoStayslistingIdLargo\" IS NOT NULL AND \"AlojamientoStayslistingIdLargo\" <> ''),\n    '[]'::json\n  ) AS alojamientos\n  FROM public.\"Alojamiento\"\n)\nSELECT f.fecha_desde, f.fecha_hasta, a.alojamientos\nFROM fechas f, alojamientos_json a",
+        "query": "WITH fechas AS (\n  SELECT\n    TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date - INTERVAL '1 day', 'YYYY-MM-DD') AS fecha_desde,\n    TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date + INTERVAL '10 days', 'YYYY-MM-DD') AS fecha_hasta\n),\nalojamientos_json AS (\n  SELECT COALESCE(\n    json_agg(\n      json_build_object(\n        'listing_id', \"AlojamientoStayslistingIdLargo\",\n        'listing_name', \"AlojamientoStaysInternalName\", 'listing_number', \"AlojamientoNumero\"\n      ) ORDER BY \"AlojamientoStaysInternalName\"\n    ) FILTER (WHERE \"AlojamientoStayslistingIdLargo\" IS NOT NULL AND \"AlojamientoStayslistingIdLargo\" <> ''),\n    '[]'::json\n  ) AS alojamientos\n  FROM public.\"Alojamiento\"\n)\nSELECT f.fecha_desde, f.fecha_hasta, a.alojamientos\nFROM fechas f, alojamientos_json a",
         "options": {}
       },
-      "id": "db-fechas-v3",
+      "id": "03992838-9ca4-4ecb-b056-05821b1e0f04",
       "name": "GetFechasYAlojamientos",
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
       "position": [
-        144,
-        160
+        1984,
+        -192
       ],
       "credentials": {
         "postgres": {
@@ -49,11 +48,11 @@
           "parameters": [
             {
               "name": "from",
-              "value": "={{ .fecha_desde }}"
+              "value": "={{ $json.fecha_desde }}"
             },
             {
               "name": "to",
-              "value": "={{ .fecha_hasta }}"
+              "value": "={{ $json.fecha_hasta }}"
             },
             {
               "name": "dateType",
@@ -63,13 +62,13 @@
         },
         "options": {}
       },
-      "id": "api-reservas-v3",
+      "id": "5250b9c7-5021-48f5-91fa-b5473b41d1af",
       "name": "GetReservasAPI",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        400,
-        160
+        2240,
+        -192
       ],
       "credentials": {
         "httpHeaderAuth": {
@@ -80,34 +79,31 @@
     },
     {
       "parameters": {
-        "jsCode": "// Split each reservation into its own item for the detail API loop\nconst items = .all().flatMap(i => Array.isArray(i.json) ? i.json : [i.json]);\nreturn items.map(r => ({json: {_id: r._id, checkInDate: r.checkInDate, checkOutDate: r.checkOutDate, _idlisting: r._idlisting, guests: r.guests, guestsDetails: r.guestsDetails, type: r.type, reservationUrl: r.reservationUrl}}));"
+        "jsCode": "const inputItems = $input.all();\n\nconst reservations = inputItems.flatMap(item => {\n  if (Array.isArray(item.json)) {\n    return item.json;\n  }\n\n  if (Array.isArray(item.json.data)) {\n    return item.json.data;\n  }\n\n  return [item.json];\n});\n\nreturn reservations.map(r => ({\n  json: {\n    _id: r._id,\n    id: r.id,\n    checkInDate: r.checkInDate,\n    checkOutDate: r.checkOutDate,\n    _idlisting: r._idlisting,\n    guests: r.guests,\n    guestsDetails: r.guestsDetails,\n    type: r.type,\n    reservationUrl: r.reservationUrl\n  }\n}));"
       },
-      "id": "split-reservas",
+      "id": "d0e8d672-8894-44ef-a8bc-297008ab77bb",
       "name": "SplitReservas",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        656,
-        160
+        2496,
+        -192
       ]
     },
     {
       "parameters": {
-        "url": "=https://jairop.stays.net/external/v1/booking/reservations/{{ ._id }}",
+        "url": "=https://jairop.stays.net/external/v1/booking/reservations/{{ $json._id }}",
         "authentication": "genericCredentialType",
         "genericAuthType": "httpHeaderAuth",
-        "sendBody": false,
-        "sendHeaders": false,
-        "sendQuery": false,
         "options": {}
       },
-      "id": "api-detail",
+      "id": "40b81c55-3e6d-4950-9b28-cad2c7be8b97",
       "name": "GetReservaDetail",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
       "position": [
-        912,
-        160
+        2752,
+        -192
       ],
       "credentials": {
         "httpHeaderAuth": {
@@ -118,21 +114,21 @@
     },
     {
       "parameters": {
-        "jsCode": "// Build HTML report with guest names, phones, WhatsApp links, and conserjeria button\n// Uses reservation detail data (with names/phones from detail API)\n// Uses meta from GetFechasYAlojamientos node\n\nconst allItems = .all().map(i => i.json);\n\nconst meta = .first().json;\nconst alojArr = Array.isArray(meta.alojamientos) ? meta.alojamientos : [];\nconst listingMap = {};\nfor (const a of alojArr) {\n  if (a.listing_id) listingMap[a.listing_id] = a.listing_name || a.listing_id;\n}\n\n// Helpers\nconst todayCLT = new Date(new Date().toLocaleString(\"en-US\", {timeZone: \"America/Santiago\"}));\nconst tomorrowCLT = new Date(todayCLT); tomorrowCLT.setDate(tomorrowCLT.getDate() + 1);\nconst fmtDate = d => d.toISOString().split(\"T\")[0];\nconst todayKey = fmtDate(todayCLT);\nconst tomorrowKey = fmtDate(tomorrowCLT);\nconst in3Days = new Date(todayCLT.getTime() + 3*86400000);\nconst in3DaysKey = fmtDate(in3Days);\n\nconst normalize = v => (v === null || v === undefined) ? null : String(v).slice(0, 10);\nconst ddmmyyyy = ymd => ymd ? ymd.split(\"-\").reverse().join(\"-\") : \"\";\nconst toTitle = s => String(s || \"\").replace(/\\p{L}[\\p{L}\\p{Mn}]*/gu, w => w[0].toUpperCase() + w.slice(1));\nconst esc = s => String(s ?? \"\").replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\");\n\nconst fmtDia = new Intl.DateTimeFormat(\"es-CL\", {weekday:\"long\",day:\"numeric\",month:\"long\",timeZone:\"America/Santiago\"});\nconst diaTexto = ymd => ymd ? toTitle(fmtDia.format(new Date(ymd + \"T12:00:00-03:00\")).replace(\",\",\"\")) : \"\";\n\nconst getGuestName = r => {\n  const list = r.guestsDetails?.list || [];\n  const primary = list.find(g => g.primary) || list[0];\n  return primary?.name || \"\";\n};\nconst getPhone = r => {\n  const list = r.guestsDetails?.list || [];\n  const primary = list.find(g => g.primary) || list[0];\n  const phones = primary?.phones || [];\n  return phones[0]?.iso || \"\";\n};\nconst waLink = (phone, text) => {\n  if (!phone) return \"\";\n  const clean = phone.replace(/[^0-9]/g, \"\");\n  return clean ? \"https://wa.me/\" + clean + \"?text=\" + encodeURIComponent(text || \"Hola\") : \"\";\n};\n\nconst reservas = allItems;\n\n// Conserjeria message (check-ins next 3 days)\nconst conserjeNum = \"56923976934\";\nlet conserjeList = [];\nfor (const r of reservas) {\n  const cin = normalize(r.checkInDate);\n  if (!cin || cin > in3DaysKey) continue;\n  const depto = listingMap[r._idlisting] || r._idlisting || \"?\";\n  const guest = getGuestName(r);\n  const cout = normalize(r.checkOutDate) || \"\";\n  conserjeList.push(\"depto \" + depto + \" huesped \" + (guest || \"sin nombre\") + \", pais Chile, huespedes \" + (r.guests || 1) + \", checkout \" + ddmmyyyy(cout));\n}\nconst conserjeMsg = conserjeList.length > 0\n  ? \"Hola Don David, informo check in: \" + conserjeList.join(\" | \")\n  : \"Hola Don David, sin check-ins los proximos 3 dias\";\nconst conserjeUrl = waLink(conserjeNum, conserjeMsg);\n\n// Build sections\nconst checkinsHoy = reservas.filter(r => normalize(r.checkInDate) === todayKey);\nconst checkoutsHoy = reservas.filter(r => normalize(r.checkOutDate) === todayKey);\nconst checkoutsManana = reservas.filter(r => normalize(r.checkOutDate) === tomorrowKey);\n\nlet body = \"\";\n\n// CONSERJERIA BUTTON\nbody += \"<div style=\"text-align:center;padding:16px;background:#1a2a3a;border-radius:12px;margin-bottom:16px\">\";\nbody += \"<a href=\"\" + conserjeUrl + \"\" target=\"_blank\" style=\"background:#25D366;color:white;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:16px;display:inline-block\">\ud83d\udccb Informar huespedes a conserjer\u00eda</a>\";\nbody += \"<div style=\"color:#8899aa;margin-top:8px;font-size:12px\">Check-ins pr\u00f3ximos 3 d\u00edas</div></div>\";\n\n// CHECK-IN TODAY\nif (checkinsHoy.length > 0) {\n  body += \"<section style=\"background:#0d2818;border:1px solid #22c55e;border-radius:12px;padding:16px;margin-bottom:16px\">\";\n  body += \"<div style=\"font-size:18px;font-weight:bold;color:#22c55e;margin-bottom:12px\">\ud83d\udfe2 CHECK-IN HOY \u00b7 \" + diaTexto(todayKey) + \"</div>\";\n  for (const r of checkinsHoy) {\n    const depto = listingMap[r._idlisting] || r._idlisting || \"?\";\n    const guest = getGuestName(r);\n    const phone = getPhone(r);\n    const cout = normalize(r.checkOutDate);\n    body += \"<div style=\"padding:8px;margin:4px 0;background:#0a1f12;border-radius:8px\">\";\n    body += \"<strong>Depto \" + depto + \"</strong> \u00b7 \" + toTitle(guest) + \" \u00b7 \" + (r.guests||1) + \" pers \u00b7 hasta \" + ddmmyyyy(cout);\n    body += phone ? \" <a href=\"\" + waLink(phone,\"Hola\") + \"\" target=\"_blank\" style=\"color:#25D366;font-size:14px\">\ud83d\udcde WhatsApp</a>\" : \"\";\n    body += \"</div>\";\n  }\n  body += \"</section>\";\n}\n\n// CHECK-OUT TODAY (ASEO)\nif (checkoutsHoy.length > 0) {\n  body += \"<section style=\"background:#2a1010;border:1px solid #ef4444;border-radius:12px;padding:16px;margin-bottom:16px\">\";\n  body += \"<div style=\"font-size:18px;font-weight:bold;color:#ef4444;margin-bottom:12px\">\ud83d\udd34 ASEO HOY \u00b7 \" + diaTexto(todayKey) + \"</div>\";\n  for (const r of checkoutsHoy) {\n    const depto = listingMap[r._idlisting] || r._idlisting || \"?\";\n    const guest = getGuestName(r);\n    const phone = getPhone(r);\n    const cin = normalize(r.checkInDate);\n    body += \"<div style=\"padding:8px;margin:4px 0;background:#1a0a0a;border-radius:8px\">\";\n    body += \"<strong>Depto \" + depto + \"</strong> \u00b7 \" + toTitle(guest) + \" \u00b7 desde \" + ddmmyyyy(cin);\n    body += phone ? \" <a href=\"\" + waLink(phone,\"Hola\") + \"\" target=\"_blank\" style=\"color:#25D366;font-size:14px\">\ud83d\udcde WhatsApp</a>\" : \"\";\n    body += \"</div>\";\n  }\n  body += \"</section>\";\n}\n\n// ASEO MA\u00d1ANA (highlight)\nif (checkoutsManana.length > 0) {\n  body += \"<section style=\"background:#332211;border:2px solid #f59e0b;border-radius:12px;padding:16px;margin-bottom:16px\">\";\n  body += \"<div style=\"font-size:18px;font-weight:bold;color:#f59e0b;margin-bottom:12px\">\ud83d\udfe0 ASEO MA\u00d1ANA \u00b7 \" + diaTexto(tomorrowKey) + \" \u26a0\ufe0f</div>\";\n  for (const r of checkoutsManana) {\n    const depto = listingMap[r._idlisting] || r._idlisting || \"?\";\n    const guest = getGuestName(r);\n    const phone = getPhone(r);\n    const cin = normalize(r.checkInDate);\n    body += \"<div style=\"padding:8px;margin:4px 0;background:#2a1a08;border-radius:8px\">\";\n    body += \"<strong>Depto \" + depto + \"</strong> \u00b7 \" + toTitle(guest) + \" \u00b7 desde \" + ddmmyyyy(cin);\n    body += phone ? \" <a href=\"\" + waLink(phone,\"Hola\") + \"\" target=\"_blank\" style=\"color:#25D366;font-size:14px\">\ud83d\udcde WhatsApp</a>\" : \"\";\n    body += \"</div>\";\n  }\n  body += \"</section>\";\n}\n\n// PROXIMOS DIAS\nconst remaining = reservas.filter(r => {\n  const cout = normalize(r.checkOutDate);\n  return cout && cout !== todayKey && cout !== tomorrowKey;\n});\nif (remaining.length > 0) {\n  const byDate = new Map();\n  for (const r of remaining) {\n    const cout = normalize(r.checkOutDate);\n    if (!cout) continue;\n    if (!byDate.has(cout)) byDate.set(cout, []);\n    byDate.get(cout).push(r);\n  }\n  body += \"<section style=\"background:#0f1626;border:1px solid #223055;border-radius:12px;padding:16px\">\";\n  body += \"<div style=\"font-size:18px;font-weight:bold;color:#a9b6d6;margin-bottom:12px\">\ud83d\udd35 PR\u00d3XIMOS D\u00cdAS</div>\";\n  for (const [dia, items] of [...byDate].sort()) {\n    body += \"<div style=\"font-size:16px;font-weight:bold;color:#64748B;margin:8px 0\">\" + ddmmyyyy(dia) + \" \u00b7 \" + diaTexto(dia) + \"</div>\";\n    for (const r of items) {\n      const depto = listingMap[r._idlisting] || r._idlisting || \"?\";\n      const guest = getGuestName(r);\n      const phone = getPhone(r);\n      const cin = normalize(r.checkInDate);\n      body += \"<div style=\"padding:6px;margin:2px 0;border-bottom:1px solid #1a2744\">\";\n      body += \"<strong>Depto \" + depto + \"</strong> \u00b7 \" + toTitle(guest) + \" \u00b7 desde \" + ddmmyyyy(cin);\n      body += phone ? \" <a href=\"\" + waLink(phone,\"Hola\") + \"\" target=\"_blank\" style=\"color:#25D366;font-size:12px\">\ud83d\udcde</a>\" : \"\";\n      body += \"</div>\";\n    }\n  }\n  body += \"</section>\";\n}\n\nconst html = \"<!doctype html><html lang=\"es\"><head><meta charset=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"/><title>Aseos v3 \u00b7 SandiegoApart</title><style>:root{--bg:#0b0f19;--text:#e8eefc}body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);padding:16px}a{color:#25D366}</style></head><body><h1>\ud83e\uddf9 Aseos \u00b7 SandiegoApart</h1>\" + body + \"<div style=\"text-align:center;padding:16px;color:#8899aa;font-size:12px;margin-top:24px\">Actualizado: \" + new Date().toLocaleString(\"es-CL\",{timeZone:\"America/Santiago\"}) + \" \u00b7 Fuente: API Stays.net</div></body></html>\";\n\nreturn [{json: {html}}];"
+        "jsCode": "// Build HTML report with guest names, phones, WhatsApp links, and conserjeria button\n// Uses reservation detail data with names/phones from detail API\n// Uses meta from GetFechasYAlojamientos node\n\nconst allItems = $input.all().map(i => i.json);\n\n// Si los alojamientos vienen en el primer item de entrada, deja esta l\u00ednea:\nconst meta = $input.first().json;\n\n// Si los alojamientos vienen desde otro nodo, usa esta l\u00ednea en vez de la anterior:\n// const meta = $('GetFechasYAlojamientos').first().json;\n\nconst alojArr = Array.isArray(meta.alojamientos) ? meta.alojamientos : [];\n\nconst listingMap = {};\nfor (const a of alojArr) {\n  if (a.listing_id) {\n    listingMap[a.listing_id] = a.listing_name || a.listing_id;\n  }\n}\n\n// Helpers\nconst todayCLT = new Date(\n  new Date().toLocaleString(\"en-US\", { timeZone: \"America/Santiago\" })\n);\n\nconst tomorrowCLT = new Date(todayCLT);\ntomorrowCLT.setDate(tomorrowCLT.getDate() + 1);\n\nconst fmtDate = d => d.toISOString().split(\"T\")[0];\n\nconst todayKey = fmtDate(todayCLT);\nconst tomorrowKey = fmtDate(tomorrowCLT);\n\nconst in3Days = new Date(todayCLT.getTime() + 3 * 86400000);\nconst in3DaysKey = fmtDate(in3Days);\n\nconst normalize = v =>\n  v === null || v === undefined ? null : String(v).slice(0, 10);\n\nconst ddmmyyyy = ymd =>\n  ymd ? ymd.split(\"-\").reverse().join(\"-\") : \"\";\n\nconst toTitle = s =>\n  String(s || \"\").replace(\n    /\\p{L}[\\p{L}\\p{Mn}]*/gu,\n    w => w[0].toUpperCase() + w.slice(1)\n  );\n\nconst esc = s =>\n  String(s ?? \"\")\n    .replace(/&/g, \"&amp;\")\n    .replace(/</g, \"&lt;\")\n    .replace(/>/g, \"&gt;\");\n\nconst fmtDia = new Intl.DateTimeFormat(\"es-CL\", {\n  weekday: \"long\",\n  day: \"numeric\",\n  month: \"long\",\n  timeZone: \"America/Santiago\"\n});\n\nconst diaTexto = ymd =>\n  ymd\n    ? toTitle(\n        fmtDia\n          .format(new Date(ymd + \"T12:00:00-03:00\"))\n          .replace(\",\", \"\")\n      )\n    : \"\";\n\nconst getGuestName = r => {\n  const list = r.guestsDetails?.list || [];\n  const primary = list.find(g => g.primary) || list[0];\n  return primary?.name || \"\";\n};\n\nconst getPhone = r => {\n  const list = r.guestsDetails?.list || [];\n  const primary = list.find(g => g.primary) || list[0];\n  const phones = primary?.phones || [];\n  return phones[0]?.iso || \"\";\n};\n\nconst waLink = (phone, text) => {\n  if (!phone) return \"\";\n\n  const clean = String(phone).replace(/[^0-9]/g, \"\");\n\n  return clean\n    ? \"https://wa.me/\" + clean + \"?text=\" + encodeURIComponent(text || \"Hola\")\n    : \"\";\n};\n\nconst reservas = allItems;\n\n// Conserjeria message: check-ins next 3 days\nconst conserjeNum = \"56923976934\";\nlet conserjeList = [];\n\nfor (const r of reservas) {\n  const cin = normalize(r.checkInDate);\n\n  if (!cin || cin > in3DaysKey) continue;\n\n  const depto = HARDCODED_NUMBERS[r._idlisting] || listingMap[r._idlisting] || r._idlisting || \"?\";\n  const guest = getGuestName(r);\n  const cout = normalize(r.checkOutDate) || \"\";\n\n  conserjeList.push(\n    \"depto \" +\n      depto +\n      \" huesped \" +\n      (guest || \"sin nombre\") +\n      \", pais Chile, huespedes \" +\n      (r.guests || 1) +\n      \", checkout \" +\n      ddmmyyyy(cout)\n  );\n}\n\nconst conserjeMsg =\n  conserjeList.length > 0\n    ? \"Hola Don David, informo check in: \" + conserjeList.join(\" | \")\n    : \"Hola Don David, sin check-ins los proximos 3 dias\";\n\nconst conserjeUrl = waLink(conserjeNum, conserjeMsg);\n\n// Build sections\nconst checkinsHoy = reservas.filter(\n  r => normalize(r.checkInDate) === todayKey\n);\n\nconst checkoutsHoy = reservas.filter(\n  r => normalize(r.checkOutDate) === todayKey\n);\n\nconst checkoutsManana = reservas.filter(\n  r => normalize(r.checkOutDate) === tomorrowKey\n);\n\nlet body = \"\";\n\n// CONSERJERIA BUTTON\nbody += `\n  <div style=\"text-align:center;padding:16px;background:#1a2a3a;border-radius:12px;margin-bottom:16px\">\n    <a href=\"${esc(conserjeUrl)}\" target=\"_blank\" style=\"background:#25D366;color:white;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:16px;display:inline-block\">\n      \ud83d\udccb Informar hu\u00e9spedes a conserjer\u00eda\n    </a>\n    <div style=\"color:#8899aa;margin-top:8px;font-size:12px\">\n      Check-ins pr\u00f3ximos 3 d\u00edas\n    </div>\n  </div>\n`;\n\n// CHECK-IN TODAY\nif (checkinsHoy.length > 0) {\n  body += `\n    <section style=\"background:#0d2818;border:1px solid #22c55e;border-radius:12px;padding:16px;margin-bottom:16px\">\n      <div style=\"font-size:18px;font-weight:bold;color:#22c55e;margin-bottom:12px\">\n        \ud83d\udfe2 CHECK-IN HOY \u00b7 ${esc(diaTexto(todayKey))}\n      </div>\n  `;\n\n  for (const r of checkinsHoy) {\n    const depto = HARDCODED_NUMBERS[r._idlisting] || listingMap[r._idlisting] || r._idlisting || \"?\";\n    const guest = getGuestName(r);\n    const phone = getPhone(r);\n    const cout = normalize(r.checkOutDate);\n    const link = waLink(phone, \"Hola\");\n\n    body += `\n      <div style=\"padding:8px;margin:4px 0;background:#0a1f12;border-radius:8px\">\n        <strong>Depto ${esc(depto)}</strong> \u00b7 ${esc(toTitle(guest))} \u00b7 ${esc(r.guests || 1)} pers \u00b7 hasta ${esc(ddmmyyyy(cout))}\n        ${\n          phone\n            ? `<a href=\"${esc(link)}\" target=\"_blank\" style=\"color:#25D366;font-size:14px\">\ud83d\udcde WhatsApp</a>`\n            : \"\"\n        }\n      </div>\n    `;\n  }\n\n  body += `</section>`;\n}\n\n// CHECK-OUT TODAY: ASEO\nif (checkoutsHoy.length > 0) {\n  body += `\n    <section style=\"background:#2a1010;border:1px solid #ef4444;border-radius:12px;padding:16px;margin-bottom:16px\">\n      <div style=\"font-size:18px;font-weight:bold;color:#ef4444;margin-bottom:12px\">\n        \ud83d\udd34 ASEO HOY \u00b7 ${esc(diaTexto(todayKey))}\n      </div>\n  `;\n\n  for (const r of checkoutsHoy) {\n    const depto = HARDCODED_NUMBERS[r._idlisting] || listingMap[r._idlisting] || r._idlisting || \"?\";\n    const guest = getGuestName(r);\n    const phone = getPhone(r);\n    const cin = normalize(r.checkInDate);\n    const link = waLink(phone, \"Hola\");\n\n    body += `\n      <div style=\"padding:8px;margin:4px 0;background:#1a0a0a;border-radius:8px\">\n        <strong>Depto ${esc(depto)}</strong> \u00b7 ${esc(toTitle(guest))} \u00b7 desde ${esc(ddmmyyyy(cin))}\n        ${\n          phone\n            ? `<a href=\"${esc(link)}\" target=\"_blank\" style=\"color:#25D366;font-size:14px\">\ud83d\udcde WhatsApp</a>`\n            : \"\"\n        }\n      </div>\n    `;\n  }\n\n  body += `</section>`;\n}\n\n// ASEO MA\u00d1ANA\nif (checkoutsManana.length > 0) {\n  body += `\n    <section style=\"background:#332211;border:2px solid #f59e0b;border-radius:12px;padding:16px;margin-bottom:16px\">\n      <div style=\"font-size:18px;font-weight:bold;color:#f59e0b;margin-bottom:12px\">\n        \ud83d\udfe0 ASEO MA\u00d1ANA \u00b7 ${esc(diaTexto(tomorrowKey))} \u26a0\ufe0f\n      </div>\n  `;\n\n  for (const r of checkoutsManana) {\n    const depto = HARDCODED_NUMBERS[r._idlisting] || listingMap[r._idlisting] || r._idlisting || \"?\";\n    const guest = getGuestName(r);\n    const phone = getPhone(r);\n    const cin = normalize(r.checkInDate);\n    const link = waLink(phone, \"Hola\");\n\n    body += `\n      <div style=\"padding:8px;margin:4px 0;background:#2a1a08;border-radius:8px\">\n        <strong>Depto ${esc(depto)}</strong> \u00b7 ${esc(toTitle(guest))} \u00b7 desde ${esc(ddmmyyyy(cin))}\n        ${\n          phone\n            ? `<a href=\"${esc(link)}\" target=\"_blank\" style=\"color:#25D366;font-size:14px\">\ud83d\udcde WhatsApp</a>`\n            : \"\"\n        }\n      </div>\n    `;\n  }\n\n  body += `</section>`;\n}\n\n// PROXIMOS DIAS\nconst remaining = reservas.filter(r => {\n  const cout = normalize(r.checkOutDate);\n  return cout && cout !== todayKey && cout !== tomorrowKey;\n});\n\nif (remaining.length > 0) {\n  const byDate = new Map();\n\n  for (const r of remaining) {\n    const cout = normalize(r.checkOutDate);\n    if (!cout) continue;\n\n    if (!byDate.has(cout)) {\n      byDate.set(cout, []);\n    }\n\n    byDate.get(cout).push(r);\n  }\n\n  body += `\n    <section style=\"background:#0f1626;border:1px solid #223055;border-radius:12px;padding:16px\">\n      <div style=\"font-size:18px;font-weight:bold;color:#a9b6d6;margin-bottom:12px\">\n        \ud83d\udd35 PR\u00d3XIMOS D\u00cdAS\n      </div>\n  `;\n\n  for (const [dia, items] of [...byDate].sort()) {\n    body += `\n      <div style=\"font-size:16px;font-weight:bold;color:#64748B;margin:8px 0\">\n        ${esc(ddmmyyyy(dia))} \u00b7 ${esc(diaTexto(dia))}\n      </div>\n    `;\n\n    for (const r of items) {\n      const depto = HARDCODED_NUMBERS[r._idlisting] || listingMap[r._idlisting] || r._idlisting || \"?\";\n      const guest = getGuestName(r);\n      const phone = getPhone(r);\n      const cin = normalize(r.checkInDate);\n      const link = waLink(phone, \"Hola\");\n\n      body += `\n        <div style=\"padding:6px;margin:2px 0;border-bottom:1px solid #1a2744\">\n          <strong>Depto ${esc(depto)}</strong> \u00b7 ${esc(toTitle(guest))} \u00b7 desde ${esc(ddmmyyyy(cin))}\n          ${\n            phone\n              ? `<a href=\"${esc(link)}\" target=\"_blank\" style=\"color:#25D366;font-size:12px\">\ud83d\udcde</a>`\n              : \"\"\n          }\n        </div>\n      `;\n    }\n  }\n\n  body += `</section>`;\n}\n\nconst html = `\n<!doctype html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"utf-8\"/>\n  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"/>\n  <title>Aseos v3 \u00b7 SandiegoApart</title>\n  <style>\n    :root {\n      --bg: #0b0f19;\n      --text: #e8eefc;\n    }\n\n    body {\n      margin: 0;\n      font-family: system-ui, sans-serif;\n      background: var(--bg);\n      color: var(--text);\n      padding: 16px;\n    }\n\n    a {\n      color: #25D366;\n    }\n  </style>\n</head>\n<body>\n  <h1>\ud83e\uddf9 Aseos \u00b7 SandiegoApart</h1>\n\n  ${body}\n\n  <div style=\"text-align:center;padding:16px;color:#8899aa;font-size:12px;margin-top:24px\">\n    Actualizado: ${esc(new Date().toLocaleString(\"es-CL\", { timeZone: \"America/Santiago\" }))} \u00b7 Fuente: API Stays.net\n  </div>\n</body>\n</html>\n`;\n\nreturn [\n  {\n    json: {\n      html\n    }\n  }\n];"
       },
-      "id": "code-html-v3",
+      "id": "87e740e1-481f-4a90-a47c-7599265c6162",
       "name": "Generate HTML v3",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        1168,
-        160
+        3008,
+        -192
       ]
     },
     {
       "parameters": {
         "respondWith": "text",
-        "responseBody": "={{ .html }}",
+        "responseBody": "={{ $json.html }}",
         "options": {
           "responseHeaders": {
             "entries": [
@@ -144,16 +140,17 @@
           }
         }
       },
-      "id": "respond-html-v3",
+      "id": "d0cb747f-d919-4f9c-a9db-7226fdf0f2f2",
       "name": "Respond to Webhook",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
       "position": [
-        1424,
-        160
+        3264,
+        -192
       ]
     }
   ],
+  "pinData": {},
   "connections": {
     "GetPagina": {
       "main": [
@@ -222,7 +219,16 @@
       ]
     }
   },
+  "active": false,
   "settings": {
-    "executionOrder": "v1"
-  }
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "61d9d8c1-9c8e-4d44-a03f-91585b7e1c39",
+  "meta": {
+    "instanceId": "23c372f7e7432cb25735403828c2b51a63a5fe127fac2c6d4b9a24c8e9cf6661"
+  },
+  "nodeGroups": [],
+  "id": "JFWWZfloSfK4LmMM",
+  "tags": []
 }
