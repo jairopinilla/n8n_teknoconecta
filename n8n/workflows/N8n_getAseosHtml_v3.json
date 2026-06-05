@@ -21,7 +21,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "WITH fechas AS (\n  SELECT\n    TO_CHAR((now() AT TIME ZONE \"America/Santiago\")::date - INTERVAL \"1 day\", \"YYYY-MM-DD\") AS fecha_desde,\n    TO_CHAR((now() AT TIME ZONE \"America/Santiago\")::date + INTERVAL \"10 days\", \"YYYY-MM-DD\") AS fecha_hasta\n),\nalojamientos_json AS (\n  SELECT COALESCE(\n    json_agg(\n      json_build_object(\n        \"listing_id\", \"AlojamientoStayslistingIdLargo\",\n        \"listing_name\", \"AlojamientoStaysInternalName\"\n      ) ORDER BY \"AlojamientoStaysInternalName\"\n    ) FILTER (WHERE \"AlojamientoStayslistingIdLargo\" IS NOT NULL AND \"AlojamientoStayslistingIdLargo\" <> \"\"),\n    \"[]\"::json\n  ) AS alojamientos\n  FROM public.\"Alojamiento\"\n)\nSELECT f.fecha_desde, f.fecha_hasta, a.alojamientos\nFROM fechas f, alojamientos_json a",
+        "query": "WITH fechas AS (\n  SELECT\n    TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date - INTERVAL '1 day', 'YYYY-MM-DD') AS fecha_desde,\n    TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date + INTERVAL '10 days', 'YYYY-MM-DD') AS fecha_hasta\n),\nalojamientos_json AS (\n  SELECT COALESCE(\n    json_agg(\n      json_build_object(\n        'listing_id', \"AlojamientoStayslistingIdLargo\",\n        'listing_name', \"AlojamientoStaysInternalName\"\n      ) ORDER BY \"AlojamientoStaysInternalName\"\n    ) FILTER (WHERE \"AlojamientoStayslistingIdLargo\" IS NOT NULL AND \"AlojamientoStayslistingIdLargo\" <> ''),\n    '[]'::json\n  ) AS alojamientos\n  FROM public.\"Alojamiento\"\n)\nSELECT f.fecha_desde, f.fecha_hasta, a.alojamientos\nFROM fechas f, alojamientos_json a",
         "options": {}
       },
       "id": "db-fechas-v3",
