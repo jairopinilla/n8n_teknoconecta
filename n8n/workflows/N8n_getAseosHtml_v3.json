@@ -1,36 +1,43 @@
 {
   "name": "N8n_getAseosHtml_v3",
-  "description": "Modified v2 with: WhatsApp links per guest, check-in section, conserjería button, checkout-mañana highlight",
-  "CHANGES_FROM_V2": [
-    "1. Botón 'Informar conserjería' al inicio: wa.me/+56923976934 con check-ins próximos 3 días",
-    "2. WhatsApp link por huésped: wa.me/PHONE?text=Hola",
-    "3. Sección CHECK-IN HOY + CHECK-OUT HOY + PRÓXIMOS 7 DÍAS",
-    "4. Check-out mañana destacado con color naranja/rojo",
-    "5. Teléfonos formateados con link directo",
-    "6. Botón 'Ver reporte aseo' al final"
-  ],
+  "description": "Reporte aseo con WhatsApp links, boton conserjeria, check-ins/outs. Llama Stays detail API por reserva para obtener nombres y telefonos.",
   "nodes": [
     {
-      "parameters": { "path": "aseos-v3", "responseMode": "responseNode", "options": {} },
+      "parameters": {
+        "path": "aseos-v3",
+        "responseMode": "responseNode",
+        "options": {}
+      },
       "id": "webhook-html-v3",
       "name": "GetPagina",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
-      "position": [-112, 160],
+      "position": [
+        -112,
+        160
+      ],
       "webhookId": "aseos-v3-webhook"
     },
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "WITH fechas AS (\n  SELECT\n    TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date - INTERVAL '1 day', 'YYYY-MM-DD') AS fecha_desde,\n    TO_CHAR((now() AT TIME ZONE 'America/Santiago')::date + INTERVAL '10 days', 'YYYY-MM-DD') AS fecha_hasta\n),\nalojamientos_json AS (\n  SELECT COALESCE(\n    json_agg(\n      json_build_object(\n        'listing_id', \"AlojamientoStayslistingIdLargo\",\n        'listing_name', \"AlojamientoStaysInternalName\"\n      ) ORDER BY \"AlojamientoStaysInternalName\"\n    ) FILTER (WHERE \"AlojamientoStayslistingIdLargo\" IS NOT NULL AND \"AlojamientoStayslistingIdLargo\" <> ''),\n    '[]'::json\n  ) AS alojamientos\n  FROM public.\"Alojamiento\"\n)\nSELECT f.fecha_desde, f.fecha_hasta, a.alojamientos\nFROM fechas f, alojamientos_json a",
+        "query": "WITH fechas AS (\n  SELECT\n    TO_CHAR((now() AT TIME ZONE \"America/Santiago\")::date - INTERVAL \"1 day\", \"YYYY-MM-DD\") AS fecha_desde,\n    TO_CHAR((now() AT TIME ZONE \"America/Santiago\")::date + INTERVAL \"10 days\", \"YYYY-MM-DD\") AS fecha_hasta\n),\nalojamientos_json AS (\n  SELECT COALESCE(\n    json_agg(\n      json_build_object(\n        \"listing_id\", \"AlojamientoStayslistingIdLargo\",\n        \"listing_name\", \"AlojamientoStaysInternalName\"\n      ) ORDER BY \"AlojamientoStaysInternalName\"\n    ) FILTER (WHERE \"AlojamientoStayslistingIdLargo\" IS NOT NULL AND \"AlojamientoStayslistingIdLargo\" <> \"\"),\n    \"[]\"::json\n  ) AS alojamientos\n  FROM public.\"Alojamiento\"\n)\nSELECT f.fecha_desde, f.fecha_hasta, a.alojamientos\nFROM fechas f, alojamientos_json a",
         "options": {}
       },
       "id": "db-fechas-v3",
       "name": "GetFechasYAlojamientos",
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
-      "position": [144, 160],
-      "credentials": { "postgres": { "id": "zvx0J3DPht42SAUp", "name": "Postgres account" } }
+      "position": [
+        144,
+        160
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
     },
     {
       "parameters": {
@@ -40,9 +47,18 @@
         "sendQuery": true,
         "queryParameters": {
           "parameters": [
-            { "name": "from", "value": "={{ $json.fecha_desde }}" },
-            { "name": "to", "value": "={{ $json.fecha_hasta }}" },
-            { "name": "dateType", "value": "include" }
+            {
+              "name": "from",
+              "value": "={{ .fecha_desde }}"
+            },
+            {
+              "name": "to",
+              "value": "={{ .fecha_hasta }}"
+            },
+            {
+              "name": "dateType",
+              "value": "departure"
+            }
           ]
         },
         "options": {}
@@ -51,37 +67,162 @@
       "name": "GetReservasAPI",
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.3,
-      "position": [400, 160],
-      "credentials": { "httpHeaderAuth": { "id": "I4YWvpXuZv5reReY", "name": "Stays Auth account" } }
+      "position": [
+        400,
+        160
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "I4YWvpXuZv5reReY",
+          "name": "Stays Auth account"
+        }
+      }
     },
     {
       "parameters": {
-        "jsCode": "// KEY CHANGES from v2:\n// - Added check-in section (not just check-outs)\n// - WhatsApp link per guest: wa.me/PHONE?text=Hola\n// - Conserjería button at top: wa.me/+56923976934 with check-ins next 3 days\n// - Color highlight for checkout-mañana\n// - Phone numbers extracted from guestDetails\n\nconst allItems = $input.all().map(i => i.json);\nlet reservas;\nif (allItems.length === 0) { reservas = []; }\nelse if (allItems.length === 1 && Array.isArray(allItems[0])) { reservas = allItems[0]; }\nelse { reservas = allItems; }\n\nconst meta = $('GetFechasYAlojamientos').first().json;\nconst alojArr = Array.isArray(meta.alojamientos) ? meta.alojamientos : [];\n\nconst listingMap = {};\nfor (const a of alojArr) {\n  if (a.listing_id) listingMap[a.listing_id] = a.listing_name || a.listing_id;\n}\n\n// ── Helpers ──\nconst todayCLT = new Date(new Date().toLocaleString('en-US', {timeZone: 'America/Santiago'}));\nconst tomorrowCLT = new Date(todayCLT); tomorrowCLT.setDate(tomorrowCLT.getDate() + 1);\nconst getDateKey = (d) => d.toISOString().split('T')[0];\nconst todayKey = getDateKey(todayCLT);\nconst tomorrowKey = getDateKey(tomorrowCLT);\nconst in3DaysKey = getDateKey(new Date(todayCLT.getTime() + 3*86400000));\n\nconst normalizeYMD = (v) => {\n  if (v === null || v === undefined) return null;\n  const s = String(v);\n  return s.length >= 10 ? s.slice(0, 10) : s;\n};\n\nconst ddmmyyyy = (ymd) => {\n  if (!ymd) return '';\n  const parts = ymd.split('-');\n  if (parts.length !== 3) return ymd;\n  return `${parts[2]}-${parts[1]}-${parts[0]}`;\n};\n\nconst toTitleCase = (s) =>\n  String(s || '').replace(/\\p{L}[\\p{L}\\p{Mn}]*/gu, (w) => w[0].toUpperCase() + w.slice(1));\n\nconst escapeHtml = (s) =>\n  String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n\n// Extract phone from guest details\nconst getPhone = (r) => {\n  const guests = r.guestsDetails?.list || [];\n  for (const g of guests) {\n    if (g.phone && g.phone.trim()) return g.phone.trim();\n  }\n  return '';\n};\n\nconst getGuestName = (r) => {\n  const guests = r.guestsDetails?.list || [];\n  if (guests.length > 0 && guests[0].name) return guests[0].name;\n  return '';\n};\n\nconst waLink = (phone, text) => {\n  if (!phone) return '';\n  const clean = phone.replace(/[^0-9]/g, '');\n  if (!clean) return '';\n  const t = encodeURIComponent(text || 'Hola');\n  return `https://wa.me/${clean}?text=${t}`;\n};\n\n// ── Build conserjería message ──\nconst conserjeNum = '56923976934';\nlet conserjeChecks = [];\nfor (const r of reservas) {\n  const cin = normalizeYMD(r.checkInDate);\n  if (!cin || cin > in3DaysKey) continue;\n  const listingId = r._idlisting || '';\n  const depto = listingMap[listingId] || listingId || '?';\n  const guest = getGuestName(r);\n  const guests = r.guests || 1;\n  const cout = normalizeYMD(r.checkOutDate) || '';\n  conserjeChecks.push(`depto ${depto} huesped ${guest}, pais Chile, huespedes ${guests}, checkout ${ddmmyyyy(cout)}`);\n}\n\nconst conserjeMsg = conserjeChecks.length > 0\n  ? `Hola Don David, informo check in: ${conserjeChecks.join(' | ')}`\n  : 'Hola Don David, sin check-ins los proximos 3 dias';\nconst conserjeUrl = waLink(conserjeNum, conserjeMsg);\n\n// ── Build sections ──\nconst checkinsHoy = reservas.filter(r => normalizeYMD(r.checkInDate) === todayKey);\nconst checkoutsHoy = reservas.filter(r => normalizeYMD(r.checkOutDate) === todayKey);\nconst checkoutsManana = reservas.filter(r => normalizeYMD(r.checkOutDate) === tomorrowKey);\n\nlet body = '';\n\n// CONSERJERÍA BUTTON\nbody += `<div style=\"text-align:center;padding:16px;background:#1a2a3a;border-radius:12px;margin-bottom:16px\">\n  <a href=\"${conserjeUrl}\" target=\"_blank\" style=\"background:#25D366;color:white;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:16px;display:inline-block\">📋 Informar huespedes a conserjería</a>\n  <div style=\"color:#8899aa;margin-top:8px;font-size:12px\">Check-ins próximos 3 días</div>\n</div>`;\n\n// CHECK-IN TODAY\nif (checkinsHoy.length > 0) {\n  body += `<section style=\"background:#0d2818;border:1px solid #22c55e;border-radius:12px;padding:16px;margin-bottom:16px\">\n    <div style=\"font-size:18px;font-weight:bold;color:#22c55e;margin-bottom:12px\">🟢 CHECK-IN HOY</div>`;\n  for (const r of checkinsHoy) {\n    const lid = r._idlisting || '';\n    const depto = listingMap[lid] || lid || '?';\n    const guest = getGuestName(r);\n    const phone = getPhone(r);\n    const cout = normalizeYMD(r.checkOutDate);\n    const guests = r.guests || 1;\n    body += `<div style=\"padding:8px;margin:4px 0;background:#0a1f12;border-radius:8px\">\n      <strong>Depto ${depto}</strong> · ${toTitleCase(guest)} · ${guests} pers · hasta ${ddmmyyyy(cout)}\n      ${phone ? ` <a href=\"${waLink(phone,'Hola')}\" target=\"_blank\" style=\"color:#25D366;font-size:14px\">📞 WhatsApp</a>` : ''}\n    </div>`;\n  }\n  body += `</section>`;\n}\n\n// CHECK-OUT TODAY\nif (checkoutsHoy.length > 0) {\n  body += `<section style=\"background:#2a1010;border:1px solid #ef4444;border-radius:12px;padding:16px;margin-bottom:16px\">\n    <div style=\"font-size:18px;font-weight:bold;color:#ef4444;margin-bottom:12px\">🔴 CHECK-OUT HOY (ASEO HOY)</div>`;\n  for (const r of checkoutsHoy) {\n    const lid = r._idlisting || '';\n    const depto = listingMap[lid] || lid || '?';\n    const guest = getGuestName(r);\n    const phone = getPhone(r);\n    const cin = normalizeYMD(r.checkInDate);\n    body += `<div style=\"padding:8px;margin:4px 0;background:#1a0a0a;border-radius:8px\">\n      <strong>Depto ${depto}</strong> · ${toTitleCase(guest)} · Check-in: ${ddmmyyyy(cin)}\n      ${phone ? ` <a href=\"${waLink(phone,'Hola')}\" target=\"_blank\" style=\"color:#25D366;font-size:14px\">📞 WhatsApp</a>` : ''}\n    </div>`;\n  }\n  body += `</section>`;\n}\n\n// CHECK-OUT TOMORROW (HIGHLIGHT)\nif (checkoutsManana.length > 0) {\n  body += `<section style=\"background:#332211;border:2px solid #f59e0b;border-radius:12px;padding:16px;margin-bottom:16px\">\n    <div style=\"font-size:18px;font-weight:bold;color:#f59e0b;margin-bottom:12px\">🟠 ASEO MAÑANA ⚠️</div>`;\n  for (const r of checkoutsManana) {\n    const lid = r._idlisting || '';\n    const depto = listingMap[lid] || lid || '?';\n    const guest = getGuestName(r);\n    const phone = getPhone(r);\n    const cin = normalizeYMD(r.checkInDate);\n    body += `<div style=\"padding:8px;margin:4px 0;background:#2a1a08;border-radius:8px\">\n      <strong>Depto ${depto}</strong> · ${toTitleCase(guest)} · desde ${ddmmyyyy(cin)}\n      ${phone ? ` <a href=\"${waLink(phone,'Hola')}\" target=\"_blank\" style=\"color:#25D366;font-size:14px\">📞 WhatsApp</a>` : ''}\n    </div>`;\n  }\n  body += `</section>`;\n}\n\n// PROXIMOS 7 DIAS - remaining check-outs grouped by date\nconst remaining = reservas.filter(r => {\n  const cout = normalizeYMD(r.checkOutDate);\n  return cout && cout !== todayKey && cout !== tomorrowKey;\n});\n\nif (remaining.length > 0) {\n  const grouped = new Map();\n  for (const r of remaining) {\n    const dia = normalizeYMD(r.checkOutDate);\n    if (!dia) continue;\n    if (!grouped.has(dia)) grouped.set(dia, []);\n    grouped.get(dia).push(r);\n  }\n  \n  body += `<section style=\"background:#0f1626;border:1px solid #223055;border-radius:12px;padding:16px\">\n    <div style=\"font-size:18px;font-weight:bold;color:#a9b6d6;margin-bottom:12px\">🔵 PRÓXIMOS DÍAS</div>`;\n  \n  const dias = Array.from(grouped.keys()).sort();\n  for (const dia of dias) {\n    for (const r of grouped.get(dia)) {\n      const lid = r._idlisting || '';\n      const depto = listingMap[lid] || lid || '?';\n      const guest = getGuestName(r);\n      const phone = getPhone(r);\n      const cin = normalizeYMD(r.checkInDate);\n      body += `<div style=\"padding:6px;margin:2px 0;border-bottom:1px solid #1a2744\">\n        <strong>${ddmmyyyy(dia)}</strong> · Depto ${depto} · ${toTitleCase(guest)} · desde ${ddmmyyyy(cin)}\n        ${phone ? ` <a href=\"${waLink(phone,'Hola')}\" target=\"_blank\" style=\"color:#25D366;font-size:12px\">📞</a>` : ''}\n      </div>`;\n    }\n  }\n  body += `</section>`;\n}\n\nconst html = `<!doctype html>\n<html lang=\"es\">\n<head>\n  <meta charset=\"utf-8\"/>\n  <meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"/>\n  <title>Aseos v3 · SandiegoApart</title>\n  <style>\n    :root{--bg:#0b0f19;--text:#e8eefc;--muted:#a9b6d6}\n    body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);padding:16px}\n    a{color:#25D366}\n  </style>\n</head>\n<body>\n  <h1 style=\"font-size:24px\">🧹 Aseos · Reservas · SandiegoApart</h1>\n  ${body}\n  <div style=\"text-align:center;padding:16px;color:var(--muted);font-size:12px;margin-top:24px\">\n    Actualizado: ${new Date().toLocaleString('es-CL', {timeZone: 'America/Santiago'})} · Fuente: API Stays.net\n  </div>\n</body>\n</html>`;\n\nreturn [{ json: { html } }];\n"
+        "jsCode": "// Split each reservation into its own item for the detail API loop\nconst items = .all().flatMap(i => Array.isArray(i.json) ? i.json : [i.json]);\nreturn items.map(r => ({json: {_id: r._id, checkInDate: r.checkInDate, checkOutDate: r.checkOutDate, _idlisting: r._idlisting, guests: r.guests, guestsDetails: r.guestsDetails, type: r.type, reservationUrl: r.reservationUrl}}));"
+      },
+      "id": "split-reservas",
+      "name": "SplitReservas",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        160
+      ]
+    },
+    {
+      "parameters": {
+        "url": "=https://jairop.stays.net/external/v1/booking/reservations/{{ ._id }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": false,
+        "sendHeaders": false,
+        "sendQuery": false,
+        "options": {}
+      },
+      "id": "api-detail",
+      "name": "GetReservaDetail",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [
+        912,
+        160
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "I4YWvpXuZv5reReY",
+          "name": "Stays Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Build HTML report with guest names, phones, WhatsApp links, and conserjeria button\n// Uses reservation detail data (with names/phones from detail API)\n// Uses meta from GetFechasYAlojamientos node\n\nconst allItems = .all().map(i => i.json);\n\nconst meta = .first().json;\nconst alojArr = Array.isArray(meta.alojamientos) ? meta.alojamientos : [];\nconst listingMap = {};\nfor (const a of alojArr) {\n  if (a.listing_id) listingMap[a.listing_id] = a.listing_name || a.listing_id;\n}\n\n// Helpers\nconst todayCLT = new Date(new Date().toLocaleString(\"en-US\", {timeZone: \"America/Santiago\"}));\nconst tomorrowCLT = new Date(todayCLT); tomorrowCLT.setDate(tomorrowCLT.getDate() + 1);\nconst fmtDate = d => d.toISOString().split(\"T\")[0];\nconst todayKey = fmtDate(todayCLT);\nconst tomorrowKey = fmtDate(tomorrowCLT);\nconst in3Days = new Date(todayCLT.getTime() + 3*86400000);\nconst in3DaysKey = fmtDate(in3Days);\n\nconst normalize = v => (v === null || v === undefined) ? null : String(v).slice(0, 10);\nconst ddmmyyyy = ymd => ymd ? ymd.split(\"-\").reverse().join(\"-\") : \"\";\nconst toTitle = s => String(s || \"\").replace(/\\p{L}[\\p{L}\\p{Mn}]*/gu, w => w[0].toUpperCase() + w.slice(1));\nconst esc = s => String(s ?? \"\").replace(/&/g, \"&amp;\").replace(/</g, \"&lt;\").replace(/>/g, \"&gt;\");\n\nconst fmtDia = new Intl.DateTimeFormat(\"es-CL\", {weekday:\"long\",day:\"numeric\",month:\"long\",timeZone:\"America/Santiago\"});\nconst diaTexto = ymd => ymd ? toTitle(fmtDia.format(new Date(ymd + \"T12:00:00-03:00\")).replace(\",\",\"\")) : \"\";\n\nconst getGuestName = r => {\n  const list = r.guestsDetails?.list || [];\n  const primary = list.find(g => g.primary) || list[0];\n  return primary?.name || \"\";\n};\nconst getPhone = r => {\n  const list = r.guestsDetails?.list || [];\n  const primary = list.find(g => g.primary) || list[0];\n  const phones = primary?.phones || [];\n  return phones[0]?.iso || \"\";\n};\nconst waLink = (phone, text) => {\n  if (!phone) return \"\";\n  const clean = phone.replace(/[^0-9]/g, \"\");\n  return clean ? \"https://wa.me/\" + clean + \"?text=\" + encodeURIComponent(text || \"Hola\") : \"\";\n};\n\nconst reservas = allItems;\n\n// Conserjeria message (check-ins next 3 days)\nconst conserjeNum = \"56923976934\";\nlet conserjeList = [];\nfor (const r of reservas) {\n  const cin = normalize(r.checkInDate);\n  if (!cin || cin > in3DaysKey) continue;\n  const depto = listingMap[r._idlisting] || r._idlisting || \"?\";\n  const guest = getGuestName(r);\n  const cout = normalize(r.checkOutDate) || \"\";\n  conserjeList.push(\"depto \" + depto + \" huesped \" + (guest || \"sin nombre\") + \", pais Chile, huespedes \" + (r.guests || 1) + \", checkout \" + ddmmyyyy(cout));\n}\nconst conserjeMsg = conserjeList.length > 0\n  ? \"Hola Don David, informo check in: \" + conserjeList.join(\" | \")\n  : \"Hola Don David, sin check-ins los proximos 3 dias\";\nconst conserjeUrl = waLink(conserjeNum, conserjeMsg);\n\n// Build sections\nconst checkinsHoy = reservas.filter(r => normalize(r.checkInDate) === todayKey);\nconst checkoutsHoy = reservas.filter(r => normalize(r.checkOutDate) === todayKey);\nconst checkoutsManana = reservas.filter(r => normalize(r.checkOutDate) === tomorrowKey);\n\nlet body = \"\";\n\n// CONSERJERIA BUTTON\nbody += \"<div style=\"text-align:center;padding:16px;background:#1a2a3a;border-radius:12px;margin-bottom:16px\">\";\nbody += \"<a href=\"\" + conserjeUrl + \"\" target=\"_blank\" style=\"background:#25D366;color:white;padding:14px 28px;border-radius:8px;text-decoration:none;font-weight:bold;font-size:16px;display:inline-block\">\ud83d\udccb Informar huespedes a conserjer\u00eda</a>\";\nbody += \"<div style=\"color:#8899aa;margin-top:8px;font-size:12px\">Check-ins pr\u00f3ximos 3 d\u00edas</div></div>\";\n\n// CHECK-IN TODAY\nif (checkinsHoy.length > 0) {\n  body += \"<section style=\"background:#0d2818;border:1px solid #22c55e;border-radius:12px;padding:16px;margin-bottom:16px\">\";\n  body += \"<div style=\"font-size:18px;font-weight:bold;color:#22c55e;margin-bottom:12px\">\ud83d\udfe2 CHECK-IN HOY \u00b7 \" + diaTexto(todayKey) + \"</div>\";\n  for (const r of checkinsHoy) {\n    const depto = listingMap[r._idlisting] || r._idlisting || \"?\";\n    const guest = getGuestName(r);\n    const phone = getPhone(r);\n    const cout = normalize(r.checkOutDate);\n    body += \"<div style=\"padding:8px;margin:4px 0;background:#0a1f12;border-radius:8px\">\";\n    body += \"<strong>Depto \" + depto + \"</strong> \u00b7 \" + toTitle(guest) + \" \u00b7 \" + (r.guests||1) + \" pers \u00b7 hasta \" + ddmmyyyy(cout);\n    body += phone ? \" <a href=\"\" + waLink(phone,\"Hola\") + \"\" target=\"_blank\" style=\"color:#25D366;font-size:14px\">\ud83d\udcde WhatsApp</a>\" : \"\";\n    body += \"</div>\";\n  }\n  body += \"</section>\";\n}\n\n// CHECK-OUT TODAY (ASEO)\nif (checkoutsHoy.length > 0) {\n  body += \"<section style=\"background:#2a1010;border:1px solid #ef4444;border-radius:12px;padding:16px;margin-bottom:16px\">\";\n  body += \"<div style=\"font-size:18px;font-weight:bold;color:#ef4444;margin-bottom:12px\">\ud83d\udd34 ASEO HOY \u00b7 \" + diaTexto(todayKey) + \"</div>\";\n  for (const r of checkoutsHoy) {\n    const depto = listingMap[r._idlisting] || r._idlisting || \"?\";\n    const guest = getGuestName(r);\n    const phone = getPhone(r);\n    const cin = normalize(r.checkInDate);\n    body += \"<div style=\"padding:8px;margin:4px 0;background:#1a0a0a;border-radius:8px\">\";\n    body += \"<strong>Depto \" + depto + \"</strong> \u00b7 \" + toTitle(guest) + \" \u00b7 desde \" + ddmmyyyy(cin);\n    body += phone ? \" <a href=\"\" + waLink(phone,\"Hola\") + \"\" target=\"_blank\" style=\"color:#25D366;font-size:14px\">\ud83d\udcde WhatsApp</a>\" : \"\";\n    body += \"</div>\";\n  }\n  body += \"</section>\";\n}\n\n// ASEO MA\u00d1ANA (highlight)\nif (checkoutsManana.length > 0) {\n  body += \"<section style=\"background:#332211;border:2px solid #f59e0b;border-radius:12px;padding:16px;margin-bottom:16px\">\";\n  body += \"<div style=\"font-size:18px;font-weight:bold;color:#f59e0b;margin-bottom:12px\">\ud83d\udfe0 ASEO MA\u00d1ANA \u00b7 \" + diaTexto(tomorrowKey) + \" \u26a0\ufe0f</div>\";\n  for (const r of checkoutsManana) {\n    const depto = listingMap[r._idlisting] || r._idlisting || \"?\";\n    const guest = getGuestName(r);\n    const phone = getPhone(r);\n    const cin = normalize(r.checkInDate);\n    body += \"<div style=\"padding:8px;margin:4px 0;background:#2a1a08;border-radius:8px\">\";\n    body += \"<strong>Depto \" + depto + \"</strong> \u00b7 \" + toTitle(guest) + \" \u00b7 desde \" + ddmmyyyy(cin);\n    body += phone ? \" <a href=\"\" + waLink(phone,\"Hola\") + \"\" target=\"_blank\" style=\"color:#25D366;font-size:14px\">\ud83d\udcde WhatsApp</a>\" : \"\";\n    body += \"</div>\";\n  }\n  body += \"</section>\";\n}\n\n// PROXIMOS DIAS\nconst remaining = reservas.filter(r => {\n  const cout = normalize(r.checkOutDate);\n  return cout && cout !== todayKey && cout !== tomorrowKey;\n});\nif (remaining.length > 0) {\n  const byDate = new Map();\n  for (const r of remaining) {\n    const cout = normalize(r.checkOutDate);\n    if (!cout) continue;\n    if (!byDate.has(cout)) byDate.set(cout, []);\n    byDate.get(cout).push(r);\n  }\n  body += \"<section style=\"background:#0f1626;border:1px solid #223055;border-radius:12px;padding:16px\">\";\n  body += \"<div style=\"font-size:18px;font-weight:bold;color:#a9b6d6;margin-bottom:12px\">\ud83d\udd35 PR\u00d3XIMOS D\u00cdAS</div>\";\n  for (const [dia, items] of [...byDate].sort()) {\n    body += \"<div style=\"font-size:16px;font-weight:bold;color:#64748B;margin:8px 0\">\" + ddmmyyyy(dia) + \" \u00b7 \" + diaTexto(dia) + \"</div>\";\n    for (const r of items) {\n      const depto = listingMap[r._idlisting] || r._idlisting || \"?\";\n      const guest = getGuestName(r);\n      const phone = getPhone(r);\n      const cin = normalize(r.checkInDate);\n      body += \"<div style=\"padding:6px;margin:2px 0;border-bottom:1px solid #1a2744\">\";\n      body += \"<strong>Depto \" + depto + \"</strong> \u00b7 \" + toTitle(guest) + \" \u00b7 desde \" + ddmmyyyy(cin);\n      body += phone ? \" <a href=\"\" + waLink(phone,\"Hola\") + \"\" target=\"_blank\" style=\"color:#25D366;font-size:12px\">\ud83d\udcde</a>\" : \"\";\n      body += \"</div>\";\n    }\n  }\n  body += \"</section>\";\n}\n\nconst html = \"<!doctype html><html lang=\"es\"><head><meta charset=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"/><title>Aseos v3 \u00b7 SandiegoApart</title><style>:root{--bg:#0b0f19;--text:#e8eefc}body{margin:0;font-family:system-ui,sans-serif;background:var(--bg);color:var(--text);padding:16px}a{color:#25D366}</style></head><body><h1>\ud83e\uddf9 Aseos \u00b7 SandiegoApart</h1>\" + body + \"<div style=\"text-align:center;padding:16px;color:#8899aa;font-size:12px;margin-top:24px\">Actualizado: \" + new Date().toLocaleString(\"es-CL\",{timeZone:\"America/Santiago\"}) + \" \u00b7 Fuente: API Stays.net</div></body></html>\";\n\nreturn [{json: {html}}];"
       },
       "id": "code-html-v3",
       "name": "Generate HTML v3",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [650, 160]
+      "position": [
+        1168,
+        160
+      ]
     },
     {
       "parameters": {
         "respondWith": "text",
-        "responseBody": "={{ $json.html }}",
-        "options": { "responseHeaders": { "entries": [{"name": "Content-Type", "value": "text/html; charset=utf-8"}] } }
+        "responseBody": "={{ .html }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
       },
       "id": "respond-html-v3",
       "name": "Respond to Webhook",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [900, 160]
+      "position": [
+        1424,
+        160
+      ]
     }
   ],
   "connections": {
-    "GetPagina": { "main": [[ { "node": "GetFechasYAlojamientos", "type": "main", "index": 0 } ]] },
-    "GetFechasYAlojamientos": { "main": [[ { "node": "GetReservasAPI", "type": "main", "index": 0 } ]] },
-    "GetReservasAPI": { "main": [[ { "node": "Generate HTML v3", "type": "main", "index": 0 } ]] },
-    "Generate HTML v3": { "main": [[ { "node": "Respond to Webhook", "type": "main", "index": 0 } ]] }
+    "GetPagina": {
+      "main": [
+        [
+          {
+            "node": "GetFechasYAlojamientos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetFechasYAlojamientos": {
+      "main": [
+        [
+          {
+            "node": "GetReservasAPI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetReservasAPI": {
+      "main": [
+        [
+          {
+            "node": "SplitReservas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitReservas": {
+      "main": [
+        [
+          {
+            "node": "GetReservaDetail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetReservaDetail": {
+      "main": [
+        [
+          {
+            "node": "Generate HTML v3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate HTML v3": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
   },
-  "settings": { "executionOrder": "v1" }
+  "settings": {
+    "executionOrder": "v1"
+  }
 }
