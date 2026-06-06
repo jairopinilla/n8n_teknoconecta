@@ -256,6 +256,10 @@ async def call_tool(name: str, arguments: dict):
         return [TextContent(type="text", text=f"Error: {str(e)}")]
 
 
+async def main():
+    async with stdio_server() as (read, write):
+        await server.run(read, write)
+
 if __name__ == "__main__":
     import asyncio
-    asyncio.run(stdio_server(server))
+    asyncio.run(main())
