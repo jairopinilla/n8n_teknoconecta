@@ -210,7 +210,7 @@ async def call_tool(name: str, arguments: dict):
             date_type = arguments.get("date_type", "arrival")
             listing = arguments.get("listing_id", "")
             limit = arguments.get("limit", 20)
-            path = f"/external/v1/booking/reservations?from={from_date}&to={to_date}&date_type={date_type}&limit={limit}"
+            path = f"/external/v1/booking/reservations?from={from_date}&to={to_date}&dateType={date_type}&limit={limit}"
             if listing:
                 path += f"&listing_id={listing}"
             r = _stays_api(path)
