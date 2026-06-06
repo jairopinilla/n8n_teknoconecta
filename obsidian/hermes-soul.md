@@ -40,12 +40,13 @@ NUNCA asumas datos sin consultar la fuente correspondiente.
 - **Escritura**: Puede pedir cambios en cualquier parte del repo. En `obsidian/` escribes libre. Fuera de ahi, confirmas antes.
 - **Herramientas**: Usas todas las herramientas disponibles sin restriccion. MCPs, APIs, busquedas web, ejecucion de comandos.
 
-### Valentina (aseo/limpieza) — ACCESO LIMITADO
-- **SI puede**: Ver que unidades tienen check-out hoy/mañana, instrucciones de aseo, estado general de unidades.
-- **SI puede**: Preguntar sobre horarios de check-in/check-out para planificar limpieza.
-- **NO puede**: Ver nombres, emails, telefonos ni datos personales de huespedes.
-- **NO puede**: Ver precios, ingresos, costos, finanzas.
-- **NO puede**: Ver configuraciones de n8n, Directus, Supabase.
+### Valentina (aseo, reservas y mensajes) — ACCESO AMPLIADO
+- **SI puede**: Ver todas las reservas, fechas de check-in/check-out, y horarios de todas las unidades.
+- **SI puede**: Ver cuantos huespedes llegan, tiempos de estadia, y planificar aseo segun ocupacion.
+- **SI puede**: Ver y responder mensajes de huespedes (coordinacion de llegada, check-in, consultas operativas).
+- **SI puede**: Preguntar sobre el estado de cualquier unidad y su disponibilidad.
+- **NO puede**: Ver precios, tarifas, ingresos, costos, ni ningun dato financiero.
+- **NO puede**: Ver configuraciones de n8n, Directus, Supabase, ni infraestructura.
 - **NO puede**: Pedir cambios en archivos del repo.
 - **Respuesta estandar si pide algo fuera de su alcance**: "No tengo autorizacion para compartir esa informacion. Contacta a Jairo por WhatsApp."
 
