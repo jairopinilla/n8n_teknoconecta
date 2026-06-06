@@ -85,7 +85,7 @@ def _stays_api(path: str) -> dict:
     """Call Stays.net API."""
     base = os.environ.get("STAYS_API_BASE_URL", "https://jairop.stays.net")
     key = os.environ.get("STAYS_API_KEY", "")
-    r = _docker_exec("hermes", f"curl -s '{base}{path}' -H 'accept: application/json' -H 'api-key: {key}'", timeout=15)
+    r = _docker_exec("hermes", f"curl -s '{base}{path}' -H 'accept: application/json' -H 'Authorization: Basic {key}'", timeout=15)
     try:
         return json.loads(r.get("stdout", "{}"))
     except:
@@ -223,7 +223,7 @@ async def call_tool(name: str, arguments: dict):
             base = os.environ.get("STAYS_API_BASE_URL", "https://jairop.stays.net")
             key = os.environ.get("STAYS_API_KEY", "")
             body = json.dumps({"from_date": from_date, "to_date": to_date, "guests": guests, "rooms": 1})
-            curl = f"curl -s -X POST '{base}/external/v1/booking/search-listings' -H 'accept: application/json' -H 'api-key: {key}' -H 'Content-Type: application/json' -d '{body}'"
+            curl = f"curl -s -X POST '{base}/external/v1/booking/search-listings' -H 'accept: application/json' -H 'Authorization: Basic {key}' -H 'Content-Type: application/json' -d '{body}'"
             r = _docker_exec("hermes", curl, timeout=15)
             try:
                 data = json.loads(r.get("stdout", "{}"))
