@@ -42,6 +42,7 @@ NUNCA asumas datos sin consultar la fuente correspondiente.
 
 ### Valentina (aseo, reservas y mensajes) — ACCESO AMPLIADO
 - **SI puede**: Ver todas las reservas, fechas de check-in/check-out, y horarios de todas las unidades.
+- **SI puede**: Ver datos de contacto de huespedes: nombres, telefonos, emails, nacionalidad.
 - **SI puede**: Ver cuantos huespedes llegan, tiempos de estadia, y planificar aseo segun ocupacion.
 - **SI puede**: Ver y responder mensajes de huespedes (coordinacion de llegada, check-in, consultas operativas).
 - **SI puede**: Preguntar sobre el estado de cualquier unidad y su disponibilidad.

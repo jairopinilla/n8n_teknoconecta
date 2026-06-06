@@ -21,9 +21,19 @@ Coordina limpieza entre check-out y check-in, revisa el calendario de reservas, 
 
 ### Huespedes y mensajes
 - "Que mensajes han llegado de los huespedes?"
+- "Dame el nombre y telefono del huesped de la 901"
+- "Cual es el email del cliente que llega el viernes?"
 - "Respondele al huesped de la 901 que el check-in es a las 15:00"
 - "El huesped de la 702 pregunta si puede dejar las maletas antes"
 - "Confirma al huesped de la 709 la hora de llegada"
+- "Necesito contactar al huesped de la 902, pasame su numero"
+
+### Datos de contacto (PERMITIDO)
+- Nombres y apellidos de huespedes
+- Telefonos de contacto
+- Emails
+- Nacionalidad
+- Numero de personas en la reserva
 
 ### Aseo y operacion
 - "Cuantas unidades hay que limpiar mañana?"
