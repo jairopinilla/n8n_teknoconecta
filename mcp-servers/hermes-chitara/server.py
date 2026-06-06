@@ -143,6 +143,9 @@ async def list_tools():
              inputSchema={"type": "object", "properties": {}, "required": []}),
         Tool(name="chitara_docker_logs", description="Get recent logs from a Docker container.",
              inputSchema={"type": "object", "properties": {"container": {"type": "string"}, "tail": {"type": "integer"}}, "required": ["container"]}),
+
+        Tool(name="chitara_guest_messages_get", description="Get recent guest messages from the database. Filter by date, guest email, or listing.",
+             inputSchema={"type": "object", "properties": {"days": {"type": "integer"}, "guest_email": {"type": "string"}, "listing_id": {"type": "string"}, "limit": {"type": "integer"}}, "required": []}),
     ]
 
 
@@ -248,6 +251,20 @@ async def call_tool(name: str, arguments: dict):
             tail = arguments.get("tail", 50)
             r = subprocess.run(["docker", "logs", container, f"--tail={tail}"], capture_output=True, text=True, timeout=10)
             return [TextContent(type="text", text=r.stdout[:5000])]
+
+        elif name == "chitara_guest_messages_get":
+            days = arguments.get("days", 7)
+            limit = arguments.get("limit", 50)
+            guest_email = arguments.get("guest_email", "")
+            listing_id = arguments.get("listing_id", "")
+            where = f"WHERE created_at >= NOW() - INTERVAL '{days} days'"
+            if guest_email:
+                where += f" AND guest_email ILIKE '%{guest_email}%'"
+            if listing_id:
+                where += f" AND listing_id = '{listing_id}'"
+            sql = f"SELECT id, guest_name, guest_email, message, direction, platform, listing_id, created_at FROM guest_messages {where} ORDER BY created_at DESC LIMIT {limit}"
+            r = _psql(sql, "sandiegoapart")
+            return [TextContent(type="text", text=json.dumps(r, indent=2))]
 
         else:
             return [TextContent(type="text", text=f"Unknown tool: {name}")]
