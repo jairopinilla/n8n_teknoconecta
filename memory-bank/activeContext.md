@@ -1,6 +1,6 @@
 # Active Context — TeknoConecta
 
-> Ultima actualizacion: 2026-06-04
+> Ultima actualizacion: 2026-06-05
 >
 > 🔴 **Directus cloud y Supabase cloud YA NO SE USAN.** Todo en chitara (VPS 5.252.52.190).
 > Para operar usar SIEMPRE los MCPs chitara (`n8n-chitara`, `directus-chitara`, `supabase-chitara`).
@@ -11,18 +11,19 @@
 |-----------|--------|---------|
 | OpenCode Web | ✅ | `https://opencode.chitaraagenteia.com`, Google SSO |
 | OpenCode Bridge | ✅ | `127.0.0.1:4097`, Bearer auth, para Telegram/n8n |
+| **Hermes Agent** | ✅ | `https://hermes.chitaraagenteia.com`, OpenRouter+DeepSeek V4 Pro |
 | Saldito Frontend | ✅ | `https://saldito.chitaraagenteia.com`, Angular 20 + Ionic 8 |
 | Saldito Backend | ✅ | `/health`, auto-provisioning Clerk→DB |
 | Coolify Backend | ⏸️ | Detenido (usamos docker-compose) |
 | Coolify Frontend | ❌ | nixpacks no soporta Angular 20 |
 | Clerk | ⚠️ | Instancia compartida, 2 usuarios (Jairo + Emilio) |
 | n8n | ✅ | 25 workflows, `n8n.teknoconectapp.com` |
-| 16 servicios web | ✅ | Todos con Google SSO via Cloudflare Access |
+| 17 servicios web | ✅ | Todos con Google SSO via Cloudflare Access |
 | Seguridad | ✅ | Solo puertos 22/80/443 expuestos, resto iptables + 127.0.0.1 |
 
 ## Infraestructura
 
-### VPS chitara (5.252.52.190) — 22 contenedores
+### VPS chitara (5.252.52.190) — 23 contenedores
 
 | Servicio | Puerto | Acceso |
 |----------|--------|--------|
@@ -48,6 +49,8 @@
 | Dozzle | 8088 | Google SSO |
 | Saldito Frontend | 4200 | Clerk JWT |
 | Saldito Backend | 3001 | Interno |
+| **Hermes Agent** | 9119 (dashboard), 8642 (API) | Google SSO/basic auth |
+| **Hermes Gateway** | interno | Telegram |
 
 ### Capas de seguridad
 
@@ -91,6 +94,31 @@
 | Saldito Backend | w31bjvs7hqf1t3am8i9ufr45 | saldito-api (detenido) |
 | Saldito Frontend | r1qq6daq11mo3ly63o1l5vn7 | (vacio) |
 
+## Hermes Agent (nuevo — 2026-06-05)
+
+### Stack
+| Capa | Tecnologia |
+|------|-----------|
+| Agente | nousresearch/hermes-agent:latest (Docker) |
+| Modelo | DeepSeek V4 Pro via OpenRouter |
+| Gateway | Telegram (por configurar bot) |
+| Dashboard | `https://hermes.chitaraagenteia.com` (Google SSO) |
+| Vault | `obsidian/` en este repositorio |
+| Workspace | `/opt/hermes-workspace` (repo clonado en VPS) |
+| Sync | Cron cada 1 hora: `git pull` |
+
+### Config
+- Volume data: `/opt/homelab/hermes/data:/opt/data`
+- Volume workspace: `/opt/hermes-workspace:/opt/hermes-workspace`
+- API server: `127.0.0.1:8642`
+- Dashboard: `127.0.0.1:9119`
+- Limits: 4GB RAM, 2 CPUs
+
+### AGENTS.md de Hermes
+- Archivo: `obsidian/AGENTS.md`
+- Solo puede escribir en `obsidian/`, leer el resto del repo
+- Hace git commit + push cuando modifica archivos
+
 ## Telegram Bridge
 
 | Componente | Detalle |
@@ -116,6 +144,15 @@ curl https://saldito.chitaraagenteia.com/health
 
 # Re-encriptar opencode.jsonc
 cat opencode.jsonc | openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -pass pass:5486 -base64 -A > opencode.jsonc.enc
+
+# Hermes: logs
+ssh root@5.252.52.190 "docker logs hermes --tail 50"
+
+# Hermes: reiniciar
+ssh root@5.252.52.190 "cd /opt/homelab/hermes && docker compose restart"
+
+# Hermes: ejecutar comando
+ssh root@5.252.52.190 "docker exec hermes hermes <comando>"
 ```
 
 ## Blockers

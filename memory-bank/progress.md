@@ -24,10 +24,17 @@
 - [x] Zona tarapaca1140.cl eliminada de Cloudflare
 - [x] Cloudflare Skills instaladas (`.agents/skills/cloudflare/`)
 - [x] Datos dummy en gestion_gastos (3 meses, 61 egresos, 5 ingresos)
+- [x] Hermes Agent instalado en chitara (Docker, DeepSeek V4 Pro via OpenRouter)
+- [x] Carpeta `obsidian/` creada como vault de Hermes con AGENTS.md propio
+- [x] Cloudflare Tunnel + Access para dashboard Hermes (`hermes.chitaraagenteia.com`)
+- [x] Cron job sync repo cada 1 hora en VPS
+- [x] Git configurado en VPS para que Hermes pueda commitear y pushear
 
 ## En Progreso
 
-- [ ] Crear bot de Telegram (@BotFather) para ChitaraBot
+- [ ] Crear bot de Telegram (@BotFather) para Hermes Agent
+- [ ] Configurar Telegram gateway en Hermes
+- [ ] Configurar Cloudflare Access para hermes.chitaraagenteia.com
 - [ ] Importar workflows n8n (Telegram + Notificaciones)
 - [ ] Configurar Google OAuth en Clerk Dashboard
 
@@ -56,8 +63,8 @@
 
 - Workflows n8n: 25
 - MCP servers: 27
-- Contenedores Docker: 22
-- Servicios web con Google SSO: 16
+- Contenedores Docker: 23
+- Servicios web con Google SSO: 17
 - Puertos expuestos: 3 (22, 80, 443)
 - Zonas Cloudflare: 1 (chitaraagenteia.com)
 - Zona horaria: America/Santiago

@@ -38,6 +38,28 @@ Chitara (Hermes Agent) es el asistente autonomo mas poderoso del ecosistema. **P
 
 ---
 
+## 🩺 PROTOCOLO DIAGNOSTIC FIRST — OBLIGATORIO PARA TODOS LOS AGENTES
+
+> Todo agente que opere en este repositorio DEBE seguir este protocolo. Sin excepciones.
+
+**Principio**: Diagnosticar antes de actuar. Entender antes de proponer. Proponer antes de ejecutar.
+
+### Reglas del protocolo
+
+1. **Read-only automatico**: Leer archivos, logs, configs, docs, buscar en el repo → permitido sin aprobacion.
+2. **Cambios funcionales**: Codigo, config, infra, workflows, DB, servicios, Docker → requieren aprobacion explicita.
+3. **Negocio de arriendo (alto riesgo)**: Reservas, huespedes, check-in/out, aseos, pricing, Stays, PriceLabs, mensajes a huespedes, codigos de acceso, pagos → aprobacion explicita reforzada.
+4. **Dividir en pasos**: Toda solucion se divide en pasos medianos. Ejecutar solo los aprobados.
+5. **Validar cada paso**: Despues de ejecutar, verificar que funciono.
+6. **Reportar y esperar**: Reportar resultado, esperar autorizacion para continuar.
+7. **Registrar en memory-bank/**: Diagnosticos relevantes, decisiones, cambios, incidentes.
+8. **Nunca guardar secretos**: Tokens, passwords, .env, credenciales, datos sensibles de huespedes → prohibido en documentacion y memory-bank.
+9. **Ante la duda, detenerse y preguntar**.
+
+### Referencia completa: `agent-rules/diagnostic-first.md`
+
+---
+
 ## 🏗️ INFRAESTRUCTURA — DONDE ESTA CADA COSA
 
 > **Directus cloud y Supabase cloud YA NO SE USAN.** Todo migro a chitara (VPS 5.252.52.190).
