@@ -1,0 +1,169 @@
+{
+  "id": "N8n_ProcesaAirbnb_AI",
+  "name": "N8n_ProcesaAirbnb_AI",
+  "active": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [{"field": "minutes", "minutesInterval": 15}]
+        }
+      },
+      "id": "sch-001",
+      "name": "Schedule 15min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1,
+      "position": [-800, 300]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT * FROM \"Alojamiento\" WHERE \"AlojamientoActivo\" = true ORDER BY \"AlojamientoNumero\""
+      },
+      "id": "pg-aloj",
+      "name": "GetAlojamientos",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [-600, 300],
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT id, payload_raw, from_email, subject, received_at, created_at FROM \"BandejaRentaAirbnb\" WHERE estado = 'Pendiente' ORDER BY created_at ASC LIMIT 10"
+      },
+      "id": "pg-emails",
+      "name": "GetPendingEmails",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [-400, 300],
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Prepara cada email pendiente con el prompt AI y referencia de alojamientos\nconst emails = $input.all();\nconst alojNode = $('GetAlojamientos').first();\n\n// Si no hay emails, terminamos\nif (emails.length === 0 || !emails[0] || !emails[0].json || !emails[0].json.id) {\n  return [{ json: { _empty: true } }];\n}\n\n// Construir referencia de alojamientos\nlet alojText = '';\nif (alojNode && alojNode.json) {\n  const rowsObj = alojNode.json;\n  // Puede venir como array directo o como objeto con rows\n  const rows = Array.isArray(rowsObj) ? rowsObj : (rowsObj.rows || []);\n  alojText = rows.map(a => {\n    const id = a.AlojamientoStayslistingIdLargo || a.AlojamientoStayslistingId || 'N/A';\n    const num = a.AlojamientoNumero || '?';\n    const name = a.AlojamientoStaysInternalName || a.AlojamientoNombre || '';\n    return `  ID:${id} | Depto:${num} | ${name}`;\n  }).join('\\n');\n}\n\nreturn emails.map(e => {\n  const raw = e.json.payload_raw;\n  let emailText = '';\n  let subject = e.json.subject || '';\n  \n  try {\n    if (typeof raw === 'string') {\n      const parsed = JSON.parse(raw);\n      emailText = parsed.cuerpo_texto || parsed.cuerpo_html || parsed.text || raw;\n      subject = parsed.asunto || parsed.subject || subject;\n    } else if (typeof raw === 'object' && raw !== null) {\n      emailText = raw.cuerpo_texto || raw.cuerpo_html || raw.text || JSON.stringify(raw);\n      subject = raw.asunto || raw.subject || subject;\n    } else {\n      emailText = String(raw);\n    }\n  } catch(err) {\n    emailText = String(raw);\n  }\n\n  const prompt = `Eres un asistente que procesa correos de Airbnb. Analiza el siguiente correo y devuelve SOLO un JSON valido (sin markdown, sin explicaciones):\n\nASUNTO: ${subject}\nTEXTO: ${emailText.substring(0, 3000)}\n\nALOJAMIENTOS DISPONIBLES (ID externo Stays, Numero interno, Nombre):\n${alojText}\n\nDevuelve EXACTAMENTE este JSON, nada mas:\n{\"es_mensaje\":true,\"es_alerta\":false,\"motivo_alerta\":\"\",\"nombre_remitente\":\"Maria Perez\",\"texto_mensaje\":\"Hola, queria saber...\",\"fecha_mensaje\":\"2026-06-07 14:30\",\"idalojamiento\":\"698ead2e065bcaac0d2f4940\",\"numero_alojamiento\":901}\n\nREGLAS:\n- es_mensaje: false si es publicidad, notificacion de reserva automatica, confirmacion, factura, ruido. true si es un mensaje real de un huesped o de Valentina.\n- es_alerta: true SOLO si contiene reclamo, queja, emergencia, urgencia, reserva de ultima hora (menos de 24h), problema grave.\n- idalojamiento: busca en la lista de arriba el ID que coincida con el numero de departamento mencionado. Si no puedes determinarlo, usa null.\n- nombre_remitente: extrae el nombre de quien escribe (puede ser huesped o Valentina).\n- fecha_mensaje: extrae la fecha si aparece. Formato YYYY-MM-DD HH:MM.\n- texto_mensaje: el texto limpio del mensaje, sin firmas ni headers.`;\n\n  return {\n    json: {\n      bandeja_id: e.json.id,\n      from_email: e.json.from_email,\n      subject: subject,\n      email_text: emailText,\n      ai_prompt: prompt\n    }\n  };\n});"
+      },
+      "id": "code-prep",
+      "name": "PreparePrompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-200, 300]
+    },
+    {
+      "parameters": {
+        "resource": "chat",
+        "operation": "message",
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "role": "user",
+              "content": "={{ $json.ai_prompt }}"
+            }
+          ]
+        },
+        "options": {
+          "temperature": 0.1,
+          "maxTokens": 500
+        }
+      },
+      "id": "ai-001",
+      "name": "OpenAI Classify",
+      "type": "n8n-nodes-base.openAi",
+      "typeVersion": 2,
+      "position": [0, 300],
+      "credentials": {
+        "openAiApi": {
+          "id": "vz36nXux76vq1txG",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Parsea la respuesta JSON del AI y extrae los campos\nconst items = $input.all();\n\nreturn items.map(item => {\n  const rawResponse = item.json.message?.content || item.json.choices?.[0]?.message?.content || '';\n  \n  let parsed = {};\n  try {\n    let content = rawResponse.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\n    parsed = JSON.parse(content);\n  } catch(e) {\n    parsed = {\n      es_mensaje: false, es_alerta: false, motivo_alerta: '',\n      nombre_remitente: null, texto_mensaje: null,\n      fecha_mensaje: null, idalojamiento: null, numero_alojamiento: null\n    };\n  }\n\n  const esMensaje = parsed.es_mensaje === true;\n  const esAlerta = parsed.es_alerta === true;\n  const estadoBandeja = esMensaje ? 'Procesado' : 'Descartado';\n\n  return {\n    json: {\n      bandeja_id: item.json.bandeja_id,\n      nombre_remitente: parsed.nombre_remitente || null,\n      texto_mensaje: parsed.texto_mensaje || null,\n      fecha_mensaje: parsed.fecha_mensaje || null,\n      idalojamiento: parsed.idalojamiento || null,\n      es_alerta: esAlerta,\n      alerta_procesada: !esAlerta,\n      motivo_alerta: parsed.motivo_alerta || '',\n      ai_response_raw: rawResponse,\n      estado_bandeja: estadoBandeja\n    }\n  };\n});"
+      },
+      "id": "code-parse",
+      "name": "ParseAIResponse",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [200, 300]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO \"MensajeAirbnb\" (bandeja_id, fecha_mensaje, nombre_remitente, texto_mensaje, idalojamiento, es_alerta, alerta_procesada, ai_response_raw) SELECT {{ $json.bandeja_id }}, CASE WHEN '{{ $json.fecha_mensaje }}' != '' AND '{{ $json.fecha_mensaje }}' != 'null' THEN '{{ $json.fecha_mensaje }}'::timestamptz ELSE NULL END, NULLIF('{{ $json.nombre_remitente }}', 'null'), NULLIF('{{ $json.texto_mensaje }}', 'null'), NULLIF('{{ $json.idalojamiento }}', 'null'), {{ $json.es_alerta }}, {{ $json.alerta_procesada }}, '{{ $json.ai_response_raw }}' WHERE '{{ $json.bandeja_id }}' != '' RETURNING id"
+      },
+      "id": "pg-insert-msg",
+      "name": "SaveMensaje",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [400, 300],
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE \"BandejaRentaAirbnb\" SET estado = '{{ $json.estado_bandeja }}', updated_at = NOW() WHERE id = {{ $json.bandeja_id }}"
+      },
+      "id": "pg-update-bandeja",
+      "name": "UpdateBandeja",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [600, 300],
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Schedule 15min": {
+      "main": [[{ "node": "GetAlojamientos", "type": "main", "index": 0 }]]
+    },
+    "GetAlojamientos": {
+      "main": [[{ "node": "GetPendingEmails", "type": "main", "index": 0 }]]
+    },
+    "GetPendingEmails": {
+      "main": [[{ "node": "PreparePrompt", "type": "main", "index": 0 }]]
+    },
+    "PreparePrompt": {
+      "main": [[{ "node": "OpenAI Classify", "type": "main", "index": 0 }]]
+    },
+    "OpenAI Classify": {
+      "main": [[{ "node": "ParseAIResponse", "type": "main", "index": 0 }]]
+    },
+    "ParseAIResponse": {
+      "main": [[{ "node": "SaveMensaje", "type": "main", "index": 0 }]]
+    },
+    "SaveMensaje": {
+      "main": [[{ "node": "UpdateBandeja", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": false,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none",
+    "executionTimeout": 300,
+    "timezone": "America/Santiago"
+  }
+}
