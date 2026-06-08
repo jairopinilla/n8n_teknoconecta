@@ -1,0 +1,63 @@
+{
+  "name": "N8n_ProcesaAirbnb",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "procesa-email-airbnb",
+        "authentication": "headerAuth",
+        "options": {}
+      },
+      "id": "a1b2c3d4-0001-4000-a000-000000000001",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [-336, -16],
+      "webhookId": "airbnb-webhook-001"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Procesa correos de Airbnb (notificaciones de mensajes de huespedes)\n// Extrae: nombre del huesped, email, mensaje, unidad de referencia\n\nfor (const item of $input.all()) {\n  const body = item.json.body;\n\n  // 1. LIMPIEZA DEL REMITENTE\n  const rawRemitente = body.email_remitente || body.remitente || \"\";\n  const remitenteMatch = rawRemitente.match(/<([^>]+)>/);\n  const remitenteLimpio = remitenteMatch ? remitenteMatch[1] : rawRemitente;\n\n  // 2. LIMPIEZA DEL DESTINATARIO\n  const rawDestinatario = body.email_destinatario || \"\";\n  const destMatch = rawDestinatario.match(/<([^>]+)>/);\n  const destinatarioLimpio = destMatch ? destMatch[1] : rawDestinatario;\n\n  // 3. LIMPIEZA DEL CUERPO\n  let texto = body.cuerpo_texto || body.cuerpo_html || \"\";\n  texto = texto.replace(/https?:\\/\\/[^\\s]+/g, \" \");\n  texto = texto.replace(/\\[image:[^\\]]+\\]/g, \"\");\n  texto = texto\n    .replace(/\\r\\n/g, \"\\n\")\n    .replace(/\\n\\s*\\n/g, \"\\n\")\n    .replace(/[ \\t]+/g, \" \")\n    .trim();\n\n  // 4. EXTRAER ASUNTO (para detectar posible unidad)\n  const subject = body.asunto || body.subject || \"\";\n\n  // 5. DETECTAR POSIBLE UNIDAD DESDE EL ASUNTO\n  // Airbnb suele incluir el nombre/numero de la unidad en el asunto\n  let listingId = \"\";\n  const deptoMatch = subject.match(/(?:depto|departamento|unidad|studio|apt|apartamento)\\s*#?\\s*(\\d+)/i);\n  if (deptoMatch) listingId = deptoMatch[1];\n\n  // 6. INTENTAR EXTRAER NOMBRE DEL HUESPED\n  let guestName = \"\";\n  const nameMatch = texto.match(/(?:Hola|Hi)\\s+([A-Za-zÁ-Úá-ú\\s]+?)(?:,|\\.|\\n)/);\n  if (nameMatch) guestName = nameMatch[1].trim();\n\n  // Tambien buscar patrones como \"You have a new message from [Name]\"\n  if (!guestName) {\n    const fromMatch = texto.match(/(?:from|de)\\s+([A-Za-zÁ-Úá-ú\\s]+?)(?:\\s+about|\\s+regarding|\\.|,|\\n)/i);\n    if (fromMatch) guestName = fromMatch[1].trim();\n  }\n\n  // 7. EXTRAER EMAIL DEL HUESPED (si esta en el texto)\n  let guestEmail = \"\";\n  const emailMatch = texto.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,})/);\n  if (emailMatch) guestEmail = emailMatch[1];\n\n  // 8. EXTRAER MENSAJE DEL HUESPED (lo que esta entre el saludo y la firma de Airbnb)\n  let guestMessage = texto;\n  // Quitar firma de Airbnb\n  guestMessage = guestMessage.replace(/Sent from the Airbnb app[\\s\\S]*$/i, \"\");\n  guestMessage = guestMessage.replace(/The Airbnb Team[\\s\\S]*$/i, \"\");\n  guestMessage = guestMessage.replace(/This message was sent[\\s\\S]*$/i, \"\");\n  guestMessage = guestMessage.trim();\n\n  // Guardar datos limpios\n  item.json.email_remitente_limpio = remitenteLimpio.trim();\n  item.json.email_destinatario_limpio = destinatarioLimpio.trim();\n  item.json.mensaje_depurado = texto;\n  item.json.id_mensaje_gmail = body.id_mensaje_gmail;\n  item.json.subject = subject;\n  item.json.guest_name_detectado = guestName;\n  item.json.guest_email_detectado = guestEmail;\n  item.json.listing_id_detectado = listingId;\n  item.json.guest_message_extraido = guestMessage;\n}\n\nreturn $input.all();"
+      },
+      "id": "a1b2c3d4-0002-4000-a000-000000000002",
+      "name": "Procesa email Airbnb",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [-128, -16]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO \"BandejaRentaAirbnb\" (email_raw, from_email, subject, received_at, estado, listing_id, guest_name, guest_email, message_extracted) VALUES ('{{ $json.body }}'::text, '{{ $json.email_remitente_limpio }}', '{{ $json.subject }}', '{{ $json.body.fecha_recepcion }}'::timestamptz, 'Pendiente', '{{ $json.listing_id_detectado }}', '{{ $json.guest_name_detectado }}', '{{ $json.guest_email_detectado }}', '{{ $json.guest_message_extraido }}') RETURNING id"
+      },
+      "id": "a1b2c3d4-0003-4000-a000-000000000003",
+      "name": "Guardar en Bandeja",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2,
+      "position": [128, -16],
+      "credentials": {
+        "postgres": {
+          "id": "zvx0J3DPht42SAUp",
+          "name": "Postgres account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "Procesa email Airbnb", "type": "main", "index": 0 }]]
+    },
+    "Procesa email Airbnb": {
+      "main": [[{ "node": "Guardar en Bandeja", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "saveExecutionProgress": false,
+    "saveManualExecutions": true,
+    "saveDataErrorExecution": "all",
+    "saveDataSuccessExecution": "none",
+    "executionTimeout": 30,
+    "timezone": "America/Santiago"
+  }
+}
