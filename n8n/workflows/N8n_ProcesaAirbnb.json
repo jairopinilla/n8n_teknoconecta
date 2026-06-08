@@ -15,7 +15,13 @@
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2,
       "position": [-336, -16],
-      "webhookId": "airbnb-webhook-001"
+      "webhookId": "airbnb-webhook-001",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "z0M54nC5Fx9VCrLL",
+          "name": "Key Interna n8n Webhook"
+        }
+      }
     },
     {
       "parameters": {
