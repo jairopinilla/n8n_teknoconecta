@@ -26,7 +26,7 @@
     {
       "parameters": {
         "operation": "executeQuery",
-        "query": "INSERT INTO \"BandejaRentaAirbnb\" (payload_raw, from_email, subject, received_at, estado) VALUES ('{{ JSON.stringify($json.body) }}'::jsonb, '{{ $json.body.email_remitente || $json.body.remitente || '''' }}', '{{ $json.body.asunto || $json.body.subject || '''' }}', '{{ $json.body.fecha_recepcion || $now }}'::timestamptz, 'Pendiente') RETURNING id"
+        "query": "INSERT INTO \"BandejaRentaAirbnb\" (payload_raw, from_email, subject, received_at, estado) VALUES ('{{ $json.body }}'::jsonb, '{{ $json.body.email_remitente }}', '{{ $json.body.asunto }}', COALESCE('{{ $json.body.fecha_recepcion }}'::timestamptz, NOW()), 'Pendiente') RETURNING id"
       },
       "id": "a1b2c3d4-0003-4000-a000-000000000003",
       "name": "Guardar en Bandeja",
