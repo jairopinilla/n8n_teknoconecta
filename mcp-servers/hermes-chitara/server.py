@@ -149,6 +149,9 @@ async def list_tools():
 
         Tool(name="chitara_airbnb_mensajes_get", description="Get processed Airbnb messages with AI classification. Filter by alertas no procesadas, fecha, o alojamiento.",
              inputSchema={"type": "object", "properties": {"days": {"type": "integer"}, "solo_alertas": {"type": "boolean"}, "idalojamiento": {"type": "string"}, "limit": {"type": "integer"}}, "required": []}),
+
+        Tool(name="chitara_identify_caller", description="Identify who is currently messaging Chitara. Returns the Telegram chat ID of the last inbound message.",
+             inputSchema={"type": "object", "properties": {}, "required": []}),
     ]
 
 
@@ -282,6 +285,23 @@ async def call_tool(name: str, arguments: dict):
             sql = f"SELECT m.id, m.fecha_mensaje, m.nombre_remitente, m.texto_mensaje, m.idalojamiento, m.estado, m.es_alerta, m.alerta_procesada, m.motivo_alerta, b.from_email, b.subject FROM \"MensajeAirbnb\" m LEFT JOIN \"BandejaRentaAirbnb\" b ON m.bandeja_id = b.id {where} ORDER BY m.created_at DESC LIMIT {limit}"
             r = _psql(sql, "sandiegoapart")
             return [TextContent(type="text", text=json.dumps(r, indent=2))]
+
+        elif name == "chitara_identify_caller":
+            import re
+            r = subprocess.run(
+                ["grep", "inbound message.*platform=telegram", "/opt/data/logs/gateway.log"],
+                capture_output=True, text=True, timeout=5
+            )
+            lines = r.stdout.strip().split("\n")
+            last_line = lines[-1] if lines else ""
+            chat_match = re.search(r"chat=(\d+)", last_line)
+            user_match = re.search(r"user=([^\s]+)", last_line)
+            chat_id = chat_match.group(1) if chat_match else "unknown"
+            user_name = user_match.group(1) if user_match else "unknown"
+            known_users = {"7570257625": "Jairo"}
+            identity = known_users.get(chat_id, "Desconocido")
+            result = {"chat_id": chat_id, "user_telegram": user_name, "identity": identity}
+            return [TextContent(type="text", text=json.dumps(result, indent=2))]
 
         else:
             return [TextContent(type="text", text=f"Unknown tool: {name}")]
