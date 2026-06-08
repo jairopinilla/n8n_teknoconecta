@@ -146,6 +146,9 @@ async def list_tools():
 
         Tool(name="chitara_guest_messages_get", description="Get recent guest messages from the database. Filter by date, guest email, or listing.",
              inputSchema={"type": "object", "properties": {"days": {"type": "integer"}, "guest_email": {"type": "string"}, "listing_id": {"type": "string"}, "limit": {"type": "integer"}}, "required": []}),
+
+        Tool(name="chitara_airbnb_mensajes_get", description="Get processed Airbnb messages with AI classification. Filter by alertas no procesadas, fecha, o alojamiento.",
+             inputSchema={"type": "object", "properties": {"days": {"type": "integer"}, "solo_alertas": {"type": "boolean"}, "idalojamiento": {"type": "string"}, "limit": {"type": "integer"}}, "required": []}),
     ]
 
 
@@ -263,6 +266,20 @@ async def call_tool(name: str, arguments: dict):
             if listing_id:
                 where += f" AND listing_id = '{listing_id}'"
             sql = f"SELECT id, guest_name, guest_email, message, direction, platform, listing_id, created_at FROM guest_messages {where} ORDER BY created_at DESC LIMIT {limit}"
+            r = _psql(sql, "sandiegoapart")
+            return [TextContent(type="text", text=json.dumps(r, indent=2))]
+
+        elif name == "chitara_airbnb_mensajes_get":
+            days = arguments.get("days", 7)
+            limit = arguments.get("limit", 20)
+            solo_alertas = arguments.get("solo_alertas", False)
+            idalojamiento = arguments.get("idalojamiento", "")
+            where = f"WHERE m.created_at >= NOW() - INTERVAL '{days} days'"
+            if solo_alertas:
+                where += " AND m.es_alerta = true AND m.alerta_procesada = false"
+            if idalojamiento:
+                where += f" AND m.idalojamiento = '{idalojamiento}'"
+            sql = f"SELECT m.id, m.fecha_mensaje, m.nombre_remitente, m.texto_mensaje, m.idalojamiento, m.estado, m.es_alerta, m.alerta_procesada, m.motivo_alerta, b.from_email, b.subject FROM \"MensajeAirbnb\" m LEFT JOIN \"BandejaRentaAirbnb\" b ON m.bandeja_id = b.id {where} ORDER BY m.created_at DESC LIMIT {limit}"
             r = _psql(sql, "sandiegoapart")
             return [TextContent(type="text", text=json.dumps(r, indent=2))]
 
