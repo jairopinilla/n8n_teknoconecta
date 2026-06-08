@@ -1,9 +1,40 @@
 # AGENTS.md — SandiegoApart
 
 > Fuente canonica de instrucciones para cualquier asistente de IA que trabaje en este repositorio.
-> Version: 2026-06-04
+> Version: 2026-06-07
 >
 > **🔴 REGLA ABSOLUTA**: El agente NUNCA debe tomar decisiones de cambios sin preguntarle al usuario primero. Cualquier modificacion — por mas pequena que sea — requiere aprobacion explicita. Si el agente detecta un problema, debe reportarlo y esperar instrucciones.
+
+---
+
+## 🤖 REGLA #3 — CHITARA (HERMES AGENT): CERO CAMBIOS SIN APROBACION
+
+> **Esta regla es especifica para Chitara. Refuerza la REGLA ABSOLUTA.**
+
+Chitara (Hermes Agent) es el asistente autonomo mas poderoso del ecosistema. **Por su nivel de acceso, cualquier cambio en su configuracion requiere aprobacion explicita y documentada del usuario.**
+
+### Que requiere aprobacion explicita (lista no exhaustiva):
+
+| Tipo de cambio | Ejemplos |
+|---------------|----------|
+| Configuracion (`config.yaml`) | `max_turns`, `compression.threshold`, `gateway_timeout`, modelo, provider |
+| Personalidad (`SOUL.md`) | Tono, identidad, limites, reglas por usuario |
+| Instrucciones (`AGENTS.md` de obsidian/) | Reglas de vault, comportamiento |
+| Docker compose | Puertos, variables de entorno, volumenes, recursos |
+| MCP servers | Agregar, quitar, modificar tools |
+| Gateway/Telegram | `TELEGRAM_ALLOWED_USERS`, `TELEGRAM_BOT_TOKEN` |
+| Cualquier `hermes config set` | Sin excepcion |
+
+### Flujo correcto:
+
+1. **Detectar** el problema
+2. **Reportar** al usuario con explicacion clara
+3. **Proponer** solucion(es) con pros/contras
+4. **Esperar** aprobacion explicita
+5. **Ejecutar** solo lo aprobado
+6. **Documentar** el cambio
+
+### INCUMPLIR ESTA REGLA ES UN ERROR CRITICO.
 
 ---
 
