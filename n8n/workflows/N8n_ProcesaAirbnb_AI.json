@@ -61,37 +61,30 @@
     },
     {
       "parameters": {
-        "resource": "chat",
-        "operation": "message",
-        "model": "gpt-4o-mini",
-        "messages": {
-          "values": [
-            {
-              "role": "user",
-              "content": "={{ $json.ai_prompt }}"
-            }
-          ]
-        },
-        "options": {
-          "temperature": 0.1,
-          "maxTokens": 500
-        }
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"model\":\"gpt-4o-mini\",\"temperature\":0.1,\"max_tokens\":500,\"messages\":[{\"role\":\"user\",\"content\":\"{{ $json.ai_prompt }}\"}]}",
+        "options": {}
       },
       "id": "ai-001",
       "name": "OpenAI Classify",
-      "type": "n8n-nodes-base.openAi",
-      "typeVersion": 2,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
       "position": [0, 300],
       "credentials": {
-        "openAiApi": {
-          "id": "vz36nXux76vq1txG",
-          "name": "OpenAi account"
+        "httpBearerAuth": {
+          "id": "AFvSZEfTn42QIE8e",
+          "name": "OpenAI Bearer Auth account"
         }
       }
     },
     {
       "parameters": {
-        "jsCode": "// Parsea la respuesta JSON del AI y extrae los campos\nconst items = $input.all();\n\nreturn items.map(item => {\n  const rawResponse = item.json.message?.content || item.json.choices?.[0]?.message?.content || '';\n  \n  let parsed = {};\n  try {\n    let content = rawResponse.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\n    parsed = JSON.parse(content);\n  } catch(e) {\n    parsed = {\n      es_mensaje: false, es_alerta: false, motivo_alerta: '',\n      nombre_remitente: null, texto_mensaje: null,\n      fecha_mensaje: null, idalojamiento: null, numero_alojamiento: null\n    };\n  }\n\n  const esMensaje = parsed.es_mensaje === true;\n  const esAlerta = parsed.es_alerta === true;\n  const estadoBandeja = esMensaje ? 'Procesado' : 'Descartado';\n\n  return {\n    json: {\n      bandeja_id: item.json.bandeja_id,\n      nombre_remitente: parsed.nombre_remitente || null,\n      texto_mensaje: parsed.texto_mensaje || null,\n      fecha_mensaje: parsed.fecha_mensaje || null,\n      idalojamiento: parsed.idalojamiento || null,\n      es_alerta: esAlerta,\n      alerta_procesada: !esAlerta,\n      motivo_alerta: parsed.motivo_alerta || '',\n      ai_response_raw: rawResponse,\n      estado_bandeja: estadoBandeja\n    }\n  };\n});"
+        "jsCode": "// Parsea la respuesta JSON de OpenAI API y extrae los campos\n// Recupera bandeja_id del nodo PreparePrompt (mismo orden de items)\nconst items = $input.all();\nconst promptItems = $('PreparePrompt').all();\n\nreturn items.map((item, index) => {\n  const rawResponse = item.json.choices?.[0]?.message?.content || '';\n  const bandejaId = promptItems[index]?.json?.bandeja_id;\n  \n  let parsed = {};\n  try {\n    let content = rawResponse.replace(/```json\\n?/g, '').replace(/```\\n?/g, '').trim();\n    parsed = JSON.parse(content);\n  } catch(e) {\n    parsed = {\n      es_mensaje: false, es_alerta: false, motivo_alerta: '',\n      nombre_remitente: null, texto_mensaje: null,\n      fecha_mensaje: null, idalojamiento: null, numero_alojamiento: null\n    };\n  }\n\n  const esMensaje = parsed.es_mensaje === true;\n  const esAlerta = parsed.es_alerta === true;\n  const estadoBandeja = esMensaje ? 'Procesado' : 'Descartado';\n\n  return {\n    json: {\n      bandeja_id: bandejaId,\n      nombre_remitente: parsed.nombre_remitente || null,\n      texto_mensaje: parsed.texto_mensaje || null,\n      fecha_mensaje: parsed.fecha_mensaje || null,\n      idalojamiento: parsed.idalojamiento || null,\n      es_alerta: esAlerta,\n      alerta_procesada: !esAlerta,\n      motivo_alerta: parsed.motivo_alerta || '',\n      ai_response_raw: rawResponse,\n      estado_bandeja: estadoBandeja\n    }\n  };\n});"
       },
       "id": "code-parse",
       "name": "ParseAIResponse",
