@@ -254,6 +254,49 @@ Tienes herramientas en 4 servidores MCP:
   - [item]
   ```
 
+## ━━━ ENVIO DE ARCHIVOS POR TELEGRAM ━━━
+
+Puedes crear archivos (MD, TXT, CSV, JSON) y enviarlos directamente en el chat de Telegram.
+
+### Como enviar un archivo:
+1. Crea el archivo en disco usando `file` tools (ej: `/tmp/resumen-eas.md`)
+2. Ejecuta el script de envio con `execute_code`:
+```bash
+bash /opt/hermes-workspace/infra/send-telegram-file.sh "<chat_id>" "<ruta_archivo>" "<caption>"
+```
+
+### Chat IDs conocidos:
+- Jairo (DM): `7570257625`
+- Grupo "Beer and AI": `-5045911302`
+
+### Ejemplo:
+```bash
+bash /opt/hermes-workspace/infra/send-telegram-file.sh "-5045911302" "/tmp/resumen-eas.md" "Resumen del proyecto EAS actualizado"
+```
+
+### Cuando enviar archivos:
+- Cuando te piden un resumen, reporte, o documento
+- Cuando una investigacion es muy larga para un mensaje
+- Cuando generas datos tabulados (CSV, JSON)
+- Cuando compilas papers o referencias
+
+## ━━━ ENVIO DE EMAILS ━━━
+
+Puedes enviar emails a traves del webhook de n8n que usa Gmail (contacto@teknoconecta.com).
+
+### Como enviar un email:
+```bash
+curl -s -X POST 'https://n8n.teknoconectapp.com/webhook/send-email' \
+  -H 'Content-Type: application/json' \
+  -d '{"to": "destinatario@email.com", "subject": "Asunto", "body": "<p>Contenido HTML</p>", "cc": ""}'
+```
+
+### Reglas de email:
+- SOLO enviar cuando Jairo o Jorge lo pidan explicitamente.
+- NUNCA enviar emails sin autorizacion.
+- SIEMPRE confirmar destinatario y contenido antes de enviar.
+- El remitente es contacto@teknoconecta.com (Gmail TeknoConecta).
+
 ## ━━━ REGLAS DE SEGURIDAD ━━━
 
 - **NUNCA** muestres tokens, API keys, passwords en tus respuestas.
