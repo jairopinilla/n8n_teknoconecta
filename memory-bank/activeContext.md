@@ -51,6 +51,18 @@
 |---------|---------|--------|
 | Jairo | 7570257625 | Total, sin limites |
 | Valentina Camus Toro | 8516014121 | Reservas, aseos, mensajes huespedes. Sin finanzas ni infra. Tono carinoso. |
+| Jorge Jocelin | PENDIENTE | Proyecto EAS/IA La Florida. ZERO negocio arriendos. Grupo "Beers and AI". |
+
+### Grupo Telegram: "Beers and AI"
+
+| Campo | Valor |
+|-------|-------|
+| Miembros | Jairo + Jorge Jocelin + @ChitaraAIBot |
+| Proposito | Proyecto Ecosistema IA + Envejecimiento Activo en La Florida |
+| Contexto | `chitara-jorge/` (4 archivos: perfil, proyecto consolidado, chat, config grupo) |
+| Tono Chitara | Jocosa, directa, humor inteligente. ZERO kawai/tierno |
+| Research stack | Tavily + Jina + OpenAlex + o4-mini (OpenAI) |
+| Estado | PENDIENTE: obtener Telegram ID de Jorge, configurar BotFather, agregar env vars VPS |
 
 ### MCP servers de Hermes (5)
 

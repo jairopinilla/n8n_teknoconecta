@@ -41,8 +41,25 @@
 - [x] **PubMed MCP:** `@cyanheads/pubmed-mcp-server` via npx. En este repo + Chitara. NCBI API key configurada.
 - [x] **opencode.jsonc re-encriptado** con los nuevos MCPs
 
+### Completado sesion 2026-06-11 (Beers and AI)
+
+- [x] **Carpeta `chitara-jorge/`** creada con 4 archivos de contexto para grupo Telegram
+- [x] **jorge-perfil.md**: Perfil profesional completo de Jorge Jocelin
+- [x] **proyecto-eas-consolidado.md**: Fusion de 7 documentos del proyecto EAS + IA La Florida
+- [x] **chat-historial.md**: Contexto de la relacion Jairo-Jorge
+- [x] **grupo-config.md**: Personalidad, limites, research stack, metodo investigacion, proactividad
+- [x] **hermes-soul.md actualizado**: Perfil Jorge + seccion grupo "Beers and AI" + OpenAlex tools
+- [x] **hermes-config.md actualizado**: OpenAlex MCP + o4-mini como modelo secundario
+- [x] **obsidian/knowledge/eas/** directorio creado para documentacion continua de Chitara
+
 ## En Progreso
 
+- [ ] Grupo "Beers and AI": Obtener Telegram ID de Jorge (falta que escriba al bot)
+- [ ] Grupo "Beers and AI": Desactivar privacy mode en @BotFather para @ChitaraAIBot
+- [ ] Grupo "Beers and AI": Agregar Jorge a TELEGRAM_ALLOWED_USERS en VPS
+- [ ] Grupo "Beers and AI": Agregar OPENAI_API_KEY en docker-compose de Hermes
+- [ ] Grupo "Beers and AI": Instalar OpenAlex MCP en VPS Hermes
+- [ ] Grupo "Beers and AI": Crear grupo en Telegram y probar
 - [ ] Configurar Google OAuth en Clerk Dashboard (saldito)
 
 ## Pendiente
