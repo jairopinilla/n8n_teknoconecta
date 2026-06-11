@@ -1,9 +1,12 @@
 # Active Context — TeknoConecta
 
-> Ultima actualizacion: 2026-06-05
+> Ultima actualizacion: 2026-06-11
 >
 > 🔴 **Directus cloud y Supabase cloud YA NO SE USAN.** Todo en chitara (VPS 5.252.52.190).
 > Para operar usar SIEMPRE los MCPs chitara (`n8n-chitara`, `directus-chitara`, `supabase-chitara`).
+>
+> 🔵 **Este repo (n8n_teknoconecta) es el hub central.** Coordina infra, MCPs, Hermes, Coolify y los otros repos.
+> Los repos de proyectos (`gestion_gastos`, `kiosko_laflorida`) tienen su propio AGENTS.md y contexto.
 
 ## Estado del sistema
 
@@ -12,52 +15,75 @@
 | OpenCode Web | ✅ | `https://opencode.chitaraagenteia.com`, Google SSO |
 | OpenCode Bridge | ✅ | `127.0.0.1:4097`, Bearer auth, para Telegram/n8n |
 | **Hermes Agent** | ✅ | `https://hermes.chitaraagenteia.com`, OpenRouter+DeepSeek V4 Pro |
-| Saldito Frontend | ✅ | `https://saldito.chitaraagenteia.com`, Angular 20 + Ionic 8 |
-| Saldito Backend | ✅ | `/health`, auto-provisioning Clerk→DB |
-| Coolify Backend | ⏸️ | Detenido (usamos docker-compose) |
-| Coolify Frontend | ❌ | nixpacks no soporta Angular 20 |
-| Clerk | ⚠️ | Instancia compartida, 2 usuarios (Jairo + Emilio) |
+| **Coolify** | ✅ | 4 proyectos, 4 apps desplegadas con auto-deploy |
 | n8n | ✅ | 25 workflows, `n8n.teknoconectapp.com` |
-| 17 servicios web | ✅ | Todos con Google SSO via Cloudflare Access |
+| 20 servicios web | ✅ | Todos con HTTPS via Cloudflare Tunnel |
 | Seguridad | ✅ | Solo puertos 22/80/443 expuestos, resto iptables + 127.0.0.1 |
 
-## Infraestructura
+## Coolify — Apps desplegadas (auto-deploy via GitHub App)
 
-### VPS chitara (5.252.52.190) — 23 contenedores
+| App | UUID | Dominio | Puerto host | Repo | Watch paths |
+|-----|------|---------|-------------|------|-------------|
+| kiosko-front | `tjsxn4ds3u6o8onl37fvxctn` | `https://kiosko.chitaraagenteia.com` | 127.0.0.1:4281 | jairopinilla/kiosko_laflorida | `apps/front/**` |
+| kiosko-back | `nojhn2t0uvtfbhf39f7w4jky` | `https://api-kiosko.chitaraagenteia.com` | 127.0.0.1:4282 | jairopinilla/kiosko_laflorida | `apps/back/**` |
+| saldito-frontend | `v5p0g5emcti9ej4a8ot7ct08` | `https://saldito.chitaraagenteia.com` | 127.0.0.1:4280 | jairopinilla/gestion_gastos | `frontend/*` |
+| saldito-api | `p33rw7wj1i4duba954v3d727` | `https://api-saldito.chitaraagenteia.com` | 127.0.0.1:4283 | jairopinilla/gestion_gastos | `backend/*` |
 
-| Servicio | Puerto | Acceso |
-|----------|--------|--------|
-| n8n | 5678 | Google SSO |
-| Directus | 8055 | Google SSO |
-| PostgreSQL | 5432 | 127.0.0.1 |
-| Coolify | 8000 | Google SSO |
-| Supabase Studio | 8001 | Google SSO |
-| Supabase GoTrue | 9999 | 127.0.0.1 |
-| Supabase Meta | 8080 | 127.0.0.1 |
-| PostgREST | 3100 | 127.0.0.1 |
-| pgAdmin | 5050 | Google SSO |
-| Uptime Kuma | 3002 | Google SSO |
-| Code-server | 8443 | Google SSO |
-| Litellm | 4000 | Google SSO |
-| Open WebUI | 3001 | Google SSO |
-| Qdrant | 6333 | 127.0.0.1 |
-| Portainer | 9000 | Google SSO |
-| Homepage | 3000 | Google SSO |
-| Shlink | 8087 | Google SSO |
-| Shlink Web | 8089 | Google SSO |
-| Healthchecks | 8100 | Google SSO |
-| Dozzle | 8088 | Google SSO |
-| Saldito Frontend | 4200 | Clerk JWT |
-| Saldito Backend | 3001 | Interno |
-| **Hermes Agent** | 9119 (dashboard), 8642 (API) | Google SSO/basic auth |
-| **Hermes Gateway** | interno | Telegram |
+**Deploy:** Push a `main` → Coolify redeploy automatico (GitHub App + watch_paths).
+**APIs publicas:** HTTPS via Cloudflare Tunnel. Auth es responsabilidad del desarrollador de cada proyecto.
+**Coolify API:** `http://localhost:8000/api/v1/` con token `1|GP1qcJjN3Hyi9HmEvyPDfXAoLp0LomhB1Bgul5DEaf517cae`
+**Nota:** El MCP `coolify_list_apps` y `coolify_deploy_app` fallan. Usar API REST via SSH como fallback.
+
+## Hermes Agent (Chitara en Telegram)
+
+| Campo | Valor |
+|-------|-------|
+| Dashboard | `https://hermes.chitaraagenteia.com` |
+| Modelo | DeepSeek V4 Pro via OpenRouter |
+| Config | `/opt/hermes-workspace/obsidian/.hermes/config.yaml` |
+| SOUL.md | `/opt/hermes-workspace/obsidian/.hermes/SOUL.md` |
+| Workspace | `/opt/hermes-workspace` (repo clonado en VPS) |
+| Sync | Cron cada 1 hora: `git pull` |
+
+### Usuarios Telegram autorizados
+
+| Usuario | Chat ID | Acceso |
+|---------|---------|--------|
+| Jairo | 7570257625 | Total, sin limites |
+| Valentina Camus Toro | 8516014121 | Reservas, aseos, mensajes huespedes. Sin finanzas ni infra. Tono carinoso. |
+
+### MCP servers de Hermes (5)
+
+| Servidor | Tools | Proposito |
+|----------|-------|-----------|
+| chitara | 16 | n8n, Directus, Supabase, Stays, PriceLabs, Docker |
+| jina | 21 | Busqueda web, lectura URLs, clasificacion |
+| tavily | 5 | Investigacion profunda |
+| openalex | 3 | Papers academicos, autores, instituciones (250M+ papers) |
+| pubmed | 10 | Papers biomedicos, full-text, MeSH, citas (36M+ papers) |
+
+## MCPs de investigacion academica
+
+| MCP | Donde | Token | Cobertura |
+|-----|-------|-------|-----------|
+| **OpenAlex** | Este repo + Chitara | Premium (`ofWS9byNgmkbR5u68cDB0N`) | 250M+ papers, todas las disciplinas |
+| **PubMed** | Este repo + Chitara | NCBI API key (`223ce...dd09`) | 36M+ papers biomedicos, full-text via PMC/EuropePMC/Unpaywall |
+
+**OpenAlex MCP:** Clonado de `drAbreu/alex-mcp` a `mcp-servers/openalex/`, con soporte API key agregado (2 lineas).
+**PubMed MCP:** `@cyanheads/pubmed-mcp-server` via npx, sin codigo local.
+
+## Infraestructura VPS chitara (5.252.52.190)
+
+### Recursos (2026-06-11)
+- **RAM:** 47GB total, ~10GB usado, 36GB libre
+- **CPU:** 12 cores AMD EPYC
+- **Disco:** 484GB total, 59GB usado, 425GB libre
 
 ### Capas de seguridad
 
 | Capa | Mecanismo |
 |------|-----------|
-| Cloudflare Tunnel | `*.chitaraagenteia.com` → Google SSO → localhost |
-| Cloudflare Access | 16 apps con Google identity provider |
+| Cloudflare Tunnel | `*.chitaraagenteia.com` → localhost |
 | iptables DOCKER-USER | Bloquea acceso externo a puertos Docker |
 | iptables INPUT | Bloquea acceso externo a puertos de host |
 | Docker compose | Servicios bind a `127.0.0.1` |
@@ -71,92 +97,30 @@
 | 80 | Nginx | Web |
 | 443 | Nginx | Web + SSL |
 
-## Proyecto gestion_gastos (saldito)
-
-### Stack
-| Capa | Tecnologia |
-|------|-----------|
-| Frontend | Angular 20 + Ionic 8 (salditoapp) |
-| Auth | Clerk (@clerk/clerk-js + @clerk/backend) |
-| Backend | Node.js ESM (server.mjs), puerto 3001 |
-| DB | Neon PostgreSQL (old-lab-07457522) |
-| Proxy | Nginx host → 127.0.0.1:4200 → Docker nginx → backend:3001 |
-
-### Deploy
-- **Repo**: `jairopinilla/gestion_gastos` (privado)
-- **VPS**: `/srv/saldito/docker-compose.yml`
-- **Deploy script**: `/srv/saldito/deploy.sh`
-- **Dominio**: `https://saldito.chitaraagenteia.com`
-
-### Coolify (organizacion)
-| Proyecto | UUID | Apps |
-|----------|------|------|
-| Saldito Backend | w31bjvs7hqf1t3am8i9ufr45 | saldito-api (detenido) |
-| Saldito Frontend | r1qq6daq11mo3ly63o1l5vn7 | (vacio) |
-
-## Hermes Agent (nuevo — 2026-06-05)
-
-### Stack
-| Capa | Tecnologia |
-|------|-----------|
-| Agente | nousresearch/hermes-agent:latest (Docker) |
-| Modelo | DeepSeek V4 Pro via OpenRouter |
-| Gateway | Telegram (por configurar bot) |
-| Dashboard | `https://hermes.chitaraagenteia.com` (Google SSO) |
-| Vault | `obsidian/` en este repositorio |
-| Workspace | `/opt/hermes-workspace` (repo clonado en VPS) |
-| Sync | Cron cada 1 hora: `git pull` |
-
-### Config
-- Volume data: `/opt/homelab/hermes/data:/opt/data`
-- Volume workspace: `/opt/hermes-workspace:/opt/hermes-workspace`
-- API server: `127.0.0.1:8642`
-- Dashboard: `127.0.0.1:9119`
-- Limits: 4GB RAM, 2 CPUs
-
-### AGENTS.md de Hermes
-- Archivo: `obsidian/AGENTS.md`
-- Solo puede escribir en `obsidian/`, leer el resto del repo
-- Hace git commit + push cuando modifica archivos
-
-## Telegram Bridge
-
-| Componente | Detalle |
-|-----------|--------|
-| Bridge | `opencode-bridge.service` :4097 |
-| Auth | Bearer `chitara-bridge-2026` |
-| Bind | `127.0.0.1` (solo local) |
-| Workflows | `n8n/workflows/N8n_ChitaraBot_Telegram.json` |
-| Notificaciones | `n8n/workflows/N8n_NotificaCheckins.json` |
-| Valentina | chat_id: 56982737381, contexto aseo (2d past / 7d future) |
-
 ## Comandos clave
 
 ```bash
 # Desencriptar
 bash decrypt.sh
 
-# Deploy saldito
-ssh root@5.252.52.190 /srv/saldito/deploy.sh
-
-# Ver salud
-curl https://saldito.chitaraagenteia.com/health
-
 # Re-encriptar opencode.jsonc
 cat opencode.jsonc | openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -pass pass:5486 -base64 -A > opencode.jsonc.enc
+
+# Coolify: restart app via API
+ssh root@5.252.52.190 "curl -s -X POST 'http://localhost:8000/api/v1/applications/<UUID>/restart' -H 'Authorization: Bearer 1|GP1qcJjN3Hyi9HmEvyPDfXAoLp0LomhB1Bgul5DEaf517cae' -H 'Content-Type: application/json'"
+
+# Hermes: reiniciar
+ssh root@5.252.52.190 "docker restart hermes"
 
 # Hermes: logs
 ssh root@5.252.52.190 "docker logs hermes --tail 50"
 
-# Hermes: reiniciar
-ssh root@5.252.52.190 "cd /opt/homelab/hermes && docker compose restart"
-
-# Hermes: ejecutar comando
-ssh root@5.252.52.190 "docker exec hermes hermes <comando>"
+# Cloudflared: config
+ssh root@5.252.52.190 "cat /etc/cloudflared/config.yml"
 ```
 
 ## Blockers
 
-- Clerk: instancia de desarrollo, Google OAuth no configurado
-- Coolify frontend: nixpacks no compila Angular 20
+- Coolify MCP: `list_apps` y `deploy_app` fallan por UUID → usar API REST via SSH
+- Coolify proxy Traefik no activo (conflicta con Nginx en 80/443) → todo via Cloudflare Tunnel
 - OpenCode CLI `run`: inestable con modelo deepseek-v4-pro (funciona via web)
