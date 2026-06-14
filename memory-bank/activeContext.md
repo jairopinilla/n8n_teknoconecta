@@ -1,6 +1,6 @@
 # Active Context — TeknoConecta
 
-> Ultima actualizacion: 2026-06-11
+> Ultima actualizacion: 2026-06-14
 >
 > 🔴 **Directus cloud y Supabase cloud YA NO SE USAN.** Todo en chitara (VPS 5.252.52.190).
 > Para operar usar SIEMPRE los MCPs chitara (`n8n-chitara`, `directus-chitara`, `supabase-chitara`).
@@ -15,7 +15,7 @@
 | OpenCode Web | ✅ | `https://opencode.chitaraagenteia.com`, Google SSO |
 | OpenCode Bridge | ✅ | `127.0.0.1:4097`, Bearer auth, para Telegram/n8n |
 | **Hermes Agent** | ✅ | `https://hermes.chitaraagenteia.com`, OpenRouter+DeepSeek V4 Pro |
-| **Coolify** | ✅ | 4 proyectos, 4 apps desplegadas con auto-deploy |
+| **Coolify** | ✅ | 7 proyectos, 6 apps desplegadas con auto-deploy |
 | n8n | ✅ | 25 workflows, `n8n.teknoconectapp.com` |
 | 20 servicios web | ✅ | Todos con HTTPS via Cloudflare Tunnel |
 | Seguridad | ✅ | Solo puertos 22/80/443 expuestos, resto iptables + 127.0.0.1 |
@@ -28,6 +28,8 @@
 | kiosko-back | `nojhn2t0uvtfbhf39f7w4jky` | `https://api-kiosko.chitaraagenteia.com` | 127.0.0.1:4282 | jairopinilla/kiosko_laflorida | `apps/back/**` |
 | saldito-frontend | `v5p0g5emcti9ej4a8ot7ct08` | `https://saldito.chitaraagenteia.com` | 127.0.0.1:4280 | jairopinilla/gestion_gastos | `frontend/*` |
 | saldito-api | `p33rw7wj1i4duba954v3d727` | `https://api-saldito.chitaraagenteia.com` | 127.0.0.1:4283 | jairopinilla/gestion_gastos | `backend/*` |
+| topic-front | `nidwrfwt1a9vu41p0q8x4tns` | `nidwrfwt1a9vu41p0q8x4tns.5.252.52.190.sslip.io` | 3000 | jairopinilla/topic_system | `/front` |
+| topic-back | `tp9delvkuk4tj41fvqe5j87s` | `tp9delvkuk4tj41fvqe5j87s.5.252.52.190.sslip.io` | 4000 | jairopinilla/topic_system | `/back` |
 
 **Deploy:** Push a `main` → Coolify redeploy automatico (GitHub App + watch_paths).
 **APIs publicas:** HTTPS via Cloudflare Tunnel. Auth es responsabilidad del desarrollador de cada proyecto.
@@ -135,4 +137,32 @@ ssh root@5.252.52.190 "cat /etc/cloudflared/config.yml"
 
 - Coolify MCP: `list_apps` y `deploy_app` fallan por UUID → usar API REST via SSH
 - Coolify proxy Traefik no activo (conflicta con Nginx en 80/443) → todo via Cloudflare Tunnel
+
+## PostgreSQL — Fix conectividad Coolify containers (2026-06-14)
+
+**Problema:** Contenedores Coolify (red `coolify`) no podían resolver `postgres` porque PostgreSQL solo estaba en `postgres_default`. Tampoco resolvían `host.docker.internal`.
+
+**Fix:** Agregada red `coolify` como externa en `docker-compose.yml` de postgres (`/opt/homelab/postgres/docker-compose.yml`). PostgreSQL ahora escucha en ambas redes.
+
+**Contenedores beneficiados:** test_viral, topic-front, topic-back, kiosko-front, kiosko-back, saldito-frontend, saldito-api.
+
+**DATABASE_URL correcto:** `postgresql://{user}:{pass}@postgres:5432/{db}`
+- test_viral → `testviral_app@postgres:5432/test_viral` ✅
+- topic_system → `topic_system_app@postgres:5432/topic_system` ✅ (pre-configurado)
 - OpenCode CLI `run`: inestable con modelo deepseek-v4-pro (funciona via web)
+
+## topic_system (2026-06-14)
+
+Nuevo proyecto `topic_system` con frontend y backend desplegados en Coolify.
+
+| Recurso | Detalle |
+|---------|---------|
+| **DB** | `topic_system` en PostgreSQL chitara |
+| **Repo** | `jairopinilla/topic_system` (privado) |
+| **topic-front** | Coolify app `nidwrfwt1a9vu41p0q8x4tns`, puerto 3000, `/front` |
+| **topic-back** | Coolify app `tp9delvkuk4tj41fvqe5j87s`, puerto 4000, `/back` |
+| **S3 Bucket** | `topicsystem` en us-east-1 |
+| **IAM User** | `topic-system-user` con politica `topic-system-s3-access` |
+| **DB User** | `topic_system_app` con password auto-generada |
+| **MCP OpenCode** | `aws-topic-system` + `topic-system-db` en opencode.jsonc |
+| **MCP Local** | `mcp-servers/topic-system-db/server.py` (12 tools) |
