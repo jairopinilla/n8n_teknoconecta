@@ -1,12 +1,12 @@
 # Active Context — TeknoConecta
 
-> Ultima actualizacion: 2026-06-14
+> Ultima actualizacion: 2026-06-18
 >
 > 🔴 **Directus cloud y Supabase cloud YA NO SE USAN.** Todo en chitara (VPS 5.252.52.190).
 > Para operar usar SIEMPRE los MCPs chitara (`n8n-chitara`, `directus-chitara`, `supabase-chitara`).
 >
 > 🔵 **Este repo (n8n_teknoconecta) es el hub central.** Coordina infra, MCPs, Hermes, Coolify y los otros repos.
-> Los repos de proyectos (`gestion_gastos`, `kiosko_laflorida`) tienen su propio AGENTS.md y contexto.
+> Los repos de proyectos (`topic_system`, `Procesa_doc`, `gestion_gastos`, `kiosko_laflorida`) tienen su propio AGENTS.md y contexto.
 
 ## Estado del sistema
 
@@ -14,13 +14,16 @@
 |-----------|--------|---------|
 | OpenCode Web | ✅ | `https://opencode.chitaraagenteia.com`, Google SSO |
 | OpenCode Bridge | ✅ | `127.0.0.1:4097`, Bearer auth, para Telegram/n8n |
-| **Hermes Agent** | ✅ | `https://hermes.chitaraagenteia.com`, OpenRouter+DeepSeek V4 Pro |
-| **Coolify** | ✅ | 7 proyectos, 6 apps desplegadas con auto-deploy |
+| **Hermes Agent** | ✅ | `https://hermes.chitaraagenteia.com`, DeepSeek V4 Pro directo |
+| **Obsidian Vaults (NUEVO)** | ✅ | beer-ai + jairo, Quartz static sites, token auth, cron sync 15min |
+| **Coolify** | ✅ | 9 proyectos, 9 apps desplegadas con auto-deploy |
 | n8n | ✅ | 25 workflows, `n8n.teknoconectapp.com` |
-| 20 servicios web | ✅ | Todos con HTTPS via Cloudflare Tunnel |
+| 20+ servicios web | ✅ | Todos con HTTPS via Cloudflare Tunnel |
+| **S3 Backups** | ✅ | PostgreSQL + Qdrant → `chitara-backups`, diario 3 AM Chile |
 | Seguridad | ✅ | Solo puertos 22/80/443 expuestos, resto iptables + 127.0.0.1 |
+| SSH / OpenCode Windows | ✅ | Llave `id_ed25519` en `C:\Users\jairo\.ssh\`, usable desde Windows nativo |
 
-## Coolify — Apps desplegadas (auto-deploy via GitHub App)
+## Coolify — Apps desplegadas (auto-deploy via GitHub App, source_id=2)
 
 | App | UUID | Dominio | Puerto host | Repo | Watch paths |
 |-----|------|---------|-------------|------|-------------|
@@ -28,88 +31,130 @@
 | kiosko-back | `nojhn2t0uvtfbhf39f7w4jky` | `https://api-kiosko.chitaraagenteia.com` | 127.0.0.1:4282 | jairopinilla/kiosko_laflorida | `apps/back/**` |
 | saldito-frontend | `v5p0g5emcti9ej4a8ot7ct08` | `https://saldito.chitaraagenteia.com` | 127.0.0.1:4280 | jairopinilla/gestion_gastos | `frontend/*` |
 | saldito-api | `p33rw7wj1i4duba954v3d727` | `https://api-saldito.chitaraagenteia.com` | 127.0.0.1:4283 | jairopinilla/gestion_gastos | `backend/*` |
-| topic-front | `nidwrfwt1a9vu41p0q8x4tns` | `nidwrfwt1a9vu41p0q8x4tns.5.252.52.190.sslip.io` | 3000 | jairopinilla/topic_system | `/front` |
-| topic-back | `tp9delvkuk4tj41fvqe5j87s` | `tp9delvkuk4tj41fvqe5j87s.5.252.52.190.sslip.io` | 4000 | jairopinilla/topic_system | `/back` |
+| test-viral-app | `f8kxqoahu0hwlwimhktgjp7t` | `https://test.chitaraagenteia.com` | 127.0.0.1:4284 | jairopinilla/test_viral | (auto) |
+| topic-front | `nidwrfwt1a9vu41p0q8x4tns` | `https://topic.chitaraagenteia.com` | 127.0.0.1:4285 | jairopinilla/topic_system | `front/**` |
+| topic-back | `tp9delvkuk4tj41fvqe5j87s` | `https://api-topic.chitaraagenteia.com` | 127.0.0.1:4286 | jairopinilla/topic_system | `back/**` |
+| procesadoc-front | `m9zorl3mx3iu4ujk6ybwtecc` | `https://procesadoc.chitaraagenteia.com` | 127.0.0.1:4287 | jairopinilla/Procesa_doc | `front/**` |
+| procesadoc-back | `ae7b2m3w6janv082js1he4q5` | `https://api-procesadoc.chitaraagenteia.com` | 127.0.0.1:4288 | jairopinilla/Procesa_doc | `backend/**` |
 
-**Deploy:** Push a `main` → Coolify redeploy automatico (GitHub App + watch_paths).
+**rag-api:** No usa Coolify. Docker-compose manual en `/opt/homelab/rag/`. Puerto `127.0.0.1:4289`.
+**Deploy:** Push a `main` → Coolify redeploy automatico (GitHub App `coolify-chitara`, source_id=2).
 **APIs publicas:** HTTPS via Cloudflare Tunnel. Auth es responsabilidad del desarrollador de cada proyecto.
 **Coolify API:** `http://localhost:8000/api/v1/` con token `1|GP1qcJjN3Hyi9HmEvyPDfXAoLp0LomhB1Bgul5DEaf517cae`
 **Nota:** El MCP `coolify_list_apps` y `coolify_deploy_app` fallan. Usar API REST via SSH como fallback.
 
-## Hermes Agent (Chitara en Telegram)
+## Infraestructura compartida (red `coolify`)
 
-| Campo | Valor |
-|-------|-------|
-| Dashboard | `https://hermes.chitaraagenteia.com` |
-| Modelo | DeepSeek V4 Pro via OpenRouter |
-| Config | `/opt/hermes-workspace/obsidian/.hermes/config.yaml` |
-| SOUL.md | `/opt/hermes-workspace/obsidian/.hermes/SOUL.md` |
-| Workspace | `/opt/hermes-workspace` (repo clonado en VPS) |
-| Sync | Cron cada 1 hora: `git pull` |
+| Servicio | Hostname | Puerto | Notas |
+|----------|----------|--------|-------|
+| PostgreSQL | `postgres` | 5432 | Redes `coolify` + `postgres_default`. DBs: `topic_system`, `procesadoc`, `sandiegoapart`, `test_viral`, `kioskomunicipio`, `n8n`, `chitara`, `shlink`, `healthchecks` |
+| Qdrant | `qdrant` | 6333 | API key obligatoria. Colección por sistema: `system_{slug}_bge_m3_1024` |
+| Redis | `redis-topic` | 6379 | Compartido por DB number: 0=topic, 1=procesadoc, 2=RAG |
 
-### Usuarios Telegram autorizados
+## PostgreSQL — Fix conectividad Coolify (2026-06-14)
 
-| Usuario | Chat ID | Acceso |
-|---------|---------|--------|
-| Jairo | 7570257625 | Total, sin limites |
-| Valentina Camus Toro | 8516014121 | Reservas, aseos, mensajes huespedes. Sin finanzas ni infra. Tono carinoso. |
-| Jorge Jocelin | PENDIENTE | Proyecto EAS/IA La Florida. ZERO negocio arriendos. Grupo "Beers and AI". |
+**Problema:** Contenedores Coolify no podían resolver `postgres` (redes separadas).
+**Fix:** Agregada red `coolify` como externa en `/opt/homelab/postgres/docker-compose.yml`. PostgreSQL ahora en ambas redes.
+**DATABASE_URL correcto:** `postgresql://{user}:{pass}@postgres:5432/{db}` — usar hostname `postgres`, no `host.docker.internal`.
 
-### Grupo Telegram: "Beers and AI"
+## Qdrant — Base vectorial compartida (2026-06-16)
 
-| Campo | Valor |
-|-------|-------|
-| Miembros | Jairo + Jorge Jocelin + @ChitaraAIBot |
-| Proposito | Proyecto Ecosistema IA + Envejecimiento Activo en La Florida |
-| Contexto | `chitara-jorge/` (4 archivos: perfil, proyecto consolidado, chat, config grupo) |
-| Tono Chitara | Jocosa, directa, humor inteligente. ZERO kawai/tierno |
-| Research stack | Tavily + Jina + OpenAlex + o4-mini (OpenAI) |
-| Estado | PENDIENTE: obtener Telegram ID de Jorge, configurar BotFather, agregar env vars VPS |
+Servicio de infraestructura multi-tenant. No pertenece a ningún sistema.
 
-### MCP servers de Hermes (5)
+| Recurso | Detalle |
+|---------|---------|
+| **docker-compose** | `/opt/homelab/qdrant/docker-compose.yml` + `.env` |
+| **Red** | `coolify` + `qdrant_default` |
+| **Puertos** | `127.0.0.1:6333` (REST), `127.0.0.1:6334` (gRPC) |
+| **API key** | ✅ Obligatoria |
+| **Volumen** | `qdrant_qdrant_storage` |
+| **Tooling** | `infra/qdrant/` (README, init_collections.py, smoke_test.py, payload_schema.md, backup_snapshot.sh, restore_snapshot.md) |
+| **Colecciones activas** | `system_procesadoc_bge_m3_1024` (1024 dim, Cosine, 7 índices de payload) |
+| **Aislamiento** | Por `workspace_id` en payload (filtro `must`), backend impone desde JWT |
 
-| Servidor | Tools | Proposito |
-|----------|-------|-----------|
-| chitara | 16 | n8n, Directus, Supabase, Stays, PriceLabs, Docker |
-| jina | 21 | Busqueda web, lectura URLs, clasificacion |
-| tavily | 5 | Investigacion profunda |
-| openalex | 3 | Papers academicos, autores, instituciones (250M+ papers) |
-| pubmed | 10 | Papers biomedicos, full-text, MeSH, citas (36M+ papers) |
+## Redis — Instancia unificada
 
-## MCPs de investigacion academica
+| DB | Sistema | Uso |
+|----|---------|-----|
+| 0 | topic_system | Celery worker + cache |
+| 1 | procesadoc | Backend queue |
+| 2 | procesadoc | RAG / LightRAG |
 
-| MCP | Donde | Token | Cobertura |
-|-----|-------|-------|-----------|
-| **OpenAlex** | Este repo + Chitara | Premium (`ofWS9byNgmkbR5u68cDB0N`) | 250M+ papers, todas las disciplinas |
-| **PubMed** | Este repo + Chitara | NCBI API key (`223ce...dd09`) | 36M+ papers biomedicos, full-text via PMC/EuropePMC/Unpaywall |
+## topic_system — TopicPack AI (2026-06-17)
 
-**OpenAlex MCP:** Clonado de `drAbreu/alex-mcp` a `mcp-servers/openalex/`, con soporte API key agregado (2 lineas).
-**PubMed MCP:** `@cyanheads/pubmed-mcp-server` via npx, sin codigo local.
+| Recurso | Detalle |
+|---------|---------|
+| **DB** | `topic_system`, user `topic_system_app` |
+| **Repo** | `jairopinilla/topic_system` (privado) |
+| **Frontend** | `https://topic.chitaraagenteia.com` → `127.0.0.1:4285`, Nuxt 3, Dockerfile en `front/` |
+| **Backend** | `https://api-topic.chitaraagenteia.com/health` → `127.0.0.1:4286`, FastAPI, Dockerfile en `back/` |
+| **Celery** | `celery-topic` (docker run manual, no Coolify), conecta a `redis-topic:6379/0` |
+| **S3** | `topicsystem` en us-east-1, IAM user `topic-system-user` |
+| **DATABASE_URL** | `postgresql+asyncpg://topic_system_app:...@postgres:5432/topic_system` |
+| **MCPs** | `topic-system-db` (12 tools SSH), `aws-topic-system` |
+| **Fix Coolify** | Dockerfiles creados y pusheados. `source_id` corregido: 0→2. `dockerfile_location` seteado. `watch_paths` agregados. Imágenes built manualmente, compose recreado con port bindings. |
 
-## Infraestructura VPS chitara (5.252.52.190)
+## procesadoc — ProcesaDoc (2026-06-15)
 
-### Recursos (2026-06-11)
-- **RAM:** 47GB total, ~10GB usado, 36GB libre
-- **CPU:** 12 cores AMD EPYC
-- **Disco:** 484GB total, 59GB usado, 425GB libre
+| Recurso | Detalle |
+|---------|---------|
+| **DB** | `procesadoc`, user `procesadoc_app` |
+| **Repo** | `jairopinilla/Procesa_doc` (privado) |
+| **Frontend** | `https://procesadoc.chitaraagenteia.com` → `127.0.0.1:4287` |
+| **Backend** | `https://api-procesadoc.chitaraagenteia.com` → `127.0.0.1:4288` |
+| **DATABASE_URL** | `postgresql://procesadoc_app:...@postgres:5432/procesadoc` |
+| **RAG API** | `/opt/homelab/rag/`, build desde `apps/rag/` del repo, puerto `127.0.0.1:4289` |
+| **Qdrant** | `system_procesadoc_bge_m3_1024` |
+| **Redis** | DB 1 (backend), DB 2 (RAG) |
+| **MCP** | `procesadoc-db` (12 tools SSH) |
+| **AI Keys** | OpenAI, DeepSeek, Gemini, Kimi, Mistral — todas en Coolify env vars |
+| **Repo VPS** | Clonado en `/opt/homelab/rag/repo/`, git credential helper configurado |
 
-### Capas de seguridad
+## DNS Cloudflare (zona: chitaraagenteia.com, zone_id: 71a7e23d2f3406a9e755614a51cd3f3c)
 
-| Capa | Mecanismo |
-|------|-----------|
-| Cloudflare Tunnel | `*.chitaraagenteia.com` → localhost |
-| iptables DOCKER-USER | Bloquea acceso externo a puertos Docker |
-| iptables INPUT | Bloquea acceso externo a puertos de host |
-| Docker compose | Servicios bind a `127.0.0.1` |
-| Nginx | Solo expone 80/443 |
+Todos los registros son CNAME → `779b9db0-b10e-4048-90e4-e09256d40f39.cfargotunnel.com`, proxied.
 
-### Puertos expuestos a internet
+| Subdominio | → Puerto host |
+|------------|--------------|
+| topic.chitaraagenteia.com | 127.0.0.1:4285 |
+| api-topic.chitaraagenteia.com | 127.0.0.1:4286 |
+| procesadoc.chitaraagenteia.com | 127.0.0.1:4287 |
+| api-procesadoc.chitaraagenteia.com | 127.0.0.1:4288 |
+| saldito.chitaraagenteia.com | 127.0.0.1:4280 |
+| kiosko.chitaraagenteia.com | 127.0.0.1:4281 |
+| api-kiosko.chitaraagenteia.com | 127.0.0.1:4282 |
+| api-saldito.chitaraagenteia.com | 127.0.0.1:4283 |
+| test.chitaraagenteia.com | 127.0.0.1:4284 |
 
-| Puerto | Servicio | Motivo |
-|--------|----------|--------|
-| 22 | SSH | Acceso admin |
-| 80 | Nginx | Web |
-| 443 | Nginx | Web + SSL |
+## Contenedores Docker — No Coolify (servicios base + workers)
+
+| Contenedor | docker-compose | Red |
+|-----------|---------------|-----|
+| `postgres` | `/opt/homelab/postgres/` | `coolify` + `postgres_default` |
+| `qdrant` | `/opt/homelab/qdrant/` | `coolify` + `qdrant_default` |
+| `redis-topic` | docker run manual | `coolify` |
+| `celery-topic` | docker run manual | `coolify` |
+| `n8n` | `/opt/homelab/n8n/` | `n8n_default` |
+| `directus` | `/opt/homelab/directus/` | `postgres_default` |
+| `litellm` | `/opt/homelab/litellm/` | `litellm_default` |
+| `open-webui` | `/opt/homelab/open-webui/` | `open-webui_default` |
+| `hermes` | `/opt/homelab/hermes/` | `hermes_default` |
+| `code-server` | `/opt/homelab/code-server/` | `code-server_default` |
+| `homepage` | `/opt/homelab/homepage/` | `homepage_default` |
+| `dozzle` | `/opt/homelab/dozzle/` | `dozzle_default` |
+| `shlink` | `/opt/homelab/shlink/` | `postgres_default` |
+| `supabase-*` | `/opt/homelab/supabase/` | `supabase_supabase_net` |
+| `uptime-kuma` | `/opt/homelab/uptime-kuma/` | `uptime-kuma_default` |
+| `healthchecks` | `/opt/homelab/healthchecks/` | (host) |
+| `portainer` | docker run | (host) |
+| `pgadmin` | `/opt/homelab/postgres/` | `postgres_default` |
+
+## MCP servers en opencode.jsonc
+
+30 servidores MCP. Los nuevos de esta sesión:
+- `aws-topic-system`: AWS API MCP con credenciales `topic-system-user` (solo bucket `topicsystem`)
+- `topic-system-db`: PostgreSQL via SSH (12 tools, DB `topic_system`)
+- `procesadoc-db`: PostgreSQL via SSH (12 tools, DB `procesadoc`)
 
 ## Comandos clave
 
@@ -117,52 +162,55 @@
 # Desencriptar
 bash decrypt.sh
 
-# Re-encriptar opencode.jsonc
+# Re-encriptar opencode.jsonc y credenciales
 cat opencode.jsonc | openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -pass pass:5486 -base64 -A > opencode.jsonc.enc
+cat documentacion/credenciales | openssl enc -aes-256-cbc -pbkdf2 -iter 100000 -pass pass:5486 -base64 -A > documentacion/credenciales.enc
 
-# Coolify: restart app via API
-ssh root@5.252.52.190 "curl -s -X POST 'http://localhost:8000/api/v1/applications/<UUID>/restart' -H 'Authorization: Bearer 1|GP1qcJjN3Hyi9HmEvyPDfXAoLp0LomhB1Bgul5DEaf517cae' -H 'Content-Type: application/json'"
+# Coolify: update app via API
+ssh root@5.252.52.190 "curl -s -X PATCH 'http://localhost:8000/api/v1/applications/<UUID>' -H 'Authorization: Bearer 1|GP1qcJjN3Hyi9HmEvyPDfXAoLp0LomhB1Bgul5DEaf517cae' -H 'Content-Type: application/json' -d '{\"key\":\"value\"}'"
 
-# Hermes: reiniciar
-ssh root@5.252.52.190 "docker restart hermes"
-
-# Hermes: logs
-ssh root@5.252.52.190 "docker logs hermes --tail 50"
-
-# Cloudflared: config
+# Cloudflared: config + restart
 ssh root@5.252.52.190 "cat /etc/cloudflared/config.yml"
+ssh root@5.252.52.190 "systemctl restart cloudflared"
+
+# Qdrant: init collection
+python infra/qdrant/init_collections.py --host 5.252.52.190 --port 6333 --api-key $KEY --collection system_nuevo_bge_m3_1024 --dim 1024
 ```
 
 ## Blockers
 
-- Coolify MCP: `list_apps` y `deploy_app` fallan por UUID → usar API REST via SSH
+- Coolify MCP: `list_apps` y `deploy_app` fallan → usar API REST via SSH
 - Coolify proxy Traefik no activo (conflicta con Nginx en 80/443) → todo via Cloudflare Tunnel
+- OpenCode CLI `run` inestable con deepseek-v4-pro → web funciona OK
+- `chrome-devtools-mcp` no funciona en WSL → requiere OpenCode nativo en Windows
 
-## PostgreSQL — Fix conectividad Coolify containers (2026-06-14)
+## Cambios recientes (2026-06-18)
 
-**Problema:** Contenedores Coolify (red `coolify`) no podían resolver `postgres` porque PostgreSQL solo estaba en `postgres_default`. Tampoco resolvían `host.docker.internal`.
+### S3 Backups PostgreSQL + Qdrant
+- Bucket: `chitara-backups` (us-east-1), lifecycle 30d
+- Scripts: `/opt/scripts/backup-postgres.sh` + `/opt/scripts/backup-qdrant.sh`
+- Cron: 0 9 * * * / 30 9 * * * (3 AM Chile)
+- Logs: `/var/log/backup-postgres.log`, `/var/log/backup-qdrant.log`
 
-**Fix:** Agregada red `coolify` como externa en `docker-compose.yml` de postgres (`/opt/homelab/postgres/docker-compose.yml`). PostgreSQL ahora escucha en ambas redes.
+### Obsidian Vaults HTTPS (Beer & AI + Jairo)
+- Vaults en `/opt/hermes-workspace/obsidian/beer-and-ai/` y `jairo/`
+- Quartz v4.4.0 static sites en `/opt/sites/beer-ai/` y `/opt/sites/jairo/`
+- Sync script: `/opt/hermes-workspace/sync-chat-to-vault.py` (lee state.db)
+- Cron rebuild cada 15 min: `/opt/scripts/rebuild-vaults.sh`
+- URLs: `https://beer-ai.chitaraagenteia.com/flacavonoteni30/`, `https://jairo.chitaraagenteia.com/tevito/`
+- Nginx token auth (sin token → 403)
+- Chitara lee/escribe proactivamente en ambos vaults
 
-**Contenedores beneficiados:** test_viral, topic-front, topic-back, kiosko-front, kiosko-back, saldito-frontend, saldito-api.
+### Hermes fix (DeepSeek broken pipe)
+- `compression.threshold`: 0.5 → 0.15 (comprime a ~19K tokens)
+- `max_turns`: 60 → 40
+- `session_reset.at_hour`: 4 → 8 (4 AM Chile)
+- Cron restart diario: `0 8 * * * docker restart hermes`
 
-**DATABASE_URL correcto:** `postgresql://{user}:{pass}@postgres:5432/{db}`
-- test_viral → `testviral_app@postgres:5432/test_viral` ✅
-- topic_system → `topic_system_app@postgres:5432/topic_system` ✅ (pre-configurado)
-- OpenCode CLI `run`: inestable con modelo deepseek-v4-pro (funciona via web)
+### Esquema Rotativo Jun-Ago 2026
+- 10 semanas (lun-vie), 4 deptos rotativos, $1,405,253 total
+- Doc: `02_operacion/esquema_rotativo_reserva_jun-ago_2026.md`
 
-## topic_system (2026-06-14)
-
-Nuevo proyecto `topic_system` con frontend y backend desplegados en Coolify.
-
-| Recurso | Detalle |
-|---------|---------|
-| **DB** | `topic_system` en PostgreSQL chitara |
-| **Repo** | `jairopinilla/topic_system` (privado) |
-| **topic-front** | Coolify app `nidwrfwt1a9vu41p0q8x4tns`, puerto 3000, `/front` |
-| **topic-back** | Coolify app `tp9delvkuk4tj41fvqe5j87s`, puerto 4000, `/back` |
-| **S3 Bucket** | `topicsystem` en us-east-1 |
-| **IAM User** | `topic-system-user` con politica `topic-system-s3-access` |
-| **DB User** | `topic_system_app` con password auto-generada |
-| **MCP OpenCode** | `aws-topic-system` + `topic-system-db` en opencode.jsonc |
-| **MCP Local** | `mcp-servers/topic-system-db/server.py` (12 tools) |
+### S3 bucket test-viral
+- Bucket `testviral-app` (testviral estaba tomado)
+- CORS: localhost:3000 + test.chitaraagenteia.com
