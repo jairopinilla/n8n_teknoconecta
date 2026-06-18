@@ -214,3 +214,19 @@ python infra/qdrant/init_collections.py --host 5.252.52.190 --port 6333 --api-ke
 ### S3 bucket test-viral
 - Bucket `testviral-app` (testviral estaba tomado)
 - CORS: localhost:3000 + test.chitaraagenteia.com
+
+### Hermes: Jorge en Beer & AI (fix)
+- Jorge `8959498850` agregado a `TELEGRAM_ALLOWED_USERS`
+- `require_mention: false` + `free_response_channels: -5045911302`
+- Chitara ahora lee TODOS los mensajes del grupo sin filtro ni @mention
+
+### Test-viral: volume mount fix
+- Watchdog script `/opt/scripts/testviral-volume-fix.sh` (cron */2)
+- Corrige docker-compose de Coolify al detectar que falta el volume mount
+- Repo `jairopinilla/test_viral`: compose actualizado con volumes documentados
+- Commits: `973687c`, `eddd168`
+
+### Nginx IPv6 fix (vaults)
+- `listen [::]:80` agregado a ambos server blocks (Cloudflare Tunnel usa IPv6)
+- `try_files $uri $uri/ $uri.html` corregido (estaba escapado mal)
+- Encoding fix: emojis y em-dashes reemplazados por texto plano

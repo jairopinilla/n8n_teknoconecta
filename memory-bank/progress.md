@@ -154,3 +154,20 @@
 ### Clasificacion Docker
 - [x] 38 contenedores clasificados: infra (5 con volumen), apps estado (14), Coolify (7 sin estado), servicios sin estado (12)
 - [x] Sin riesgo de perdida de datos: todos los motores con volumen persistente
+
+### Hermes: Jorge en Beer & AI
+- [x] Jorge `8959498850` agregado a `TELEGRAM_ALLOWED_USERS` en docker-compose
+- [x] `require_mention: false` + `free_response_channels: -5045911302`
+- [x] Chitara lee TODOS los mensajes del grupo sin @mention
+- [x] Hermes restarted con nueva config, verificado sin errores
+
+### Test-viral: volume mount persistente
+- [x] Diagnostico: Coolify no respeta docker-compose del repo, borra volume mount
+- [x] Watchdog `/opt/scripts/testviral-volume-fix.sh` (cron */2 min)
+- [x] Repo `jairopinilla/test_viral`: compose con volumes documentados (2 commits)
+- [x] Container con volume mount activo: `/data/test-viral/images:/app/public/assets/visual/tests`
+
+### Nginx vaults fix
+- [x] `listen [::]:80` IPv6 (Cloudflare Tunnel va por IPv6)
+- [x] `try_files \$uri \$uri/ \$uri.html` corregido (escapado mal por heredoc)
+- [x] Emojis y em-dashes limpiados de Inicio.md + quartz.config.ts pageTitle
