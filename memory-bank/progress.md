@@ -1,6 +1,6 @@
 # Progress — TeknoConecta
 
-> Ultima actualizacion: 2026-06-18
+> Ultima actualizacion: 2026-06-20
 > Este repo (n8n_teknoconecta) es el hub central de coordinacion.
 > Los repos de proyectos (`topic_system`, `Procesa_doc`, `gestion_gastos`, `kiosko_laflorida`) son independientes.
 
@@ -171,3 +171,36 @@
 - [x] `listen [::]:80` IPv6 (Cloudflare Tunnel va por IPv6)
 - [x] `try_files \$uri \$uri/ \$uri.html` corregido (escapado mal por heredoc)
 - [x] Emojis y em-dashes limpiados de Inicio.md + quartz.config.ts pageTitle
+
+### Procesa_doc Graphify
+- [x] Workspace `caso-audios` validado con GraphML real
+- [x] Ejecutado `python -m app.cli build-graphify --workspace-id caso-audios` dentro de `rag-api`
+- [x] Generados `graph.json` y `GRAPH_REPORT.md` en `/opt/homelab/rag/data/graphify/procesadoc/caso-audios/`
+- [x] Resultado verificado: 540 nodos, 611 aristas
+- [x] Runbook creado: `documentacion/procesadoc_graphify.md`
+
+### Procesa_doc — Migracion completa a Coolify
+- [x] App creada en Coolify (procesadoc-back, UUID ae7b2m3w6janv082js1he4q5)
+- [x] 3 fixes: source_id=2 (GitHub App auth), base_directory=/ (estaba en /backend), dockerfile_location=/apps/web/Dockerfile
+- [x] Env vars: NODE_ENV + todas las API keys marcadas runtime-only via SQL
+- [x] SESSION_SECRET, TAVILY_API_KEY, JINA_API_KEY, MISTRAL_API_KEY, GEMINI_API_KEY agregadas via API
+- [x] Port binding: 127.0.0.1:4287→3000 fijo (watchdog /opt/scripts/procesadoc-port-fix.sh, cron */2)
+- [x] Cloudflare Tunnel: procesadoc.chitaraagenteia.com → 127.0.0.1:4287
+- [x] Container viejo removido (procesadoc-web en 3200)
+- [x] Build exitoso con commit a235fff. URL publica: 200 OK
+- [x] Detectado que Coolify restart NO actualiza codigo → se necesita build manual
+
+### Neo4j — 3 instancias
+- [x] Docker compose en /opt/homelab/neo4j/ con 3 containers (neo4j, neo4j-procesadoc, neo4j-topicsystem)
+- [x] Credenciales neo4j/flacavonoteni30. Volumenes persistentes
+- [x] Cloudflare Tunnel + DNS: https://neo4j.chitaraagenteia.com → 200 OK
+- [x] Documentacion: documentacion/neo4j_chitara.md
+- [x] Politica PascalCase + separacion por labels para workspaces documentada
+
+### Fichas de sistemas
+- [x] Procesa_doc, Topic System, Saldito analizados en profundidad
+- [x] 12 dimensiones documentadas: objetivo, front/back, DB, auth, billing, workers, deploy, integraciones, datos sensibles, flujos criticos, riesgos
+
+### Politica DB + Diagnostic First
+- [x] PascalCase documentado con ejemplos Cliente/Compra
+- [x] Diagnostic First consolidado: 7 fases, gates de aprobacion, reglas de riesgo

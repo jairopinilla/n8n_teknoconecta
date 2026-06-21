@@ -1,6 +1,6 @@
 # Active Context — TeknoConecta
 
-> Ultima actualizacion: 2026-06-18
+> Ultima actualizacion: 2026-06-20
 >
 > 🔴 **Directus cloud y Supabase cloud YA NO SE USAN.** Todo en chitara (VPS 5.252.52.190).
 > Para operar usar SIEMPRE los MCPs chitara (`n8n-chitara`, `directus-chitara`, `supabase-chitara`).
@@ -183,50 +183,39 @@ python infra/qdrant/init_collections.py --host 5.252.52.190 --port 6333 --api-ke
 - Coolify proxy Traefik no activo (conflicta con Nginx en 80/443) → todo via Cloudflare Tunnel
 - OpenCode CLI `run` inestable con deepseek-v4-pro → web funciona OK
 - `chrome-devtools-mcp` no funciona en WSL → requiere OpenCode nativo en Windows
+- Coolify no respeta docker-compose del repo (extra_hosts, volumes) → requiere watchdog scripts
 
-## Cambios recientes (2026-06-18)
+## Cambios recientes (2026-06-18, 2026-06-19, 2026-06-20)
 
-### S3 Backups PostgreSQL + Qdrant
-- Bucket: `chitara-backups` (us-east-1), lifecycle 30d
-- Scripts: `/opt/scripts/backup-postgres.sh` + `/opt/scripts/backup-qdrant.sh`
-- Cron: 0 9 * * * / 30 9 * * * (3 AM Chile)
-- Logs: `/var/log/backup-postgres.log`, `/var/log/backup-qdrant.log`
+### Procesa_doc — Migracion a Coolify
+- App en Coolify: `procesadoc-back` (UUID `ae7b2m3w6janv082js1he4q5`), repo `jairopinilla/Procesa_doc`, rama `main`
+- Puerto fijo: `127.0.0.1:4287→3000`. Watchdog `/opt/scripts/procesadoc-port-fix.sh` (cron */2)
+- URL: `https://procesadoc.chitaraagenteia.com`
+- Builds correctos tras fix de: source_id=2 (GitHub App), base_directory=/, dockerfile /apps/web/Dockerfile
+- NODE_ENV y todas las env vars marcadas runtime-only (evita que pnpm saltee devDependencies)
+- Contenedor viejo manual (`procesadoc-web` en puerto 3200) eliminado
+- Watcher de versión: el restart de Coolify NO actualiza código → necesita build completo desde UI
 
-### Obsidian Vaults HTTPS (Beer & AI + Jairo)
-- Vaults en `/opt/hermes-workspace/obsidian/beer-and-ai/` y `jairo/`
-- Quartz v4.4.0 static sites en `/opt/sites/beer-ai/` y `/opt/sites/jairo/`
-- Sync script: `/opt/hermes-workspace/sync-chat-to-vault.py` (lee state.db)
-- Cron rebuild cada 15 min: `/opt/scripts/rebuild-vaults.sh`
-- URLs: `https://beer-ai.chitaraagenteia.com/flacavonoteni30/`, `https://jairo.chitaraagenteia.com/tevito/`
-- Nginx token auth (sin token → 403)
-- Chitara lee/escribe proactivamente en ambos vaults
+### Neo4j — Instancias por sistema
+- 3 contenedores: `neo4j` (general, Bolt 7687), `neo4j-procesadoc` (Bolt 7688), `neo4j-topicsystem` (Bolt 7689)
+- Credenciales: `neo4j` / `flacavonoteni30`
+- Neo4j Browser: `https://neo4j.chitaraagenteia.com`
+- Compose en `/opt/homelab/neo4j/docker-compose.yml`
+- Sin multi-database (Community Edition) — separación lógica por labels: `WorkspaceCasoAudios:Entidad`
+- Doc: `documentacion/neo4j_chitara.md`
 
-### Hermes fix (DeepSeek broken pipe)
-- `compression.threshold`: 0.5 → 0.15 (comprime a ~19K tokens)
-- `max_turns`: 60 → 40
-- `session_reset.at_hour`: 4 → 8 (4 AM Chile)
-- Cron restart diario: `0 8 * * * docker restart hermes`
+### Fichas de sistemas
+- Procesa_doc, Topic System y Saldito documentados en detalle: objetivo, front/back, DB, auth, workers, deploy, integraciones, riesgos
+- Procesa_doc: Nuxt 4 + FastAPI RAG + Qdrant/LightRAG + 5 LLMs. 🔴 Passwords texto plano
+- Topic System: Nuxt 3 + FastAPI + Celery + pgvector + Mistral OCR + MCP. 🔴 Passwords texto plano
+- Saldito: Angular Ionic + Node.js puro + Neon.tech + Clerk + OpenAI. 🔴 Workflow n8n inactivo
 
-### Esquema Rotativo Jun-Ago 2026
-- 10 semanas (lun-vie), 4 deptos rotativos, $1,405,253 total
-- Doc: `02_operacion/esquema_rotativo_reserva_jun-ago_2026.md`
+### Politica DB PascalCase + Diagnostic First
+- Documentado y consolidado: tablas PascalCase singular, columnas camelCase, PKs NombreTablaId
+- Diagnostic First: 7 fases (entendimiento → diagnostico → propuesta → gate aprobacion → plan → ejecucion → validacion)
+- Aplica a todos los agentes del ecosistema
 
-### S3 bucket test-viral
-- Bucket `testviral-app` (testviral estaba tomado)
-- CORS: localhost:3000 + test.chitaraagenteia.com
-
-### Hermes: Jorge en Beer & AI (fix)
-- Jorge `8959498850` agregado a `TELEGRAM_ALLOWED_USERS`
-- `require_mention: false` + `free_response_channels: -5045911302`
-- Chitara ahora lee TODOS los mensajes del grupo sin filtro ni @mention
-
-### Test-viral: volume mount fix
-- Watchdog script `/opt/scripts/testviral-volume-fix.sh` (cron */2)
-- Corrige docker-compose de Coolify al detectar que falta el volume mount
-- Repo `jairopinilla/test_viral`: compose actualizado con volumes documentados
-- Commits: `973687c`, `eddd168`
-
-### Nginx IPv6 fix (vaults)
-- `listen [::]:80` agregado a ambos server blocks (Cloudflare Tunnel usa IPv6)
-- `try_files $uri $uri/ $uri.html` corregido (estaba escapado mal)
-- Encoding fix: emojis y em-dashes reemplazados por texto plano
+### Otros
+- Graphify ejecutado para `caso-audios`: 540 nodos, 611 aristas. Output en `/opt/homelab/rag/data/graphify/procesadoc/caso-audios/`
+- Doc: `documentacion/procesadoc_graphify.md` y `documentacion/procesadoc_graphify_para_otro_repo.md`
+- Docker: 38 contenedores clasificados (servicios vs apps), sin riesgo de pérdida de datos
