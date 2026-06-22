@@ -1,6 +1,6 @@
 # Active Context — TeknoConecta
 
-> Ultima actualizacion: 2026-06-20
+> Ultima actualizacion: 2026-06-22
 >
 > 🔴 **Directus cloud y Supabase cloud YA NO SE USAN.** Todo en chitara (VPS 5.252.52.190).
 > Para operar usar SIEMPRE los MCPs chitara (`n8n-chitara`, `directus-chitara`, `supabase-chitara`).
@@ -219,3 +219,13 @@ python infra/qdrant/init_collections.py --host 5.252.52.190 --port 6333 --api-ke
 - Graphify ejecutado para `caso-audios`: 540 nodos, 611 aristas. Output en `/opt/homelab/rag/data/graphify/procesadoc/caso-audios/`
 - Doc: `documentacion/procesadoc_graphify.md` y `documentacion/procesadoc_graphify_para_otro_repo.md`
 - Docker: 38 contenedores clasificados (servicios vs apps), sin riesgo de pérdida de datos
+
+### SandiegoApart — Asesoría Airbnb (2026-06-22)
+- Procesada transcripción de asesoría con Gianfranco (broker). Insights consolidados en `documentacion/insights_airbnb_2026-06-22.md` (transcripción cruda en `documentacion/Asesorias/`, ignorada por git, como respaldo)
+- **Diagnóstico clave:** anuncio aparece en 1ª página (impresiones 53%, sano >50%) pero baja conversión de clic (15%, sano >20%) → cuello de botella en FOTOS y TÍTULO, no en precio
+- **Pricing:** a 60 días cobrando bajo el mercado (42% vs 17%) → subir precios lejanos; unidad 709 a 7 días en 14% vs mercado 30% → promo agresiva atada a nº noches; ventana de conversión = 7 días
+- **Acciones urgentes:** rehacer fotos (horizontales, técnica ombligo/0.5, ADN por unidad), eliminar y recrear anuncio en 4.4, agregar ubicación al título (La Moneda/museos/metro)
+- ✅ **Renta corta consolidada:** contenido único de `asesorias.md` y `Asesoria_personal.md` movido a `playbook_renta_corta.md` (reglas del agente, mensajería pre-llegada, scripts de crisis, estilos de branding, prompts soporte/crisis, inversión, operar como negocio). Ambos legacy ELIMINADOS. `playbook_renta_corta.md` es ahora la fuente única (sin archivos legacy paralelos)
+- ✅ **Anuncio con emojis (ES/EN/PT):** creado `03_marketing_y_ads/anuncios_mejorados/anuncio_emojis_todas_unidades.md` (ref 901, aplica a las 4 unidades). Descripción + reglas con emoticones, verificadas con script dentro de límites Airbnb (Título 50, Descripción/secciones 500, Reglas 1000). Capacidad: hasta 3 (cama king + sofá cama). Espacios comunes (cowork/gym rooftop/quincho/gourmet/lavandería) INCLUIDOS: usuario confirmó que existen
+- ⚠️ **Discrepancia pendiente:** `AGENTS.md` dice "No: gimnasio, quincho, cowork ni terraza común", pero el usuario confirmó que esos espacios comunes SÍ existen. Sugerido actualizar AGENTS.md (no tocado sin aprobación)
+- ✅ **Chitara (Telegram) — recomendaciones de renta corta:** creado cheat-sheet `obsidian/knowledge/renta_corta.md` (condensado del playbook) y agregada sección "RECOMENDACIONES DE RENTA CORTA" en `obsidian/hermes-soul.md` que apunta a `playbook_renta_corta.md` + `documentacion/insights_airbnb_2026-06-22.md`. El insights se movió de `Asesorias/` (ignorada) a `documentacion/` versionada. Commiteado y pusheado al remoto (Hermes hace git pull cada 1h)

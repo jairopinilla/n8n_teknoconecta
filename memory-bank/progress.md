@@ -1,6 +1,6 @@
 # Progress — TeknoConecta
 
-> Ultima actualizacion: 2026-06-20
+> Ultima actualizacion: 2026-06-22
 > Este repo (n8n_teknoconecta) es el hub central de coordinacion.
 > Los repos de proyectos (`topic_system`, `Procesa_doc`, `gestion_gastos`, `kiosko_laflorida`) son independientes.
 
@@ -78,6 +78,23 @@
 - [x] 702: base $28,000→$24,000, min $20,000→$18,000
 - [x] 709: base $28,000→$25,000
 - [x] Push a Stays confirmado
+
+### Asesoría Airbnb — SandiegoApart (2026-06-22)
+- [x] Transcripción de asesoría (Gianfranco broker) procesada → `documentacion/Asesorias/insights_airbnb_2026-06-22.md`
+- [x] Memory-bank actualizado con diagnóstico y acciones
+- [x] Consolidado contenido único en `playbook_renta_corta.md` y eliminados `asesorias.md` + `Asesoria_personal.md` (fuente única, sin legacy)
+- [ ] Rehacer fotos horizontales (técnica + ADN por unidad) — todas las unidades
+- [ ] Eliminar y recrear anuncio en calificación 4.4
+- [ ] Plan de recuperación anuncio en 4.7 (precio bajo + reseñas → 4.85)
+- [ ] Reescribir títulos con ubicación (<=50 caracteres)
+- [ ] Reestructurar descripción con emojis, solo en español
+- [ ] Subir precios a 60 días (cobrando bajo el mercado)
+- [ ] Configurar ajuste inteligente por ocupación en PriceLabs
+- [ ] Eliminar promoción "10% / 30 noches" duplicada
+- [x] Legacy de asesorías eliminados y consolidados en `playbook_renta_corta.md` (fuente única)
+- [x] Creado anuncio con emojis ES/EN/PT (`anuncio_emojis_todas_unidades.md`), verificado dentro de límites Airbnb
+- [x] Chitara (Telegram): cheat-sheet `obsidian/knowledge/renta_corta.md` + referencia en `hermes-soul.md` (recomendaciones de renta corta)
+- [x] Commit+push de cambios para que Chitara los tome en el VPS (git pull cada 1h)
 
 ## En Progreso
 

@@ -1,12 +1,13 @@
 # Playbook de Renta Corta — SandiegoApart
 
-> Documento consolidado para agentes de IA. Fusiona `documentacion/asesorias.md` (Pack Maestro + eBooks) y `documentacion/Asesoria_personal.md` (transcripciones de asesorias pagadas 1-on-1).
+> Documento consolidado y fuente unica para agentes de IA. Reune en un solo lugar Pack Maestro, eBooks y transcripciones de asesorias pagadas 1-on-1. No existen archivos legacy paralelos.
 >
 > Fuentes originales:
 > - Pack Maestro Airbnb (Bonos 1-6), EBook Airbnb Host Summit 2025, Asesoria_Renta_Corta.pdf → `documentacion/Asesorias/`
 > - Transcripciones de asesorias pagadas → `G:\Mi unidad\asesoria pagada\Transcripcion`
+> - Asesorias 1-on-1 procesadas → `documentacion/` (ej: insights_airbnb_2026-06-22.md)
 >
-> Version: 2026-05-25
+> Version: 2026-06-22
 
 ---
 
@@ -24,6 +25,26 @@ Formato recomendado para respuestas:
 6. Senal de que la estrategia funciono.
 
 El criterio general es: primero entender el contexto, luego tocar la variable correcta.
+
+---
+
+## Reglas de comportamiento del agente
+
+Cuando un agente (bot, asistente, automatizacion) actua como asesor operativo o atiende huespedes:
+
+**Tono:** claro, profesional, directo, humano, sin exagerar, sin prometer lo no confirmado.
+
+**Prohibiciones:** no inventar amenities, disponibilidad, distancias ni politicas; no recomendar cancelar reservas sin advertir consecuencias; no prometer reembolsos sin validacion humana; no entregar claves, codigos de acceso o datos sensibles sin verificacion de reserva; no ocultar reglas importantes para lograr una reserva.
+
+**Ante la duda, usar una de estas formulas:**
+
+```
+No tengo ese dato confirmado. Puedo ayudarte con la informacion disponible y dejar este punto como pendiente de validacion.
+```
+
+```
+Para evitar entregarte informacion incorrecta, este dato debe validarse con administracion antes de confirmarlo.
+```
 
 ---
 
@@ -477,6 +498,9 @@ Genius puede dar exposicion, pero suma descuentos. Hay que controlar el precio f
 
 **Regla:** No entregar acceso sin pago confirmado.
 
+### Estafas comunes
+En Booking y canales donde el huesped paga por fuera, verificar pagos con cuidado. Riesgos: enlaces falsos para "aceptar pago", comprobantes falsos, transferencias no confirmadas, huespedes que reservan y no pagan, presion de ultimo minuto. Regla: no entregar acceso sin pago confirmado y verificado dos o tres veces.
+
 ---
 
 ## PMS y herramientas externas
@@ -656,6 +680,33 @@ Ya estoy revisando esto para resolverlo. Te actualizare en [TIEMPO_ESTIMADO].
 Gracias por avisarnos. Queremos que tu experiencia siga siendo lo mas comoda posible.
 ```
 
+### Scripts por tipo de problema
+
+Limpieza:
+```
+Hola, [NOMBRE]. Lamento mucho lo que comentas. La limpieza es prioritaria para nosotros. Ya estoy coordinando una revision/solucion y te confirmare en [TIEMPO]. Gracias por avisarnos de inmediato.
+```
+
+Ruido:
+```
+Hola, [NOMBRE]. Entiendo la molestia. Ya estoy revisando la situacion y, si corresponde, lo escalaremos con administracion/conserjeria. Te mantengo informado/a.
+```
+
+Falla de Wi-Fi:
+```
+Hola, [NOMBRE]. Gracias por avisar. Vamos a revisar la conexion. Por favor confirma si el problema ocurre en todos tus dispositivos o solo en uno. Mientras tanto verificaremos el servicio y te actualizaremos en [TIEMPO].
+```
+
+Falta de item:
+```
+Hola, [NOMBRE]. Gracias por avisar. Ya estamos revisando la disponibilidad de [ITEM] para ayudarte. Te confirmo en [TIEMPO] como lo resolveremos.
+```
+
+Solicitud de reembolso:
+```
+Hola, [NOMBRE]. Entiendo tu punto. Vamos a revisar lo ocurrido, la evidencia disponible y la politica de la reserva para darte una respuesta justa. Te actualizo en [TIEMPO].
+```
+
 ### Criterios de escalamiento a humano
 Escalar cuando: hay solicitud de reembolso, dano material, huesped agresivo, posible actividad ilegal, entrega de codigos de acceso sin verificacion, falla grave de agua/luz/cerradura/seguridad, accidente, reclamo formal, conflicto con vecinos, incumplimiento grave de reglas, overbooking, error de precio significativo, amenaza de mala resena.
 
@@ -746,6 +797,15 @@ Elementos minimos: nombre del alojamiento, paleta de colores, tipografias, logo 
 
 El estilo visual del anuncio debe coincidir con el espacio real y con el tono de los mensajes.
 
+### Estilos posibles
+
+| Estilo | Sensacion | Ideal para |
+|---|---|---|
+| Natural y acogedor | Calma, refugio | Cabanas, naturaleza |
+| Moderno y minimalista | Orden, limpieza | Estudios, lofts urbanos |
+| Vibrante | Energia | Playa, hostels, grupos |
+| Clasico elegante | Sofisticacion | Suites, lujo |
+
 ---
 
 ## Psicologia del huesped
@@ -784,6 +844,32 @@ Recordar horario, agradecer, pedir evaluacion de forma suave, revisar danos, gua
 
 ### Variables estandar
 `[NOMBRE] [FECHA_CHECKIN] [HORA_CHECKIN] [FECHA_CHECKOUT] [HORA_CHECKOUT] [DIRECCION] [UNIDAD] [LINK_GUIA] [CODIGO_ACCESO] [WIFI] [CONTACTO_SOPORTE] [REGLAS] [IDIOMA]`
+
+### Primer contacto
+```
+Hola, [NOMBRE]. Gracias por escribirnos.
+Para ayudarte mejor, ¿me confirmas las fechas exactas de tu viaje y cuantas personas se hospedarian?
+Con eso reviso disponibilidad y te oriento con la mejor opcion.
+```
+
+### Confirmacion de interes
+```
+Si, el alojamiento esta preparado para una estadia comoda y practica.
+Encontraras un espacio limpio, bien ubicado y equipado para descansar o trabajar. Las fotos muestran el alojamiento real, sin edicion exagerada.
+Quedo atento si quieres avanzar con la reserva.
+```
+
+### Mensaje de cierre
+```
+Para esas fechas suele haber buena demanda, por lo que recomiendo reservar cuando tengas claridad del viaje.
+Asi aseguras disponibilidad y dejamos todo preparado para tu llegada.
+```
+
+### Seguimiento durante la estadia
+```
+Hola, [NOMBRE]. Espero que todo vaya bien con tu estadia.
+Te escribo solo para confirmar que hayas encontrado todo en orden. Si necesitas algo, avisanos por este canal.
+```
 
 ### Check-in
 ```
@@ -847,6 +933,24 @@ No recomiendes subir precios solo por eventos. Primero valida senales del mercad
 Devuelve: diagnostico, riesgos, precio base/minimo recomendado, estrategia entre semana/fin de semana/temporada alta/temporada baja, acciones inmediatas.
 ```
 
+### Agente de soporte al huesped
+```
+Actua como agente de soporte de un alojamiento de renta corta.
+Reglas: tono amable, claro y directo; no entregues claves, codigos ni datos sensibles sin reserva verificada; no prometas reembolsos; no inventes informacion; si falta un dato, indica que debe validarse; si hay un problema, primero reconoce la molestia y luego entrega proximos pasos.
+Mensaje del huesped: [MENSAJE]
+Contexto de la reserva: [CONTEXTO]
+Devuelve una respuesta lista para enviar.
+```
+
+### Agente de crisis
+```
+Actua como agente de crisis para renta corta.
+Objetivo: calmar al huesped, reconocer la molestia, mostrar control, dar plazo, evitar culpar al huesped, evitar prometer compensaciones sin autorizacion.
+Problema: [PROBLEMA]
+Contexto: [CONTEXTO]
+Devuelve: 1) respuesta inmediata para el huesped, 2) accion operativa interna, 3) evidencia que debe recopilarse, 4) cuando escalar a humano.
+```
+
 ---
 
 ## Prioridades de implementacion
@@ -862,6 +966,22 @@ Revisar politica de cancelacion, crear branding, crear plantillas para redes, re
 
 ### Baja
 Mejorar diseno de manuales, crear kit de bienvenida, automatizar reportes, comparar propiedades.
+
+---
+
+## Inversion y seleccion de proyectos
+
+Al evaluar proyectos, ordenar por balance entre menor precio y mayor calidad. No mirar solo precio. Revisar: ubicacion, atractivos cercanos, amenidades, mantenimiento, administracion, seguridad, zonas comunes, posibilidad de operar Airbnb, reglas del proyecto, forma de pago, facilidad de reserva/bloqueo, potencial de diferenciacion.
+
+Un proyecto con restaurante, bar, farmacia, minimarket, piscina, areas infantiles, recepcion o control de acceso puede mejorar experiencia y venta. Pero el mantenimiento importa: una buena inversion pierde atractivo si piscinas, areas verdes o zonas comunes se ven deterioradas.
+
+---
+
+## Operar como negocio, no solo como anfitrion
+
+Ver el alojamiento como activo de negocio: revisar numeros, proyectar crecimiento, captar propiedades con criterio, gestionar marca, tener procesos, controlar canales, medir resultados, profesionalizar pricing, cuidar reputacion.
+
+Roles que pueden intervenir: revenue management, logistica, finanzas, account management, servicio al cliente, limpieza, mantenimiento. En operaciones pequenas una persona asume varios roles; en operaciones grandes conviene separarlos.
 
 ---
 

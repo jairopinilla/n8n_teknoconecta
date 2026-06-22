@@ -324,7 +324,7 @@ Copy de anuncio, mensajes a huesped, checklist operativo, contenido Instagram, i
 - [ ] `activeContext.md` refleja estado REAL?
 - [ ] `progress.md` tiene ultimos cambios?
 - [ ] Archivos nuevos referenciados en AGENTS.md?
-- [ ] `asesorias.md` y `Asesoria_personal.md` son legacy, `playbook_renta_corta.md` es primario?
+- [ ] `playbook_renta_corta.md` es la fuente unica de renta corta (sin archivos legacy paralelos)?
 
 ---
 
