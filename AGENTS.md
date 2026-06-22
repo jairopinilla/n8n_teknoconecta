@@ -251,11 +251,12 @@ Ubicacion: Tarapaca 1140, Santiago Centro, Chile.
 Unidades: 901, 902, 709, 702 (4 estudios).
 
 Atributos base: terraza privada, cama king, escritorio + silla, mesa alta para 2, TV 50", Wi-Fi rapido, A/C frio-calor, cocina equipada, bano privado.  
-**No**: estacionamiento, piscina, gimnasio, quincho, cowork ni terraza comun.
+Espacios comunes del edificio (residentes, sujeto a disponibilidad y coordinacion con administracion): sala cowork, gimnasio al aire libre (rooftop), quinchos / sala gourmet, lavanderia de autoservicio.
+**No**: estacionamiento propio (hay publico pago a una cuadra, Saba Paseo Bulnes) ni piscina.
 
 ### Reglas criticas de contenido
 - No inventar amenities, politicas, ni claims exagerados
-- No prometer estacionamiento ni espacios comunes
+- No prometer estacionamiento propio ni piscina; los espacios comunes existen pero su acceso esta sujeto a disponibilidad y coordinacion con administracion
 - No decir "a pasos" si no esta medido
 - Mantener coherencia anuncio ↔ realidad
 - Huespedes: tono claro, amable y directo

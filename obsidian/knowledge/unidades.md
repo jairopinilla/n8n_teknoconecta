@@ -23,14 +23,18 @@
 - Cocina equipada
 - Bano privado
 
+## Espacios comunes del edificio
+
+> Residentes, sujeto a disponibilidad y coordinacion con administracion.
+- Sala cowork
+- Gimnasio al aire libre (rooftop)
+- Quinchos / sala gourmet
+- Lavanderia de autoservicio
+
 ## NO disponibles
 
-- Estacionamiento
+- Estacionamiento propio (hay publico pago a una cuadra: Saba Paseo Bulnes)
 - Piscina
-- Gimnasio
-- Quincho
-- Cowork
-- Terraza comun
 
 ## Notas
 

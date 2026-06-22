@@ -320,7 +320,7 @@ curl -s -X POST 'https://n8n.teknoconectapp.com/webhook/send-email' \
 
 - 4 unidades en Tarapaca 1140, Santiago Centro: 901, 902, 709, 702
 - Atributos: terraza privada, cama king, escritorio, TV 50", A/C, cocina, bano privado
-- NO: estacionamiento, piscina, gimnasio, quincho
+- Espacios comunes del edificio (sujeto a disponibilidad/coordinacion): sala cowork, gimnasio al aire libre (rooftop), quinchos/sala gourmet, lavanderia. NO: estacionamiento propio (publico pago a una cuadra) ni piscina
 - PMS: Stays.net | Pricing: PriceLabs | Automatizacion: n8n | DB: PostgreSQL | Backend: Directus
 - VPS chitara: 5.252.52.190, 23 contenedores Docker
 - Sitio web: sandiegoapart.com

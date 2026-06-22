@@ -15,14 +15,18 @@ Todo contenido publicado (anuncio, mensaje, red social, web) debe reflejar exact
 - [ ] No se mostraron fotos de espacios que no se entregaran
 - [ ] La tarifa refleja la realidad (impuestos, cargos adicionales)
 
-## Amenities NO confirmados
+## Espacios comunes del edificio (confirmados)
 
-- Piscina — no hay confirmacion
-- Gimnasio — no hay confirmacion  
-- Quincho — no hay confirmacion
-- Cowork — no hay confirmacion
-- Terraza comun — no hay confirmacion
-- Estacionamiento — no hay
+> Residentes, sujeto a disponibilidad y coordinacion con administracion.
+- Sala cowork
+- Gimnasio al aire libre (rooftop)
+- Quinchos / sala gourmet
+- Lavanderia de autoservicio
+
+## NO disponibles
+
+- Piscina — no hay
+- Estacionamiento propio — no hay (publico pago a una cuadra: Saba Paseo Bulnes)
 
 ## Tono permitido
 

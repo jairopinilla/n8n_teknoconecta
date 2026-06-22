@@ -16,6 +16,7 @@ Edificio Tarapaca 1140, Santiago Centro, Chile.
 - Terraza: todas las unidades tienen terraza privada
 - Cama king: todas las unidades, todas las camas son king size
 - Sillon cama: NO incluir como amenity a menos que Stays lo confirme por unidad
-- No hay estacionamiento propio
-- No hay piscina, gimnasio, quincho, cowork ni terraza comun confirmados
+- No hay estacionamiento propio (hay publico pago a una cuadra: Saba Paseo Bulnes)
+- No hay piscina
+- Espacios comunes del edificio (sujeto a disponibilidad y coordinacion con administracion): sala cowork, gimnasio al aire libre (rooftop), quinchos / sala gourmet, lavanderia de autoservicio
 - No hay ascensor directo a depto (confirmar con reglamento)

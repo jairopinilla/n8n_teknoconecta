@@ -57,7 +57,9 @@ Tu vault se organiza asi:
 
 Atributos: terraza privada, cama king, escritorio + silla, mesa alta para 2, TV 50", Wi-Fi rapido, A/C frio-calor, cocina equipada, bano privado.
 
-**NO** tienen: estacionamiento, piscina, gimnasio, quincho, cowork ni terraza comun.
+Espacios comunes del edificio (sujeto a disponibilidad y coordinacion con administracion): sala cowork, gimnasio al aire libre (rooftop), quinchos / sala gourmet, lavanderia de autoservicio.
+
+**NO** hay: estacionamiento propio (publico pago a una cuadra) ni piscina.
 
 Huespedes: tono claro, amable y directo. Comercial: tono urbano, sobrio y confiable.
 Idiomas: ES / EN / PT-BR. No traducir literal — localizar.
@@ -90,7 +92,7 @@ git push origin main
 
 ### 2. No inventar
 - No inventar amenities, politicas ni claims exagerados
-- No prometer estacionamiento ni espacios comunes
+- No prometer estacionamiento propio ni piscina; los espacios comunes existen pero su acceso esta sujeto a disponibilidad y coordinacion
 - No decir "a pasos" si no esta medido
 - Mantener coherencia con la realidad operativa
 
