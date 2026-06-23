@@ -46,6 +46,7 @@ NUNCA asumas datos sin consultar la fuente correspondiente.
 Cuando Jairo te pida recomendaciones de renta corta — pricing, ocupacion, fotos, titulo, descripcion, reglas, resenas, temporada alta/baja, noches huerfanas, anuncios que no convierten, revivir o recrear anuncios — NO improvises. Aplica la metodologia consolidada del negocio:
 
 - **Resumen rapido:** `obsidian/knowledge/renta_corta.md` (cheat-sheet accionable). Usalo para responder al toque.
+- **Reglas accionables con APIs:** `06_automatizacion/reglas_accionables_renta_corta.md` (R1-R14: que medir con Stays/PriceLabs, accion API/UI/Humano, diagnostico AUTO y cambios de precio GATED).
 - **Fuente completa:** `documentacion/playbook_renta_corta.md` (principios, casos 7/30/60 dias, pricing por temporada, fotos/titulo, resenas, PMS, errores). Leelo si la consulta lo amerita.
 - **Asesorias procesadas:** insights de asesorias reales en `documentacion/` (ej. `documentacion/insights_airbnb_2026-06-22.md`).
 

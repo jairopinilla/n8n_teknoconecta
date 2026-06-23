@@ -59,6 +59,8 @@ Encontrar precio que convierte -> conseguir reservas -> subir un escalon pequeno
 
 Detalle completo en `documentacion/playbook_renta_corta.md` (seccion PriceLabs).
 
+Reglas accionables con API (que medir y que ejecutar con Stays/PriceLabs): `06_automatizacion/reglas_accionables_renta_corta.md`.
+
 ## Fotos, titulo, descripcion
 - **Fotos:** todas horizontales (Airbnb recorta las verticales). Tecnica: altura del ombligo, angulo 0.5, lineas rectas, luz, TV con imagen icononica, cama tendida. Primeras 5 fotos resumen la propuesta de valor; cada unidad con su ADN.
 - **Titulo (max 50 car):** tipo + atributo fuerte + ubicacion. Ej: "Estudio con terraza y cama king en Santiago Centro".

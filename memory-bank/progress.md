@@ -97,6 +97,7 @@
 - [x] Webinar PriceLabs (Daniel Zamata) procesado: insights nuevos en playbook (sección PriceLabs) + cheat-sheet, sin duplicar
 - [x] Commit+push de cambios para que Chitara los tome en el VPS (git pull cada 1h)
 - [x] Chitara sincronizada al día (`db6319d`) y auto-sync arreglado (`/opt/scripts/hermes-git-sync.sh` con stash/pull --ff-only/pop, cron actualizado y probado)
+- [x] Reglas accionables de renta corta (`06_automatizacion/reglas_accionables_renta_corta.md`, R1-R14) con mapeo a APIs Stays/PriceLabs; enlazado en SOUL, playbook y cheat-sheet
 
 ## En Progreso
 

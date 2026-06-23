@@ -26,6 +26,8 @@ Formato recomendado para respuestas:
 
 El criterio general es: primero entender el contexto, luego tocar la variable correcta.
 
+> Para reglas ejecutables con las APIs de PriceLabs y Stays (diagnosticos automaticos, cambios de precio con aprobacion, alertas UI/humano), ver `06_automatizacion/reglas_accionables_renta_corta.md`.
+
 ---
 
 ## Reglas de comportamiento del agente
