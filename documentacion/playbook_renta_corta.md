@@ -374,16 +374,51 @@ Permitir una noche pero hacerla cara. Luego aplicar descuento desde dos noches p
 
 ## PriceLabs
 
-PriceLabs puede apoyar: Dynamic Pricing, Market Dashboard, Portfolio Analytics, Insights Dashboard, Revenue Estimator.
+PriceLabs es un Revenue Management System (RMS), distinto y complementario a un PMS. Se conecta directo a Airbnb/VRBO o via PMS. Productos: Dynamic Pricing (precios + reglas de estadia minima), Portfolio Analytics (KPIs propios), Market Dashboard (KPIs de un mercado por direccion+radio, util para decidir inversion), Revenue Estimator Pro (proyeccion futura de ingresos, ocupacion y ADR por direccion). Costo desde ~USD 9.99/mes la 1a unidad, baja con mas unidades. Impacto tipico: +10% a +40% de ingresos.
+
+Revenue management = moneda de dos caras: (1) precios dinamicos que fluctuan con el mercado y (2) reglas de estadia minima. Ambas se gestionan juntas.
+
+> Esta seccion es el know-how accionable (fuente unica). Para referencia tecnica oficial detallada, ver `documentacion/pricelabs-academy/` (scraping de 365 articulos de la base de conocimiento de PriceLabs).
 
 ### Precio base
-No es el precio minimo. Debe representar el valor normal del alojamiento en condiciones promedio de mercado. No recomendar un precio base sin revisar: tipo de propiedad, calidad, ubicacion, capacidad, amenities, franja de precios de competidores, nivel de ocupacion, resenas, estacionalidad.
+Es el promedio por noche a lo largo de todo el ano (ej. 6 meses a 80 + 6 meses a 120 = base 100). Es el punto de partida del algoritmo; se define manual por propiedad antes de encender la sincronizacion. No es el precio minimo. No recomendar un base sin revisar: tipo, calidad, ubicacion, capacidad, amenities, franja de competidores, ocupacion, resenas, estacionalidad.
+
+**Sugerencia de base por mercado (3 criterios):** (1) area geografica (dibujar perimetro), (2) categoria/percentil de precio, (3) categoria de habitaciones (comparar manzanas con manzanas: 2 dorm con 2 dorm).
+
+**Percentiles de precio del mercado:** economico = 25-50, medio = 50-75, alto = 75-90. Son las franjas (gris / rosada) del grafico de Datos del Vecindario; ubican tu precio frente al mercado.
 
 ### Precio minimo
-Debe cubrir costos operativos, limpieza, comisiones, desgaste y margen minimo aceptable. **Regla:** Nunca bajar bajo el costo operativo real salvo estrategia puntual, medida y justificada.
+Red de seguridad: ninguna noche por debajo de ese valor. Debe cubrir costos operativos, limpieza, comisiones, desgaste y margen minimo. Criterio: el precio bajo el cual prefieres dejar vacio antes que perder dinero. **Regla practica:** ubicarlo 35-40% por debajo del base (mas margen base-minimo = mejor optimizacion en baja demanda). El precio atrae el segmento: bajar demasiado atrae huespedes no deseados. Nunca bajar del costo operativo real salvo estrategia puntual y justificada.
 
 ### Precio maximo
-No siempre es necesario. Si se usa, debe ser realista y alineado con el mercado. El precio maximo no debe ser fantasioso.
+Controla expectativas del huesped. **Regla practica:** 2 a 3 veces el base (ej. base x2.5). Cobrar de mas tiene 3 efectos negativos: (1) el huesped no cuida la propiedad, (2) mayor carga operacional (mas exigente), (3) peor calificacion. Debe ser realista, no fantasioso.
+
+### Reglas de estadia minima (cascada)
+La "otra cara de la moneda". El motor recomienda segun "cortas" o "medianas" estadias y arma una cascada por antelacion, por ejemplo:
+- Ultima hora (0-2 dias): 1 noche (flexibiliza).
+- 2-6 noches de antelacion: 2 noches.
+- 6-29 noches: 4 noches.
+- 29+ noches: regla general (ej. 7 noches).
+- 90+ noches (fechas lejanas): mayor a 7 noches.
+Mas tratamiento especifico de noches huerfanas (mas estricto o mas flexible).
+
+### Descuentos
+- **Ultimo minuto (gradual):** ej. 35% si reservan para hoy, decreciendo dia a dia hasta 0% al dia 17.
+- **Periodos huerfanos (1-2 noches):** diferenciar entre semana (ej. 20%) vs fin de semana (ej. 10%); puede ser descuento o incremento.
+
+### Ajustes por ocupacion y perfiles de temporada
+- **Ajustes por ocupacion:** sube/baja el precio segun la ocupacion para distintas ventanas de reserva (una de las funciones mas utiles). Mas agresivo en la ventana corta (tu ventana de conversion).
+- **Perfiles de temporada:** definir base/minimo y reglas de estadia minima distintos por rango de fechas (ej. ene-jun minimo 75 en baja; jul-dic minimo 100 en alta).
+- **Ajuste manual por fechas:** override por valor fijo o % sobre el recomendado + min-stay propio (ej. evento/grupo => +25%, min 6 noches). Aparece como banda negra en el calendario.
+
+### Datos del vecindario y eventos
+Herramienta clave: grafico de tu precio (linea negra) vs percentiles del mercado a futuro; franjas magenta = eventos/festivos que suben demanda (detectados por integraciones + ML). Resumen de mercado por mes: ocupacion, ventana de reserva, LOS promedio, ADR. Si PriceLabs no detecta un evento (ej. concierto), reportarlo manualmente.
+
+### Sincronizacion y ranking
+El sistema empuja precios cada 24h (~medianoche); se puede forzar manual. Refrescar precios con frecuencia mejora el ranking: Airbnb te detecta como anfitrion activo (es su "SEO interno") y te posiciona mas arriba.
+
+### Smart Pricing de Airbnb: NO usar (velocidad vs calidad)
+El precio inteligente de Airbnb NO es realmente inteligente. Airbnb (OTA) busca VELOCIDAD: vender rapido y barato (negocio de volumen, compite con Booking/Expedia), por eso tiende a bajar el precio. PriceLabs busca CALIDAD: vender al mejor precio para maximizar ingreso. Recomendacion: desactivar Smart Pricing de Airbnb y usar pricing dinamico (PriceLabs).
 
 ### Conectado vs sincronizando
 Conectar PriceLabs no es lo mismo que enviar precios. Revisar: si esta conectado, si esta activo, si esta sincronizando, si Airbnb/Booking recibe precios, si el precio minimo y maximo estan bien, si los ajustes inteligentes estan activos.

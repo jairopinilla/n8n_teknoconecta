@@ -47,6 +47,18 @@ Bajarlas fuerte esta bien (ej. de 100 a 60 USD); al cierre de mes suman. No bloq
 ## Subir precio sin matar conversion (escalones)
 Encontrar precio que convierte -> conseguir reservas -> subir un escalon pequeno -> esperar -> si no convierte, volver al anterior. El precio se calibra con el mercado, no con orgullo.
 
+## PriceLabs (config rapida)
+- Base = promedio por noche del ano. Sugerencia de base por mercado: area + percentil + nº de habitaciones.
+- Percentiles de mercado: economico 25-50, medio 50-75, alto 75-90 (franjas del grafico de vecindario).
+- Minimo: 35-40% bajo el base. Maximo: 2 a 3x el base (cobrar de mas -> huesped no cuida, mas exigente, peor resena).
+- Reglas de estadia minima en cascada por antelacion (1 noche ultima hora; 2 a 2-6 dias; 4 a 6-29; 7 a 29+; >7 a 90+).
+- Descuentos: ultimo minuto gradual (ej. 35% hoy bajando a 0% al dia 17); huerfanos 1-2 noches (semana 20% / finde 10%).
+- Ajustes por ocupacion + perfiles de temporada (base/minimo distintos por rango de fechas).
+- Refrescar precios a diario mejora el ranking en Airbnb (anfitrion activo).
+- Smart Pricing de Airbnb: NO usar. Airbnb busca velocidad (vender barato/rapido); PriceLabs busca calidad (mejor precio).
+
+Detalle completo en `documentacion/playbook_renta_corta.md` (seccion PriceLabs).
+
 ## Fotos, titulo, descripcion
 - **Fotos:** todas horizontales (Airbnb recorta las verticales). Tecnica: altura del ombligo, angulo 0.5, lineas rectas, luz, TV con imagen icononica, cama tendida. Primeras 5 fotos resumen la propuesta de valor; cada unidad con su ADN.
 - **Titulo (max 50 car):** tipo + atributo fuerte + ubicacion. Ej: "Estudio con terraza y cama king en Santiago Centro".

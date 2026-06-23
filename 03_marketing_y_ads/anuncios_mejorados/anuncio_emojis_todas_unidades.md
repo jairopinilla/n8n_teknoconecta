@@ -52,23 +52,26 @@ Studio com terraço e cama king em Santiago Centro
 
 **Español**
 ```
-🏠 Estudio moderno para estadías en ciudad: cómodo para descansar y práctico para trabajar. 🏙️ La terraza privada es tu espacio extra para un café, leer o desconectar.
-🛏️ Cama king · 🖥️ escritorio listo · 📶 Wi-Fi para videollamadas y streaming · ❄️🔥 A/C todo el año · 📺 Smart TV 50″ · 🛋️ sofá cama (3er huésped según reserva) · 🍽️ mesa alta para 2 · 🍳 cocina equipada.
-🧹 Cuidamos la limpieza y dejamos todo listo para una llegada simple.
+🏠 Estudio integrado y funcional: zona de descanso, escritorio y mesa para 2 en un mismo ambiente ordenado y fácil de habitar.
+🏙️ La terraza privada es el plus: ábrela para tomar aire, un café por la mañana o desconectar al final del día.
+💼 Si vienes a trabajar, el escritorio te deja la jornada lista; si vienes a pasear, llegas y solo te instalas.
+👥 Cómodo para 1 o 2; el sofá cama suma un 3er huésped. Llegada simple, todo limpio y preparado.
 ```
 
 **English**
 ```
-🏠 Modern studio for city stays: comfortable to rest and practical to work. 🏙️ The private terrace is your extra space for coffee, reading or unwinding.
-🛏️ King bed · 🖥️ ready desk · 📶 Wi-Fi for video calls and streaming · ❄️🔥 year-round A/C · 📺 50″ Smart TV · 🛋️ sofa bed (3rd guest per reservation) · 🍽️ high table for 2 · 🍳 equipped kitchen.
-🧹 We take care of cleaning and leave everything ready for a simple arrival.
+🏠 Integrated, functional studio: sleeping area, desk and table for 2 in one tidy, easy-to-live space.
+🏙️ The private terrace is the plus: step out for fresh air, a morning coffee or to unwind at the end of the day.
+💼 Here to work? The desk has you set; here to explore? Just arrive and settle in.
+👥 Comfortable for 1 or 2; the sofa bed adds a 3rd guest. Simple arrival, everything clean and ready.
 ```
 
 **Português**
 ```
-🏠 Studio moderno para estadias na cidade: confortável para descansar e prático para trabalhar. 🏙️ O terraço privativo é seu espaço extra para um café, ler ou desconectar.
-🛏️ Cama king · 🖥️ escrivaninha pronta · 📶 Wi-Fi para videoconferências e streaming · ❄️🔥 ar quente/frio o ano todo · 📺 Smart TV 50″ · 🛋️ sofá-cama (3º hóspede conforme reserva) · 🍽️ mesa alta para 2 · 🍳 cozinha equipada.
-🧹 Cuidamos da limpeza e deixamos tudo pronto para uma chegada simples.
+🏠 Studio integrado e funcional: área de descanso, escrivaninha e mesa para 2 em um mesmo ambiente organizado e fácil de habitar.
+🏙️ O terraço privativo é o diferencial: abra para tomar ar, um café pela manhã ou desconectar no fim do dia.
+💼 Veio trabalhar? A escrivaninha te deixa pronto; veio passear? É só chegar e se instalar.
+👥 Confortável para 1 ou 2; o sofá-cama soma um 3º hóspede. Chegada simples, tudo limpo e preparado.
 ```
 
 ---

@@ -94,6 +94,7 @@
 - [x] Legacy de asesorías eliminados y consolidados en `playbook_renta_corta.md` (fuente única)
 - [x] Creado anuncio con emojis ES/EN/PT (`anuncio_emojis_todas_unidades.md`), verificado dentro de límites Airbnb
 - [x] Chitara (Telegram): cheat-sheet `obsidian/knowledge/renta_corta.md` + referencia en `hermes-soul.md` (recomendaciones de renta corta)
+- [x] Webinar PriceLabs (Daniel Zamata) procesado: insights nuevos en playbook (sección PriceLabs) + cheat-sheet, sin duplicar
 - [x] Commit+push de cambios para que Chitara los tome en el VPS (git pull cada 1h)
 
 ## En Progreso
