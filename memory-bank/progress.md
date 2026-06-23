@@ -96,6 +96,7 @@
 - [x] Chitara (Telegram): cheat-sheet `obsidian/knowledge/renta_corta.md` + referencia en `hermes-soul.md` (recomendaciones de renta corta)
 - [x] Webinar PriceLabs (Daniel Zamata) procesado: insights nuevos en playbook (sección PriceLabs) + cheat-sheet, sin duplicar
 - [x] Commit+push de cambios para que Chitara los tome en el VPS (git pull cada 1h)
+- [x] Chitara sincronizada al día (`db6319d`) y auto-sync arreglado (`/opt/scripts/hermes-git-sync.sh` con stash/pull --ff-only/pop, cron actualizado y probado)
 
 ## En Progreso
 
