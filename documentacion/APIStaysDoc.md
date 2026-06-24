@@ -2043,3 +2043,221 @@ Example of Listing notification:
 }
 ```
 ```
+---
+
+# ⭐ STAYS API — NUEVOS ENDPOINTS (Junio 2026)
+
+> Fuente: "Stays API - Notas de Atualizacao" (Salesforce)  
+> Incorporacion al repo: 2026-06-23  
+> Expanden significativamente la API (antes solo 3 endpoints funcionales).
+
+---
+
+## Clientes — Datos de huespedes y propietarios
+
+### `GET /client`
+
+Obtiene direccion y datos de huespedes/propietarios. Permite automatizar pagos a propietarios.
+
+```
+GET https://jairop.stays.net/external/v1/client
+```
+
+| Parametro | Tipo   | Descripcion             |
+|-----------|--------|-------------------------|
+| email     | String | Email del cliente       |
+| id        | String | ID del cliente          |
+
+```json
+{
+  "id": "client123",
+  "name": "Jane Smith",
+  "email": "janesmith@example.com",
+  "phone": "+1234567890",
+  "address": {
+    "street": "123 Main St", "city": "Anytown",
+    "state": "CA", "zip": "12345", "country": "US"
+  },
+  "type": "guest"
+}
+```
+
+---
+
+## Reservas — Creacion y edicion avanzada
+
+### `POST /reservations`
+
+Crea una reserva con control granular sobre fees. Sin taxas adicionales por defecto.
+
+```
+POST https://jairop.stays.net/external/v1/booking/reservations
+```
+
+| Parametro     | Tipo    | Descripcion                  |
+|---------------|---------|------------------------------|
+| listingId     | String  | ID del listing (ObjectId)    |
+| arrival       | String  | Check-in (YYYY-MM-DD)        |
+| departure     | String  | Check-out (YYYY-MM-DD)       |
+| guests        | Integer | Numero de huespedes          |
+| client.email  | String  | Email del huesped            |
+| client.name   | String  | Nombre                       |
+| client.phone  | String  | Telefono                     |
+
+### `PATCH /reservations/{id}`
+
+Edita fees de una reserva existente sin modificar el resto.
+
+```
+PATCH https://jairop.stays.net/external/v1/booking/reservations/{reservationId}
+```
+
+---
+
+## Mensajeria — Iniciar conversaciones desde cero
+
+### `POST /messaging/threads`
+
+Crea un nuevo hilo de mensajes sin requerir mensaje previo. Ideal para apps de automatizacion.
+
+```
+POST https://jairop.stays.net/external/v1/messaging/threads
+```
+
+| Parametro      | Tipo   | Descripcion               |
+|----------------|--------|---------------------------|
+| reservationId  | String | ID de reserva             |
+| listingId      | String | ID del listing            |
+| guestId        | String | ID del huesped            |
+| message        | String | Texto del mensaje inicial |
+
+---
+
+## Rate Plans — CRUD completo
+
+> **Critico para PriceLabs y Beyond Pricing.** Gestiona planes de precio via API sin el panel de Stays.
+
+### `POST /pricing/rateplans`
+
+```
+POST https://jairop.stays.net/external/v1/pricing/rateplans
+```
+
+| Parametro         | Tipo    | Descripcion                  |
+|-------------------|---------|------------------------------|
+| listingId         | String  | ID del listing               |
+| name              | String  | Nombre del rate plan         |
+| from              | String  | Fecha inicio (YYYY-MM-DD)    |
+| to                | String  | Fecha fin (YYYY-MM-DD)       |
+| basePrice         | Number  | Precio base                  |
+| minPrice          | Number  | Precio minimo                |
+| minStay           | Integer | Estadia minima (noches)      |
+| closedToArrival   | Bool    | Bloqueo de llegada           |
+| closedToDeparture | Bool    | Bloqueo de salida            |
+
+### `PATCH /pricing/rateplans/{id}` — Modifica un rate plan existente.
+### `DELETE /pricing/rateplans/{id}` — Elimina un rate plan.
+
+---
+
+## Calendario — Bloqueos por dia
+
+### `GET /calendar/listing/{listingId}`
+
+Devuelve los bloqueos del calendario dia a dia. Calculo eficiente de disponibilidad real.
+
+```
+GET https://jairop.stays.net/external/v1/calendar/listing/698b996c4472180c6843bfce?from=2026-06-23&to=2026-07-23
+```
+
+```json
+{
+  "listingId": "698b996c4472180c6843bfce",
+  "blockedDates": [
+    {"date": "2026-07-01", "type": "reserved"}
+  ],
+  "totalBlocked": 30
+}
+```
+
+---
+
+## Configuracion
+
+### `GET /settings/listing/{id}/booking`
+
+Obtiene la ventana de reserva (booking window) de un listing.
+
+```
+GET https://jairop.stays.net/external/v1/settings/listing/{listingId}/booking
+```
+
+---
+
+## Busqueda rapida
+
+### `GET /external/v1/content/listings`
+
+Busqueda rapida de listings con filtros de texto.
+
+```
+GET https://jairop.stays.net/external/v1/content/listings?search=santiago
+```
+
+### `GET /external/v1/users`
+
+Busqueda rapida de usuarios (huespedes, propietarios).
+
+```
+GET https://jairop.stays.net/external/v1/users?search=juan
+```
+
+---
+
+## Webhooks — Mejoras
+
+### `creationTime` en eventos de reserva
+
+`reservation.created` y `reservation.modified` ahora incluyen el campo `creationTime`.
+
+```json
+{
+  "action": "reservation.created",
+  "payload": {
+    "id": "abc123",
+    "creationTime": "2026-06-23T10:30:00Z"
+  }
+}
+```
+
+### `cancelledByGuest` (booleano)
+
+`reservation.cancelled` ahora incluye campo booleano `cancelledByGuest` en vez de texto libre.
+
+```json
+{
+  "action": "reservation.cancelled",
+  "payload": {
+    "id": "abc123",
+    "cancelledByGuest": true,
+    "cancellationDate": "2026-06-23T10:30:00Z"
+  }
+}
+```
+
+---
+
+## Resumen de nuevos endpoints
+
+| Endpoint | Metodo | Caso de uso | Relevancia |
+|----------|--------|-------------|------------|
+| `/client` | GET | Datos de huespedes/propietarios | Alta |
+| `/reservations` | POST | Crear reserva sin fees | Media |
+| `/reservations/{id}` | PATCH | Editar fees de reserva | Media |
+| `/messaging/threads` | POST | Iniciar conversacion desde cero | Alta |
+| `/pricing/rateplans` | POST/PATCH/DELETE | CRUD de rate plans | Critica |
+| `/calendar/listing/{id}` | GET | Bloqueos por dia | Alta |
+| `/settings/listing/{id}/booking` | GET | Booking window | Alta |
+| `/content/listings` | GET | Busqueda rapida listings | Alta |
+| `/users` | GET | Busqueda rapida usuarios | Alta |
+| Webhook `reservation.*` | — | creationTime + cancelledByGuest | Alta |

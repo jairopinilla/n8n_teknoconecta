@@ -107,6 +107,15 @@ Estructura actual/consolidada:
 | Supabase self-hosted | Pendiente | Conectar/operar como un solo proyecto |
 | Shlink | Pendiente | Redirecciones/acortador self-hosted |
 
+**Integraciones externas principales (no self-hosted):**
+
+| Servicio | Estado | Uso |
+|----------|--------|-----|
+| Stays API v2 (Jun 2026) | 7 endpoints funcionales | PMS: reservas, clientes, rate plans, mensajería, calendario |
+| PriceLabs | Operativo | Pricing dinámico, base/min/max vía API |
+
+> **Stays API — Actualización Junio 2026:** La API se expandió de 3 a 7+ endpoints. Nuevos: `GET /client` (datos de huéspedes), `POST/PATCH /reservations` (crear/editar fees), `POST /messaging/threads` (mensajería), `CRUD /pricing/rateplans` (para PriceLabs/Beyond), `GET /calendar/listing/{id}` (bloqueos), `GET /content/listings`, `GET /users`. Documentación completa: `documentacion/APIStaysDoc.md`.
+
 ---
 
 ## 6. Subdominios activos actuales

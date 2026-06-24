@@ -352,13 +352,21 @@ Documentacion completa: `documentacion/chitara.md`
 
 ## 🔌 Stays.net API
 
-**Endpoints funcionales (solo 3):**
+**Endpoints funcionales confirmados (7):**
 - ✅ `GET /external/v1/booking/reservations`
 - ✅ `GET /external/v1/booking/reservations/{id}`
 - ✅ `POST /external/v1/booking/search-listings` (requiere `rooms` como array)
+- ✅ `POST /external/v1/booking/reservations` — crear reserva sin fees (NUEVO 2026-06)
+- ✅ `PATCH /external/v1/booking/reservations/{id}` — editar fees (NUEVO 2026-06)
+- ✅ `GET /external/v1/client` — datos de huéspedes/propietarios (NUEVO 2026-06)
+- ✅ `GET /external/v1/users` — búsqueda rápida de usuarios (NUEVO 2026-06)
 
-**NO funcionales (404):** `checkout/initiate`, `promocodes`, `sell-price-rules`, `properties`, `house-rules`.  
-**Consecuencia:** solo lectura de reservas y busqueda de listings. Contenido de anuncios desde sandiegoapart.com.
+**Nuevos endpoints (por verificar):**
+- 🟡 `POST /messaging/threads` — crear hilos de mensajes desde cero
+- 🟡 `POST/PATCH/DELETE /pricing/rateplans` — CRUD de rate plans (PriceLabs/Beyond)
+- 🟡 `GET /calendar/listing/{id}` — bloqueos del calendario por día
+- 🟡 `GET /settings/listing/{id}/booking` — booking window
+- 🟡 `GET /external/v1/content/listings` — búsqueda rápida listings
 
 **Mapeo IDs:** `_idlisting` (MongoDB ObjectId) ↔ `AlojamientoStayslistingIdLargo` (Directus)
 
@@ -452,7 +460,7 @@ Todos los workflows exportados como JSON estan en `n8n/workflows/`. Son 16 workf
 
 | Problema | Impacto | Estado |
 |----------|---------|--------|
-| API Stays.net limitada (3 endpoints) | No se modifica contenido | Solo lectura |
+| API Stays.net expandida (7+ endpoints, Jun 2026) | Nuevos endpoints por verificar | 7 funcionales + 5 pendientes |
 | Directus app.js parcheado | Se pierde al actualizar imagen | Re-aplicar patch |
 | Coolify frontend: nixpacks falla Angular 20 | Frontend via docker-compose | Workaround estable |
 | OpenCode CLI `run` inestable con DeepSeek | Solo funciona con `--model` explicito | Web funciona OK |

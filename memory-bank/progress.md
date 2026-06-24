@@ -1,6 +1,6 @@
 # Progress — TeknoConecta
 
-> Ultima actualizacion: 2026-06-22
+> Ultima actualizacion: 2026-06-23
 > Este repo (n8n_teknoconecta) es el hub central de coordinacion.
 > Los repos de proyectos (`topic_system`, `Procesa_doc`, `gestion_gastos`, `kiosko_laflorida`) son independientes.
 
@@ -77,7 +77,10 @@
 ### Pricing / SandiegoApart
 - [x] 702: base $28,000→$24,000, min $20,000→$18,000
 - [x] 709: base $28,000→$25,000
+- [x] 902: min $23,000→$17,000 (37% bajo base, R1: sin reservas 7d → agresivo) — 2026-06-23
+- [x] 902: max $50,000→$80,000 (3x base, elimina cap restrictivo para findes largos/alta demanda) — 2026-06-23
 - [x] Push a Stays confirmado
+- [x] N8n_getAseosHtml_v3: mensaje conserjería reformateado — ordenado por fecha, agrupado por día con nombre, saltos de línea, doble espacio entre entradas — 2026-06-24
 
 ### Asesoría Airbnb — SandiegoApart (2026-06-22)
 - [x] Transcripción de asesoría (Gianfranco broker) procesada → `documentacion/Asesorias/insights_airbnb_2026-06-22.md`

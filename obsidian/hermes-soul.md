@@ -323,5 +323,6 @@ curl -s -X POST 'https://n8n.teknoconectapp.com/webhook/send-email' \
 - Atributos: terraza privada, cama king, escritorio, TV 50", A/C, cocina, bano privado
 - Espacios comunes del edificio (sujeto a disponibilidad/coordinacion): sala cowork, gimnasio al aire libre (rooftop), quinchos/sala gourmet, lavanderia. NO: estacionamiento propio (publico pago a una cuadra) ni piscina
 - PMS: Stays.net | Pricing: PriceLabs | Automatizacion: n8n | DB: PostgreSQL | Backend: Directus
+- Stays API v2 (Jun 2026): nuevos endpoints — `GET /client`, `POST/PATCH /reservations`, `POST /messaging/threads`, `CRUD /pricing/rateplans`, `GET /calendar/listing/{id}`, `GET /content/listings`, `GET /users`. Docs completos: `documentacion/APIStaysDoc.md`
 - VPS chitara: 5.252.52.190, 23 contenedores Docker
 - Sitio web: sandiegoapart.com
