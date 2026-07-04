@@ -1,6 +1,6 @@
 # Progress — TeknoConecta
 
-> Ultima actualizacion: 2026-06-23
+> Ultima actualizacion: 2026-07-04
 > Este repo (n8n_teknoconecta) es el hub central de coordinacion.
 > Los repos de proyectos (`topic_system`, `Procesa_doc`, `gestion_gastos`, `kiosko_laflorida`) son independientes.
 
@@ -81,6 +81,13 @@
 - [x] 902: max $50,000→$80,000 (3x base, elimina cap restrictivo para findes largos/alta demanda) — 2026-06-23
 - [x] Push a Stays confirmado
 - [x] N8n_getAseosHtml_v3: mensaje conserjería reformateado — ordenado por fecha, agrupado por día con nombre, saltos de línea, doble espacio entre entradas — 2026-06-24
+
+### Chitara — Investigación sobre Chile
+- [x] `documentacion/fuentes_chile.md` — 22 think tanks, 14 fuentes oficiales, 20 pensadores clasificados (2026-07-04)
+- [x] Protocolo de investigación (6 pasos) en `hermes-soul.md`
+- [x] Configuración de herramientas de investigación en `hermes-config.md`
+- [ ] Probar respuestas de Chitara en Telegram
+- [ ] Conectar Chitara a Instagram (solo análisis Chile)
 
 ### Asesoría Airbnb — SandiegoApart (2026-06-22)
 - [x] Transcripción de asesoría (Gianfranco broker) procesada → `documentacion/Asesorias/insights_airbnb_2026-06-22.md`

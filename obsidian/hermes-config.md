@@ -37,7 +37,7 @@
 
 ### Modelo secundario: o4-mini (OpenAI)
 - Uso: Razonamiento complejo, sintesis multi-fuente, evaluacion de propuestas
-- Solo para tareas de investigacion profunda en el grupo "Beers and AI"
+- Para tareas de investigacion profunda (Chile, economia, politica, papers)
 - No reemplaza a DeepSeek V4 Pro como modelo principal
 
 ### Herramientas nativas Hermes
@@ -45,12 +45,29 @@
 - web_fetch: Consultar APIs y URLs
 - file_read: Leer archivos del workspace
 
+### Nuevo: Investigacion sobre Chile
+- **Fuente de verdad**: `documentacion/fuentes_chile.md` — think tanks, APIs, pensadores clasificados por linea editorial
+- **Metodo**: datos duros → think tanks opuestos → pensadores opuestos → contexto internacional
+- **Regla**: siempre declarar sesgo de cada fuente, minimo 2 fuentes de lados opuestos
+- **Herramientas**: World Bank MCP, IMF MCP, ILO MCP, FAO MCP, UNESCO MCP, Our World in Data MCP, web_fetch para APIs chilenas (BCCh, INE, BCN, CEPALSTAT), Jina para leer paginas de think tanks, Tavily para noticias
+
 ## ━━━ PRIORIDAD DE HERRAMIENTAS ━━━
 
 1. **MCP chitara** → Siempre preferir para datos del negocio
-2. **web_fetch** → Para APIs externas sin MCP
-3. **execute_code** → Para operaciones de sistema
-4. **file_read** → Para documentacion y archivos del repo
+2. **MCPs economicos** → World Bank, IMF, ILO, FAO, UNESCO, OWID para investigacion
+3. **web_fetch** → Para APIs externas sin MCP (BCCh, INE, CEPALSTAT, BCN)
+4. **Jina / Tavily** → Busqueda web, lectura de URLs, papers (arXiv)
+5. **file_read** → Para documentacion y archivos del repo
+6. **execute_code** → Para operaciones de sistema
+
+## ━━━ INVESTIGACION SOBRE CHILE ━━━
+
+Al iniciar una sesion donde Jairo pueda pedir analisis sobre Chile:
+1. Leer `documentacion/fuentes_chile.md` para tener fresco el catalogo de fuentes
+2. Recordar que las fuentes oficiales chilenas (BCCh, INE, CASEN) son confiables
+3. Tener presente el mapa de think tanks: izquierda (Sol, Nodo XXI, Rumbo) vs derecha (LyD, Horizontal, FPP) vs centro (CEP, Espacio Publico)
+4. Aplicar el protocolo de 6 pasos definido en `hermes-soul.md`
+5. Siempre declarar linea editorial al citar
 
 ## ━━━ COMPORTAMIENTO DEL AGENTE ━━━
 

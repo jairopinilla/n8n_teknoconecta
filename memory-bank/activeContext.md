@@ -1,6 +1,6 @@
 # Active Context — TeknoConecta
 
-> Ultima actualizacion: 2026-06-23
+> Ultima actualizacion: 2026-07-04
 >
 > 🔴 **Directus cloud y Supabase cloud YA NO SE USAN.** Todo en chitara (VPS 5.252.52.190).
 > Para operar usar SIEMPRE los MCPs chitara (`n8n-chitara`, `directus-chitara`, `supabase-chitara`).
@@ -234,3 +234,4 @@ python infra/qdrant/init_collections.py --host 5.252.52.190 --port 6333 --api-ke
 - ✅ **Reglas accionables creadas:** `06_automatizacion/reglas_accionables_renta_corta.md` (R1-R14) — convierte las recomendaciones del playbook/insights en reglas con APIs reales (Stays lectura + PriceLabs base/min/max + push), clasificadas 🟢API/🟡UI/🔴Humano y AUTO (diagnóstico) / GATED (precio con aprobación, protocolo AGENTS.md). Enlazado desde `hermes-soul.md`, `playbook_renta_corta.md` y el cheat-sheet. Límite documentado: la API de PriceLabs solo escribe base/min/max; descuentos, min-stay, ajustes por ocupación y ocupación de mercado son solo UI
 - ⚡ **Pricing 902 — min=$17K, max=$80K (2026-06-23):** Unidad con 0 reservas 23-30 Jun (14% vs 30% mercado). Finde largo 27-29 Jun con alta demanda. **min bajado** $23K→$17K (margen para días flojos 23-25). **max subido** $50K→$80K (3x base, elimina cap restrictivo para proteger findes largos). Base mantenida en $27K (cerca del recomendado $27.5K). Push a Stays OK. Estructural pendiente: descuentos huérfanos y last-minute (solo UI).
 - ✅ **Chitara (Telegram) — recomendaciones de renta corta:** creado cheat-sheet `obsidian/knowledge/renta_corta.md` (condensado del playbook) y agregada sección "RECOMENDACIONES DE RENTA CORTA" en `obsidian/hermes-soul.md` que apunta a `playbook_renta_corta.md` + `documentacion/insights_airbnb_2026-06-22.md`. El insights se movió de `Asesorias/` (ignorada) a `documentacion/` versionada. Commiteado y pusheado al remoto (Hermes hace git pull cada 1h)
+- 🧠 **Chitara — Protocolo de investigación sobre Chile (2026-07-04):** Creado `documentacion/fuentes_chile.md` — catalogo completo de 22 think tanks (izquierda/centro/derecha), 14 fuentes de datos oficiales con/sin API, 20 pensadores chilenos clasificados por ideología (economía, rol del Estado, línea social), mapeo de redes y afinidades. `hermes-soul.md` actualizado con protocolo de 6 pasos (datos duros → think tanks opuestos → pensadores → contexto internacional). `hermes-config.md` actualizado con herramientas de investigación. Próximo: probar en Telegram, luego conectar Instagram.
