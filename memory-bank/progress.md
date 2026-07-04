@@ -89,6 +89,16 @@
 - [ ] Probar respuestas de Chitara en Telegram
 - [ ] Conectar Chitara a Instagram (solo análisis Chile)
 
+### Gastos — Finanzas personales (NocoDB + PostgreSQL)
+- [x] Desplegado: NocoDB + nocodb-worker en VPS, puerto 127.0.0.1:8085
+- [x] Cloudflare Tunnel: `https://gastos.chitaraagenteia.com` → 200 OK
+- [x] DB `personal_contador` creada en PostgreSQL local (23 tablas copiadas de Saldito)
+- [x] Documentado en memory-bank
+- [ ] Verificar conexión NocoDB ↔ PostgreSQL
+- [ ] Configurar MCP para NocoDB
+- [ ] Conectar con n8n para workers de IA
+- [ ] Migrar workers del Saldito original
+
 ### Asesoría Airbnb — SandiegoApart (2026-06-22)
 - [x] Transcripción de asesoría (Gianfranco broker) procesada → `documentacion/Asesorias/insights_airbnb_2026-06-22.md`
 - [x] Memory-bank actualizado con diagnóstico y acciones

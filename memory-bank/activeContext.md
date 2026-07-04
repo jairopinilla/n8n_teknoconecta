@@ -36,6 +36,7 @@
 | topic-back | `tp9delvkuk4tj41fvqe5j87s` | `https://api-topic.chitaraagenteia.com` | 127.0.0.1:4286 | jairopinilla/topic_system | `back/**` |
 | procesadoc-front | `m9zorl3mx3iu4ujk6ybwtecc` | `https://procesadoc.chitaraagenteia.com` | 127.0.0.1:4287 | jairopinilla/Procesa_doc | `front/**` |
 | procesadoc-back | `ae7b2m3w6janv082js1he4q5` | `https://api-procesadoc.chitaraagenteia.com` | 127.0.0.1:4288 | jairopinilla/Procesa_doc | `backend/**` |
+| **gastos-nocodb** ⭐ | `nocodb` + `nocodb-worker` | `https://gastos.chitaraagenteia.com` | 127.0.0.1:8085 | N/A (Docker manual) | N/A |
 
 **rag-api:** No usa Coolify. Docker-compose manual en `/opt/homelab/rag/`. Puerto `127.0.0.1:4289`.
 **Deploy:** Push a `main` → Coolify redeploy automatico (GitHub App `coolify-chitara`, source_id=2).
@@ -121,6 +122,7 @@ Todos los registros son CNAME → `779b9db0-b10e-4048-90e4-e09256d40f39.cfargotu
 | procesadoc.chitaraagenteia.com | 127.0.0.1:4287 |
 | api-procesadoc.chitaraagenteia.com | 127.0.0.1:4288 |
 | saldito.chitaraagenteia.com | 127.0.0.1:4280 |
+| gastos.chitaraagenteia.com | 127.0.0.1:8085 |
 | kiosko.chitaraagenteia.com | 127.0.0.1:4281 |
 | api-kiosko.chitaraagenteia.com | 127.0.0.1:4282 |
 | api-saldito.chitaraagenteia.com | 127.0.0.1:4283 |
@@ -235,3 +237,4 @@ python infra/qdrant/init_collections.py --host 5.252.52.190 --port 6333 --api-ke
 - ⚡ **Pricing 902 — min=$17K, max=$80K (2026-06-23):** Unidad con 0 reservas 23-30 Jun (14% vs 30% mercado). Finde largo 27-29 Jun con alta demanda. **min bajado** $23K→$17K (margen para días flojos 23-25). **max subido** $50K→$80K (3x base, elimina cap restrictivo para proteger findes largos). Base mantenida en $27K (cerca del recomendado $27.5K). Push a Stays OK. Estructural pendiente: descuentos huérfanos y last-minute (solo UI).
 - ✅ **Chitara (Telegram) — recomendaciones de renta corta:** creado cheat-sheet `obsidian/knowledge/renta_corta.md` (condensado del playbook) y agregada sección "RECOMENDACIONES DE RENTA CORTA" en `obsidian/hermes-soul.md` que apunta a `playbook_renta_corta.md` + `documentacion/insights_airbnb_2026-06-22.md`. El insights se movió de `Asesorias/` (ignorada) a `documentacion/` versionada. Commiteado y pusheado al remoto (Hermes hace git pull cada 1h)
 - 🧠 **Chitara — Protocolo de investigación sobre Chile (2026-07-04):** Creado `documentacion/fuentes_chile.md` — catalogo completo de 22 think tanks (izquierda/centro/derecha), 14 fuentes de datos oficiales con/sin API, 20 pensadores chilenos clasificados por ideología (economía, rol del Estado, línea social), mapeo de redes y afinidades. `hermes-soul.md` actualizado con protocolo de 6 pasos (datos duros → think tanks opuestos → pensadores → contexto internacional). `hermes-config.md` actualizado con herramientas de investigación. Próximo: probar en Telegram, luego conectar Instagram.
+- 💰 **Gastos — Finanzas personales con NocoDB (2026-07-04):** Nueva app en VPS. URL: `https://gastos.chitaraagenteia.com`. Estructura: NocoDB (Docker) → PostgreSQL local DB `personal_contador`. 23 tablas copiadas de Saldito (`egreso`, `ingreso`, `transferencia`, `bandejacorreo`, `bandejaia`, `workspace`, etc.). Sin Cloudflare Access (auth nativa de NocoDB). Pendiente: conectar con n8n para workers de IA (procesamiento de emails, clasificación de gastos).
