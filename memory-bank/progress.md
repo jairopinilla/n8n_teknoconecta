@@ -93,10 +93,14 @@
 - [x] Desplegado: NocoDB + nocodb-worker en VPS, puerto 127.0.0.1:8085
 - [x] Cloudflare Tunnel: `https://gastos.chitaraagenteia.com` → 200 OK
 - [x] DB `personal_contador` creada en PostgreSQL local (23 tablas copiadas de Saldito)
+- [x] NocoDB MCP configurado en opencode.jsonc
 - [x] Documentado en memory-bank
-- [ ] Verificar conexión NocoDB ↔ PostgreSQL
-- [ ] Configurar MCP para NocoDB
-- [ ] Conectar con n8n para workers de IA
+- [x] Verificar conexión NocoDB ↔ PostgreSQL
+- [x] 3 workflows n8n creados: WF1 (webhook email), WF2 (triage IA), WF3 (extraer + distribuir)
+- [ ] Importar workflows a n8n chitara y configurar credenciales
+- [ ] Seed de datos de catálogos (estados, categorías, bancos, etc.)
+- [ ] Probar el pipeline completo (email → triage → distribución)
+- [ ] Conectar con n8n para workers de IA (WF2 y WF3 usan OpenAI)
 - [ ] Migrar workers del Saldito original
 
 ### Asesoría Airbnb — SandiegoApart (2026-06-22)

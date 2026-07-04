@@ -1,0 +1,292 @@
+{
+  "name": "Gastos - 03 Extraer y Distribuir Movimientos",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "gastos-distribuir",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "wf3-webhook",
+      "name": "01 - Webhook WF2",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [0, 0],
+      "webhookId": "gastos-distribuir-webhook",
+      "notes": "Recibe de WF2: {bandejacorreoid, bandejacorreotextoinformacion, bandejacorreoemaildestinatario, tipoMovimiento, razon}"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT jsonb_build_object(\n  'categorias_ingreso', (SELECT jsonb_agg(jsonb_build_object('nombre', categoriaingresonombre)) FROM categoriaingreso WHERE categoriaingresoactivo = TRUE),\n  'categorias_egreso', (SELECT jsonb_agg(jsonb_build_object('nombre', categoriaegresonombre)) FROM categoriaegreso WHERE categoriaegresoactivo = TRUE),\n  'subcategorias_egreso', (SELECT jsonb_agg(jsonb_build_object('categoria', ce.categoriaegresonombre, 'subcategoria', se.subcategoriaegresonombre)) FROM subcategoriaegreso se INNER JOIN categoriaegreso ce ON se.categoriaegresoid = ce.categoriaegresoid WHERE se.subcategoriaegresoactivo = TRUE),\n  'controlabilidad', (SELECT jsonb_agg(jsonb_build_object('nombre', controlabilidadnombre)) FROM controlabilidad WHERE controlabilidadactivo = TRUE),\n  'recurrencia', (SELECT jsonb_agg(jsonb_build_object('nombre', recurrencianombre)) FROM recurrencia WHERE recurrenciaactivo = TRUE),\n  'canal', (SELECT jsonb_agg(jsonb_build_object('nombre', canalnombre)) FROM canal WHERE canalactivo = TRUE),\n  'direccion_transferencia', (SELECT jsonb_agg(jsonb_build_object('nombre', direcciontransferencianombre)) FROM direcciontransferencia),\n  'contrapartes', (SELECT jsonb_agg(jsonb_build_object('patron', contraparteconocidapatron, 'nombre', contraparteconocidanombrenormalizado, 'giro', g.gironombre)) FROM contraparteconocida LEFT JOIN giro g ON contraparteconocida.giroid = g.giroid),\n  'bancos', (SELECT jsonb_agg(jsonb_build_object('nombre', banconombre)) FROM banco WHERE bancoactivo = TRUE),\n  'divisas', (SELECT jsonb_agg(jsonb_build_object('codigo', divisacodigo, 'nombre', divisanombre)) FROM divisa WHERE divisaactivo = TRUE)\n) AS datasets",
+        "options": {}
+      },
+      "id": "wf3-load-datasets",
+      "name": "02 - Cargar Datasets",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [220, 0],
+      "credentials": {
+        "postgres": {
+          "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
+          "name": "Postgres Gastos"
+        }
+      },
+      "notes": "Carga todos los catalogos en un solo query."
+    },
+    {
+      "parameters": {
+        "jsCode": "const datasets = $('02 - Cargar Datasets').item.json.datasets;\nconst correo = $input.first().json.bandejacorreotextoinformacion;\nconst tipoMovimiento = $input.first().json.tipoMovimiento;\n\nconst systemPrompt = `Eres un extractor de datos financieros para un sistema de finanzas personales en Chile.\n\nTu tarea es extraer informacion estructurada de un correo bancario.\n\nEl tipo de movimiento ya fue identificado como: ${tipoMovimiento}\n\nCONTEXTO - Catalogos disponibles:\n- Categorias de ingreso: ${JSON.stringify(datasets.categorias_ingreso)}\n- Categorias de egreso: ${JSON.stringify(datasets.categorias_egreso)}\n- Subcategorias de egreso: ${JSON.stringify(datasets.subcategorias_egreso)}\n- Controlabilidad: ${JSON.stringify(datasets.controlabilidad)}\n- Recurrencia: ${JSON.stringify(datasets.recurrencia)}\n- Canales: ${JSON.stringify(datasets.canal)}\n- Direcciones de transferencia: ${JSON.stringify(datasets.direccion_transferencia)}\n- Contrapartes conocidas: ${JSON.stringify(datasets.contrapartes)}\n- Bancos: ${JSON.stringify(datasets.bancos)}\n- Divisas: ${JSON.stringify(datasets.divisas)}\n\nResponde SIEMPRE en JSON con esta estructura:\n{\n  \"tipo\": \"${tipoMovimiento}\",\n  \"contraparte\": \"nombre del comercio o persona\",\n  \"monto\": 12345,\n  \"divisa\": \"CLP\",\n  \"fechaMovimiento\": \"YYYY-MM-DD\",\n  \"descripcion\": \"breve descripcion del movimiento\",\n  \"cuenta\": \"numero o tipo de cuenta\",\n  \"tarjeta\": \"ultimos 4 digitos\",\n  \"tarjetaProveedor\": \"Visa|Mastercard\",\n  \"esInformadoPorBanco\": true,\n  \"categoriaIngreso\": \"nombre exacto de la lista de categorias de ingreso\",\n  \"categoriaEgreso\": \"nombre exacto de la lista de categorias de egreso\",\n  \"subcategoriaEgreso\": \"nombre exacto de la lista de subcategorias\",\n  \"controlabilidad\": \"nombre exacto de la lista\",\n  \"recurrencia\": \"nombre exacto de la lista\",\n  \"canal\": \"nombre exacto de la lista\",\n  \"direccionTransferencia\": \"Entrante|Saliente\",\n  \"banco\": \"nombre exacto de la lista de bancos\",\n  \"esCuotas\": false,\n  \"numeroCuotaActual\": null,\n  \"totalCuotas\": null,\n  \"esCargoAutomatico\": false\n}\n\nReglas:\n- SIEMPRE usa los nombres exactos de los catalogos proporcionados. No inventes categorias.\n- monto debe ser un numero positivo (sin signos, sin puntos de miles).\n- Si el monto esta en dolares, indica divisa='USD' y monto en dolares.\n- fechaMovimiento en formato YYYY-MM-DD (si no esta disponible, usa la fecha del correo).\n- Para transferencias: incluye direccionTransferencia ('Entrante' si recibes, 'Saliente' si envias).\n- Para compras en cuotas: esCuotas=true, numeroCuotaActual y totalCuotas.`;\n\nreturn [{\n  json: { systemPrompt, userPrompt: correo, tipoMovimiento }\n}];"
+      },
+      "id": "wf3-build-prompt",
+      "name": "03 - Armar Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [440, 0],
+      "notes": "Arma el prompt con datasets embebidos."
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "messages": {
+          "values": [
+            { "role": "system", "content": "={{ $json.systemPrompt }}" },
+            { "role": "user", "content": "={{ $json.userPrompt }}" }
+          ]
+        },
+        "options": { "temperature": 0.2, "maxTokens": 1500, "responseFormat": "json_object" }
+      },
+      "id": "wf3-ai-extract",
+      "name": "04 - IA Extraer",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [660, 0],
+      "onError": "continueRegularOutput",
+      "retryOnFail": true,
+      "maxTries": 3,
+      "waitBetweenTries": 5000,
+      "credentials": {
+        "openAiApi": {
+          "id": "REEMPLAZAR_CREDENTIAL_OPENAI",
+          "name": "OpenAI Gastos"
+        }
+      },
+      "notes": "Extraccion con gpt-4o. 3 reintentos con 5s entre intentos."
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json;\nlet mov;\n\ntry {\n  if (typeof raw.message === 'string') {\n    mov = JSON.parse(raw.message);\n  } else if (raw.message && raw.message.content) {\n    mov = JSON.parse(raw.message.content);\n  } else if (raw.text) {\n    mov = JSON.parse(raw.text);\n  } else {\n    mov = raw;\n  }\n} catch (e) {\n  return [{ json: { valid: false, error: 'JSON invalido: ' + e.message } }];\n}\n\nconst tipo = mov.tipo;\nif (!['ingreso', 'egreso', 'transferencia'].includes(tipo)) {\n  return [{ json: { valid: false, error: 'tipo invalido: ' + tipo } }];\n}\nif (!mov.contraparte) {\n  return [{ json: { valid: false, error: 'contraparte faltante' } }];\n}\nif (typeof mov.monto !== 'number' || mov.monto <= 0) {\n  return [{ json: { valid: false, error: 'monto invalido: ' + mov.monto } }];\n}\nif (!mov.divisa || !['CLP', 'USD', 'ARS', 'EUR'].includes(mov.divisa)) {\n  return [{ json: { valid: false, error: 'divisa invalida: ' + mov.divisa } }];\n}\nif (!mov.fechaMovimiento) {\n  return [{ json: { valid: false, error: 'fechaMovimiento faltante' } }];\n}\nif (tipo === 'egreso' && !mov.categoriaEgreso) {\n  return [{ json: { valid: false, error: 'categoriaEgreso faltante' } }];\n}\nif (tipo === 'ingreso' && !mov.categoriaIngreso) {\n  return [{ json: { valid: false, error: 'categoriaIngreso faltante' } }];\n}\nif (tipo === 'transferencia' && !mov.direccionTransferencia) {\n  return [{ json: { valid: false, error: 'direccionTransferencia faltante' } }];\n}\n\nmov.valid = true;\nreturn [{ json: mov }];"
+      },
+      "id": "wf3-validate",
+      "name": "05 - Validar JSON",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [880, 0],
+      "notes": "Valida campos obligatorios segun tipo de movimiento."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "cond-valid",
+              "leftValue": "={{ $json.valid }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "true" }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "wf3-check-valid",
+      "name": "06 - Valido?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1100, 0],
+      "notes": "Si valid=true → insertar. Si false → marcar error."
+    },
+    {
+      "parameters": {
+        "jsCode": "const mov = $('05 - Validar JSON').item.json;\nconst bandejaCorreoId = $input.first().json.bandejacorreoid;\n\nconst esc = s => (s || '').replace(/'/g, \"''\");\n\nlet query = '';\n\nif (mov.tipo === 'egreso') {\n  query = `INSERT INTO egreso (\n    bandejacorreoid,\n    egresocontraparte,\n    egresomonto,\n    divisaid,\n    egresofechamovimiento,\n    egresodescripcion,\n    egresoesinformadoporbanco,\n    egresocuenta,\n    egresotarjeta,\n    egresotarjetaproveedor,\n    egresoescargoautomatico,\n    egresoescargas,\n    egresonumerocuotaactual,\n    egresototalcuotas,\n    categoriaegresoid,\n    subcategoriaegresoid,\n    controlabilidadid,\n    recurrenciaid,\n    canalid,\n    bancoid,\n    egresofechacreacion\n  )\n  SELECT\n    ${bandejaCorreoId},\n    '${esc(mov.contraparte)}',\n    ${mov.monto},\n    (SELECT divisaid FROM divisa WHERE divisacodigo = '${esc(mov.divisa)}' LIMIT 1),\n    '${esc(mov.fechaMovimiento)}'::TIMESTAMP,\n    ${mov.descripcion ? \"'\" + esc(mov.descripcion) + \"'\" : 'NULL'},\n    ${mov.esInformadoPorBanco || false},\n    ${mov.cuenta ? \"'\" + esc(mov.cuenta) + \"'\" : 'NULL'},\n    ${mov.tarjeta ? \"'\" + esc(mov.tarjeta) + \"'\" : 'NULL'},\n    ${mov.tarjetaProveedor ? \"'\" + esc(mov.tarjetaProveedor) + \"'\" : 'NULL'},\n    ${mov.esCargoAutomatico || false},\n    ${mov.esCuotas || false},\n    ${mov.numeroCuotaActual || 'NULL'},\n    ${mov.totalCuotas || 'NULL'},\n    (SELECT categoriaegresoid FROM categoriaegreso WHERE categoriaegresonombre = '${esc(mov.categoriaEgreso)}' LIMIT 1),\n    ${mov.subcategoriaEgreso ? \"(SELECT subcategoriaegresoid FROM subcategoriaegreso WHERE subcategoriaegresonombre = '\" + esc(mov.subcategoriaEgreso) + \"' LIMIT 1)\" : 'NULL'},\n    ${mov.controlabilidad ? \"(SELECT controlabilidadid FROM controlabilidad WHERE controlabilidadnombre = '\" + esc(mov.controlabilidad) + \"' LIMIT 1)\" : 'NULL'},\n    ${mov.recurrencia ? \"(SELECT recurrenciaid FROM recurrencia WHERE recurrencianombre = '\" + esc(mov.recurrencia) + \"' LIMIT 1)\" : 'NULL'},\n    ${mov.canal ? \"(SELECT canalid FROM canal WHERE canalnombre = '\" + esc(mov.canal) + \"' LIMIT 1)\" : 'NULL'},\n    ${mov.banco ? \"(SELECT bancoid FROM banco WHERE banconombre = '\" + esc(mov.banco) + \"' LIMIT 1)\" : 'NULL'},\n    NOW()\n  RETURNING egresoid`;\n} else if (mov.tipo === 'ingreso') {\n  query = `INSERT INTO ingreso (\n    bandejacorreoid,\n    ingresocontraparte,\n    ingresomonto,\n    divisaid,\n    ingresofechamovimiento,\n    ingresodescripcion,\n    ingresoesinformadoporbanco,\n    ingresocuenta,\n    categoriaingresoid,\n    bancoid,\n    ingresofechacreacion\n  )\n  SELECT\n    ${bandejaCorreoId},\n    '${esc(mov.contraparte)}',\n    ${mov.monto},\n    (SELECT divisaid FROM divisa WHERE divisacodigo = '${esc(mov.divisa)}' LIMIT 1),\n    '${esc(mov.fechaMovimiento)}'::TIMESTAMP,\n    ${mov.descripcion ? \"'\" + esc(mov.descripcion) + \"'\" : 'NULL'},\n    ${mov.esInformadoPorBanco || false},\n    ${mov.cuenta ? \"'\" + esc(mov.cuenta) + \"'\" : 'NULL'},\n    (SELECT categoriaingresoid FROM categoriaingreso WHERE categoriaingresonombre = '${esc(mov.categoriaIngreso)}' LIMIT 1),\n    ${mov.banco ? \"(SELECT bancoid FROM banco WHERE banconombre = '\" + esc(mov.banco) + \"' LIMIT 1)\" : 'NULL'},\n    NOW()\n  RETURNING ingresoid`;\n} else if (mov.tipo === 'transferencia') {\n  query = `INSERT INTO transferencia (\n    bandejacorreoid,\n    transferenciacontraparte,\n    transferenciamonto,\n    divisaid,\n    transferenciafechamovimiento,\n    transferenciadescripcion,\n    transferenciacuentaorigen,\n    transferenciacuentadestino,\n    direcciontransferenciaid,\n    bancoid,\n    transferenciafechacreacion\n  )\n  SELECT\n    ${bandejaCorreoId},\n    '${esc(mov.contraparte)}',\n    ${mov.monto},\n    (SELECT divisaid FROM divisa WHERE divisacodigo = '${esc(mov.divisa)}' LIMIT 1),\n    '${esc(mov.fechaMovimiento)}'::TIMESTAMP,\n    ${mov.descripcion ? \"'\" + esc(mov.descripcion) + \"'\" : 'NULL'},\n    ${mov.cuenta ? \"'\" + esc(mov.cuenta) + \"'\" : 'NULL'},\n    ${mov.cuentaDestino ? \"'\" + esc(mov.cuentaDestino) + \"'\" : 'NULL'},\n    (SELECT direcciontransferenciaid FROM direcciontransferencia WHERE direcciontransferencianombre = '${esc(mov.direccionTransferencia)}' LIMIT 1),\n    ${mov.banco ? \"(SELECT bancoid FROM banco WHERE banconombre = '\" + esc(mov.banco) + \"' LIMIT 1)\" : 'NULL'},\n    NOW()\n  RETURNING transferenciaid`;\n}\n\nreturn [{ json: { query, tipo: mov.tipo } }];"
+      },
+      "id": "wf3-build-insert",
+      "name": "07 - Construir INSERT",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1320, 0],
+      "notes": "Construye el INSERT dinamico segun tipo: egreso, ingreso o transferencia."
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "={{ $json.query }}",
+        "options": {}
+      },
+      "id": "wf3-insert",
+      "name": "08 - Insertar Movimiento",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [1540, 0],
+      "credentials": {
+        "postgres": {
+          "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
+          "name": "Postgres Gastos"
+        }
+      },
+      "notes": "Ejecuta el INSERT en la tabla correspondiente."
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE bandejacorreo\nSET estadobandejacorreoid = (SELECT estadobandejacorreoid FROM estadobandejacorreo WHERE estadobandejacorreonombre = 'Procesado'),\n    bandejacorreofechaactualizacion = NOW()\nWHERE bandejacorreoid = {{ $('01 - Webhook WF2').item.json.bandejacorreoid }}",
+        "options": {}
+      },
+      "id": "wf3-mark-processed",
+      "name": "09 - Marcar Procesado",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [1760, 0],
+      "credentials": {
+        "postgres": {
+          "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
+          "name": "Postgres Gastos"
+        }
+      },
+      "notes": "Marca el correo como Procesado exitosamente."
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE bandejaia\nSET estadobandejaiaid = (SELECT estadobandejaiaid FROM estadobandejaia WHERE estadobandejaianombre = 'Procesado'),\n    bandejaiafechaactualizacion = NOW()\nWHERE bandejacorreoid = {{ $('01 - Webhook WF2').item.json.bandejacorreoid }}",
+        "options": {}
+      },
+      "id": "wf3-mark-ia-done",
+      "name": "10 - BandejaIA Procesado",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [1980, 0],
+      "credentials": {
+        "postgres": {
+          "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
+          "name": "Postgres Gastos"
+        }
+      },
+      "notes": "Marca BandejaIA como Procesado."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ status: 'ok', message: 'Movimiento procesado' }) }}",
+        "options": {
+          "responseHeaders": { "entries": [{ "name": "Content-Type", "value": "application/json" }] }
+        }
+      },
+      "id": "wf3-response-ok",
+      "name": "11 - Responder OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [2200, 0]
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE bandejaia\nSET estadobandejaiaid = (SELECT estadobandejaiaid FROM estadobandejaia WHERE estadobandejaianombre = 'Error'),\n    bandejaialogproceso = '{{ $json.error || \"Error de validacion\" }}',\n    bandejaiafechaactualizacion = NOW()\nWHERE bandejacorreoid = {{ $('01 - Webhook WF2').item.json.bandejacorreoid }}",
+        "options": {}
+      },
+      "id": "wf3-error-ia",
+      "name": "12 - BandejaIA Error",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [1320, 200],
+      "credentials": {
+        "postgres": {
+          "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
+          "name": "Postgres Gastos"
+        }
+      },
+      "notes": "Marca error en BandejaIA."
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE bandejacorreo\nSET estadobandejacorreoid = (SELECT estadobandejacorreoid FROM estadobandejacorreo WHERE estadobandejacorreonombre = 'Error'),\n    bandejacorreologproceso = COALESCE(bandejacorreologproceso, '') || E'\\n[' || NOW()::TEXT || '] Error en validacion IA',\n    bandejacorreofechaactualizacion = NOW()\nWHERE bandejacorreoid = {{ $('01 - Webhook WF2').item.json.bandejacorreoid }}",
+        "options": {}
+      },
+      "id": "wf3-error-correo",
+      "name": "13 - Marcar Error Correo",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [1540, 200],
+      "credentials": {
+        "postgres": {
+          "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
+          "name": "Postgres Gastos"
+        }
+      },
+      "notes": "Marca el correo como Error."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ status: 'error', message: $json.error || 'Error en validacion' }) }}",
+        "options": {
+          "responseHeaders": { "entries": [{ "name": "Content-Type", "value": "application/json" }] }
+        }
+      },
+      "id": "wf3-response-error",
+      "name": "14 - Responder Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1320, 400]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "01 - Webhook WF2": {
+      "main": [[{ "node": "02 - Cargar Datasets", "type": "main", "index": 0 }]]
+    },
+    "02 - Cargar Datasets": {
+      "main": [[{ "node": "03 - Armar Prompt", "type": "main", "index": 0 }]]
+    },
+    "03 - Armar Prompt": {
+      "main": [[{ "node": "04 - IA Extraer", "type": "main", "index": 0 }]]
+    },
+    "04 - IA Extraer": {
+      "main": [[{ "node": "05 - Validar JSON", "type": "main", "index": 0 }]]
+    },
+    "05 - Validar JSON": {
+      "main": [[{ "node": "06 - Valido?", "type": "main", "index": 0 }]]
+    },
+    "06 - Valido?": {
+      "main": [
+        [{ "node": "07 - Construir INSERT", "type": "main", "index": 0 }],
+        [{ "node": "12 - BandejaIA Error", "type": "main", "index": 0 }]
+      ]
+    },
+    "07 - Construir INSERT": {
+      "main": [[{ "node": "08 - Insertar Movimiento", "type": "main", "index": 0 }]]
+    },
+    "08 - Insertar Movimiento": {
+      "main": [[{ "node": "09 - Marcar Procesado", "type": "main", "index": 0 }]]
+    },
+    "09 - Marcar Procesado": {
+      "main": [[{ "node": "10 - BandejaIA Procesado", "type": "main", "index": 0 }]]
+    },
+    "10 - BandejaIA Procesado": {
+      "main": [[{ "node": "11 - Responder OK", "type": "main", "index": 0 }]]
+    },
+    "12 - BandejaIA Error": {
+      "main": [[{ "node": "13 - Marcar Error Correo", "type": "main", "index": 0 }]]
+    },
+    "13 - Marcar Error Correo": {
+      "main": [[{ "node": "14 - Responder Error", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "1",
+  "meta": { "instanceId": "gastos-wf3" },
+  "id": "GASTOS_WF3",
+  "tags": [{"name": "gastos"}]
+}

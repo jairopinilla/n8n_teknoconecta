@@ -1,0 +1,287 @@
+{
+  "name": "Gastos - 02 Triage Correos a BandejaIA",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": { "interval": [{ "field": "minutes", "minutesInterval": 5 }] }
+      },
+      "id": "wf2-trigger",
+      "name": "01 - Trigger 5min",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 0],
+      "notes": "Cada 5 minutos procesa correos pendientes."
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "SELECT bc.bandejacorreoid, bc.bandejacorreotextoinformacion, bc.bandejacorreoemaildestinatario, bc.bandejacorreointentos\nFROM bandejacorreo bc\nINNER JOIN estadobandejacorreo ebc ON bc.estadobandejacorreoid = ebc.estadobandejacorreoid\nWHERE ebc.estadobandejacorreonombre = 'Pendiente'\n  AND bc.bandejacorreointentos < 3\nORDER BY bc.bandejacorreofecharecepcionorigen ASC\nLIMIT 10",
+        "options": {}
+      },
+      "id": "wf2-get-pending",
+      "name": "02 - Obtener Pendientes",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [220, 0],
+      "credentials": {
+        "postgres": {
+          "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
+          "name": "Postgres Gastos"
+        }
+      },
+      "notes": "Hasta 10 correos pendientes con menos de 3 intentos."
+    },
+    {
+      "parameters": { "options": {} },
+      "id": "wf2-loop",
+      "name": "03 - Loop por Correo",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [440, 0],
+      "notes": "Procesa uno a uno."
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "WITH actualizacion AS (\n  UPDATE bandejacorreo\n  SET estadobandejacorreoid = (SELECT estadobandejacorreoid FROM estadobandejacorreo WHERE estadobandejacorreonombre = 'EnProceso'),\n      bandejacorreointentos = bandejacorreointentos + 1,\n      bandejacorreofechaactualizacion = NOW()\n  WHERE bandejacorreoid = {{ $json.bandejacorreoid }}\n    AND estadobandejacorreoid = (SELECT estadobandejacorreoid FROM estadobandejacorreo WHERE estadobandejacorreonombre = 'Pendiente')\n  RETURNING bandejacorreoid\n)\nSELECT COUNT(*) AS filas_modificadas FROM actualizacion",
+        "options": {}
+      },
+      "id": "wf2-lock",
+      "name": "04 - Marcar EnProceso",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [660, 0],
+      "credentials": {
+        "postgres": {
+          "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
+          "name": "Postgres Gastos"
+        }
+      },
+      "notes": "Marca como EnProceso e incrementa intentos. Si filas_modificadas=0 → ya fue tomado por otro hilo."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "cond-lock",
+              "leftValue": "={{ $json.filas_modificadas }}",
+              "rightValue": 0,
+              "operator": { "type": "number", "operation": "gt" }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "wf2-check-lock",
+      "name": "05 - Verificar Lock",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [880, 0],
+      "notes": "filas_modificadas > 0 → seguir. 0 → saltar al loop."
+    },
+    {
+      "parameters": {
+        "model": "gpt-4o-mini",
+        "messages": {
+          "values": [
+            {
+              "role": "system",
+              "content": "Eres un clasificador de correos bancarios y financieros para un sistema de finanzas personales en Chile.\n\nTu tarea es determinar si un correo contiene informacion sobre un movimiento financiero (ingreso, egreso o transferencia) que deba registrarse.\n\nResponde SIEMPRE en JSON con esta estructura:\n{\n  \"esRelevante\": true/false,\n  \"tipoMovimiento\": \"ingreso\"|\"egreso\"|\"transferencia\"|null,\n  \"razon\": \"breve explicacion\"\n}\n\nReglas:\n- esRelevante=true SOLO si el correo describe claramente un movimiento financiero (compra, pago, transferencia, deposito, abono, cargo).\n- tipoMovimiento debe ser \"ingreso\", \"egreso\" o \"transferencia\" solo si esRelevante=true. Si esRelevante=false, usar null.\n- Ignora publicidad, newsletters, confirmaciones de suscripcion, correos personales.\n- Para transferencias bancarias: tipoMovimiento=\"transferencia\".\n- Para compras con tarjeta, pagos de cuentas, cargos automaticos: tipoMovimiento=\"egreso\".\n- Para depositos, abonos, transferencias recibidas: tipoMovimiento=\"ingreso\".\n- Los correos en espanol de bancos chilenos (BancoEstado, Santander, BCI, Falabella, Ripley, etc) son relevantes si contienen movimientos."
+            },
+            {
+              "role": "user",
+              "content": "={{ $('03 - Loop por Correo').item.json.bandejacorreotextoinformacion }}"
+            }
+          ]
+        },
+        "options": { "temperature": 0.1, "maxTokens": 200, "responseFormat": "json_object" }
+      },
+      "id": "wf2-ai-triage",
+      "name": "06 - IA Clasificar",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [1100, 0],
+      "credentials": {
+        "openAiApi": {
+          "id": "REEMPLAZAR_CREDENTIAL_OPENAI",
+          "name": "OpenAI Gastos"
+        }
+      },
+      "notes": "Triage rapido con gpt-4o-mini. System prompt inline (no depende de tabla Prompt)."
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json;\nlet triage;\n\ntry {\n  if (typeof raw.message === 'string') {\n    triage = JSON.parse(raw.message);\n  } else if (raw.message && raw.message.content) {\n    triage = JSON.parse(raw.message.content);\n  } else if (raw.text) {\n    triage = JSON.parse(raw.text);\n  } else {\n    triage = raw;\n  }\n} catch (e) {\n  return [{ json: { esRelevante: false, error: 'JSON invalido en triage' } }];\n}\n\nif (typeof triage.esRelevante !== 'boolean') {\n  return [{ json: { esRelevante: false, error: 'Campo esRelevante no es boolean' } }];\n}\n\nif (triage.esRelevante && !['ingreso', 'egreso', 'transferencia'].includes(triage.tipoMovimiento)) {\n  return [{ json: { esRelevante: false, error: 'tipoMovimiento invalido' } }];\n}\n\nreturn [{ json: triage }];"
+      },
+      "id": "wf2-parse-triage",
+      "name": "07 - Parsear Triage",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1320, 0],
+      "notes": "Parsea y valida el JSON del triage."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": { "caseSensitive": true, "leftValue": "", "typeValidation": "strict" },
+          "conditions": [
+            {
+              "id": "cond-relevante",
+              "leftValue": "={{ $json.esRelevante }}",
+              "rightValue": true,
+              "operator": { "type": "boolean", "operation": "true" }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "wf2-check-relevancia",
+      "name": "08 - Es Relevante?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [1540, 0],
+      "notes": "Si esRelevante=true → upsert BandejaIA (Procesando) y llamar a WF3. Si false → marcar descartado."
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO bandejaia (bandejacorreoid, estadobandejaiaid, bandejaiapayloadia, bandejaiafechacreacion)\nSELECT\n  {{ $('03 - Loop por Correo').item.json.bandejacorreoid }},\n  (SELECT estadobandejaiaid FROM estadobandejaia WHERE estadobandejaianombre = 'Procesando'),\n  '{{ JSON.stringify($json) }}'::jsonb,\n  NOW()\nON CONFLICT (bandejacorreoid)\nDO UPDATE SET\n  bandejaiapayloadia = EXCLUDED.bandejaiapayloadia,\n  estadobandejaiaid = EXCLUDED.estadobandejaiaid,\n  bandejaiafechaactualizacion = NOW()\nRETURNING bandejaiaid",
+        "options": {}
+      },
+      "id": "wf2-upsert-bandejaia",
+      "name": "09 - Upsert BandejaIA (Procesando)",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [1760, 0],
+      "credentials": {
+        "postgres": {
+          "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
+          "name": "Postgres Gastos"
+        }
+      },
+      "notes": "Crea/actualiza BandejaIA con estado Procesando y el resultado del triage."
+    },
+    {
+      "parameters": {
+        "jsCode": "const bandejaCorreo = $('03 - Loop por Correo').item.json;\nconst triage = $('07 - Parsear Triage').item.json;\n\nreturn [{\n  json: {\n    bandejacorreoid: bandejaCorreo.bandejacorreoid,\n    bandejacorreotextoinformacion: bandejaCorreo.bandejacorreotextoinformacion,\n    bandejacorreoemaildestinatario: bandejaCorreo.bandejacorreoemaildestinatario,\n    tipoMovimiento: triage.tipoMovimiento,\n    razon: triage.razon || ''\n  }\n}];"
+      },
+      "id": "wf2-prep-wf3",
+      "name": "10 - Preparar para WF3",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [1980, 0],
+      "notes": "Prepara el payload para llamar al webhook de WF3."
+    },
+    {
+      "parameters": {
+        "url": "https://n8n.teknoconectapp.com/webhook/gastos-distribuir",
+        "authentication": "none",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            { "name": "bandejacorreoid", "value": "={{ $json.bandejacorreoid }}" },
+            { "name": "bandejacorreotextoinformacion", "value": "={{ $json.bandejacorreotextoinformacion }}" },
+            { "name": "bandejacorreoemaildestinatario", "value": "={{ $json.bandejacorreoemaildestinatario }}" },
+            { "name": "tipoMovimiento", "value": "={{ $json.tipoMovimiento }}" },
+            { "name": "razon", "value": "={{ $json.razon }}" }
+          ]
+        },
+        "options": { "timeout": 60000 }
+      },
+      "id": "wf2-call-wf3",
+      "name": "11 - Llamar WF3 (Distribuir)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.3,
+      "position": [2200, 0],
+      "notes": "Llama al webhook de WF3 para que extraiga y distribuya el movimiento."
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO bandejaia (bandejacorreoid, estadobandejaiaid, bandejaiapayloadia, bandejaiafechacreacion)\nSELECT\n  {{ $('03 - Loop por Correo').item.json.bandejacorreoid }},\n  (SELECT estadobandejaiaid FROM estadobandejaia WHERE estadobandejaianombre = 'NoAplica'),\n  '{{ JSON.stringify($json) }}'::jsonb,\n  NOW()\nON CONFLICT (bandejacorreoid)\nDO UPDATE SET\n  bandejaiapayloadia = EXCLUDED.bandejaiapayloadia,\n  estadobandejaiaid = EXCLUDED.estadobandejaiaid,\n  bandejaiafechaactualizacion = NOW()",
+        "options": {}
+      },
+      "id": "wf2-no-aplica",
+      "name": "12 - Guardar NoAplica",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [1760, 200],
+      "credentials": {
+        "postgres": {
+          "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
+          "name": "Postgres Gastos"
+        }
+      },
+      "notes": "Correo no relevante → estado NoAplica en BandejaIA."
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "UPDATE bandejacorreo\nSET estadobandejacorreoid = (SELECT estadobandejacorreoid FROM estadobandejacorreo WHERE estadobandejacorreonombre = 'Descartado'),\n    bandejacorreofechaactualizacion = NOW()\nWHERE bandejacorreoid = {{ $('03 - Loop por Correo').item.json.bandejacorreoid }}",
+        "options": {}
+      },
+      "id": "wf2-descartar",
+      "name": "13 - Marcar Descartado",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [1980, 200],
+      "credentials": {
+        "postgres": {
+          "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
+          "name": "Postgres Gastos"
+        }
+      },
+      "notes": "Marca el correo como Descartado."
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "01 - Trigger 5min": {
+      "main": [[{ "node": "02 - Obtener Pendientes", "type": "main", "index": 0 }]]
+    },
+    "02 - Obtener Pendientes": {
+      "main": [[{ "node": "03 - Loop por Correo", "type": "main", "index": 0 }]]
+    },
+    "03 - Loop por Correo": {
+      "main": [[{ "node": "04 - Marcar EnProceso", "type": "main", "index": 0 }]]
+    },
+    "04 - Marcar EnProceso": {
+      "main": [[{ "node": "05 - Verificar Lock", "type": "main", "index": 0 }]]
+    },
+    "05 - Verificar Lock": {
+      "main": [
+        [{ "node": "06 - IA Clasificar", "type": "main", "index": 0 }],
+        []
+      ]
+    },
+    "06 - IA Clasificar": {
+      "main": [[{ "node": "07 - Parsear Triage", "type": "main", "index": 0 }]]
+    },
+    "07 - Parsear Triage": {
+      "main": [[{ "node": "08 - Es Relevante?", "type": "main", "index": 0 }]]
+    },
+    "08 - Es Relevante?": {
+      "main": [
+        [{ "node": "09 - Upsert BandejaIA (Procesando)", "type": "main", "index": 0 }],
+        [{ "node": "12 - Guardar NoAplica", "type": "main", "index": 0 }]
+      ]
+    },
+    "09 - Upsert BandejaIA (Procesando)": {
+      "main": [[{ "node": "10 - Preparar para WF3", "type": "main", "index": 0 }]]
+    },
+    "10 - Preparar para WF3": {
+      "main": [[{ "node": "11 - Llamar WF3 (Distribuir)", "type": "main", "index": 0 }]]
+    },
+    "12 - Guardar NoAplica": {
+      "main": [[{ "node": "13 - Marcar Descartado", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "1",
+  "meta": { "instanceId": "gastos-wf2" },
+  "id": "GASTOS_WF2",
+  "tags": [{"name": "gastos"}]
+}

@@ -1,0 +1,137 @@
+{
+  "name": "Gastos - 01 Webhook Email a BandejaCorreo",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "gastos-email",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "wf1-webhook",
+      "name": "01 - Webhook Email",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [0, 0],
+      "webhookId": "gastos-email-webhook",
+      "notes": "Recibe emails via POST. Formato esperado: {emailOrigen, emailDestinatario, asunto, texto, idMensajeGmail, fuenteOrigen}"
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\n\nconst now = new Date().toISOString();\n\nreturn [{\n  json: {\n    bandejacorreofechaingesta: now,\n    bandejacorreofecharecepcionorigen: data.fechaRecepcion || data.date || now,\n    bandejacorreofuenteorigen: data.fuenteOrigen || 'gmail',\n    bandejacorreoemailorigen: data.emailOrigen || data.from || '',\n    bandejacorreoemaildestinatario: data.emailDestinatario || data.to || 'contacto@teknoconecta.com',\n    bandejacorreoidmensajegmail: data.idMensajeGmail || data.messageId || '',\n    bandejacorreopayloadcrudo: JSON.stringify(data.payload || data),\n    bandejacorreotextoinformacion: [\n      'Asunto: ' + (data.asunto || data.subject || ''),\n      'Remitente: ' + (data.emailOrigen || data.from || ''),\n      '',\n      (data.texto || data.body || data.text || '')\n    ].join('\\n'),\n    estadobandejacorreoid: 1,\n    bandejacorreointentos: 0\n  }\n}];"
+      },
+      "id": "wf1-parse",
+      "name": "02 - Parsear Email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 0],
+      "notes": "Transforma el payload del webhook al formato de la tabla bandejacorreo. EstadoBandejaCorreoId=1 (Pendiente)."
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "cond-texto",
+              "leftValue": "={{ $json.bandejacorreotextoinformacion }}",
+              "rightValue": "",
+              "operator": { "type": "string", "operation": "notEmpty" }
+            }
+          ],
+          "combinator": "and"
+        }
+      },
+      "id": "wf1-validate",
+      "name": "03 - Validar Contenido",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [440, 0],
+      "notes": "Verifica que el email tenga contenido. Si no, lo descarta."
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO bandejacorreo (\n  bandejacorreofechaingesta,\n  bandejacorreofecharecepcionorigen,\n  bandejacorreofuenteorigen,\n  bandejacorreoemailorigen,\n  bandejacorreoemaildestinatario,\n  bandejacorreoidmensajegmail,\n  bandejacorreopayloadcrudo,\n  bandejacorreotextoinformacion,\n  estadobandejacorreoid,\n  bandejacorreointentos\n) VALUES (\n  '{{ $json.bandejacorreofechaingesta }}',\n  '{{ $json.bandejacorreofecharecepcionorigen }}',\n  '{{ $json.bandejacorreofuenteorigen }}',\n  '{{ $json.bandejacorreoemailorigen }}',\n  '{{ $json.bandejacorreoemaildestinatario }}',\n  '{{ $json.bandejacorreoidmensajegmail }}',\n  '{{ $json.bandejacorreopayloadcrudo }}',\n  '{{ $json.bandejacorreotextoinformacion }}',\n  {{ $json.estadobandejacorreoid }},\n  {{ $json.bandejacorreointentos }}\n)\nRETURNING bandejacorreoid",
+        "options": {}
+      },
+      "id": "wf1-insert",
+      "name": "04 - Insertar en BandejaCorreo",
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [660, 0],
+      "credentials": {
+        "postgres": {
+          "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
+          "name": "Postgres Gastos"
+        }
+      },
+      "notes": "Inserta el email en bandejacorreo con estado Pendiente (ID=1)."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ status: 'ok', bandejaCorreoId: $json.bandejacorreoid }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          }
+        }
+      },
+      "id": "wf1-response-ok",
+      "name": "05 - Responder OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [880, 0],
+      "notes": "Responde al webhook con el ID del correo creado."
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ status: 'error', message: 'Email sin contenido' }) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Content-Type", "value": "application/json" }
+            ]
+          }
+        }
+      },
+      "id": "wf1-response-error",
+      "name": "06 - Responder Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [660, 200],
+      "notes": "Responde error si el email viene vacio."
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "01 - Webhook Email": {
+      "main": [[{ "node": "02 - Parsear Email", "type": "main", "index": 0 }]]
+    },
+    "02 - Parsear Email": {
+      "main": [[{ "node": "03 - Validar Contenido", "type": "main", "index": 0 }]]
+    },
+    "03 - Validar Contenido": {
+      "main": [
+        [{ "node": "04 - Insertar en BandejaCorreo", "type": "main", "index": 0 }],
+        [{ "node": "06 - Responder Error", "type": "main", "index": 0 }]
+      ]
+    },
+    "04 - Insertar en BandejaCorreo": {
+      "main": [[{ "node": "05 - Responder OK", "type": "main", "index": 0 }]]
+    }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1" },
+  "versionId": "1",
+  "meta": { "instanceId": "gastos-wf1" },
+  "id": "GASTOS_WF1",
+  "tags": [{"name": "gastos"}]
+}
