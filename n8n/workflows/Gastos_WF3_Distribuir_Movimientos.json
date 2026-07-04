@@ -4,14 +4,17 @@
     {
       "parameters": {
         "path": "gastos-distribuir",
-        "responseMode": "responseNode",
-        "options": {}
+        "httpMethod": "POST",
+        "responseMode": "responseNode"
       },
       "id": "wf3-webhook",
       "name": "01 - Webhook WF2",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
-      "position": [0, 0],
+      "position": [
+        0,
+        0
+      ],
       "webhookId": "gastos-distribuir-webhook",
       "notes": "Recibe de WF2: {bandejacorreoid, bandejacorreotextoinformacion, bandejacorreoemaildestinatario, tipoMovimiento, razon}"
     },
@@ -25,7 +28,10 @@
       "name": "02 - Cargar Datasets",
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
-      "position": [220, 0],
+      "position": [
+        220,
+        0
+      ],
       "credentials": {
         "postgres": {
           "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
@@ -42,7 +48,10 @@
       "name": "03 - Armar Prompt",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [440, 0],
+      "position": [
+        440,
+        0
+      ],
       "notes": "Arma el prompt con datasets embebidos."
     },
     {
@@ -50,17 +59,30 @@
         "model": "gpt-4o",
         "messages": {
           "values": [
-            { "role": "system", "content": "={{ $json.systemPrompt }}" },
-            { "role": "user", "content": "={{ $json.userPrompt }}" }
+            {
+              "role": "system",
+              "content": "={{ $json.systemPrompt }}"
+            },
+            {
+              "role": "user",
+              "content": "={{ $json.userPrompt }}"
+            }
           ]
         },
-        "options": { "temperature": 0.2, "maxTokens": 1500, "responseFormat": "json_object" }
+        "options": {
+          "temperature": 0.2,
+          "maxTokens": 1500,
+          "responseFormat": "json_object"
+        }
       },
       "id": "wf3-ai-extract",
       "name": "04 - IA Extraer",
       "type": "@n8n/n8n-nodes-langchain.openAi",
       "typeVersion": 1.8,
-      "position": [660, 0],
+      "position": [
+        660,
+        0
+      ],
       "onError": "continueRegularOutput",
       "retryOnFail": true,
       "maxTries": 3,
@@ -81,19 +103,28 @@
       "name": "05 - Validar JSON",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [880, 0],
+      "position": [
+        880,
+        0
+      ],
       "notes": "Valida campos obligatorios segun tipo de movimiento."
     },
     {
       "parameters": {
         "conditions": {
-          "options": { "caseSensitive": true, "typeValidation": "strict" },
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
           "conditions": [
             {
               "id": "cond-valid",
               "leftValue": "={{ $json.valid }}",
               "rightValue": true,
-              "operator": { "type": "boolean", "operation": "true" }
+              "operator": {
+                "type": "boolean",
+                "operation": "true"
+              }
             }
           ],
           "combinator": "and"
@@ -103,7 +134,10 @@
       "name": "06 - Valido?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [1100, 0],
+      "position": [
+        1100,
+        0
+      ],
       "notes": "Si valid=true → insertar. Si false → marcar error."
     },
     {
@@ -114,7 +148,10 @@
       "name": "07 - Construir INSERT",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [1320, 0],
+      "position": [
+        1320,
+        0
+      ],
       "notes": "Construye el INSERT dinamico segun tipo: egreso, ingreso o transferencia."
     },
     {
@@ -127,7 +164,10 @@
       "name": "08 - Insertar Movimiento",
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
-      "position": [1540, 0],
+      "position": [
+        1540,
+        0
+      ],
       "credentials": {
         "postgres": {
           "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
@@ -146,7 +186,10 @@
       "name": "09 - Marcar Procesado",
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
-      "position": [1760, 0],
+      "position": [
+        1760,
+        0
+      ],
       "credentials": {
         "postgres": {
           "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
@@ -165,7 +208,10 @@
       "name": "10 - BandejaIA Procesado",
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
-      "position": [1980, 0],
+      "position": [
+        1980,
+        0
+      ],
       "credentials": {
         "postgres": {
           "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
@@ -179,14 +225,24 @@
         "respondWith": "json",
         "responseBody": "={{ JSON.stringify({ status: 'ok', message: 'Movimiento procesado' }) }}",
         "options": {
-          "responseHeaders": { "entries": [{ "name": "Content-Type", "value": "application/json" }] }
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
         }
       },
       "id": "wf3-response-ok",
       "name": "11 - Responder OK",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [2200, 0]
+      "position": [
+        2200,
+        0
+      ]
     },
     {
       "parameters": {
@@ -198,7 +254,10 @@
       "name": "12 - BandejaIA Error",
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
-      "position": [1320, 200],
+      "position": [
+        1320,
+        200
+      ],
       "credentials": {
         "postgres": {
           "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
@@ -217,7 +276,10 @@
       "name": "13 - Marcar Error Correo",
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
-      "position": [1540, 200],
+      "position": [
+        1540,
+        200
+      ],
       "credentials": {
         "postgres": {
           "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
@@ -231,62 +293,180 @@
         "respondWith": "json",
         "responseBody": "={{ JSON.stringify({ status: 'error', message: $json.error || 'Error en validacion' }) }}",
         "options": {
-          "responseHeaders": { "entries": [{ "name": "Content-Type", "value": "application/json" }] }
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
         }
       },
       "id": "wf3-response-error",
       "name": "14 - Responder Error",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [1320, 400]
+      "position": [
+        1320,
+        400
+      ]
     }
   ],
   "pinData": {},
   "connections": {
     "01 - Webhook WF2": {
-      "main": [[{ "node": "02 - Cargar Datasets", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "02 - Cargar Datasets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "02 - Cargar Datasets": {
-      "main": [[{ "node": "03 - Armar Prompt", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "03 - Armar Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "03 - Armar Prompt": {
-      "main": [[{ "node": "04 - IA Extraer", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "04 - IA Extraer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "04 - IA Extraer": {
-      "main": [[{ "node": "05 - Validar JSON", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "05 - Validar JSON",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "05 - Validar JSON": {
-      "main": [[{ "node": "06 - Valido?", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "06 - Valido?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "06 - Valido?": {
       "main": [
-        [{ "node": "07 - Construir INSERT", "type": "main", "index": 0 }],
-        [{ "node": "12 - BandejaIA Error", "type": "main", "index": 0 }]
+        [
+          {
+            "node": "07 - Construir INSERT",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "12 - BandejaIA Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "07 - Construir INSERT": {
-      "main": [[{ "node": "08 - Insertar Movimiento", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "08 - Insertar Movimiento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "08 - Insertar Movimiento": {
-      "main": [[{ "node": "09 - Marcar Procesado", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "09 - Marcar Procesado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "09 - Marcar Procesado": {
-      "main": [[{ "node": "10 - BandejaIA Procesado", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "10 - BandejaIA Procesado",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "10 - BandejaIA Procesado": {
-      "main": [[{ "node": "11 - Responder OK", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "11 - Responder OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "12 - BandejaIA Error": {
-      "main": [[{ "node": "13 - Marcar Error Correo", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "13 - Marcar Error Correo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "13 - Marcar Error Correo": {
-      "main": [[{ "node": "14 - Responder Error", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "14 - Responder Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
-  "settings": { "executionOrder": "v1" },
+  "settings": {
+    "executionOrder": "v1"
+  },
   "versionId": "1",
-  "meta": { "instanceId": "gastos-wf3" },
+  "meta": {
+    "instanceId": "gastos-wf3"
+  },
   "id": "GASTOS_WF3",
-  "tags": [{"name": "gastos"}]
+  "tags": [
+    {
+      "name": "gastos"
+    }
+  ]
 }

@@ -4,14 +4,17 @@
     {
       "parameters": {
         "path": "gastos-email",
-        "responseMode": "responseNode",
-        "options": {}
+        "httpMethod": "POST",
+        "responseMode": "responseNode"
       },
       "id": "wf1-webhook",
       "name": "01 - Webhook Email",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 2.1,
-      "position": [0, 0],
+      "position": [
+        0,
+        0
+      ],
       "webhookId": "gastos-email-webhook",
       "notes": "Recibe emails via POST. Formato esperado: {emailOrigen, emailDestinatario, asunto, texto, idMensajeGmail, fuenteOrigen}"
     },
@@ -23,7 +26,10 @@
       "name": "02 - Parsear Email",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
-      "position": [220, 0],
+      "position": [
+        220,
+        0
+      ],
       "notes": "Transforma el payload del webhook al formato de la tabla bandejacorreo. EstadoBandejaCorreoId=1 (Pendiente)."
     },
     {
@@ -39,7 +45,10 @@
               "id": "cond-texto",
               "leftValue": "={{ $json.bandejacorreotextoinformacion }}",
               "rightValue": "",
-              "operator": { "type": "string", "operation": "notEmpty" }
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty"
+              }
             }
           ],
           "combinator": "and"
@@ -49,7 +58,10 @@
       "name": "03 - Validar Contenido",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
-      "position": [440, 0],
+      "position": [
+        440,
+        0
+      ],
       "notes": "Verifica que el email tenga contenido. Si no, lo descarta."
     },
     {
@@ -62,7 +74,10 @@
       "name": "04 - Insertar en BandejaCorreo",
       "type": "n8n-nodes-base.postgres",
       "typeVersion": 2.6,
-      "position": [660, 0],
+      "position": [
+        660,
+        0
+      ],
       "credentials": {
         "postgres": {
           "id": "REEMPLAZAR_CREDENTIAL_POSTGRES_GASTOS",
@@ -78,7 +93,10 @@
         "options": {
           "responseHeaders": {
             "entries": [
-              { "name": "Content-Type", "value": "application/json" }
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
             ]
           }
         }
@@ -87,7 +105,10 @@
       "name": "05 - Responder OK",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [880, 0],
+      "position": [
+        880,
+        0
+      ],
       "notes": "Responde al webhook con el ID del correo creado."
     },
     {
@@ -97,7 +118,10 @@
         "options": {
           "responseHeaders": {
             "entries": [
-              { "name": "Content-Type", "value": "application/json" }
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
             ]
           }
         }
@@ -106,32 +130,79 @@
       "name": "06 - Responder Error",
       "type": "n8n-nodes-base.respondToWebhook",
       "typeVersion": 1,
-      "position": [660, 200],
+      "position": [
+        660,
+        200
+      ],
       "notes": "Responde error si el email viene vacio."
     }
   ],
   "pinData": {},
   "connections": {
     "01 - Webhook Email": {
-      "main": [[{ "node": "02 - Parsear Email", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "02 - Parsear Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "02 - Parsear Email": {
-      "main": [[{ "node": "03 - Validar Contenido", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "03 - Validar Contenido",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     },
     "03 - Validar Contenido": {
       "main": [
-        [{ "node": "04 - Insertar en BandejaCorreo", "type": "main", "index": 0 }],
-        [{ "node": "06 - Responder Error", "type": "main", "index": 0 }]
+        [
+          {
+            "node": "04 - Insertar en BandejaCorreo",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "06 - Responder Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
       ]
     },
     "04 - Insertar en BandejaCorreo": {
-      "main": [[{ "node": "05 - Responder OK", "type": "main", "index": 0 }]]
+      "main": [
+        [
+          {
+            "node": "05 - Responder OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
-  "settings": { "executionOrder": "v1" },
+  "settings": {
+    "executionOrder": "v1"
+  },
   "versionId": "1",
-  "meta": { "instanceId": "gastos-wf1" },
+  "meta": {
+    "instanceId": "gastos-wf1"
+  },
   "id": "GASTOS_WF1",
-  "tags": [{"name": "gastos"}]
+  "tags": [
+    {
+      "name": "gastos"
+    }
+  ]
 }
