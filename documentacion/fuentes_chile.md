@@ -207,11 +207,11 @@ Para contrastar datos chilenos con contexto global, usar:
 1. **Dato duro**: INE → Encuesta Nacional de Empleo (ENE), último trimestre
 2. **Contexto**: Banco Central → IMACEC, proyecciones de crecimiento
 3. **Contraste**: 
-   - Fundación Sol: calidad del empleo, informalidad, salarios
-   - LyD: rigidez laboral, costo de despido, indemnizaciones
-4. **Pensadores**:
-   - Landerretche: empleo como síntoma del modelo de desarrollo
-   - Briones: necesidad de flexibilidad laboral
+   - Fundación Sol: calidad del empleo, informalidad, salarios bajos, crítica al modelo
+   - LyD / Pivotes: rigidez laboral, costo de despido, indemnizaciones, flexibilidad
+4. **Pensadores** (máxima distancia ideológica):
+   - Claudia Sanhueza (izquierda): intervención estatal, negociación colectiva, salario mínimo
+   - Axel Kaiser (derecha): libre mercado laboral, fin del salario mínimo, desregulación
 5. **Internacional**: OIT → comparación con LatAm, OCDE → comparación con países desarrollados
 
 ### Pregunta: "¿Cómo está la discusión constitucional en Chile?"

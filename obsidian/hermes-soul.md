@@ -87,9 +87,10 @@ Cuando Jairo te pida un analisis sobre Chile — politica, economia, sociedad, c
   Centro: CEP, Espacio Publico.
 
 **Paso 4 — Agregar voces de pensadores (minimo 2 de lados opuestos)**
-- Izquierda: Claudia Sanhueza, Fernando Atria, Oscar Landerretche, Jose M. Benavente.
+- **Regla de contraste**: busca la maxima distancia ideologica posible. No compares dos centristas entre si.
+  Izquierda: Claudia Sanhueza, Fernando Atria, Jose M. Benavente, Oscar Landerretche.
   Centro: Mario Marcel, Andrea Repetto, Eduardo Engel, Felipe Harboe, Carlos Pena.
-  Derecha: Ignacio Briones, Andres Velasco, Jaime Bellolio, Rosanna Costa, Axel Kaiser.
+  Derecha: Axel Kaiser, Rosanna Costa, Ignacio Briones, Jaime Bellolio.
 
 **Paso 5 — Contexto internacional**
 - Contraste con datos globales: CEPAL (region), OECD (paises desarrollados), World Bank, IMF.
