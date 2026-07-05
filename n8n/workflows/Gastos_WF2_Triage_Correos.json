@@ -118,7 +118,7 @@
           "values": [
             {
               "role": "system",
-              "content": "Eres un clasificador de correos bancarios y financieros para un sistema de finanzas personales en Chile.\n\nTu tarea es determinar si un correo contiene informacion sobre un movimiento financiero (ingreso, egreso o transferencia) que deba registrarse.\n\nIMPORTANTE: Responde UNICAMENTE con un objeto JSON puro. Sin markdown, sin texto fuera del JSON.\n\nResponde SIEMPRE en JSON con esta estructura:\n{\n  \"esRelevante\": true/false,\n  \"tipoMovimiento\": \"ingreso\"|\"egreso\"|\"transferencia\"|null,\n  \"razon\": \"breve explicacion\"\n}\n\nReglas:\n- esRelevante=true SOLO si el correo describe claramente un movimiento financiero (compra, pago, transferencia, deposito, abono, cargo).\n- tipoMovimiento debe ser \"ingreso\", \"egreso\" o \"transferencia\" solo si esRelevante=true. Si esRelevante=false, usar null.\n- Ignora publicidad, newsletters, confirmaciones de suscripcion, correos personales.\n- Para transferencias bancarias: tipoMovimiento=\"transferencia\".\n- Para compras con tarjeta, pagos de cuentas, cargos automaticos: tipoMovimiento=\"egreso\".\n- Para depositos, abonos, transferencias recibidas: tipoMovimiento=\"ingreso\".\n- Los correos en espanol de bancos chilenos (BancoEstado, Santander, BCI, Falabella, Ripley, etc) son relevantes si contienen movimientos."
+              "content": "Eres un clasificador de correos electronicos financieros personales.\n\nTu tarea es analizar el texto de un correo electronico y determinar si contiene informacion sobre un movimiento financiero concreto (una compra, un pago, un abono, una transferencia).\n\n=== CORREOS QUE NO SON MOVIMIENTOS FINANCIEROS (clasificar como NO relevante) ===\n- Cartolas bancarias o resumenes de cuenta (lista de multiples transacciones)\n- Correos promocionales, ofertas o publicidad\n- Alertas de seguridad (cambio de contrasena, nuevo dispositivo, verificacion)\n- Newsletters informativos del banco\n- Confirmaciones de suscripcion sin monto especifico\n- Avisos de mantencion de sistemas\n- Estados de cuenta de tarjeta de credito (resumen mensual)\n- Confirmaciones de actualizacion de datos personales\n\n=== CORREOS QUE SI SON MOVIMIENTOS FINANCIEROS (clasificar como relevante) ===\n- Notificacion de compra con tarjeta (debito o credito)\n- Notificacion de pago de servicio\n- Notificacion de transferencia enviada o recibida\n- Notificacion de abono o deposito\n- Aviso de cargo automatico con monto especifico\n- Notificacion de pago de cuota de credito\n- Aviso de devolucion o reembolso con monto\n\n=== TIPOS DE MOVIMIENTO ===\n- \"ingreso\": dinero que entra al usuario (abono, deposito, sueldo, reembolso, devolucion)\n- \"egreso\": dinero que sale del usuario (compra, pago, cargo, debito, suscripcion)\n- \"transferencia\": movimiento entre cuentas propias del usuario o hacia/desde terceros sin compra asociada\n\n=== REGLAS ===\n1. Si el correo contiene UN movimiento financiero especifico con monto, es relevante.\n2. Si el correo lista MULTIPLES transacciones (cartola, resumen), NO es relevante.\n3. Si no hay monto explicito, NO es relevante.\n4. Si esRelevante es false, tipoMovimiento debe ser null.\n5. Si esRelevante es true, tipoMovimiento es obligatorio.\n\nResponde EXCLUSIVAMENTE con un JSON valido, sin texto adicional ni markdown:\n\n{\n  \"esRelevante\": true,\n  \"tipoMovimiento\": \"egreso\",\n  \"confianza\": \"alta\",\n  \"justificacion\": \"Notificacion de compra con tarjeta de debito en supermercado por $45.230\"\n}\n\n--- CORREO A CLASIFICAR ---"
             },
             {
               "role": "user",
@@ -131,7 +131,7 @@
           "maxOutputTokens": 300,
           "topP": 0.1
         },
-        "modelName": "gpt-4o-mini"
+        "modelName": "gemini-2.0-flash"
       },
       "id": "wf2-ai-triage",
       "name": "06 - IA Clasificar",
@@ -219,7 +219,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const bandejaCorreo = $('03 - Loop por Correo').item.json;\nconst triage = $('07 - Parsear Triage').item.json;\n\nreturn [{\n  json: {\n    bandejacorreoid: bandejaCorreo.bandejacorreoid,\n    bandejacorreotextoinformacion: bandejaCorreo.bandejacorreotextoinformacion,\n    bandejacorreoemaildestinatario: bandejaCorreo.bandejacorreoemaildestinatario,\n    tipoMovimiento: triage.tipoMovimiento,\n    razon: triage.razon || ''\n  }\n}];"
+        "jsCode": "const bandejaCorreo = $('03 - Loop por Correo').item.json;\nconst triage = $('07 - Parsear Triage').item.json;\n\nreturn [{\n  json: {\n    bandejacorreoid: bandejaCorreo.bandejacorreoid,\n    bandejacorreotextoinformacion: bandejaCorreo.bandejacorreotextoinformacion,\n    bandejacorreoemaildestinatario: bandejaCorreo.bandejacorreoemaildestinatario,\n    tipoMovimiento: triage.tipoMovimiento,\n    razon: triage.justificacion || triage.razon || ''\n  }\n}];"
       },
       "id": "wf2-prep-wf3",
       "name": "10 - Preparar para WF3",
