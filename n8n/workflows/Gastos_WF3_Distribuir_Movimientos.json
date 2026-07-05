@@ -42,7 +42,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const datasets = $('02 - Cargar Datasets').item.json.datasets;\nconst correo = $input.first().json.bandejacorreotextoinformacion;\nconst tipoMovimiento = $input.first().json.tipoMovimiento;\n\nconst systemPrompt = `Eres un extractor de datos financieros para un sistema de finanzas personales en Chile.\n\nTu tarea es extraer informacion estructurada de un correo bancario.\n\nEl tipo de movimiento ya fue identificado como: ${tipoMovimiento}\n\nCONTEXTO - Catalogos disponibles:\n- Categorias de ingreso: ${JSON.stringify(datasets.categorias_ingreso)}\n- Categorias de egreso: ${JSON.stringify(datasets.categorias_egreso)}\n- Subcategorias de egreso: ${JSON.stringify(datasets.subcategorias_egreso)}\n- Controlabilidad: ${JSON.stringify(datasets.controlabilidad)}\n- Recurrencia: ${JSON.stringify(datasets.recurrencia)}\n- Canales: ${JSON.stringify(datasets.canal)}\n- Direcciones de transferencia: ${JSON.stringify(datasets.direccion_transferencia)}\n- Contrapartes conocidas: ${JSON.stringify(datasets.contrapartes)}\n- Bancos: ${JSON.stringify(datasets.bancos)}\n- Divisas: ${JSON.stringify(datasets.divisas)}\n\nResponde SIEMPRE en JSON con esta estructura:\n{\n  \"tipo\": \"${tipoMovimiento}\",\n  \"contraparte\": \"nombre del comercio o persona\",\n  \"monto\": 12345,\n  \"divisa\": \"CLP\",\n  \"fechaMovimiento\": \"YYYY-MM-DD\",\n  \"descripcion\": \"breve descripcion del movimiento\",\n  \"cuenta\": \"numero o tipo de cuenta\",\n  \"tarjeta\": \"ultimos 4 digitos\",\n  \"tarjetaProveedor\": \"Visa|Mastercard\",\n  \"esInformadoPorBanco\": true,\n  \"categoriaIngreso\": \"nombre exacto de la lista de categorias de ingreso\",\n  \"categoriaEgreso\": \"nombre exacto de la lista de categorias de egreso\",\n  \"subcategoriaEgreso\": \"nombre exacto de la lista de subcategorias\",\n  \"controlabilidad\": \"nombre exacto de la lista\",\n  \"recurrencia\": \"nombre exacto de la lista\",\n  \"canal\": \"nombre exacto de la lista\",\n  \"direccionTransferencia\": \"Entrante|Saliente\",\n  \"banco\": \"nombre exacto de la lista de bancos\",\n  \"esCuotas\": false,\n  \"numeroCuotaActual\": null,\n  \"totalCuotas\": null,\n  \"esCargoAutomatico\": false\n}\n\nReglas:\n- SIEMPRE usa los nombres exactos de los catalogos proporcionados. No inventes categorias.\n- monto debe ser un numero positivo (sin signos, sin puntos de miles).\n- Si el monto esta en dolares, indica divisa='USD' y monto en dolares.\n- fechaMovimiento en formato YYYY-MM-DD (si no esta disponible, usa la fecha del correo).\n- Para transferencias: incluye direccionTransferencia ('Entrante' si recibes, 'Saliente' si envias).\n- Para compras en cuotas: esCuotas=true, numeroCuotaActual y totalCuotas.`;\n\nreturn [{\n  json: { systemPrompt, userPrompt: correo, tipoMovimiento }\n}];"
+        "jsCode": "const datasets = $('02 - Cargar Datasets').item.json.datasets;\nconst correo = $input.first().json.bandejacorreotextoinformacion;\nconst tipoMovimiento = $input.first().json.tipoMovimiento;\n\nconst systemPrompt = `ERES UN EXTRACTOR DE DATOS. DEBES RESPONDER UNICAMENTE CON JSON PURO, SIN MARKDOWN, SIN TEXTO FUERA DEL JSON. Eres un extractor de datos financieros para un sistema de finanzas personales en Chile.\n\nTu tarea es extraer informacion estructurada de un correo bancario.\n\nEl tipo de movimiento ya fue identificado como: ${tipoMovimiento}\n\nCONTEXTO - Catalogos disponibles:\n- Categorias de ingreso: ${JSON.stringify(datasets.categorias_ingreso)}\n- Categorias de egreso: ${JSON.stringify(datasets.categorias_egreso)}\n- Subcategorias de egreso: ${JSON.stringify(datasets.subcategorias_egreso)}\n- Controlabilidad: ${JSON.stringify(datasets.controlabilidad)}\n- Recurrencia: ${JSON.stringify(datasets.recurrencia)}\n- Canales: ${JSON.stringify(datasets.canal)}\n- Direcciones de transferencia: ${JSON.stringify(datasets.direccion_transferencia)}\n- Contrapartes conocidas: ${JSON.stringify(datasets.contrapartes)}\n- Bancos: ${JSON.stringify(datasets.bancos)}\n- Divisas: ${JSON.stringify(datasets.divisas)}\n\nResponde SIEMPRE en JSON con esta estructura:\n{\n  \"tipo\": \"${tipoMovimiento}\",\n  \"contraparte\": \"nombre del comercio o persona\",\n  \"monto\": 12345,\n  \"divisa\": \"CLP\",\n  \"fechaMovimiento\": \"YYYY-MM-DD\",\n  \"descripcion\": \"breve descripcion del movimiento\",\n  \"cuenta\": \"numero o tipo de cuenta\",\n  \"tarjeta\": \"ultimos 4 digitos\",\n  \"tarjetaProveedor\": \"Visa|Mastercard\",\n  \"esInformadoPorBanco\": true,\n  \"categoriaIngreso\": \"nombre exacto de la lista de categorias de ingreso\",\n  \"categoriaEgreso\": \"nombre exacto de la lista de categorias de egreso\",\n  \"subcategoriaEgreso\": \"nombre exacto de la lista de subcategorias\",\n  \"controlabilidad\": \"nombre exacto de la lista\",\n  \"recurrencia\": \"nombre exacto de la lista\",\n  \"canal\": \"nombre exacto de la lista\",\n  \"direccionTransferencia\": \"Entrante|Saliente\",\n  \"banco\": \"nombre exacto de la lista de bancos\",\n  \"esCuotas\": false,\n  \"numeroCuotaActual\": null,\n  \"totalCuotas\": null,\n  \"esCargoAutomatico\": false\n}\n\nReglas:\n- SIEMPRE usa los nombres exactos de los catalogos proporcionados. No inventes categorias.\n- monto debe ser un numero positivo (sin signos, sin puntos de miles).\n- Si el monto esta en dolares, indica divisa='USD' y monto en dolares.\n- fechaMovimiento en formato YYYY-MM-DD (si no esta disponible, usa la fecha del correo).\n- Para transferencias: incluye direccionTransferencia ('Entrante' si recibes, 'Saliente' si envias).\n- Para compras en cuotas: esCuotas=true, numeroCuotaActual y totalCuotas.`;\n\nreturn [{\n  json: { systemPrompt, userPrompt: correo, tipoMovimiento }\n}];"
       },
       "id": "wf3-build-prompt",
       "name": "03 - Armar Prompt",
@@ -56,7 +56,6 @@
     },
     {
       "parameters": {
-        "model": "gpt-4o",
         "messages": {
           "values": [
             {
@@ -71,14 +70,15 @@
         },
         "options": {
           "temperature": 0.2,
-          "maxTokens": 1500,
-          "responseFormat": "json_object"
-        }
+          "maxOutputTokens": 2000,
+          "topP": 0.1
+        },
+        "modelName": "gpt-4o"
       },
       "id": "wf3-ai-extract",
       "name": "04 - IA Extraer",
-      "type": "@n8n/n8n-nodes-langchain.openAi",
-      "typeVersion": 1.8,
+      "type": "@n8n/n8n-nodes-langchain.googlePalm",
+      "typeVersion": 1.2,
       "position": [
         660,
         0
@@ -88,16 +88,16 @@
       "maxTries": 3,
       "waitBetweenTries": 5000,
       "credentials": {
-        "openAiApi": {
-          "id": "REEMPLAZAR_CREDENTIAL_OPENAI",
-          "name": "OpenAI Gastos"
+        "googlePalmApi": {
+          "id": "REEMPLAZAR_CREDENTIAL_GEMINI",
+          "name": "Google Gemini Gastos"
         }
       },
       "notes": "Extraccion con gpt-4o. 3 reintentos con 5s entre intentos."
     },
     {
       "parameters": {
-        "jsCode": "const raw = $input.first().json;\nlet mov;\n\ntry {\n  if (typeof raw.message === 'string') {\n    mov = JSON.parse(raw.message);\n  } else if (raw.message && raw.message.content) {\n    mov = JSON.parse(raw.message.content);\n  } else if (raw.text) {\n    mov = JSON.parse(raw.text);\n  } else {\n    mov = raw;\n  }\n} catch (e) {\n  return [{ json: { valid: false, error: 'JSON invalido: ' + e.message } }];\n}\n\nconst tipo = mov.tipo;\nif (!['ingreso', 'egreso', 'transferencia'].includes(tipo)) {\n  return [{ json: { valid: false, error: 'tipo invalido: ' + tipo } }];\n}\nif (!mov.contraparte) {\n  return [{ json: { valid: false, error: 'contraparte faltante' } }];\n}\nif (typeof mov.monto !== 'number' || mov.monto <= 0) {\n  return [{ json: { valid: false, error: 'monto invalido: ' + mov.monto } }];\n}\nif (!mov.divisa || !['CLP', 'USD', 'ARS', 'EUR'].includes(mov.divisa)) {\n  return [{ json: { valid: false, error: 'divisa invalida: ' + mov.divisa } }];\n}\nif (!mov.fechaMovimiento) {\n  return [{ json: { valid: false, error: 'fechaMovimiento faltante' } }];\n}\nif (tipo === 'egreso' && !mov.categoriaEgreso) {\n  return [{ json: { valid: false, error: 'categoriaEgreso faltante' } }];\n}\nif (tipo === 'ingreso' && !mov.categoriaIngreso) {\n  return [{ json: { valid: false, error: 'categoriaIngreso faltante' } }];\n}\nif (tipo === 'transferencia' && !mov.direccionTransferencia) {\n  return [{ json: { valid: false, error: 'direccionTransferencia faltante' } }];\n}\n\nmov.valid = true;\nreturn [{ json: mov }];"
+        "jsCode": "const raw = $input.first().json;\nlet text = \"\";\nif (raw.text) text = raw.text;\nelse if (raw.message) text = typeof raw.message === \"string\" ? raw.message : (raw.message.content || raw.message.text || \"\");\nelse if (raw.response) text = raw.response;\nelse text = JSON.stringify(raw);\ntext = text.replace(/^```(?:json)?\\s*\\n?/gm, \"\").replace(/```\\s*$/gm, \"\").trim();\nlet mov;\ntry { mov = JSON.parse(text); } catch (e) { return [{ json: { valid: false, error: \"JSON invalido: \" + e.message } }]; }\nconst tipo = mov.tipo;\nif (![\"ingreso\", \"egreso\", \"transferencia\"].includes(tipo)) { return [{ json: { valid: false, error: \"tipo invalido: \" + tipo } }]; }\nif (!mov.contraparte) { return [{ json: { valid: false, error: \"contraparte faltante\" } }]; }\nif (typeof mov.monto !== \"number\" || mov.monto <= 0) { return [{ json: { valid: false, error: \"monto invalido: \" + mov.monto } }]; }\nif (!mov.divisa || ![\"CLP\", \"USD\", \"ARS\", \"EUR\"].includes(mov.divisa)) { return [{ json: { valid: false, error: \"divisa invalida: \" + mov.divisa } }]; }\nif (!mov.fechaMovimiento) { return [{ json: { valid: false, error: \"fechaMovimiento faltante\" } }]; }\nif (tipo === \"egreso\" && !mov.categoriaEgreso) { return [{ json: { valid: false, error: \"categoriaEgreso faltante\" } }]; }\nif (tipo === \"ingreso\" && !mov.categoriaIngreso) { return [{ json: { valid: false, error: \"categoriaIngreso faltante\" } }]; }\nif (tipo === \"transferencia\" && !mov.direccionTransferencia) { return [{ json: { valid: false, error: \"direccionTransferencia faltante\" } }]; }\nmov.valid = true;\nreturn [{ json: mov }];"
       },
       "id": "wf3-validate",
       "name": "05 - Validar JSON",
