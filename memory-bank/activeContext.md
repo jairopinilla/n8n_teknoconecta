@@ -1,6 +1,6 @@
 # Active Context — TeknoConecta
 
-> Ultima actualizacion: 2026-07-04
+> Ultima actualizacion: 2026-07-07
 >
 > 🔴 **Directus cloud y Supabase cloud YA NO SE USAN.** Todo en chitara (VPS 5.252.52.190).
 > Para operar usar SIEMPRE los MCPs chitara (`n8n-chitara`, `directus-chitara`, `supabase-chitara`).
@@ -153,10 +153,8 @@ Todos los registros son CNAME → `779b9db0-b10e-4048-90e4-e09256d40f39.cfargotu
 
 ## MCP servers en opencode.jsonc
 
-30 servidores MCP. Los nuevos de esta sesión:
-- `aws-topic-system`: AWS API MCP con credenciales `topic-system-user` (solo bucket `topicsystem`)
-- `topic-system-db`: PostgreSQL via SSH (12 tools, DB `topic_system`)
-- `procesadoc-db`: PostgreSQL via SSH (12 tools, DB `procesadoc`)
+31 servidores MCP. Los nuevos de esta sesión:
+- `pricelabs`: MCP remoto oficial de PriceLabs (OAuth 2.0, `https://mcp.pricelabs.co/mcp`). Reemplaza funcionalidad del MCP local `pricelabs-docs` para operaciones de escritura (DSOs, base/min/max). (2026-07-07)
 
 ## Comandos clave
 
@@ -186,6 +184,30 @@ python infra/qdrant/init_collections.py --host 5.252.52.190 --port 6333 --api-ke
 - OpenCode CLI `run` inestable con deepseek-v4-pro → web funciona OK
 - `chrome-devtools-mcp` no funciona en WSL → requiere OpenCode nativo en Windows
 - Coolify no respeta docker-compose del repo (extra_hosts, volumes) → requiere watchdog scripts
+
+## Cambios recientes (2026-07-07)
+
+### Cloudflare API Token — DNS+SSL para MCP
+- Token viejo (`cfat_I9KF...`) era invalido/read-only. Creado nuevo token via API: `cfut_[REDACTED]`
+- Permisos: DNS Write + SSL and Certificates Write, scope zone `chitaraagenteia.com` (71a7e23d2f3406a9e755614a51cd3f3c)
+- Actualizado en: `opencode.jsonc` (cloudflare + cloudflare-dns), `documentacion/credenciales`, `.enc` re-encriptados
+- Verificado activo y valido: `"This API Token is valid and active"`
+
+### MCP PriceLabs oficial (remoto, OAuth)
+- Nuevo MCP `pricelabs` en opencode.jsonc: remoto via `https://mcp.pricelabs.co/mcp` con OAuth 2.0 (clientId + clientSecret)
+- Se diferencia de `pricelabs-docs` (local, solo documentacion): este MCP oficial permite leer/actualizar listings, DSOs, precios, reservas, market insights via lenguaje natural
+- Al reiniciar OpenCode, abrira el navegador para autorizar la conexion con credenciales de PriceLabs
+
+### WF2 Gastos — ON CONFLICT en Inserts (DB directo)
+- **WF2 en vivo es distinto al versionado en git** (26 nodos vs 13, arquitectura Switch con 3 nodos Postgres separados)
+- Agregadas queries SQL a los 3 nodos Postgres del Switch "Tipo ingreso": `Inserta Egreso`, `Insert Ingreso`, `Insert transferencia`
+- Cada INSERT incluye `ON CONFLICT (movimientohash) DO NOTHING` para manejar duplicados (mismo correo procesado 2+ veces)
+- `usuarioid` se resuelve via `FROM usuario WHERE correo = emailDestinatario`
+- WF2 exportado a git (`Gastos_WF2_Triage_Correos.json`) sincronizado con produccion
+- NOTA: el WF3 legacy (git) aun tiene el nodo 07 que construye INSERTs sin ON CONFLICT; el flujo real usa el WF2 nuevo con 3 nodos separados
+
+### `google-duration` warning
+- Aclarado: el warning "unknown format google-duration ignored in schema" es inofensivo. Viene de schemas protobuf de Google APIs que usan formatos custom no reconocidos por validadores JSON Schema estandar. No afecta funcionalidad.
 
 ## Cambios recientes (2026-06-18, 2026-06-19, 2026-06-20)
 
@@ -238,3 +260,4 @@ python infra/qdrant/init_collections.py --host 5.252.52.190 --port 6333 --api-ke
 - ✅ **Chitara (Telegram) — recomendaciones de renta corta:** creado cheat-sheet `obsidian/knowledge/renta_corta.md` (condensado del playbook) y agregada sección "RECOMENDACIONES DE RENTA CORTA" en `obsidian/hermes-soul.md` que apunta a `playbook_renta_corta.md` + `documentacion/insights_airbnb_2026-06-22.md`. El insights se movió de `Asesorias/` (ignorada) a `documentacion/` versionada. Commiteado y pusheado al remoto (Hermes hace git pull cada 1h)
 - 🧠 **Chitara — Protocolo de investigación sobre Chile (2026-07-04):** Creado `documentacion/fuentes_chile.md` — catalogo completo de 22 think tanks (izquierda/centro/derecha), 14 fuentes de datos oficiales con/sin API, 20 pensadores chilenos clasificados por ideología (economía, rol del Estado, línea social), mapeo de redes y afinidades. `hermes-soul.md` actualizado con protocolo de 6 pasos (datos duros → think tanks opuestos → pensadores → contexto internacional). `hermes-config.md` actualizado con herramientas de investigación. Próximo: probar en Telegram, luego conectar Instagram.
 - 💰 **Gastos — Finanzas personales con NocoDB (2026-07-04):** Nueva app en VPS. URL: `https://gastos.chitaraagenteia.com`. Estructura: NocoDB (Docker) → PostgreSQL local DB `personal_contador`. 23 tablas copiadas de Saldito (`egreso`, `ingreso`, `transferencia`, `bandejacorreo`, `bandejaia`, `workspace`, etc.). Sin Cloudflare Access (auth nativa de NocoDB). Pendiente: conectar con n8n para workers de IA (procesamiento de emails, clasificación de gastos).
+- 📋 **Gastos — Documentacion completa (2026-07-06):** Creado `documentacion/gastos_personales.md` con esquema DB, constraints UNIQUE/NOT NULL, 3 workflows n8n documentados, script de insercion adaptado al nuevo schema `personal_contador`, calculo de hash con `digest()`, y issues conocidos (falta `usuarioid` y `movimientohash` en nodo 07 del WF3). Schema viejo `gestiongastos` (Neon) ya no se usa.

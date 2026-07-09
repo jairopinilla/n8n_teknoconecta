@@ -1,10 +1,24 @@
 # Progress — TeknoConecta
 
-> Ultima actualizacion: 2026-07-04
+> Ultima actualizacion: 2026-07-07
 > Este repo (n8n_teknoconecta) es el hub central de coordinacion.
 > Los repos de proyectos (`topic_system`, `Procesa_doc`, `gestion_gastos`, `kiosko_laflorida`) son independientes.
 
 ## Completado
+
+### MCP PriceLabs oficial (2026-07-07)
+- [x] Configurado `pricelabs` MCP remoto en opencode.jsonc (OAuth 2.0, clientId + clientSecret)
+- [x] Archivo re-encriptado (`opencode.jsonc.enc`)
+- [x] Memory-bank actualizado
+
+### WF2 Gastos — Inserts con ON CONFLICT (2026-07-07)
+- [x] WF2 en vivo exportado y analizado (26 nodos, arquitectura distinta al git)
+- [x] Queries SQL agregadas a los 3 nodos Postgres: Inserta Egreso, Insert Ingreso, Insert transferencia
+- [x] Cada query incluye `ON CONFLICT (movimientohash) DO NOTHING` para manejar duplicados
+- [x] `usuarioid` se resuelve via JOIN con `usuario.usuariocorreo`
+- [x] DB actualizada directamente (docker exec postgres psql) — UPDATE 1 row
+- [x] Verificado: los 3 nodos tienen conflict=True, returning=True
+- [x] WF2 sincronizado a git (`Gastos_WF2_Triage_Correos.json`)
 
 ### Infraestructura VPS
 - [x] 32 contenedores Docker (9 Coolify + 16 servicios + 4 workers/infra + 3 Coolify internos)
@@ -156,7 +170,7 @@
 ## Metricas
 
 - Workflows n8n: 25
-- MCP servers (opencode.jsonc): 30
+- MCP servers (opencode.jsonc): 31
 - Contenedores Docker: 38
 - Servicios web con HTTPS: 24 (+2 vaults Obsidian)
 - Apps Coolify con auto-deploy: 9

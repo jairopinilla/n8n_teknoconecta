@@ -7,7 +7,7 @@
 | Frontend apps | Angular 20 + Ionic 8 (saldito), HTML/CSS (aseos) |
 | Backend API | Node.js ESM, @clerk/backend, @neondatabase/serverless |
 | Base de datos operativa | PostgreSQL 18 (VPS Docker, DB `sandiegoapart`) |
-| Base de datos gastos | Neon PostgreSQL (`old-lab-07457522`, schema `gestiongastos`) |
+| Base de datos gastos | PostgreSQL VPS chitara (DB `personal_contador`, NocoDB en `gastos.chitaraagenteia.com`) |
 | Auth | Clerk (development, `charmed-lionfish-65`) |
 | Automatizacion | n8n (25 workflows, VPS Docker) |
 | CMS | Directus (VPS Docker, `directus.chitaraagenteia.com`) |
