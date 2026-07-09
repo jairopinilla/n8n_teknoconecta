@@ -1,6 +1,6 @@
 # Active Context — TeknoConecta
 
-> Ultima actualizacion: 2026-07-07
+> Ultima actualizacion: 2026-07-09
 >
 > 🔴 **Directus cloud y Supabase cloud YA NO SE USAN.** Todo en chitara (VPS 5.252.52.190).
 > Para operar usar SIEMPRE los MCPs chitara (`n8n-chitara`, `directus-chitara`, `supabase-chitara`).
@@ -185,7 +185,7 @@ python infra/qdrant/init_collections.py --host 5.252.52.190 --port 6333 --api-ke
 - `chrome-devtools-mcp` no funciona en WSL → requiere OpenCode nativo en Windows
 - Coolify no respeta docker-compose del repo (extra_hosts, volumes) → requiere watchdog scripts
 
-## Cambios recientes (2026-07-07)
+## Servicios web (dominios Cloudflare)
 
 ### Cloudflare API Token — DNS+SSL para MCP
 - Token viejo (`cfat_I9KF...`) era invalido/read-only. Creado nuevo token via API: `cfut_[REDACTED]`
@@ -193,21 +193,66 @@ python infra/qdrant/init_collections.py --host 5.252.52.190 --port 6333 --api-ke
 - Actualizado en: `opencode.jsonc` (cloudflare + cloudflare-dns), `documentacion/credenciales`, `.enc` re-encriptados
 - Verificado activo y valido: `"This API Token is valid and active"`
 
+| Subdominio | → Puerto | Auth | Servicio |
+|-----------|----------|------|----------|
+| gastos-dash.chitaraagenteia.com | 127.0.0.1:80 → API 4290 | Google SSO | Dashboard PWA Gastos |
+| pgadmin.chitaraagenteia.com | 127.0.0.1:5050 | Google SSO | pgAdmin DB manager |
+| gastos.chitaraagenteia.com | 127.0.0.1:8085 | NocoDB nativa | NocoDB admin |
+
+## Gastos Dashboard PWA (NUEVO 2026-07-09)
+
+| Componente | Detalle |
+|-----------|---------|
+| URL | `https://gastos-dash.chitaraagenteia.com` |
+| Auth | Cloudflare Access → Google SSO (cookie 24h, transparente al PWA) |
+| Frontend | HTML+Chart.js en `/opt/homelab/gastos-dash/` (index.html, manifest.json, sw.js) |
+| API | Python stdlib (http.server) en `127.0.0.1:4290`, systemd service `gastos-api` |
+| DB | PostgreSQL via `docker exec postgres psql`, queries directas a `personal_contador` |
+| Proxy | Nginx: `/api/` → 127.0.0.1:4290, archivos estáticos desde `/opt/homelab/gastos-dash/` |
+| Túnel | Cloudflare Tunnel `127.0.0.1:80` |
+| DNS | CNAME `gastos-dash` → `779b9db0-....cfargotunnel.com`, proxied |
+| PWA | manifest.json + sw.js (offline cache), instalable en iOS/Android |
+
+**Secciones del dashboard:**
+- KPI cards: egresos, ingresos, balance, # movimientos
+- Gráfico torta: egresos por categoría (mes seleccionado)
+- Gráfico barras: flujo diario (egresos + ingresos)
+- Tabla: últimos 15 movimientos
+- Selector de mes (default = mes anterior)
+
+## Cambios recientes (2026-07-09)
+
 ### MCP PriceLabs oficial (remoto, OAuth)
-- Nuevo MCP `pricelabs` en opencode.jsonc: remoto via `https://mcp.pricelabs.co/mcp` con OAuth 2.0 (clientId + clientSecret)
-- Se diferencia de `pricelabs-docs` (local, solo documentacion): este MCP oficial permite leer/actualizar listings, DSOs, precios, reservas, market insights via lenguaje natural
-- Al reiniciar OpenCode, abrira el navegador para autorizar la conexion con credenciales de PriceLabs
+- Nuevo MCP `pricelabs` en opencode.jsonc: remoto via `https://mcp.pricelabs.co/mcp` con OAuth 2.0
+- Documentación en `https://developers.pricelabs.co/mcp/overview`
+- Se diferencia de `pricelabs-docs` (local, solo docs): permite leer/actualizar listings, DSOs, precios, reservas, market insights
 
-### WF2 Gastos — ON CONFLICT en Inserts (DB directo)
-- **WF2 en vivo es distinto al versionado en git** (26 nodos vs 13, arquitectura Switch con 3 nodos Postgres separados)
-- Agregadas queries SQL a los 3 nodos Postgres del Switch "Tipo ingreso": `Inserta Egreso`, `Insert Ingreso`, `Insert transferencia`
-- Cada INSERT incluye `ON CONFLICT (movimientohash) DO NOTHING` para manejar duplicados (mismo correo procesado 2+ veces)
-- `usuarioid` se resuelve via `FROM usuario WHERE correo = emailDestinatario`
-- WF2 exportado a git (`Gastos_WF2_Triage_Correos.json`) sincronizado con produccion
-- NOTA: el WF3 legacy (git) aun tiene el nodo 07 que construye INSERTs sin ON CONFLICT; el flujo real usa el WF2 nuevo con 3 nodos separados
+### Cloudflare API Token — DNS+SSL para MCP
+- Token viejo era inválido. Creado `cfut_[REDACTED]`
+- Permisos: DNS Write + SSL Write, scope zone `chitaraagenteia.com`
+- Actualizado en opencode.jsonc, documentacion/credenciales, cloudflare-dns MCP
 
-### `google-duration` warning
-- Aclarado: el warning "unknown format google-duration ignored in schema" es inofensivo. Viene de schemas protobuf de Google APIs que usan formatos custom no reconocidos por validadores JSON Schema estandar. No afecta funcionalidad.
+### WF2 Gastos — ON CONFLICT en Inserts
+- WF2 en vivo (26 nodos, ID `0F7P6LUh9gLn6Lbz`) distinto al git (13 nodos legacy)
+- Queries SQL agregadas a 3 nodos Postgres: Inserta Egreso, Insert Ingreso, Insert transferencia
+- Cada query incluye `ON CONFLICT (movimientohash) DO NOTHING` + `usuarioid` via JOIN a `usuario`
+- Actualizado via DB directa (`workflow_entity`) — no se pudo usar API n8n (problemas clave API)
+- WF2 exportado de producción a git (`Gastos_WF2_Triage_Correos.json`)
+
+### Gastos — Columnas varchar ampliadas
+- `personal_contador`: 11 columnas expandidas en `egreso`, `ingreso`, `transferencia`
+- `*cuenta`: varchar(20) → varchar(100)
+- `*tarjeta`: varchar(20) → varchar(50)
+- `*tarjetaproveedor`: varchar(20) → varchar(50)
+- `*movimientohash`: varchar(64) → varchar(128)
+- Ejecutado via `docker exec postgres psql` directo
+
+### pgAdmin
+- Ya estaba expuesto: `https://pgadmin.chitaraagenteia.com` → Cloudflare Access Google SSO
+- Login pgAdmin: `contacto@teknoconecta.com` / `ElefantesEbrios`
+- Servidor: host `postgres`, user `chitara`, pass `chitara_change_me`
+
+### Dashboard PWA Gastos (ver sección arriba)
 
 ## Cambios recientes (2026-06-18, 2026-06-19, 2026-06-20)
 

@@ -1,24 +1,22 @@
 # Progress — TeknoConecta
 
-> Ultima actualizacion: 2026-07-07
+> Ultima actualizacion: 2026-07-09
 > Este repo (n8n_teknoconecta) es el hub central de coordinacion.
 > Los repos de proyectos (`topic_system`, `Procesa_doc`, `gestion_gastos`, `kiosko_laflorida`) son independientes.
 
 ## Completado
 
-### MCP PriceLabs oficial (2026-07-07)
-- [x] Configurado `pricelabs` MCP remoto en opencode.jsonc (OAuth 2.0, clientId + clientSecret)
-- [x] Archivo re-encriptado (`opencode.jsonc.enc`)
-- [x] Memory-bank actualizado
-
-### WF2 Gastos — Inserts con ON CONFLICT (2026-07-07)
-- [x] WF2 en vivo exportado y analizado (26 nodos, arquitectura distinta al git)
-- [x] Queries SQL agregadas a los 3 nodos Postgres: Inserta Egreso, Insert Ingreso, Insert transferencia
-- [x] Cada query incluye `ON CONFLICT (movimientohash) DO NOTHING` para manejar duplicados
-- [x] `usuarioid` se resuelve via JOIN con `usuario.usuariocorreo`
-- [x] DB actualizada directamente (docker exec postgres psql) — UPDATE 1 row
-- [x] Verificado: los 3 nodos tienen conflict=True, returning=True
-- [x] WF2 sincronizado a git (`Gastos_WF2_Triage_Correos.json`)
+### 2026-07-09 — Sesion completa
+- [x] MCP PriceLabs oficial (remoto, OAuth) en opencode.jsonc
+- [x] Cloudflare API Token nuevo (DNS+SSL) reemplazando token inválido
+- [x] WF2 Gastos: 3 nodos Postgres con queries SQL + ON CONFLICT (movimientohash)
+- [x] Tablas gastos: 11 columnas varchar ampliadas (cuenta, tarjeta, hash)
+- [x] pgAdmin confirmado expuesto: `pgadmin.chitaraagenteia.com` (Google SSO)
+- [x] Gastos Dashboard PWA desplegado: HTML+Chart.js + API Python + Nginx + Cloudflare Access
+- [x] API Python (stdlib, sin dependencias) corriendo como systemd `gastos-api`
+- [x] Subdominio `gastos-dash.chitaraagenteia.com` con DNS + Tunnel + Access
+- [x] Documentation actualizada: `gastos_personales.md` (issues resueltos)
+- [x] Memory bank actualizado
 
 ### Infraestructura VPS
 - [x] 32 contenedores Docker (9 Coolify + 16 servicios + 4 workers/infra + 3 Coolify internos)
@@ -146,6 +144,7 @@
 
 ## Pendiente
 
+- [ ] WF2 nodo 19 (Marcar Correo Procesado) usa schema viejo `gestiongastos."BandejaCorreo"` → migrar a `personal_contador.bandejacorreo`
 - [ ] Dar de baja VPS viejo (5.78.152.6)
 - [ ] Backup automatico diario a S3 con Healthchecks
 - [ ] Configurar Google OAuth en Clerk Dashboard (saldito)
@@ -172,7 +171,7 @@
 - Workflows n8n: 25
 - MCP servers (opencode.jsonc): 31
 - Contenedores Docker: 38
-- Servicios web con HTTPS: 24 (+2 vaults Obsidian)
+- Servicios web con HTTPS: 25 (+ gastos-dash)
 - Apps Coolify con auto-deploy: 9
 - Puertos expuestos: 3 (22, 80, 443)
 - Zonas Cloudflare: 1 (chitaraagenteia.com)
