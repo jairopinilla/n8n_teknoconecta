@@ -222,6 +222,17 @@ python infra/qdrant/init_collections.py --host 5.252.52.190 --port 6333 --api-ke
 
 ## Cambios recientes (2026-07-09)
 
+### Fix Gastos Dashboard PWA — app pegada en "cargando"
+- **Sintoma:** app `gastos-dash.chitaraagenteia.com` se quedaba en spinner "cargando" infinito.
+- **Diagnostico:** backend OK (API 4290 → 200, nginx → 200, tunel → 200, datos llegaban). Bug en el frontend JS.
+- **Causa raiz:** `parseEggs` dejaba `fecha` como string; el grafico de barras hacia `x.fecha.getDate()` (metodo de Date), lanzando excepcion en `refresh()` ANTES de ocultar el spinner → app pegada.
+- **Fix (3 cambios en `/opt/homelab/gastos-dash/index.html`):**
+  1. `fecha: r.fecha ? new Date(r.fecha) : null` (parsear a Date)
+  2. `getMonth()` usa `getFullYear()`/`getMonth()` en vez de `substring`
+  3. sort de movimientos por `getTime()` en vez de `localeCompare`
+- **Cache:** `sw.js` bumpeado `gastos-v1` → `gastos-v2` (era cache-first en `/`, servia HTML viejo).
+- **Backup:** `/opt/homelab/gastos-dash/index.html.bak-20260709`.
+
 ### MCP PriceLabs oficial (remoto, OAuth)
 - Nuevo MCP `pricelabs` en opencode.jsonc: remoto via `https://mcp.pricelabs.co/mcp` con OAuth 2.0
 - Documentación en `https://developers.pricelabs.co/mcp/overview`
