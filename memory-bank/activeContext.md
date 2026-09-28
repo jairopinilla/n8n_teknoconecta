@@ -277,7 +277,7 @@ python infra/qdrant/init_collections.py --host 5.252.52.190 --port 6333 --api-ke
 ### pgAdmin
 - Ya estaba expuesto: `https://pgadmin.chitaraagenteia.com` → Cloudflare Access Google SSO
 - Login pgAdmin: `contacto@teknoconecta.com` / `ElefantesEbrios`
-- Servidor: host `postgres`, user `chitara`, pass `chitara_change_me`
+- Servidor: host `postgres`, user `chitara`, pass → ver `/root/db_passwords_rotated_20260928.env` (rotada 2026-09-28)
 
 ### Dashboard PWA Gastos (ver sección arriba)
 
