@@ -19,7 +19,7 @@ App de finanzas personales con frontend Angular 20 + Ionic 8 y backend Node.js +
 
 | Servicio | URL | Acceso |
 |----------|-----|--------|
-| n8n | https://n8n.teknoconectapp.com | admin / ElefantesEbrios1Renca |
+| n8n | https://n8n.teknoconectapp.com | admin / ver /root/db_passwords_rotated_20260928.env (n8n UI sin rotar) |
 | Directus | https://directus.chitaraagenteia.com | Google SSO |
 | Supabase | https://supabase.chitaraagenteia.com | Google SSO |
 | Coolify | https://coolify.chitaraagenteia.com | Google SSO |

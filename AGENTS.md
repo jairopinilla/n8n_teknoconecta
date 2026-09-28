@@ -442,7 +442,7 @@ ssh -o ConnectTimeout=5 root@5.252.52.190 "echo OK"
 | Error | Causa | Solucion |
 |-------|-------|----------|
 | `Mismatching encryption keys` | .env ≠ volume config | `docker compose down -v && docker compose up -d` (recrea volumen con key del .env) |
-| `password authentication failed for user "n8n"` | Rol no existe en DB | `docker exec postgres psql -U postgres -c "CREATE ROLE n8n WITH LOGIN PASSWORD 'ElefantesEbrios1Renca'"` |
+| `password authentication failed for user "n8n"` | Rol no existe en DB | `docker exec postgres psql -U chitara -c "CREATE ROLE n8n WITH LOGIN PASSWORD 'VER /root/db_passwords_rotated_20260928.env'"` |
 | `Unrecognized node type: @tavily/...` | Falta paquete comunitario | `docker exec n8n npm install @tavily/n8n-nodes-tavily` |
 | Container en loop "Restarting (1)" | Error de config | `docker logs n8n --tail 20` para diagnosticar |
 

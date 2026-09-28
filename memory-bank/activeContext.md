@@ -1,12 +1,14 @@
 # Active Context — TeknoConecta
 
-> Ultima actualizacion: 2026-07-09
+> Ultima actualizacion: 2026-09-28
 >
 > 🔴 **Directus cloud y Supabase cloud YA NO SE USAN.** Todo en chitara (VPS 5.252.52.190).
 > Para operar usar SIEMPRE los MCPs chitara (`n8n-chitara`, `directus-chitara`, `supabase-chitara`).
 >
 > 🔵 **Este repo (n8n_teknoconecta) es el hub central.** Coordina infra, MCPs, Hermes, Coolify y los otros repos.
 > Los repos de proyectos (`topic_system`, `Procesa_doc`, `gestion_gastos`, `kiosko_laflorida`) tienen su propio AGENTS.md y contexto.
+>
+> 🟡 **INCIDENTE 2026-09-28 (mitigado):** Criptominero perfctl en contenedor `postgres`. Erradicado: puerto 5432 cerrado (bind 127.0.0.1), volumen limpiado, contenedor recreado con imagen propia `postgres:18-chitara`, **passwords DB rotadas** (`/root/db_passwords_rotated_20260928.env`), rol backdoor `"postgres "` eliminado, **pg_hba endurecido** (TCP localhost scram-sha-256), Directus reparado (migraciones deployment re-ejecutadas), puertos 3030/4284/5555/6001-6002/9000/9443/5434 bloqueados. Evidencia en `/root/forensics_malware_20260928/`. Pendientes: rotar passwords de roles de apps y de UI (n8n admin, code-server), monitorear 24-48h.
 
 ## Estado del sistema
 
@@ -18,10 +20,24 @@
 | **Obsidian Vaults (NUEVO)** | ✅ | beer-ai + jairo, Quartz static sites, token auth, cron sync 15min |
 | **Coolify** | ✅ | 9 proyectos, 9 apps desplegadas con auto-deploy |
 | n8n | ✅ | 25 workflows, `n8n.teknoconectapp.com` |
+| **PostgreSQL** | ✅ | `postgres:18-chitara`, bind `127.0.0.1:5432`, passwords rotadas, pg_hba endurecido |
 | 20+ servicios web | ✅ | Todos con HTTPS via Cloudflare Tunnel |
 | **S3 Backups** | ✅ | PostgreSQL + Qdrant → `chitara-backups`, diario 3 AM Chile |
 | Seguridad | ✅ | Solo puertos 22/80/443 expuestos, resto iptables + 127.0.0.1 |
 | SSH / OpenCode Windows | ✅ | Llave `id_ed25519` en `C:\Users\jairo\.ssh\`, usable desde Windows nativo |
+
+## Postgres — seguridad post-incidente (2026-09-28)
+
+- **Imagen**: `postgres:18-chitara` (Dockerfile en `/opt/homelab/postgres/image/`) con `postgresql-18-pgvector` + `postgresql-18-postgis-3`.
+- **Compose** `/opt/homelab/postgres/docker-compose.yml`: puerto `127.0.0.1:5432:5432`. Backups `.bak.20260928`.
+- **pg_hba.conf**: host TCP 127.0.0.1/::1 `scram-sha-256`; socket local `trust` (docker exec). Backup `pg_hba.conf.bak.20260928`.
+- **Passwords rotadas**: `chitara`, `n8n`, `wog`, `priv_esc`, `authenticator` → `/root/db_passwords_rotated_20260928.env` (VPS, 600). Consumidores actualizados: postgres/.env, n8n/.env, directus, shlink, supabase (gotrue/meta/studio), postgrest (recreado).
+- **Rol backdoor** `"postgres "` (superuser, espacio al final) eliminado.
+- **Directus**: migraciones deployment re-ejecutadas (tablas `directus_deployments*` recreadas). Backup filas en `backup_migrations_deployment_20260928`.
+- **Backup script** `/opt/scripts/backup-postgres.sh` usa `PGPASSWORD` desde `.env`.
+- **Firewall**: puertos 3030, 4284, 5555, 6001-6002, 9000, 9443, 5434, 5432 bloqueados en INPUT + DOCKER-USER (v4) y DOCKER-USER (v6). Persistido `/etc/iptables/rules.v{4,6}`.
+- **Evidencia forense**: `/root/forensics_malware_20260928/`.
+- **Pendiente**: rotar passwords de roles de apps (`procesadoc_app`, `topic_system_app`, `kiosko_app`, `kioskomunicipio`, `testviral_app`, `nocodb_app`, `n8n_pati`) y de UI (n8n admin, code-server); monitorear respawn 24-48h.
 
 ## Coolify — Apps desplegadas (auto-deploy via GitHub App, source_id=2)
 
@@ -317,3 +333,5 @@ python infra/qdrant/init_collections.py --host 5.252.52.190 --port 6333 --api-ke
 - 🧠 **Chitara — Protocolo de investigación sobre Chile (2026-07-04):** Creado `documentacion/fuentes_chile.md` — catalogo completo de 22 think tanks (izquierda/centro/derecha), 14 fuentes de datos oficiales con/sin API, 20 pensadores chilenos clasificados por ideología (economía, rol del Estado, línea social), mapeo de redes y afinidades. `hermes-soul.md` actualizado con protocolo de 6 pasos (datos duros → think tanks opuestos → pensadores → contexto internacional). `hermes-config.md` actualizado con herramientas de investigación. Próximo: probar en Telegram, luego conectar Instagram.
 - 💰 **Gastos — Finanzas personales con NocoDB (2026-07-04):** Nueva app en VPS. URL: `https://gastos.chitaraagenteia.com`. Estructura: NocoDB (Docker) → PostgreSQL local DB `personal_contador`. 23 tablas copiadas de Saldito (`egreso`, `ingreso`, `transferencia`, `bandejacorreo`, `bandejaia`, `workspace`, etc.). Sin Cloudflare Access (auth nativa de NocoDB). Pendiente: conectar con n8n para workers de IA (procesamiento de emails, clasificación de gastos).
 - 📋 **Gastos — Documentacion completa (2026-07-06):** Creado `documentacion/gastos_personales.md` con esquema DB, constraints UNIQUE/NOT NULL, 3 workflows n8n documentados, script de insercion adaptado al nuevo schema `personal_contador`, calculo de hash con `digest()`, y issues conocidos (falta `usuarioid` y `movimientohash` en nodo 07 del WF3). Schema viejo `gestiongastos` (Neon) ya no se usa.
+
+- **Exposicion DB postgres a internet (2026-09-04):** Por solicitud explicita del usuario, se cambio el binding del contenedor postgres (compartido) de 127.0.0.1:5432 a  .0.0.0:5432 en /opt/homelab/postgres/docker-compose.yml (backup .bak.20260904170750). Contenedor recreado con docker compose up -d. Verificado: puerto 5432 alcanzable desde internet (TcpTestSucceeded=True). RIESGO: expone TODAS las DBs del host (sandiegoapart, n8n, shlink, healthchecks, n8n_pati, etc.), password como unica barrera. Viola REGLA #1 del repo. Credenciales n8n_pati funcionales.

@@ -6,6 +6,27 @@
 
 ## Completado
 
+### 2026-09-28 — Incidente de seguridad: criptominero perfctl erradicado
+- [x] Diagnostico: 503 en `aseos-v3` por timeouts DB; contenedor postgres comprometido (perfctl)
+- [x] Matados mineros e impostores desde el host (vision limpia)
+- [x] Persistencia eliminada del volumen postgres_postgres_data (`.config/cron/perfcc`, `.local/bin`, `.atmp`, `.cache`)
+- [x] Evidencia forense guardada en `/root/forensics_malware_20260928/`
+- [x] Compose corregido: 5432 bind `127.0.0.1` (backup `.bak.20260928`)
+- [x] Contenedor postgres recreado desde imagen limpia
+- [x] Llave SSH desconocida retirada de authorized_keys
+- [x] n8n reiniciado; webhook `aseos-v3` HTTP 200 (GET)
+- [x] Servicios dependientes verificados (Directus, PostgREST, Supabase, n8n-v2)
+- [x] **Rotacion passwords**: chitara, n8n, wog, priv_esc, authenticator (hex 48) + configs actualizadas
+- [x] **Rol backdoor `"postgres "` eliminado** (superuser con espacio, oid 241205)
+- [x] **pg_hba endurecido**: TCP localhost `trust` → `scram-sha-256` (socket local intacto)
+- [x] **Imagen propia** `postgres:18-chitara` con pgvector + postgis (Dockerfile versionado en VPS)
+- [x] Extensiones actualizadas: vector 0.8.2→0.8.6, postgis 3.6.3 OK; `pg_dumpall` funcional
+- [x] **Directus reparado**: migraciones deployment re-ejecutadas (tablas recreadas)
+- [x] Backup script con `PGPASSWORD` desde `.env`
+- [x] Puertos 3030/4284/5555/6001-6002/9000/9443/5434 bloqueados (INPUT + DOCKER-USER v4/v6, persistidos)
+- [x] Credenciales del repo actualizadas y re-encriptadas (validado roundtrip)
+- [x] Documentado en incidents.md, seguimiento.md, activeContext.md
+
 ### 2026-07-09 — Sesion completa
 - [x] MCP PriceLabs oficial (remoto, OAuth) en opencode.jsonc
 - [x] Cloudflare API Token nuevo (DNS+SSL) reemplazando token inválido

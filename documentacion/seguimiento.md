@@ -9,8 +9,41 @@ Este documento es la bitacora viva del repositorio. Toda modificacion sustantiva
 
 ## Ultima actualizacion
 
-- Fecha: `2026-05-15` (reorganizacion mayor + auditoria de salud)
-- Motivo: auditoria completa del repositorio, deteccion de problemas estructurales/de seguridad, ejecucion de reorganizacion, instalacion de graphify, y revision de salud
+- Fecha: `2026-09-28` (incidente de seguridad: criptominero perfctl en contenedor postgres de chitara)
+- Motivo: webhook `aseos-v3` caido (503) → deteccion y erradicacion de malware en contenedor postgres del VPS
+
+## Que se hizo en esta iteracion
+
+### Incidente de seguridad 2026-09-28 (chitara VPS)
+
+1. **Diagnostico**: n8n devolvia 503 y `Database connection timed out` en bucle. Causa: contenedor `postgres` comprometido con kit tipo **perfctl** (minero Monero, rootkit, proxys de trafico, Tor, respawner con nombres impostores de procesos postgres).
+2. **Vector**: puerto 5432 publicado en `0.0.0.0` en `/opt/homelab/postgres/docker-compose.yml` + persistencia en volumen `postgres_postgres_data` (`.config/cron/perfcc`, `.local/bin/{ldd,top}`, `.atmp`, `.cache`) desde 2026-09-04.
+3. **Contencion**: matados procesos maliciosos, borrada persistencia del volumen, retirada llave SSH desconocida de `/root/.ssh/authorized_keys`, evidencia forense en `/root/forensics_malware_20260928/`.
+4. **Cierre permanente**: compose editado a `127.0.0.1:5432:5432` (backup `.bak.20260928`), contenedor recreado desde imagen limpia, iptables DOCKER-USER con DROP para 5432.
+5. **Rotacion de passwords** (2026-09-28): roles `chitara`, `n8n`, `wog`, `priv_esc`, `authenticator` rotados (hex 48). Actualizados `.env` y composes de postgres, n8n, directus, shlink, supabase. PostgREST recreado con URI nueva. Rol backdoor `"postgres "` (superuser con espacio) eliminado.
+6. **Endurecimiento**: pg_hba TCP localhost `trust` → `scram-sha-256`. Backup script con `PGPASSWORD` desde `.env`.
+7. **Imagen propia**: `postgres:18-chitara` con pgvector + postgis (Dockerfile en `/opt/homelab/postgres/image/`), extensiones `ALTER EXTENSION UPDATE` (vector 0.8.6).
+8. **Directus reparado**: migraciones de deployment re-ejecutadas (tablas borradas por el atacante).
+9. **Puertos**: 3030, 4284, 5555, 6001-6002, 9000, 9443, 5434 bloqueados (INPUT + DOCKER-USER v4/v6, persistidos).
+10. **Recuperacion**: webhook `aseos-v3` HTTP 200. n8n, directus, postgrest, gotrue, meta OK. `pg_dumpall` funcional.
+
+## Estado actual
+
+- Sistema recuperado y endurecido. Load average 3.8.
+- postgres bind `127.0.0.1:5432` + imagen propia con extensiones + pg_hba endurecido.
+- Passwords DB rotadas en `/root/db_passwords_rotated_20260928.env` (VPS, 600).
+- Pendientes: rotar passwords de roles de apps (`procesadoc_app`, `topic_system_app`, etc.), passwords de UI (n8n admin, code-server), monitorear respawn 24-48h.
+
+## Proximos pasos recomendados
+
+1. Rotar passwords de roles de apps: `procesadoc_app` (rag, procesadoc-web, nocodb, MCP local), `topic_system_app`, `kiosko_app`, `kioskomunicipio`, `testviral_app`, `nocodb_app`, `n8n_pati`
+2. Rotar passwords UI: n8n admin y code-server (aun con la antigua)
+3. Monitorear 24-48h: `docker top postgres`, load average, timeouts de n8n
+4. Revisar backups S3 y contenedores `coolify`/`portainer` por posible extension del compromiso
+5. Quitar `trust` del socket local de pg_hba (requiere migrar MCPs locales a PGPASSWORD)
+6. Actualizar `documentacion/chitara.md` con el incidente y las medidas
+
+### Bitacora previa (sintesis)
 
 ## Que se hizo en esta iteracion
 

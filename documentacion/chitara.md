@@ -542,7 +542,7 @@ CREATE SCHEMA IF NOT EXISTS pgbouncer;
 #### Paso 5: pg_dump desde Supabase Cloud
 
 ```bash
-PGPASSWORD='ElefantesEbrios$1' pg_dump \
+PGPASSWORD=$(grep POSTGRES_PASSWORD /opt/homelab/postgres/.env | cut -d= -f2-) pg_dump \
   -h db.fjebesmrwdceyvllpslv.supabase.co \
   -U postgres \
   -d postgres \
