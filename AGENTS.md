@@ -5,6 +5,14 @@
 >
 > **🔴 REGLA ABSOLUTA**: El agente NUNCA debe tomar decisiones de cambios sin preguntarle al usuario primero. Cualquier modificacion — por mas pequena que sea — requiere aprobacion explicita. Si el agente detecta un problema, debe reportarlo y esperar instrucciones.
 
+## Local Secret Storage
+
+Repository-scoped tokens, keys and runtime credentials are permitted only in local files ignored
+by Git before values are saved, such as `.env` or `.env.local`. Provider and MCP tokens must be scoped to this repository, environment and purpose; provider-wide, account-wide, cross-repository or unscoped tokens remain prohibited. Values must never
+be staged, committed, copied to artifacts, placed in code, documentation,
+prompts, logs, screenshots or fixtures, or shared between repositories. Before
+committing, verify `git check-ignore` and `git diff --cached`.
+
 ---
 
 ## 🤖 REGLA #3 — CHITARA (HERMES AGENT): CERO CAMBIOS SIN APROBACION
